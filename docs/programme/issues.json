@@ -1,0 +1,681 @@
+{
+  "schema_version": 1,
+  "repository": "techrote/runloc",
+  "planning_date": "2026-10-17",
+  "status": "planned-not-implemented",
+  "first_release": [
+    "RUNLOC-001",
+    "RUNLOC-002",
+    "RUNLOC-003",
+    "RUNLOC-004",
+    "RUNLOC-005",
+    "RUNLOC-006",
+    "RUNLOC-007",
+    "RUNLOC-008",
+    "RUNLOC-009",
+    "RUNLOC-010",
+    "RUNLOC-011",
+    "RUNLOC-012",
+    "RUNLOC-013",
+    "RUNLOC-014"
+  ],
+  "issues": [
+    {
+      "id": "RUNLOC-001",
+      "title": "Establish the CLI, schemas and deterministic product test harness",
+      "stage": "v0.1",
+      "depends_on": [],
+      "rag": [
+        "docs/rag/01-ARCHITECTURE-STATE.md",
+        "docs/rag/08-TESTING-ACCEPTANCE.md",
+        "docs/rag/10-RELEASE-OPERATIONS.md"
+      ],
+      "scope": [
+        "Create src/runloc package and a runnable module entry point with help/version/structured errors; do not advertise unimplemented commands as working.",
+        "Define versioned config, lease, event and receipt contracts with validated finite budgets and explicit supported platform/profile.",
+        "Add scripts/check.py combining repository contract and product unittest discovery; extend hosted Windows/Ubuntu CI with stable named checks and native process-fixture support."
+      ],
+      "acceptance": [
+        "Clean source checkout invokes the CLI and documented development commands without hidden installed packages.",
+        "Invalid input, unknown schema, unknown command and unimplemented command terminate nonzero with stable redacted JSON errors.",
+        "Empty/all-skipped product tests cannot satisfy runtime acceptance; the planning validator remains a separate check.",
+        "Required checks run without credentials, QEMU, elevation or external API requests; Python/tooling support and test entry points are documented."
+      ],
+      "tests": [
+        "Retained CLI subprocess tests for exit/JSON/help, arbitrary cwd and checkout path containing spaces.",
+        "Schema tests for missing/wrong types, negative/nonfinite deadlines, unsupported versions and secret-bearing diagnostics.",
+        "Run both README checks and python scripts/check.py; show actual Windows and Ubuntu CI results."
+      ],
+      "excludes": "No VM boot, artifact download, runner registration, GitHub dispatch or product release.",
+      "prerequisites": "None beyond accepted dependencies and ordinary local development tools.",
+      "issue_number": 1,
+      "status": "planned"
+    },
+    {
+      "id": "RUNLOC-002",
+      "title": "Implement fail-fast host doctor and verified local tool acquisition",
+      "stage": "v0.1",
+      "depends_on": [
+        "RUNLOC-001"
+      ],
+      "rag": [
+        "docs/rag/02-HOST-QEMU.md",
+        "docs/rag/03-IMAGES-STORAGE.md",
+        "docs/rag/07-SECURITY-RECOVERY.md"
+      ],
+      "scope": [
+        "Implement doctor with explicit observed host capabilities, headroom, owned paths and exact synthetic key/control-file ACL probes.",
+        "Introduce reviewed input locks and local artifact download/extraction/cache adapters for the QEMU toolchain; record provenance and notices.",
+        "Handle offline cache, deadlines, archive/path bounds, partial downloads and atomic verified promotion without running a global installer."
+      ],
+      "acceptance": [
+        "Unsupported/disabled WHPX is unavailable, not a runtime PASS or implicit TCG selection.",
+        "The actual private-file protection sequence works as a standard user on supported Windows; broad explicit ACL fixtures are removed and no SeSecurityPrivilege/elevation is required.",
+        "Digest mismatch, malformed/oversized archive, traversal entry and interrupted promotion cannot replace a valid cache.",
+        "Doctor is read-only outside synthetic owned fixtures and prints finite resource/download requirements before mutation."
+      ],
+      "tests": [
+        "Windows native ACL positive/negative controls, exact failing-path regression inspired by the EzVM pilot and source import checks.",
+        "Injected downloader/hash/extractor tests for mismatch, redirect policy, ENOSPC, locked destination, offline valid/invalid cache and interrupted writes.",
+        "Construct no real guest in PR CI; opt-in acquisition proof records actual tool identities, exit and hashes."
+      ],
+      "excludes": "No enabling host features, privilege grants, owner-patch import, image build, runner auth or physical WHPX qualification.",
+      "prerequisites": "None beyond accepted dependencies and ordinary local development tools.",
+      "issue_number": 2,
+      "status": "planned"
+    },
+    {
+      "id": "RUNLOC-003",
+      "title": "Implement lease reservations and one-level disposable QCOW2 storage",
+      "stage": "v0.1",
+      "depends_on": [
+        "RUNLOC-002"
+      ],
+      "rag": [
+        "docs/rag/01-ARCHITECTURE-STATE.md",
+        "docs/rag/03-IMAGES-STORAGE.md",
+        "docs/rag/07-SECURITY-RECOVERY.md"
+      ],
+      "scope": [
+        "Create durable UUID leases, atomic journals/locks and single-guest resource admission using actual CPU/RAM/disk headroom.",
+        "Create fresh one-level QCOW2 overlays and seed/control directories from explicit verified base descriptors; use synthetic tiny bases before the later prepared-image issue and validate actual backing metadata.",
+        "Implement previewable scoped storage cleanup, sensitive-state marking, reservations and finite retention without deleting live references."
+      ],
+      "acceptance": [
+        "Simultaneous controllers cannot reserve the same capacity, port or lease; a rejected reservation makes no partial guest.",
+        "Changed/missing/external base, second-level chain, malformed metadata and path escape refuse boot preparation.",
+        "Used/job-injected overlays cannot become clean bases or return to a pool; cleanup preserves referenced immutable inputs.",
+        "ENOSPC, journal failure, moved cold root and stale lock recovery retain truth and previous valid state; unresolved ownership holds capacity visibly."
+      ],
+      "tests": [
+        "Real file-lock/process race tests and fake-clock/resource tests for oversubscription and lease reuse refusal.",
+        "Synthetic qemu-img fixtures for backing/format/relocation plus bounded real tiny-image checks with verified tools.",
+        "Traversal/junction/hardlink, live base reference, failed atomic replace and disk-full negative controls; assert unrelated sentinel files survive."
+      ],
+      "excludes": "No guest execution, registered-runner pool, external API calls or general image portability product.",
+      "prerequisites": "None beyond accepted dependencies and ordinary local development tools.",
+      "issue_number": 3,
+      "status": "planned"
+    },
+    {
+      "id": "RUNLOC-004",
+      "title": "Own QEMU launch, QMP and bounded Windows process lifetime",
+      "stage": "v0.1",
+      "depends_on": [
+        "RUNLOC-002",
+        "RUNLOC-003"
+      ],
+      "rag": [
+        "docs/rag/02-HOST-QEMU.md",
+        "docs/rag/07-SECURITY-RECOVERY.md",
+        "docs/rag/08-TESTING-ACCEPTANCE.md"
+      ],
+      "scope": [
+        "Implement explicit WHPX argument arrays, controller-owned QMP stdio, independent serial capture and concurrent bounded stream drains.",
+        "Contain QEMU before execution with a proved Windows ownership primitive; record executable/creation/root identity and durable lease association.",
+        "Implement status/graceful stop/contained termination with deadlines and quarantine on ambiguity."
+      ],
+      "acceptance": [
+        "Start returns on the intended readiness boundary without waiting for a long-lived child to close captured pipes.",
+        "Supervisor death terminates its contained process tree; a reused PID or unrelated same-name process is never stopped.",
+        "WHPX launch does not silently fall back; unsupported containment or requested accelerator fails closed before useful execution.",
+        "No guest-reachable QMP TCP endpoint, host share or leaked process handle; stop confirms owned exit before releasing storage."
+      ],
+      "tests": [
+        "Native Windows lightweight process tests: captured start, descendant holding pipe, suspended containment, timeout, abrupt supervisor exit and handle lifetime.",
+        "PID reuse/executable/root mismatch negative controls with unrelated process sentinel surviving.",
+        "QMP protocol/error/EOF/output-flood tests and a bounded real disposable WHPX boot/stop smoke; mocked arguments are not physical execution proof."
+      ],
+      "excludes": "No owner VM control, blanket process kill, host service, nested virtualization or Linux/KVM support.",
+      "prerequisites": "Native Windows process tests can run hosted without QEMU; the separate boot smoke needs an approved WHPX host and accepted image.",
+      "issue_number": 4,
+      "status": "planned"
+    },
+    {
+      "id": "RUNLOC-005",
+      "title": "Build and qualify a credential-free Linux runner image recipe",
+      "stage": "v0.1",
+      "depends_on": [
+        "RUNLOC-002",
+        "RUNLOC-004"
+      ],
+      "rag": [
+        "docs/rag/03-IMAGES-STORAGE.md",
+        "docs/rag/04-GUEST-CONTRACT.md",
+        "docs/rag/10-RELEASE-OPERATIONS.md"
+      ],
+      "scope": [
+        "Implement image build/inspect with pinned Ubuntu 24.04 x64 input, explicit guest packages and official runner dependencies/archive.",
+        "Build in an owned bounded VM, sanitize identity and credentials, cleanly stop, validate and atomically publish base+manifest.",
+        "Record exact inputs, recipe, resulting digest, runner-version freshness and supported shell-action tool profile; add notices and rebuild procedure."
+      ],
+      "acceptance": [
+        "A verified reusable base has no registration, JIT configuration, repository worktree, private keys, job state or reused lease machine identity.",
+        "Failed or interrupted build cannot overwrite the previous valid base or publish a partially prepared image.",
+        "Actual guest inspection demonstrates the declared tools/dependencies and unprivileged runner user; no Docker/sudo parity claim.",
+        "Base inspection rejects unknown recipe/version/digest and moving unpinned acquisition; image metadata is sufficient to reproduce or explain an unavailable upstream input."
+      ],
+      "tests": [
+        "Recipe/manifest validation, missing/mismatched inputs, build timeout/failed provision/failed shutdown and atomic-promotion negative tests.",
+        "A bounded real disposable image build plus offline secret/identity inspection, with exact source/tool/image evidence and cleanup.",
+        "Retained sanitize regressions and fresh-boot identity controls; keep fixture keys synthetic and never export a credentialed disk."
+      ],
+      "excludes": "No registered runner, GitHub job, persistent developer profile, Windows media or broad hosted-image equivalence.",
+      "prerequisites": "Supported Windows/WHPX host and explicitly selected download sources; if unavailable keep physical image acceptance open, not mocked green.",
+      "issue_number": 5,
+      "status": "planned"
+    },
+    {
+      "id": "RUNLOC-006",
+      "title": "Establish authenticated per-lease guest readiness and control",
+      "stage": "v0.1",
+      "depends_on": [
+        "RUNLOC-004",
+        "RUNLOC-005"
+      ],
+      "rag": [
+        "docs/rag/04-GUEST-CONTRACT.md",
+        "docs/rag/07-SECURITY-RECOVERY.md",
+        "docs/rag/09-METRICS-PERFORMANCE.md"
+      ],
+      "scope": [
+        "Create per-lease seed/SSH identity and a small versioned Linux control wrapper for readiness, configuration, runner status and collection.",
+        "Bind SSH host trust to fresh lease/nonce/image identity through captured bootstrap serial evidence; use isolated known_hosts.",
+        "Transfer sensitive one-use configuration through authenticated stdin/file into mode0600 tmpfs, with bounded operations and redaction."
+      ],
+      "acceptance": [
+        "Guest readiness requires correct completed provisioning, lease nonce/image, owned QEMU and authenticated channel, not an open port/printed marker.",
+        "Wrong/stale key, nonce, seed or partial provisioning refuses credentials and runner startup.",
+        "No private host SSH/API secret or JIT data appears in serial, argv, base or normal receipt; guest output cannot choose arbitrary host export paths.",
+        "Guest control runs in the documented unprivileged profile and reports precise timeout/transport/command failures."
+      ],
+      "tests": [
+        "Stale/forged READY, wrong host key, reboot, partial provision, lost SSH and oversized output negative controls.",
+        "Synthetic-secret inspection across transfer/success/error/collection paths; hostile collection filename cannot write outside lease export.",
+        "Real fresh-guest readiness, fixed control operation and cleanup with separate host/guest evidence."
+      ],
+      "excludes": "No GitHub registration, arbitrary interactive terminal injection, trust-on-first-use bypass or host folder mount.",
+      "prerequisites": "None beyond accepted dependencies and ordinary local development tools.",
+      "issue_number": 6,
+      "status": "planned"
+    },
+    {
+      "id": "RUNLOC-007",
+      "title": "Implement host-only GitHub auth and repository-scoped JIT runners",
+      "stage": "v0.1",
+      "depends_on": [
+        "RUNLOC-001",
+        "RUNLOC-006"
+      ],
+      "rag": [
+        "docs/rag/05-GITHUB-RUNNERS.md",
+        "docs/rag/06-DISPATCH-FALLBACK.md",
+        "docs/rag/07-SECURITY-RECOVERY.md"
+      ],
+      "scope": [
+        "Implement credential-provider and documented GitHub REST boundaries with pinned API semantics, finite requests and injected fixtures.",
+        "Acquire repository-scoped JIT configuration only for a ready owned guest and register a unique Linux/X64/profile/lease identity.",
+        "Observe runner readiness and exact-ID removal; keep remote cleanup uncertainty and sensitive payloads out of durable/public state."
+      ],
+      "acceptance": [
+        "Host authorization never enters guest/base/logs; guest receives only its single-use capability via the accepted006 channel.",
+        "Unique runner ID/name/label/repository association is verified; generic self-hosted routing is insufficient.",
+        "Accepted-but-response-lost registration is reconciled before retry, preventing duplicate runners; permissions and rate limits fail clearly.",
+        "Observed one-job registration and deregistration are distinct from VM disposal; network errors never prove absence or success."
+      ],
+      "tests": [
+        "Recorded synthetic fixtures for success, timeout-after-accept,429/Retry-After,401/403/404/409/5xx, pagination and stale/incorrect identity.",
+        "Secret redaction and no-credential-call unit CI; exact-ID deletion cannot remove another runner sentinel.",
+        "Explicitly approved live test-repository registration/online/removal proof with API IDs and guest-channel evidence; no real job required yet."
+      ],
+      "excludes": "No PAT enrollment, org-wide fleet, runner service on host, public-fork trigger or runner-protocol implementation.",
+      "prerequisites": "Existing host auth/App with repository administration capability and an approved qualification repository (techrote/runloc is the intended test repository); no production secrets.",
+      "issue_number": 7,
+      "status": "planned"
+    },
+    {
+      "id": "RUNLOC-008",
+      "title": "Orchestrate one real job through collection and complete disposal",
+      "stage": "v0.1",
+      "depends_on": [
+        "RUNLOC-003",
+        "RUNLOC-004",
+        "RUNLOC-006",
+        "RUNLOC-007"
+      ],
+      "rag": [
+        "docs/rag/01-ARCHITECTURE-STATE.md",
+        "docs/rag/05-GITHUB-RUNNERS.md",
+        "docs/rag/07-SECURITY-RECOVERY.md",
+        "docs/rag/08-TESTING-ACCEPTANCE.md"
+      ],
+      "scope": [
+        "Implement foreground plan/run/status/stop/reconcile single-lease supervisor and phase deadlines, using accepted adapters.",
+        "Bind an approved workflow definition/candidate/job to the unique ready runner; persist external write intent and observed IDs.",
+        "Collect bounded redacted diagnostics, cancel only owned work when needed, terminate VM and remove local sensitive state with explicit remote cleanup obligations."
+      ],
+      "acceptance": [
+        "An actual approved Linux job completes on its assigned unique runner and is associated with exact candidate, workflow/run/job/attempt and lease.",
+        "A deliberately failing job remains a failed outcome even when cleanup succeeds; runner-online/guest PASS/exit without API conclusion cannot substitute.",
+        "One used VM never accepts a second job; overlay/seed/control keys disappear after confirmed QEMU exit and registration disposition is known.",
+        "Controller restart, cancellation, collection failure and cleanup API outage reconcile without re-executing a job or losing the original cause; unresolved state is quarantined."
+      ],
+      "tests": [
+        "State-machine/fake-clock tests at every transition and exact phase timeout; failed-job and queue expiry controls.",
+        "Real one-job success plus failed job with QEMU exit, disk/seed/key removal, API conclusion and exact runner disposition evidence.",
+        "Two successive fresh leases prove distinct identity and no sentinel carry-over; second-job scheduling cannot use the first runner."
+      ],
+      "excludes": "No multi-guest pool, autoscaling, gate promotion, broad workflow trust or success based only on logs.",
+      "prerequisites": "Accepted physical adapters and explicit host authorization for the trusted qualification workflow; ordinary PR tests remain fully offline.",
+      "issue_number": 8,
+      "status": "planned"
+    },
+    {
+      "id": "RUNLOC-009",
+      "title": "Expose bounded evidence receipts and read-only terminal performance stats",
+      "stage": "v0.1",
+      "depends_on": [
+        "RUNLOC-001",
+        "RUNLOC-008"
+      ],
+      "rag": [
+        "docs/rag/01-ARCHITECTURE-STATE.md",
+        "docs/rag/09-METRICS-PERFORMANCE.md",
+        "docs/rag/07-SECURITY-RECOVERY.md"
+      ],
+      "scope": [
+        "Implement versioned evidence snapshots/events, allowed export manifest, logs and read-only stats commands.",
+        "Measure phase wall times, host process/resource use, queue/run IDs and cleanup obligations with source/freshness labels.",
+        "Bound sampling/history/log size/retention and preserve useful diagnostics independently of guest survival."
+      ],
+      "acceptance": [
+        "Stats reads actual supervisor/API/host state without mutation, duplicate runner sessions or extending lifetime.",
+        "Cold acquisition/build, integrity validation, boot/readiness, API queue, job, collection and disposal are measured separately.",
+        "Unknown/stale values are visibly unknown/stale, CPU denominator and sampling interval are recorded, guest claims are distinguished.",
+        "Export contains no disks/JIT/keys/API credentials and is byte/hash traceable to source evidence; interrupted monitor cannot change a job outcome."
+      ],
+      "tests": [
+        "Fake-clock and counter tests, stale/missing snapshots, concurrent atomic writes, corrupt journal and unsupported metrics.",
+        "Output flood/history/retention limits, synthetic secret filtering and malicious export-path/manifest controls.",
+        "Real read-only stats during an approved008 lease, checking process association and no extra lifecycle writes."
+      ],
+      "excludes": "No AI-model metrics, tiled dashboard, input terminal, GPU monitoring or assertion that monitoring is independent qualification.",
+      "prerequisites": "None beyond accepted dependencies and ordinary local development tools.",
+      "issue_number": 9,
+      "status": "planned"
+    },
+    {
+      "id": "RUNLOC-010",
+      "title": "Dispatch independent hosted/private comparisons with offline fallback",
+      "stage": "v0.1",
+      "depends_on": [
+        "RUNLOC-007",
+        "RUNLOC-008",
+        "RUNLOC-009"
+      ],
+      "rag": [
+        "docs/rag/06-DISPATCH-FALLBACK.md",
+        "docs/rag/05-GITHUB-RUNNERS.md",
+        "docs/rag/09-METRICS-PERFORMANCE.md"
+      ],
+      "scope": [
+        "Implement compare preview/dispatch and reviewed hosted/private workflow templates for identical Linux workloads.",
+        "Dispatch hosted first, then optionally reserve/ready an owned VM and target its unique label; correlate both attempt/run identities.",
+        "Implement finite private queue monitoring, exact-run cancellation and response-lost reconciliation while hosted remains independent."
+      ],
+      "acceptance": [
+        "Offline/busy/disabled/unsupported/private boot/API failure cannot prevent or cancel accepted hosted execution.",
+        "Both runs bind exact same candidate/input recipe/comparison ID and independently observed definition/profile/host identities.",
+        "Workflow ref and candidate SHA are not confused; mutable-ref movement or mismatched assigned runner invalidates private evidence.",
+        "Private disappearance after dispatch is bounded by controller queue TTL, not job timeout; controller-offline uncertainty is visible and reconciled on restart.",
+        "Dispatch response loss cannot duplicate hosted/private runs; no automatic first-green cancellation or required-check policy change."
+      ],
+      "tests": [
+        "Stub call order/count tests and real adapters for documented successful dispatch response shapes, timeouts and run-ID reconciliation.",
+        "Offline before/after readiness,429,permission failure,ref movement,wrong runner,duplicate intent and cancel-wrong-run negative controls.",
+        "Live paired approved Linux workflow run with same candidate, result assertions and evidence; hosted continues after intentionally unavailable private lane."
+      ],
+      "excludes": "No required matrix private leg, public PR auto-registration, production branch-rule edit or Windows/Linux equivalence claim.",
+      "prerequisites": "Reviewed templates available on default branch, existing Actions write auth and explicit trusted qualification repository; unit tests never dispatch workflows.",
+      "issue_number": 10,
+      "status": "planned"
+    },
+    {
+      "id": "RUNLOC-011",
+      "title": "Qualify crash recovery, cancellation and failure cleanup",
+      "stage": "v0.1",
+      "depends_on": [
+        "RUNLOC-008",
+        "RUNLOC-009",
+        "RUNLOC-010"
+      ],
+      "rag": [
+        "docs/rag/07-SECURITY-RECOVERY.md",
+        "docs/rag/08-TESTING-ACCEPTANCE.md",
+        "docs/rag/02-HOST-QEMU.md"
+      ],
+      "scope": [
+        "Add a bounded fault-injection qualification runner and recovery matrix covering each durable transition/ambiguous external-write window.",
+        "Exercise native containment, storage/credential/API obligations, queue disappearance, log flood and resource errors.",
+        "Repair narrowly evidenced integration defects, retaining original failure records and explicit cleanup/quarantine outcomes."
+      ],
+      "acceptance": [
+        "Controller death before/after registration/dispatch and during running/collection leaves no unowned active VM or reused used lease.",
+        "Restart does not repeat completed/unknown external actions blindly; remote uncertainty and capacity obligations remain visible.",
+        "Job failure/cancellation/timeout and disk/log/transport failures never become success from cleanup or a skipped check.",
+        "Unrelated QEMU/process/file/runner sentinels survive all recovery operations, including PID reuse and path reparse cases.",
+        "The report distinguishes deterministic unit faults, native process proofs and real VM/API scenarios; physical gates remain open if missing."
+      ],
+      "tests": [
+        "Native Windows controller/child-pipe kill, reused PID, containment failure and owned scope tests.",
+        "ENOSPC at download/journal/collection/promotion, wrong identity, log flood, API outage/removal failure and host-restart reconciliation simulations.",
+        "At least real controller-death during one guest lease, failed-job disposal and offline-after-private-dispatch proof using approved test assets."
+      ],
+      "excludes": "No escape testing, owner infrastructure disruption, wildcard cleanup, hypervisor tuning or broad rewrite unrelated to observed defects.",
+      "prerequisites": "None beyond accepted dependencies and ordinary local development tools.",
+      "issue_number": 11,
+      "status": "planned"
+    },
+    {
+      "id": "RUNLOC-012",
+      "title": "Run the clean timed WHPX pilot and publish a go/no-go assessment",
+      "stage": "v0.1",
+      "depends_on": [
+        "RUNLOC-005",
+        "RUNLOC-010",
+        "RUNLOC-011"
+      ],
+      "rag": [
+        "docs/rag/09-METRICS-PERFORMANCE.md",
+        "docs/rag/08-TESTING-ACCEPTANCE.md",
+        "docs/rag/02-HOST-QEMU.md"
+      ],
+      "scope": [
+        "Commit a qualification plan with workload/parity assertions, resource/cache/network conditions and numerical acceptance targets before any timed trial.",
+        "Run clean cold/warm Windows/WHPX Linux-job trials with independent hosted Linux reference and complete failure/disposal evidence.",
+        "Analyze phase costs and measured bottlenecks, repair small proved defects and publish reproducible receipts plus an explicit qualification decision."
+      ],
+      "acceptance": [
+        "At least 3 trials per declared cold/warm mode use fresh leases and exact controller/candidate/definition/input identities, with all samples retained.",
+        "Actual WHPX execution, GitHub job assertions, registration disposition and local disposal are independently observed; detection/configured accel is insufficient.",
+        "Report median/range and cold/warm phase breakdown, not unsupported p95 or borrowed EzVM Windows timings.",
+        "Zero false success/leaked/second-job runners,3/3 clean leases per accepted mode, failure cleanup and predeclared timing/resource targets determine go/no-go.",
+        "A no-go is reported honestly and keeps physical product/release gates open until repaired or explicitly revised; no permanent runner registration to disguise failure."
+      ],
+      "tests": [
+        "Negative-control checks invalidate incomplete logs, wrong source/recipe/accelerator, mismatched guest OS or failed workload despite fast wall time.",
+        "Replay receipts through assessment code and compare against known pass/fail boundary fixtures.",
+        "Full approved physical/API pilot, including standard-user exact ACL preflight, verified source cleanliness and actual complete end markers."
+      ],
+      "excludes": "No self-granted privileges, host setting changes, owner-patch copy, Windows nested-WHPX claim or required-gate promotion.",
+      "prerequisites": "Approved Windows/WHPX hardware, accepted image/adapters, configured test-repository auth and numerical targets written before measurement. If unavailable publish a blocked report and keep this issue open.",
+      "issue_number": 12,
+      "status": "planned"
+    },
+    {
+      "id": "RUNLOC-013",
+      "title": "Package the CLI and document a clean on-demand runner quickstart",
+      "stage": "v0.1",
+      "depends_on": [
+        "RUNLOC-010",
+        "RUNLOC-011",
+        "RUNLOC-012"
+      ],
+      "rag": [
+        "docs/rag/10-RELEASE-OPERATIONS.md",
+        "docs/rag/03-IMAGES-STORAGE.md",
+        "docs/rag/06-DISPATCH-FALLBACK.md"
+      ],
+      "scope": [
+        "Create source/wheel or equally small installable Python package, locked metadata, notices and supported-platform statement.",
+        "Document clean setup/doctor/image/auth-preview/run/stats/disposal/recovery with reviewed workflow examples.",
+        "Verify updates/rollback/retention/uninstall leave other projects and running immutable inputs untouched; provide precise space/download/capability estimates."
+      ],
+      "acceptance": [
+        "A clean directory/user development environment reproduces the accepted shell-action runner using only documented steps and existing approved auth.",
+        "Package contains own source/schemas/recipes/notices and no runtime disks, keys, seeded media, tokens, QEMU installer or guest archive.",
+        "MIT scope and third-party source/distribution notices are accurate; no code copied from EzVM without explicit compatible terms.",
+        "Examples target the real unique lease labels and approved candidate/definition inputs; installing/viewing docs never registers or dispatches.",
+        "Update/rebuild of stale runner images and rollback preserve running leases and prior valid cache; uninstall is exact-scope and previewable."
+      ],
+      "tests": [
+        "Package file-content/metadata tests plus fresh venv smoke from built distribution rather than source import.",
+        "Synthetic secret/binary exclusion, clean path with spaces, interrupted update and unrelated installation sentinel controls.",
+        "Documented real one-job quickstart replay with receipt IDs and complete disposal, reusing unchanged qualified tree evidence only when identity is proved."
+      ],
+      "excludes": "No bundled proprietary Windows image, global install/service, broad redistribution assumption or one-click claim hiding credentials/features.",
+      "prerequisites": "None beyond accepted dependencies and ordinary local development tools.",
+      "issue_number": 13,
+      "status": "planned"
+    },
+    {
+      "id": "RUNLOC-014",
+      "title": "Close the v0.1 release gate with whole-programme evidence",
+      "stage": "v0.1",
+      "depends_on": [
+        "RUNLOC-011",
+        "RUNLOC-012",
+        "RUNLOC-013"
+      ],
+      "rag": [
+        "docs/rag/00-SCOPE.md",
+        "docs/rag/08-TESTING-ACCEPTANCE.md",
+        "docs/rag/10-RELEASE-OPERATIONS.md"
+      ],
+      "scope": [
+        "Audit every001\u2013013 clause against actual main implementation/tests/merged PRs and immutable runtime evidence.",
+        "Resolve narrow release blockers, rerun changed-tree tests and qualify clean package plus recovery/upgrade behavior.",
+        "Publish tagged release/source package with platform/profile matrix, measured results, limitations, provenance and validated evidence index."
+      ],
+      "acceptance": [
+        "All001\u2013013 issues are genuinely accepted on main and relevant required automated head/post-merge checks are green.",
+        "Physical012 go decision, repeated clean leases, failed-job cleanup and controller restart recovery are complete and source-bound.",
+        "No skipped hardware requirement, stale head, unresolved cleanup, fabricated benchmark or unreviewed owner patch is included.",
+        "Release contents/SBOM/notices and fresh install/upgrade/rollback instructions match the tested package; Windows guest/KVM extensions stay unsupported.",
+        "Final review findings are resolved or explicitly scoped limitations; source tag and published artifacts are verified after release."
+      ],
+      "tests": [
+        "Machine-readable acceptance index checks missing/duplicate evidence, wrong source/recipe identities and unresolved gated issues.",
+        "Package-level clean reproduction plus required failure/regression suites; no unchanged full pilot rerun just for prose.",
+        "Verify main/post-merge and tag/artifact digests, document actual release checks and known limitations."
+      ],
+      "excludes": "No automatic delivery of015\u2013019, private acceptance promotion, scope substitution or release when physical evidence is unavailable.",
+      "prerequisites": "None beyond accepted dependencies and ordinary local development tools.",
+      "issue_number": 14,
+      "status": "planned"
+    },
+    {
+      "id": "RUNLOC-015",
+      "title": "Add a bounded foreground multi-lease queue and resource admission",
+      "stage": "follow-on",
+      "depends_on": [
+        "RUNLOC-014"
+      ],
+      "rag": [
+        "docs/rag/01-ARCHITECTURE-STATE.md",
+        "docs/rag/03-IMAGES-STORAGE.md",
+        "docs/rag/07-SECURITY-RECOVERY.md"
+      ],
+      "scope": [
+        "Extend the accepted one-lease controller with explicit max guests, CPU/RAM/disk reservations, fair bounded queue, admission pause and drain.",
+        "Keep per-lease one-job identity, registration, deadlines, metrics and cleanup independent across concurrent guests.",
+        "Expose predicted capacity/queue and reject oversubscription without changing host/owner VM allocations."
+      ],
+      "acceptance": [
+        "At least 2 independent approved jobs can run concurrently only when actual configured headroom allows; default remains1.",
+        "Pause stops new admission, drain finishes/cleans existing leases, cancel targets an exact queue item without deleting another.",
+        "Crash/restart, capacity loss and quarantine cannot free resources incorrectly or duplicate jobs.",
+        "No warmed registered guest or used-overlay reuse; per-lease disposal and source binding remain intact.",
+        "Measured concurrent/sequential trials report contention and limits, not throughput inferred from configured slots."
+      ],
+      "tests": [
+        "Concurrent process-lock/reservation and fairness/starvation tests with fake clocks and resource pressure.",
+        "Two real fresh guests/jobs plus one failure or cancellation demonstrate isolation, no contamination and full cleanup.",
+        "Queue restart, ENOSPC, exhausted RAM, pending remote removal and wrong-ID cancel negative controls."
+      ],
+      "excludes": "No remote fleet, permanent service, public autoscaling webhook or unbounded job admission.",
+      "prerequisites": "None beyond accepted dependencies and ordinary local development tools.",
+      "issue_number": 15,
+      "status": "planned"
+    },
+    {
+      "id": "RUNLOC-016",
+      "title": "Evaluate Windows guest runners and nested-virtualization limits",
+      "stage": "follow-on",
+      "depends_on": [
+        "RUNLOC-014"
+      ],
+      "rag": [
+        "docs/rag/00-SCOPE.md",
+        "docs/rag/02-HOST-QEMU.md",
+        "docs/rag/10-RELEASE-OPERATIONS.md"
+      ],
+      "scope": [
+        "Produce a bounded feasibility study for Windows GitHub runner guests, supported/licensed media and unattended unique disposable image recipe.",
+        "Separate ordinary Windows jobs from Windows jobs that themselves require WHPX/nested virtualization; evaluate actual platform constraints.",
+        "Define a follow-up implementation plan or evidenced no-go, with measured costs and no unsupported support labels."
+      ],
+      "acceptance": [
+        "Report explicitly separates host OS, guest OS, job platform, acceleration and any nested requirements.",
+        "Media acquisition/distribution/licensing prerequisites are documented; no unauthorized proprietary image redistribution or silent host change.",
+        "If an approved image is available, a bounded disposable ordinary Windows job has actual evidence; nested WHPX is separately tested or explicitly unsupported.",
+        "If prerequisites or nested support are absent, a reviewed no-go/blocked feasibility outcome can close this research issue without claiming product support.",
+        "Any proposed implementation is new bounded issues with tests, not an unreviewed extension enabled during the spike."
+      ],
+      "tests": [
+        "Decision matrix and evidence validation reject Linux-as-Windows or capability-detection-as-execution claims.",
+        "Optional real licensed Windows image/job experiment has explicit source/profile/cleanup receipts and finite bounds.",
+        "Document reproducible negative evidence and exact follow-up gates for any unsupported case."
+      ],
+      "excludes": "No assumption that the original EzVM Windows qualification now works inside a Linux or Windows guest; no production feature promise.",
+      "prerequisites": "None beyond accepted dependencies and ordinary local development tools.",
+      "issue_number": 16,
+      "status": "planned"
+    },
+    {
+      "id": "RUNLOC-017",
+      "title": "Qualify a Linux/KVM host backend with the same lease contract",
+      "stage": "follow-on",
+      "depends_on": [
+        "RUNLOC-014"
+      ],
+      "rag": [
+        "docs/rag/01-ARCHITECTURE-STATE.md",
+        "docs/rag/02-HOST-QEMU.md",
+        "docs/rag/07-SECURITY-RECOVERY.md"
+      ],
+      "scope": [
+        "Implement optional Linux x64/KVM doctor/process/locking/permission adapters while preserving the shared CLI/lease/evidence interfaces.",
+        "Use a native owned process/session relationship, QMP and explicit KVM with the accepted Linux guest profile.",
+        "Add platform-specific qualification and documentation without replacing Windows/WHPX coverage."
+      ],
+      "acceptance": [
+        "KVM permission or capability failure is explicit, with no privilege install or implicit TCG fallback.",
+        "Owned process identity/death/recovery and single-job disposal match existing invariants under native Linux tests.",
+        "Actual Linux/KVM job/cleanup receipts prove support; Ubuntu hosted unit CI alone does not.",
+        "Windows required tests remain green and Linux-specific paths do not regress Windows path/ACL behavior.",
+        "One platform cannot satisfy a missing qualification gate for another."
+      ],
+      "tests": [
+        "Native Linux process-group/start-time/signal and lock tests, reused PID and unrelated sentinel controls.",
+        "Real bounded KVM Linux job and failure cleanup on approved hardware, recorded separately from WHPX.",
+        "Shared conformance suite and CLI schema parity across both hosts."
+      ],
+      "excludes": "No rootless-container replacement, host service, GPU device passthrough or automatic device-permission changes.",
+      "prerequisites": "None beyond accepted dependencies and ordinary local development tools.",
+      "issue_number": 17,
+      "status": "planned"
+    },
+    {
+      "id": "RUNLOC-018",
+      "title": "Evaluate official scale-set integration and future CI-provider adapters",
+      "stage": "follow-on",
+      "depends_on": [
+        "RUNLOC-014",
+        "RUNLOC-015"
+      ],
+      "rag": [
+        "docs/rag/01-ARCHITECTURE-STATE.md",
+        "docs/rag/05-GITHUB-RUNNERS.md",
+        "docs/rag/07-SECURITY-RECOVERY.md"
+      ],
+      "scope": [
+        "Evaluate the official GitHub scale-set client/ARC fit before extending manual dispatch to autoscaling.",
+        "Document the minimal runner-provider interface and an optional signed-event/polling design that preserves local admission and cleanup.",
+        "Deliver a small isolated feasibility prototype or explicit no-go plus scoped implementation issues; keep deployed v0.1 behavior unchanged."
+      ],
+      "acceptance": [
+        "Compare supported official approaches, permissions, operational footprint and queue semantics using current primary references.",
+        "No custom undocumented runner protocol, Kubernetes requirement or public inbound listener is introduced as a default.",
+        "Duplicate/out-of-order events, lost acknowledgements, offline host and unavailable capacity have concrete decision/test contracts.",
+        "Other CI-provider exploration does not weaken GitHub job/credential/source association or claim an implemented provider.",
+        "A reviewed evidence-backed go/no-go completes the research issue; production autoscaling requires separate implementation acceptance."
+      ],
+      "tests": [
+        "Synthetic signed-event/replay/order/expiry/admission fixtures and permission-failure tests in an isolated prototype.",
+        "Provider-contract comparison verifies at-most-one execution, evidence identity and teardown obligations.",
+        "Record actual prototype limitations and bounded follow-up tasks; no live production registration."
+      ],
+      "excludes": "No unattended webhook deployment, auto-enrollment of admin credentials, multi-host fleet or promise that a spike is a production feature.",
+      "prerequisites": "None beyond accepted dependencies and ordinary local development tools.",
+      "issue_number": 18,
+      "status": "planned"
+    },
+    {
+      "id": "RUNLOC-019",
+      "title": "Design and qualify private-result promotion with hosted fallback",
+      "stage": "follow-on",
+      "depends_on": [
+        "RUNLOC-010",
+        "RUNLOC-012",
+        "RUNLOC-014"
+      ],
+      "rag": [
+        "docs/rag/06-DISPATCH-FALLBACK.md",
+        "docs/rag/08-TESTING-ACCEPTANCE.md",
+        "docs/rag/09-METRICS-PERFORMANCE.md"
+      ],
+      "scope": [
+        "Specify one stable required acceptance check which may use qualified equivalent private results while hosted continues/falls back.",
+        "Bind trusted controller evidence to exact candidate, workflow definition, recipe/profile and actual private job/disposal; define finite decision and failure semantics.",
+        "Implement only after explicit repository policy authorization and demonstrated equivalent results/performance; migrate requirements transparently with rollback."
+      ],
+      "acceptance": [
+        "An offline/failed/unqualified private attempt cannot strand the required gate or suppress meaningful hosted failure.",
+        "Forged guest PASS, wrong candidate, reused receipt, different platform/tool profile or stale workflow definition cannot satisfy the gate.",
+        "Host/controller outage and delayed/duplicate results have deterministic timeout/fallback behavior; a fast missing/failed assertion is never accepted.",
+        "Branch-rule/check-policy changes are previewed, reviewed and explicitly authorized, not an installation side effect.",
+        "Real equivalent-workload tests show shorter accepted completion where justified, while known failing cases remain failures; comparison-only mode remains available."
+      ],
+      "tests": [
+        "Truth-table/state tests for both lanes success/failure/cancel/timeout/offline/race, mismatched source/recipe and spoofed/replayed evidence.",
+        "Staging repository end-to-end gate checks with exact statuses/permissions and rollback; ordinary PR CI cannot access admin credentials.",
+        "Publish measured merge-wait comparison, parity evidence and failure cases before enabling production policy."
+      ],
+      "excludes": "No first-green-wins shortcut, silent branch-protection bypass, generic all-checks assertion or Windows/Linux result substitution.",
+      "prerequisites": "The owner must authorize the concrete required-check policy for the target repository; until then complete a reviewable staging design/PR without changing production requirements.",
+      "issue_number": 19,
+      "status": "planned"
+    }
+  ]
+}
