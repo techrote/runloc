@@ -7,6 +7,7 @@ Import-PilotNative
 $script:passed = 0; $script:skipped = 0
 $testRoot = Join-Path ([IO.Path]::GetTempPath()) ('runloc synthetic pilot tests ' + [Guid]::NewGuid().ToString('N'))
 [void][IO.Directory]::CreateDirectory($testRoot)
+$testFailure = $null
 
 function Assert-True { param([bool]$Condition, [string]$Message = 'assertion failed'); if (-not $Condition) { throw $Message } }
 function Assert-Throws {
@@ -16,7 +17,43 @@ function Assert-Throws {
 }
 function Test-Case {
     param([string]$Name, [scriptblock]$Action)
-    & $Action; $script:passed++; Write-Host ('PASS ' + $Name)
+    try { & $Action; $script:passed++; Write-Host ('PASS ' + $Name) }
+    catch { Write-Host ('FAIL ' + $Name); throw }
+}
+function Remove-PilotTestRoot {
+    param([string]$Root)
+    # Git creates read-only loose objects on Windows. Validate the complete
+    # test-owned inventory before clearing attributes or deleting any file.
+    $rootPath = Assert-PilotPath -Path $Root
+    if ($rootPath -cne [IO.Path]::GetFullPath($testRoot) -or
+        [IO.Path]::GetFileName($rootPath) -cnotmatch '^runloc synthetic pilot tests [a-f0-9]{32}$') { throw 'test-root-ownership-invalid' }
+    $clock = [Diagnostics.Stopwatch]::StartNew()
+    $stack = New-Object 'System.Collections.Generic.Stack[string]'
+    $directories = New-Object 'System.Collections.Generic.List[string]'
+    $files = New-Object 'System.Collections.Generic.List[string]'
+    $stack.Push($rootPath)
+    while ($stack.Count) {
+        Assert-PilotDeadline -Clock $clock -DeadlineSeconds 15
+        $directory = $stack.Pop(); $null = Assert-PilotPath -Path $directory; $directories.Add($directory)
+        foreach ($entry in [IO.Directory]::EnumerateFileSystemEntries($directory)) {
+            if (-not (Test-PilotDescendant -Path $entry -Root $rootPath)) { throw 'test-cleanup-path-escape' }
+            $null = Assert-PilotPath -Path $entry
+            if ([IO.Directory]::Exists($entry)) { $stack.Push($entry) }
+            else { $null = Assert-PilotPath -Path $entry -File; $files.Add($entry) }
+            if ($files.Count + $directories.Count + $stack.Count -gt 10000) { throw 'test-cleanup-inventory-limit' }
+        }
+    }
+    foreach ($file in $files) {
+        Assert-PilotDeadline -Clock $clock -DeadlineSeconds 15
+        $null = Assert-PilotPath -Path $file -File
+        [IO.File]::SetAttributes($file, [IO.FileAttributes]::Normal)
+        [IO.File]::Delete($file)
+    }
+    for ($index = $directories.Count - 1; $index -ge 0; $index--) {
+        Assert-PilotDeadline -Clock $clock -DeadlineSeconds 15
+        $null = Assert-PilotPath -Path $directories[$index]
+        [IO.Directory]::Delete($directories[$index], $false)
+    }
 }
 function New-TestLease {
     $parent = Join-Path $testRoot ([Guid]::NewGuid().ToString('N'))
@@ -536,7 +573,18 @@ function Protect-EzVmControllerPrivateKey { param($Path); throw 'synthetic-exact
     }
     Write-Host ('Synthetic pilot contracts: ' + $script:passed + ' PASS; ' + $script:skipped + ' platform groups SKIP; physical WHPX not run.')
 }
+catch {
+    $testFailure = $_
+    # Report the primary failure before cleanup; a cleanup exception must never
+    # replace the assertion or production error that caused this test to stop.
+    Write-Host ('PRIMARY_TEST_FAILURE: ' + $_.Exception.Message)
+    Write-Host $_.ScriptStackTrace
+    throw
+}
 finally {
-    # This test-owned root contains synthetic text/processes only; links are explicitly removed by their test.
-    if ([IO.Directory]::Exists($testRoot)) { [IO.Directory]::Delete($testRoot, $true) }
+    try { if ([IO.Directory]::Exists($testRoot)) { Remove-PilotTestRoot -Root $testRoot } }
+    catch {
+        if ($null -eq $testFailure) { throw }
+        Write-Warning ('Synthetic test cleanup failed; preserve the primary failure and quarantine this root: ' + $testRoot + '; ' + $_.Exception.Message)
+    }
 }
