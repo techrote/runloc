@@ -680,5 +680,319 @@
       }
     ],
     "physicalQualificationPassed": false
+  },
+  "finalGreenStartup": {
+    "source": {
+      "commit": "14e789abc9a965e3b60e995cf44cc7d63ddf78e6",
+      "tree": "1ccd71e70291cb3138b0cf7f4a5082de0edfa19a",
+      "url": "https://api.github.com/repos/techrote/runloc/commits/14e789abc9a965e3b60e995cf44cc7d63ddf78e6",
+      "parents": [
+        "dfbfb855d5971e071dd2c2a3921912fe9a0e1a9e"
+      ]
+    },
+    "changesFromParent": [
+      {
+        "path": "docs/fast-track/CI-POC-001-EVIDENCE.md",
+        "additions": 51,
+        "deletions": 11
+      },
+      {
+        "path": "docs/fast-track/evidence/runloc-windows-regressions.json",
+        "additions": 240,
+        "deletions": 0
+      },
+      {
+        "path": "poc/windows-whpx/Invoke-WhpxPilot.ps1",
+        "additions": 17,
+        "deletions": 6
+      },
+      {
+        "path": "poc/windows-whpx/Pilot.Bootstrap.ps1",
+        "additions": 30,
+        "deletions": 0
+      },
+      {
+        "path": "poc/windows-whpx/Pilot.Common.ps1",
+        "additions": 78,
+        "deletions": 0
+      },
+      {
+        "path": "poc/windows-whpx/Pilot.Controller.ps1",
+        "additions": 7,
+        "deletions": 7
+      },
+      {
+        "path": "poc/windows-whpx/Pilot.PowerShellEntry.ps1",
+        "additions": 37,
+        "deletions": 0
+      },
+      {
+        "path": "poc/windows-whpx/README.md",
+        "additions": 14,
+        "deletions": 4
+      },
+      {
+        "path": "poc/windows-whpx/Test-Pilot.ps1",
+        "additions": 138,
+        "deletions": 11
+      },
+      {
+        "path": "poc/windows-whpx/Test-Supervisor.ps1",
+        "additions": 39,
+        "deletions": 6
+      }
+    ],
+    "productionChange": "Dedicated PowerShell processes initialize their own process-only PSModulePath to the current engine's inbox Modules directory before command autoload. A shared BCL-only guard rejects calls from an existing owner shell before environment mutation. The supervisor preserves its clock-first and compiled-guard-before-timer ordering. Contained targets receive a bounded data envelope through the new entry script; original target exit and error behavior remains covered by explicit regression controls.",
+    "windowsWorkflow": {
+      "id": 39060272297,
+      "url": "https://github.com/techrote/runloc/actions/runs/39060272297",
+      "headCommit": "14e789abc9a965e3b60e995cf44cc7d63ddf78e6",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    "windowsJobs": [
+      {
+        "jobId": 117476625053,
+        "name": "PoC helper (Windows PowerShell 5.1)",
+        "jobUrl": "https://github.com/techrote/runloc/actions/runs/39060272297/job/117476625053",
+        "status": "completed",
+        "conclusion": "success",
+        "decodedLogSha256": "577ece41d999f09885fca5c7a7b73b632114aecb7de798b7f60a2358861e37a7",
+        "decodedLogBytes": 22456,
+        "actualCheckout": "14e789abc9a965e3b60e995cf44cc7d63ddf78e6",
+        "checkoutKind": "Exact pull-request head",
+        "checkoutTree": "1ccd71e70291cb3138b0cf7f4a5082de0edfa19a",
+        "completedSuite": true,
+        "reportedSummaryLines": [
+          "Synthetic pilot contracts: 53 PASS; 0 platform groups SKIP; physical WHPX not run.",
+          "Synthetic supervisor contracts: 18 PASS; 0 platform groups SKIP."
+        ],
+        "pilotGroupsPassed": 53,
+        "supervisorGroupsPassed": 18,
+        "platformGroupsSkipped": 0,
+        "literalPassLines": 72,
+        "literalFailureLines": [],
+        "nestedFrameworkDiagnosticPassLines": 1,
+        "executionExitVerification": "The workflow checks the native Test-Pilot process exit code immediately after it returns; that test step and the job both concluded success.",
+        "controlledPassLines": [
+          "PASS entry data envelope preserves primitive types and refuses malformed or oversized input",
+          "PASS entry named switches and literal empty hostile arguments reach the exact target script",
+          "PASS entry preserves direct File exit semantics for explicit exits errors and normal native returns",
+          "PASS entry refuses call and dot-source before changing an existing process module path",
+          "PASS real contained child captures output and actual nonzero exit",
+          "PASS contained PowerShell ignores the parent poison module and loads standard Utility",
+          "PASS whole owned descendant tree stops at deadline while unrelated child survives",
+          "PASS controller Job close stops an inherited pipe descendant",
+          "PASS captured log flood is bounded and cannot produce success",
+          "PASS supervisor: dedicated File invocation gate protects an existing owner shell",
+          "PASS supervisor: actual wrapper refuses call and dot-source without changing owner process environment",
+          "PASS supervisor: native watchdog kills a hung controller and nested Job while an unrelated sentinel survives",
+          "PASS supervisor: dedicated terminal self-exit leaves started evidence and no completion"
+        ],
+        "variants": [
+          {
+            "result": {
+              "variant": "baseline",
+              "parentIs64Bit": true,
+              "executableSha256": "38f4384643b3fa0de714d2367b712c2e0fa1c89e2cfd131ae6b831ad962b1033",
+              "exitCode": 9,
+              "childExited": true,
+              "activeProcesses": 0,
+              "forced": false,
+              "timedOut": false,
+              "outputOverflow": false,
+              "outputFailed": false,
+              "startSeconds": 0.0046614,
+              "endSeconds": 0.6541121999999999,
+              "recordCount": 2
+            },
+            "lastRecordedPhase": "EXIT_INTENT",
+            "capturedChannels": [
+              "stdout",
+              "stdout"
+            ],
+            "directConsoleStdoutCaptured": true,
+            "writeOutputFixtureMarkerCaptured": true
+          },
+          {
+            "result": {
+              "variant": "inbox",
+              "parentIs64Bit": true,
+              "executableSha256": "38f4384643b3fa0de714d2367b712c2e0fa1c89e2cfd131ae6b831ad962b1033",
+              "exitCode": 9,
+              "childExited": true,
+              "activeProcesses": 0,
+              "forced": false,
+              "timedOut": false,
+              "outputOverflow": false,
+              "outputFailed": false,
+              "startSeconds": 0.0031999999999999997,
+              "endSeconds": 0.6538809999999999,
+              "recordCount": 2
+            },
+            "lastRecordedPhase": "EXIT_INTENT",
+            "capturedChannels": [
+              "stdout",
+              "stdout"
+            ],
+            "directConsoleStdoutCaptured": true,
+            "writeOutputFixtureMarkerCaptured": true
+          }
+        ],
+        "physicalQualificationMarker": "PHYSICAL_WHPX_QUALIFICATION=NOT_RUN: software tests use only synthetic files/processes.",
+        "physicalQualificationPassed": false
+      },
+      {
+        "jobId": 117476625156,
+        "name": "PoC helper (PowerShell 7.6.6)",
+        "jobUrl": "https://github.com/techrote/runloc/actions/runs/39060272297/job/117476625156",
+        "status": "completed",
+        "conclusion": "success",
+        "decodedLogSha256": "e4440e7d568f1c3c06a7dfed743fff5fd093545c13f242732f1afb88b2499308",
+        "decodedLogBytes": 24674,
+        "actualCheckout": "14e789abc9a965e3b60e995cf44cc7d63ddf78e6",
+        "checkoutKind": "Exact pull-request head",
+        "checkoutTree": "1ccd71e70291cb3138b0cf7f4a5082de0edfa19a",
+        "completedSuite": true,
+        "reportedSummaryLines": [
+          "Synthetic pilot contracts: 53 PASS; 0 platform groups SKIP; physical WHPX not run.",
+          "Synthetic supervisor contracts: 18 PASS; 0 platform groups SKIP."
+        ],
+        "pilotGroupsPassed": 53,
+        "supervisorGroupsPassed": 18,
+        "platformGroupsSkipped": 0,
+        "literalPassLines": 72,
+        "literalFailureLines": [],
+        "nestedFrameworkDiagnosticPassLines": 1,
+        "executionExitVerification": "The workflow checks the native Test-Pilot process exit code immediately after it returns; that test step and the job both concluded success.",
+        "controlledPassLines": [
+          "PASS entry data envelope preserves primitive types and refuses malformed or oversized input",
+          "PASS entry named switches and literal empty hostile arguments reach the exact target script",
+          "PASS entry preserves direct File exit semantics for explicit exits errors and normal native returns",
+          "PASS entry refuses call and dot-source before changing an existing process module path",
+          "PASS real contained child captures output and actual nonzero exit",
+          "PASS contained PowerShell ignores the parent poison module and loads standard Utility",
+          "PASS whole owned descendant tree stops at deadline while unrelated child survives",
+          "PASS controller Job close stops an inherited pipe descendant",
+          "PASS captured log flood is bounded and cannot produce success",
+          "PASS supervisor: dedicated File invocation gate protects an existing owner shell",
+          "PASS supervisor: actual wrapper refuses call and dot-source without changing owner process environment",
+          "PASS supervisor: native watchdog kills a hung controller and nested Job while an unrelated sentinel survives",
+          "PASS supervisor: dedicated terminal self-exit leaves started evidence and no completion"
+        ],
+        "variants": [
+          {
+            "result": {
+              "variant": "baseline",
+              "parentIs64Bit": true,
+              "executableSha256": "38f4384643b3fa0de714d2367b712c2e0fa1c89e2cfd131ae6b831ad962b1033",
+              "exitCode": 9,
+              "childExited": true,
+              "activeProcesses": 0,
+              "forced": false,
+              "timedOut": false,
+              "outputOverflow": false,
+              "outputFailed": false,
+              "startSeconds": 0.0025718,
+              "endSeconds": 0.7600862,
+              "recordCount": 2
+            },
+            "lastRecordedPhase": "EXIT_INTENT",
+            "capturedChannels": [
+              "stdout",
+              "stdout"
+            ],
+            "directConsoleStdoutCaptured": true,
+            "writeOutputFixtureMarkerCaptured": true
+          },
+          {
+            "result": {
+              "variant": "inbox",
+              "parentIs64Bit": true,
+              "executableSha256": "38f4384643b3fa0de714d2367b712c2e0fa1c89e2cfd131ae6b831ad962b1033",
+              "exitCode": 9,
+              "childExited": true,
+              "activeProcesses": 0,
+              "forced": false,
+              "timedOut": false,
+              "outputOverflow": false,
+              "outputFailed": false,
+              "startSeconds": 0.001588,
+              "endSeconds": 0.6612529,
+              "recordCount": 2
+            },
+            "lastRecordedPhase": "EXIT_INTENT",
+            "capturedChannels": [
+              "stdout",
+              "stdout"
+            ],
+            "directConsoleStdoutCaptured": true,
+            "writeOutputFixtureMarkerCaptured": true
+          }
+        ],
+        "physicalQualificationMarker": "PHYSICAL_WHPX_QUALIFICATION=NOT_RUN: software tests use only synthetic files/processes.",
+        "physicalQualificationPassed": false
+      }
+    ],
+    "countingNote": "Each log contains 72 literal PASS lines: the 53 reported pilot groups, 18 reported supervisor groups, and one nested Framework diagnostic line. This is not a claim of 72 independent test groups. A synthetic fixture emits the original release PASS text while exiting 9 to verify that marker text cannot override actual failure; it is not VM qualification evidence.",
+    "timingNote": "Synthetic child startSeconds and endSeconds are the recorded caller stopwatch readings. Per-child elapsed time is endSeconds minus startSeconds; endSeconds alone is not a measured release duration.",
+    "result": "Both native Windows parent lanes complete every software group. The baseline and explicit inbox comparison children both reach EXIT_INTENT with the expected nonzero exit 9, two stdout records, and zero active owned processes. The poisoned-parent Utility, literal-argument, exit-propagation, owner-shell refusal, deadline, and containment controls also pass.",
+    "inferenceLimit": "This establishes the reviewed startup correction for these hosted Windows software tests. Earlier failed heads remain retained. It does not establish the precise internal loader mechanism, physical WHPX performance, full-release timing, or a completed physical qualification.",
+    "programmeWorkflow": {
+      "id": 39060272265,
+      "url": "https://github.com/techrote/runloc/actions/runs/39060272265",
+      "headCommit": "14e789abc9a965e3b60e995cf44cc7d63ddf78e6",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    "programmeCheckout": {
+      "commit": "2a0caa942e130a2576b85edb79cd8c32b65a91ac",
+      "tree": "1ccd71e70291cb3138b0cf7f4a5082de0edfa19a",
+      "url": "https://api.github.com/repos/techrote/runloc/git/commits/2a0caa942e130a2576b85edb79cd8c32b65a91ac",
+      "parents": [
+        "256881866befa8dde246cc9c94d5d150e9569d70",
+        "14e789abc9a965e3b60e995cf44cc7d63ddf78e6"
+      ],
+      "treeMatchesSource": true
+    },
+    "programmeJobs": [
+      {
+        "jobId": 117476625031,
+        "name": "Programme contract (windows-2022)",
+        "jobUrl": "https://github.com/techrote/runloc/actions/runs/39060272265/job/117476625031",
+        "status": "completed",
+        "conclusion": "success",
+        "decodedLogSha256": "d09b26c08d9f109e1dac50a355407216832c5ab1a2c260c96e878ab6b68a37e5",
+        "decodedLogBytes": 17436,
+        "actualCheckout": "2a0caa942e130a2576b85edb79cd8c32b65a91ac",
+        "checkoutKind": "GitHub pull-request merge commit",
+        "checkoutTree": "1ccd71e70291cb3138b0cf7f4a5082de0edfa19a",
+        "treeMatchesSource": true,
+        "contractSummary": "PASS: 19 issue contracts, first-release boundary, DAG, mirrors and repository links",
+        "fastTrackSummary": "PASS: independent three-issue Windows CI PoC, dependency chain and complete mirrors",
+        "unitTestSummary": "Ran 21 tests in 3.600s",
+        "literalUnitTestsOk": 21,
+        "unitTestOutcome": "OK"
+      },
+      {
+        "jobId": 117476625179,
+        "name": "Programme contract (ubuntu-24.04)",
+        "jobUrl": "https://github.com/techrote/runloc/actions/runs/39060272265/job/117476625179",
+        "status": "completed",
+        "conclusion": "success",
+        "decodedLogSha256": "91b97beb3d6ebb8ea9058384104ec92e6eaa6cea0dc946103e986c32f00fe8d9",
+        "decodedLogBytes": 17716,
+        "actualCheckout": "2a0caa942e130a2576b85edb79cd8c32b65a91ac",
+        "checkoutKind": "GitHub pull-request merge commit",
+        "checkoutTree": "1ccd71e70291cb3138b0cf7f4a5082de0edfa19a",
+        "treeMatchesSource": true,
+        "contractSummary": "PASS: 19 issue contracts, first-release boundary, DAG, mirrors and repository links",
+        "fastTrackSummary": "PASS: independent three-issue Windows CI PoC, dependency chain and complete mirrors",
+        "unitTestSummary": "Ran 21 tests in 0.571s",
+        "literalUnitTestsOk": 21,
+        "unitTestOutcome": "OK"
+      }
+    ],
+    "physicalQualificationPassed": false
   }
 }

@@ -2,7 +2,7 @@
 
 ## Acceptance status
 
-**Implementation in progress; physical acceptance is held.**
+**Software checks passed; physical acceptance is blocked.**
 
 This checkpoint belongs to [Runloc issue #21](https://github.com/techrote/runloc/issues/21).
 The [binding PoC contract](WINDOWS-WHPX-CI-POC.md) records the owner's temporary
@@ -254,6 +254,35 @@ and its original compiled invocation guard remains mandatory before the native
 watchdog is armed. Both startup files are included in the selected controller
 pins and full tracked-source verification. Parent/user/machine module settings,
 native process ownership, output capture and original deadlines are preserved.
+
+### Corrected Windows software acceptance
+
+Public controller `14e789abc9a965e3b60e995cf44cc7d63ddf78e6`, tree
+`1ccd71e70291cb3138b0cf7f4a5082de0edfa19a`, completed both actual Windows
+lanes. Each log records that exact checkout and tree, and every required native
+group ran. The [retained audit](evidence/runloc-windows-regressions.json) appends
+the green result while preserving all earlier failed attempts.
+
+| Actual lane | Exact job | Reported result |
+|---|---|---|
+| Windows PowerShell 5.1 | [117476625053](https://github.com/techrote/runloc/actions/runs/39060272297/job/117476625053) | 53 pilot / 18 supervisor PASS; 0 skipped test groups |
+| Pinned PowerShell 7.6.6 | [117476625156](https://github.com/techrote/runloc/actions/runs/39060272297/job/117476625156) | 53 pilot / 18 supervisor PASS; 0 skipped test groups |
+
+The previously failing baseline reached `EXIT_INTENT`, captured both the direct
+stdout line and original `Write-Output` marker, and exited with the expected 9.
+Its recorded end time was 0.6541122 seconds under the PS5 parent and 0.7600862
+under PS7. Both prove child exit, zero active owned processes, normal completion
+without force or timeout, and no output overflow/read failure. The original
+15/20-second bounds remain unchanged. These short synthetic observations are
+not measurements of the full VM workload.
+
+The poisoned-module control and all seven Windows pilot/two Windows supervisor
+groups passed, including ACL preflight ordering, owned descendants, unrelated
+sentinel survival, log bounds, nested Job watchdogs and terminal self-exit.
+The new parameter/exit/caller-refusal regressions also ran in both lanes.
+[Both repository jobs](https://github.com/techrote/runloc/actions/runs/39060272265)
+passed the programme contract and all 21 Python cases. The workflows explicitly
+record `PHYSICAL_WHPX_QUALIFICATION=NOT_RUN`; no VM qualification was dispatched.
 
 ## Frozen candidate software acceptance
 
