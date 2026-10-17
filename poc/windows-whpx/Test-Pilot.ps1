@@ -644,31 +644,27 @@ function Protect-EzVmControllerPrivateKey { param($Path); throw 'synthetic-exact
             finally { $lease.Lock.Dispose() }
         }
         $powershell = Join-Path $env:SystemRoot 'System32/WindowsPowerShell/v1.0/powershell.exe'
-        Test-Case 'real contained child captures output and actual nonzero exit' {
-            # An independent non-PowerShell process distinguishes generic native
-            # launch/output behavior from PowerShell startup and execution.
-            $cmdClock = [Diagnostics.Stopwatch]::StartNew()
-            $cmdResult = Invoke-PilotChild -Executable (Join-Path $env:SystemRoot 'System32/cmd.exe') -Arguments @('/d', '/c', 'echo RUNLOC_SYNTHETIC_CMD_READY') -WorkingDirectory $testRoot -TemporaryDirectory $testRoot -RawLogPath (Join-Path $testRoot 'cmd-child.log') -Clock $cmdClock -ExecutionDeadlineSeconds 15 -CleanupDeadlineSeconds 20
-            $cmdDiagnostic = [ordered]@{ exitCode = $cmdResult.exitCode; childExited = $cmdResult.childExited;
-                activeProcesses = $cmdResult.activeProcesses; forced = $cmdResult.forced; timedOut = $cmdResult.timedOut;
-                outputOverflow = $cmdResult.outputOverflow; outputFailed = $cmdResult.outputFailed;
-                endSeconds = $cmdResult.endSeconds; recordCount = @($cmdResult.records).Count }
-            Write-Host ('SYNTHETIC_CMD_RESULT=' + ($cmdDiagnostic | ConvertTo-Json -Compress))
-            foreach ($record in @($cmdResult.records | Select-Object -First 4)) {
-                $text = [string]$record.Text
-                if ($text.Length -gt 512) { $text = $text.Substring(0, 512) }
-                Write-Host ('SYNTHETIC_CMD_OUTPUT=' + (@{ channel = $record.Channel; text = $text } | ConvertTo-Json -Compress))
-            }
-            $scriptFile = Join-Path $testRoot 'child with spaces.ps1'
-            $phasePath = Join-Path $testRoot 'synthetic-child-phase.txt'
+        function Invoke-SyntheticOutputChild {
+            param([ValidateSet('baseline', 'inbox')][string]$Name, [switch]$InboxModules)
+            $scriptFile = Join-Path $testRoot ($Name + ' child with spaces.ps1')
+            $phasePath = Join-Path $testRoot ($Name + '-synthetic-child-phase.txt')
             $phaseLiteral = $phasePath.Replace("'", "''")
-            [IO.File]::WriteAllText($scriptFile, "[IO.File]::WriteAllText('$phaseLiteral', 'ENTRY')`nWrite-Output 'EZVM012_REAL_COMPLETE_END_TO_END=PASS'`n[IO.File]::WriteAllText('$phaseLiteral', 'EXIT_INTENT')`nexit 9`n")
+            $childLines = @("[IO.File]::WriteAllText('$phaseLiteral', 'ENTRY')",
+                "[Console]::Out.WriteLine('RUNLOC_SYNTHETIC_DIRECT_STDOUT')",
+                "[IO.File]::WriteAllText('$phaseLiteral', 'DIRECT_STDOUT')")
+            if ($InboxModules) {
+                # Change this child only. The baseline retains its actual inherited
+                # module environment and its original Write-Output/exit assertion.
+                $childLines += '[Environment]::SetEnvironmentVariable(''PSModulePath'', [IO.Path]::Combine($PSHOME, ''Modules''), [EnvironmentVariableTarget]::Process)'
+            }
+            $childLines += @("Write-Output 'EZVM012_REAL_COMPLETE_END_TO_END=PASS'",
+                "[IO.File]::WriteAllText('$phaseLiteral', 'EXIT_INTENT')", 'exit 9')
+            [IO.File]::WriteAllText($scriptFile, (($childLines -join "`n") + "`n"))
             $clock = [Diagnostics.Stopwatch]::StartNew()
-            $result = Invoke-PilotChild -Executable $powershell -Arguments @('-NoLogo', '-NoProfile', '-NonInteractive', '-File', $scriptFile) -WorkingDirectory $testRoot -TemporaryDirectory $testRoot -RawLogPath (Join-Path $testRoot 'child.log') -Clock $clock -ExecutionDeadlineSeconds 15 -CleanupDeadlineSeconds 20
-            # These are synthetic process fixtures only. Keep bounded diagnostics
-            # before the assertion so a native/Framework failure retains its cause.
-            $diagnostic = [ordered]@{ parentIs64Bit = [Environment]::Is64BitProcess; executableSha256 = $result.ownership.executableSha256;
-                exitCode = $result.exitCode; childExited = $result.childExited;
+            $result = Invoke-PilotChild -Executable $powershell -Arguments @('-NoLogo', '-NoProfile', '-NonInteractive', '-File', $scriptFile) -WorkingDirectory $testRoot -TemporaryDirectory $testRoot -RawLogPath (Join-Path $testRoot ($Name + '-child.log')) -Clock $clock -ExecutionDeadlineSeconds 15 -CleanupDeadlineSeconds 20
+            # Synthetic process fixtures only; never publish real qualification logs.
+            $diagnostic = [ordered]@{ variant = $Name; parentIs64Bit = [Environment]::Is64BitProcess;
+                executableSha256 = $result.ownership.executableSha256; exitCode = $result.exitCode; childExited = $result.childExited;
                 activeProcesses = $result.activeProcesses; forced = $result.forced; timedOut = $result.timedOut;
                 outputOverflow = $result.outputOverflow; outputFailed = $result.outputFailed;
                 startSeconds = $result.startSeconds; endSeconds = $result.endSeconds; recordCount = @($result.records).Count }
@@ -678,19 +674,30 @@ function Protect-EzVmControllerPrivateKey { param($Path); throw 'synthetic-exact
                 $null = Assert-PilotPath -Path $phasePath -File
                 if ((New-Object IO.FileInfo($phasePath)).Length -gt 128) { throw 'synthetic-phase-file-oversize' }
                 $phase = [IO.File]::ReadAllText($phasePath)
-                if ($phase -cne 'ENTRY' -and $phase -cne 'EXIT_INTENT') { throw 'synthetic-phase-file-invalid' }
+                if (@('ENTRY', 'DIRECT_STDOUT', 'EXIT_INTENT') -cnotcontains $phase) { throw 'synthetic-phase-file-invalid' }
             }
-            Write-Host ('SYNTHETIC_CHILD_PHASE=' + $phase)
+            Write-Host ('SYNTHETIC_CHILD_PHASE=' + $Name + ':' + $phase)
             foreach ($record in @($result.records | Select-Object -First 12)) {
                 $text = [string]$record.Text
                 if ($text.Length -gt 512) { $text = $text.Substring(0, 512) }
-                Write-Host ('SYNTHETIC_CHILD_OUTPUT=' + (@{ channel = $record.Channel; text = $text } | ConvertTo-Json -Compress))
+                Write-Host ('SYNTHETIC_CHILD_OUTPUT=' + (@{ variant = $Name; channel = $record.Channel; text = $text } | ConvertTo-Json -Compress))
             }
+            return [pscustomobject]@{ Result = $result; Phase = $phase }
+        }
+        Test-Case 'real contained child captures output and actual nonzero exit' {
+            $baseline = Invoke-SyntheticOutputChild -Name baseline
+            $inbox = Invoke-SyntheticOutputChild -Name inbox -InboxModules
+            # Evaluate only after both bounded discriminants have left evidence.
+            $result = $baseline.Result
             Assert-True ($result.exitCode -eq 9 -and $result.childExited -and $result.activeProcesses -eq 0 -and -not $result.forced)
             Assert-True (@($result.records | Where-Object { $_.Text -ceq 'EZVM012_REAL_COMPLETE_END_TO_END=PASS' }).Count -eq 1)
-            Assert-True ($phase -ceq 'EXIT_INTENT')
-            Assert-True ($cmdResult.exitCode -eq 0 -and $cmdResult.childExited -and $cmdResult.activeProcesses -eq 0 -and -not $cmdResult.forced)
-            Assert-True (@($cmdResult.records | Where-Object { $_.Text -ceq 'RUNLOC_SYNTHETIC_CMD_READY' }).Count -eq 1)
+            foreach ($observation in @($baseline, $inbox)) {
+                $result = $observation.Result
+                Assert-True ($observation.Phase -ceq 'EXIT_INTENT')
+                Assert-True ($result.exitCode -eq 9 -and $result.childExited -and $result.activeProcesses -eq 0 -and -not $result.forced)
+                Assert-True (@($result.records | Where-Object { $_.Text -ceq 'RUNLOC_SYNTHETIC_DIRECT_STDOUT' }).Count -eq 1)
+                Assert-True (@($result.records | Where-Object { $_.Text -ceq 'EZVM012_REAL_COMPLETE_END_TO_END=PASS' }).Count -eq 1)
+            }
         }
         Test-Case 'whole owned descendant tree stops at deadline while unrelated child survives' {
             $parentScript = Join-Path $testRoot 'owned parent.ps1'
