@@ -76,6 +76,19 @@ def validate_catalogue(data: dict, root: Path, *, require_published: bool = True
         visited.add(code)
     for code in graph:
         visit(code)
+    # A topological graph can still accidentally drop an entire deliverable from
+    # the release gate. Check transitive coverage, not merely the listed milestone.
+    ancestors = set()
+    def collect(code: str) -> None:
+        for dep in graph.get(code, []):
+            if dep in ancestors:
+                continue
+            ancestors.add(dep)
+            collect(dep)
+    collect('RUNLOC-014')
+    missing = set(expected[:13]) - ancestors
+    if missing:
+        errors.append('Release gate omits required ancestors: ' + ', '.join(sorted(missing)))
     return errors
 
 def markdown_errors(root: Path) -> list[str]:

@@ -58,6 +58,10 @@ class ProgrammeTests(unittest.TestCase):
         self.data['first_release'].append('RUNLOC-015')
         self.assertTrue(any('First release' in e for e in self.errors()))
 
+    def test_release_gate_cannot_drop_core_ancestors(self):
+        self.data['issues'][13]['depends_on'] = ['RUNLOC-001']
+        self.assertTrue(any('Release gate omits' in e for e in self.errors()))
+
     def test_duplicate_published_numbers_fail(self):
         for item in self.data['issues']:
             item['issue_number'] = 1

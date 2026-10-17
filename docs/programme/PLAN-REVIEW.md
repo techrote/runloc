@@ -29,7 +29,8 @@ straightforward licence choice; MIT is used for Runloc's own work.
 ## Second-pass consistency checks
 
 The publication validator checks unique issue IDs/numbers, acyclic backward
-dependencies, existing RAG links, non-empty scope/acceptance/tests, complete rendered
+dependencies, transitive coverage of all core issues by the release gate, existing
+RAG links, non-empty scope/acceptance/tests, complete rendered
 autonomous prompts, first-release boundary and local Markdown references. Unit tests
 include deliberate broken graphs, missing documents and incomplete prompts. It does
 not claim to validate the future runtime architecture or external API availability.
