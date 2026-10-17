@@ -502,6 +502,11 @@ exit 9
         Assert-True ($identity.trackedFileCount -eq 3) 'The NUL-terminated Git inventories must contain exactly the three tracked files, with no trailing empty entry.'
         Assert-True ($identity.files[0].executedBytesSha256 -cmatch '^[a-f0-9]{64}$')
     }
+    Test-Case 'unbounded overall source verification keeps finite real Git operation waits' {
+        $identity=Get-PilotSourceIdentity -Root $source -Repository 'https://github.com/techrote/ezvm' -ExpectedCommit $head -ExpectedTree $tree -Pins $pins `
+            -Clock ([Diagnostics.Stopwatch]::StartNew()) -DeadlineSeconds ([double]::PositiveInfinity)
+        Assert-True ($identity.clean -and $identity.commit -ceq $head -and $identity.tree -ceq $tree)
+    }
     Test-Case 'dirty source is rejected and source restoration preserves identity' {
         [IO.File]::AppendAllText((Join-Path $source 'harness.ps1'), '# changed')
         Assert-Throws { Get-TestSource } 'source-public-blob-mismatch'

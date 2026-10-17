@@ -256,7 +256,7 @@ function Invoke-PilotGit {
         $null = $process.Handle
         $stdout = $process.StandardOutput.ReadToEndAsync(); $stderr = $process.StandardError.ReadToEndAsync()
         $timeout = 15000
-        if ($null -ne $Clock) { $timeout = [int][Math]::Max(1, [Math]::Min($timeout, ($DeadlineSeconds - $Clock.Elapsed.TotalSeconds) * 1000)) }
+        if ($null -ne $Clock) { $timeout = [int][Math]::Max(1.0, [Math]::Min([double]$timeout, ($DeadlineSeconds - $Clock.Elapsed.TotalSeconds) * 1000)) }
         if (-not $process.WaitForExit($timeout)) { $process.Kill(); throw 'git-timeout' }
         if (-not $stdout.Wait(1000) -or -not $stderr.Wait(1000)) { throw 'git-output-timeout' }
         if ($process.ExitCode -ne 0) { throw 'git-command-failed' }
@@ -544,7 +544,7 @@ function Invoke-PilotChild {
                 $result.childExited = $job.HasExited
                 $result.activeProcesses = $job.ActiveProcesses
                 if ($job.HasExited) { $result.exitCode = $job.ExitCode }
-                $remainingMs = [int][Math]::Max(0, [Math]::Min(3000, ($CleanupDeadlineSeconds - $Clock.Elapsed.TotalSeconds) * 1000))
+                $remainingMs = [int][Math]::Max(0.0, [Math]::Min(3000.0, ($CleanupDeadlineSeconds - $Clock.Elapsed.TotalSeconds) * 1000))
                 if (-not $job.FinishOutput($remainingMs)) { $result.outputFailed = $true }
                 foreach ($line in $job.Drain()) { $records.Add($line) }
                 $result.outputOverflow = $job.OutputOverflow

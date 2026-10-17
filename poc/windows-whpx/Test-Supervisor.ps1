@@ -309,6 +309,24 @@ try {
     }
     if ($script:PilotWindows) {
         $powershell = Join-Path $env:SystemRoot 'System32/WindowsPowerShell/v1.0/powershell.exe'
+        Test-SupervisorCase 'unbounded internal deadlines retain finite real child output waits' {
+            $scriptFile=Join-Path $supervisorTestRoot 'no overall deadline child.ps1'
+            [IO.File]::WriteAllText($scriptFile,"Write-Output 'UNBOUNDED_CHILD_FINISHED'")
+            $arguments=@(Get-PilotPowerShellArguments -TargetScript $scriptFile)
+            $clock=[Diagnostics.Stopwatch]::StartNew()
+            $inner=Invoke-PilotChild -Executable $powershell -Arguments $arguments -WorkingDirectory $supervisorTestRoot -TemporaryDirectory $supervisorTestRoot `
+                -RawLogPath (Join-Path $supervisorTestRoot 'infinite-inner.log') -Clock $clock -ExecutionDeadlineSeconds ([double]::PositiveInfinity) -CleanupDeadlineSeconds ([double]::PositiveInfinity)
+            Assert-Supervisor ($inner.exitCode -eq 0 -and $inner.childExited -and $inner.activeProcesses -eq 0 -and -not $inner.forced -and -not $inner.outputFailed)
+            $deadline=New-Object RunlocPoc.SupervisorDeadline(0,0,$false,$true)
+            try {
+                $outer=Invoke-PilotSupervisedController -Executable $powershell -Arguments $arguments -WorkingDirectory $supervisorTestRoot -TemporaryDirectory $supervisorTestRoot `
+                    -RawLogPath (Join-Path $supervisorTestRoot 'infinite-outer.log') -Clock ([Diagnostics.Stopwatch]::StartNew()) -Deadline $deadline `
+                    -ExecutionDeadlineSeconds ([double]::PositiveInfinity) -CleanupDeadlineSeconds ([double]::PositiveInfinity)
+                Assert-Supervisor ($outer.exitCode -eq 0 -and $outer.childExited -and $outer.activeProcesses -eq 0 -and -not $outer.forced -and -not $outer.outputFailed -and -not $outer.controllerError)
+                Assert-Supervisor (@($outer.records|Where-Object {$_.Text -ceq 'UNBOUNDED_CHILD_FINISHED'}).Count -eq 1)
+                Assert-Supervisor (-not [string]::IsNullOrWhiteSpace($outer.endedUtc))
+            } finally {$deadline.Dispose()}
+        }
         Test-SupervisorCase 'native watchdog kills a hung controller and nested Job while an unrelated sentinel survives' {
             $nestedScript = Join-Path $supervisorTestRoot 'nested controller.ps1'
             $common = (Join-Path $PSScriptRoot 'Pilot.Common.ps1').Replace("'", "''")
@@ -374,7 +392,7 @@ Write-Output 'SYNTHETIC_COMPLETED'
             finally { $deadline.Dispose() }
         }
     }
-    else { $script:supervisorSkipped = 2; Write-Host 'SKIP 2 Windows-only supervisor Job/watchdog groups; no WHPX qualification is claimed.' }
+    else { $script:supervisorSkipped = 3; Write-Host 'SKIP 3 Windows-only supervisor Job/watchdog groups; no WHPX qualification is claimed.' }
     Write-Host ('Synthetic supervisor contracts: ' + $script:supervisorPassed + ' PASS; ' + $script:supervisorSkipped + ' platform groups SKIP.')
 }
 finally {

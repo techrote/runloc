@@ -244,7 +244,7 @@ function Invoke-PilotSupervisedController {
                 $result.childExited = $process.HasExited
                 $result.activeProcesses = $process.ActiveProcesses
                 if ($result.childExited) { $result.exitCode = [int]$process.ExitCode }
-                $remaining = [int][Math]::Max(0, [Math]::Min(3000, ($CleanupDeadlineSeconds - $Clock.Elapsed.TotalSeconds) * 1000))
+                $remaining = [int][Math]::Max(0.0, [Math]::Min(3000.0, ($CleanupDeadlineSeconds - $Clock.Elapsed.TotalSeconds) * 1000))
                 $result.outputFailed = -not $process.FinishOutput($remaining)
                 foreach ($line in $process.Drain()) { $records.Add($line) }
                 $result.outputOverflow = $process.OutputOverflow

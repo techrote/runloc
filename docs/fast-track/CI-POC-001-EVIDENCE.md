@@ -431,3 +431,23 @@ guard correctly refused it. The original failed software log is retained and the
 fixture was corrected, after which the complete unchanged guard suite passed.
 Exact-head hosted PS5.1 and pinned PS7.6.6 checks remain required before execution
 of the revised controller. They use synthetic processes and never start TCG.
+
+## First no-overall-timeout preflight and narrow overload correction
+
+Public controller `92d95a13c49786bac7477dec4331a71d53a6a521`, tree
+`cfb7eb4406b857ab5fb5dd2023c588ef8d6af92f`, passed exact-head hosted Windows
+PS5.1 and pinned PS7.6.6 software checks, each **56 pilot / 20 supervisor groups,
+zero skipped platform groups**, plus both repository lanes. The subsequent real
+preflight failed before the inner qualification lease or fixture: actual exit
+**2**, outer elapsed **3.138 seconds**, zero active owned processes, no downloads
+or VM. [The immutable failed preflight](evidence/physical-whpx-20261017-no-timeout-preflight-failure/index.json)
+remains retained; it is not overwritten by the correction.
+
+Windows PowerShell selects an integer overload for `Math.Min(integer, infinity)`
+and rejects infinity before performing the clamp. The failure was reproduced
+directly in the Git-wait calculation; the same overload existed in both bounded
+output-drain calculations. Using explicit double operands fixes the binding
+while retaining the actual finite 15-second Git and 3-second output limits.
+New regressions exercise real Git source verification and both actual owned
+child/supervisor output paths with an unbounded overall deadline. The original
+timers, operation limits, source validation and cleanup assertions are preserved.
