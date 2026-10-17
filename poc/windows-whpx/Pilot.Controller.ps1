@@ -6,10 +6,11 @@ param(
     [Parameter(Mandatory = $true)][string]$EvidenceParent,
     [Parameter(Mandatory = $true)][string]$WorkParent,
     [ValidatePattern('^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$')][string]$HostLabel = 'whpx-pilot-host',
-    [Parameter(Mandatory = $true)][ValidateRange(60, 5340)][int]$BudgetSeconds,
+    [Parameter(Mandatory = $true)][ValidateRange(0, 5340)][int]$BudgetSeconds,
     [Parameter(Mandatory = $true)][ValidatePattern('^[a-f0-9]{32}$')][string]$SupervisorLeaseId,
     [Parameter(Mandatory = $true)][ValidatePattern('^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9:.]+Z$')][string]$SupervisorStartedUtc,
-    [switch]$PreflightOnly
+    [switch]$PreflightOnly,
+    [switch]$NoOverallTimeout
 )
 $clock = [Diagnostics.Stopwatch]::StartNew()
 $startedUtc = [DateTime]::UtcNow.ToString('o')
@@ -18,13 +19,21 @@ $ErrorActionPreference = 'Stop'
 
 # Fixed acceptance bounds, including preflight, evidence, and owned cleanup.
 $hardWall = 5400; $target = 3600; $executionDeadline = $BudgetSeconds - 180; $cleanupDeadline = $BudgetSeconds - 45
+$sourceDeadline = $BudgetSeconds - 30; $finalSourceDeadline = $BudgetSeconds - 5
+if ($NoOverallTimeout) {
+    if ($BudgetSeconds -ne 0) { throw 'unbounded-controller-budget-must-be-zero' }
+    $hardWall = 0; $target = 0
+    $executionDeadline = [double]::PositiveInfinity; $cleanupDeadline = [double]::PositiveInfinity
+    $sourceDeadline = [double]::PositiveInfinity; $finalSourceDeadline = [double]::PositiveInfinity
+}
+elseif ($BudgetSeconds -lt 60) { throw 'bounded-controller-budget-required' }
 $controllerRoot = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../..'))
 $lease = $null; $candidate = $null; $controller = $null; $receipt = $null; $child = $null
 $exitCode = 2; $reason = 'preflight-blocked'; $sourceUnchanged = $false
 
 try {
     $supervisorStart = [DateTimeOffset]::Parse($SupervisorStartedUtc, [Globalization.CultureInfo]::InvariantCulture)
-    if ($supervisorStart -gt [DateTimeOffset]::UtcNow -or ([DateTimeOffset]::UtcNow - $supervisorStart).TotalSeconds -gt 5400) { throw 'supervisor-start-invalid' }
+    if ($supervisorStart -gt [DateTimeOffset]::UtcNow -or (-not $NoOverallTimeout -and ([DateTimeOffset]::UtcNow - $supervisorStart).TotalSeconds -gt 5400)) { throw 'supervisor-start-invalid' }
     if (-not $script:PilotWindows -or -not [Environment]::Is64BitProcess) { throw 'windows-x64-required' }
     Import-PilotNative
     $principal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
@@ -56,7 +65,7 @@ try {
     Assert-PilotFixtureSeparation -Fixture $lease.Fixture -ProtectedRoots @($CandidateRoot, $controllerRoot, $lease.Root)
     $receipt = [ordered]@{ schemaVersion = 1; issue = 'CI-POC-001'; leaseId = $lease.Id; outcome = 'blocked';
         startedUtc = $startedUtc; endedUtc = ''; elapsedSeconds = 0; targetSeconds = $target; hardWallSeconds = $hardWall; controllerBudgetSeconds = $BudgetSeconds;
-        supervisorLeaseId = $SupervisorLeaseId; supervisorStartedUtc = $SupervisorStartedUtc;
+        supervisorLeaseId = $SupervisorLeaseId; supervisorStartedUtc = $SupervisorStartedUtc; overallTimeoutDisabled = [bool]$NoOverallTimeout;
         pathBudget = $workPlan.Budget;
         candidate = $candidate; controller = $controller; preflightOnly = [bool]$PreflightOnly;
         vmQualificationStarted = $false; sourceUnchanged = $false; requestedAccelerator = 'whpx'; observedAccelerator = '';
@@ -129,7 +138,7 @@ try {
         $receipt['processOwnership'] = $child.ownership
         $telemetryPath = Join-Path $lease.Private 'telemetry.jsonl'
         if ([IO.File]::Exists($telemetryPath)) {
-            $receipt.telemetry = Read-PilotTelemetry -Path $telemetryPath -OutputPath (Join-Path $lease.Root 'telemetry-events.json') -Clock $clock -DeadlineSeconds $cleanupDeadline
+            $receipt.telemetry = Read-PilotTelemetry -Path $telemetryPath -OutputPath (Join-Path $lease.Root 'telemetry-events.json') -Clock $clock -DeadlineSeconds $cleanupDeadline -NoOverallTimeout:$NoOverallTimeout
         }
         if ($child.exitCode -eq 0 -and $child.childExited -and $child.activeProcesses -eq 0 -and -not $child.forced) {
             $imageManifest = [IO.File]::ReadAllText((Join-Path $CandidateRoot 'manifests/ubuntu-noble-amd64.json')) | ConvertFrom-Json
@@ -171,18 +180,18 @@ finally {
         catch { $reason = 'owned-cleanup-incomplete'; $receipt.cleanup.fixtureRemoved = $false; $exitCode = 2 }
         $receipt.cleanup.endSeconds = $clock.Elapsed.TotalSeconds
         try {
-            Assert-PilotDeadline -Clock $clock -DeadlineSeconds ($BudgetSeconds - 30)
-            $afterCandidate = Get-PilotSourceIdentity -Root $CandidateRoot -Repository $configuration.repository -ExpectedCommit $candidate.commit -ExpectedTree $candidate.tree -Pins $configuration.pins -Clock $clock -DeadlineSeconds ($BudgetSeconds - 5)
-            $afterController = Get-PilotSourceIdentity -Root $controllerRoot -Repository $controller.repository -ExpectedCommit $controller.commit -ExpectedTree $controller.tree -Clock $clock -DeadlineSeconds ($BudgetSeconds - 5)
+            Assert-PilotDeadline -Clock $clock -DeadlineSeconds $sourceDeadline
+            $afterCandidate = Get-PilotSourceIdentity -Root $CandidateRoot -Repository $configuration.repository -ExpectedCommit $candidate.commit -ExpectedTree $candidate.tree -Pins $configuration.pins -Clock $clock -DeadlineSeconds $finalSourceDeadline
+            $afterController = Get-PilotSourceIdentity -Root $controllerRoot -Repository $controller.repository -ExpectedCommit $controller.commit -ExpectedTree $controller.tree -Clock $clock -DeadlineSeconds $finalSourceDeadline
             $receipt.sourceUnchanged = $afterCandidate.tree -ceq $candidate.tree -and $afterController.tree -ceq $controller.tree -and
                 $afterCandidate.executedTreeSha256 -ceq $candidate.executedTreeSha256 -and $afterController.executedTreeSha256 -ceq $controller.executedTreeSha256
         }
         catch { $receipt.sourceUnchanged = $false; $reason = 'source-changed-or-unverifiable'; $exitCode = 2 }
         $receipt.elapsedSeconds = $clock.Elapsed.TotalSeconds; $receipt.endedUtc = [DateTime]::UtcNow.ToString('o')
         if ($PreflightOnly -and $reason -ceq 'preflight-pass' -and $receipt.sourceUnchanged -and $receipt.cleanup.fixtureRemoved -and
-            $receipt.elapsedSeconds -lt $hardWall) { $receipt.outcome = 'preflight-pass'; $receipt.reasonCodes = @('physical-qualification-not-run'); $exitCode = 0 }
+            ($NoOverallTimeout -or $receipt.elapsedSeconds -lt $hardWall)) { $receipt.outcome = 'preflight-pass'; $receipt.reasonCodes = @('physical-qualification-not-run'); $exitCode = 0 }
         else {
-            $outcome = Test-PilotOutcome -Receipt ([pscustomobject]$receipt) -LeaseId $lease.Id -CandidateCommit $candidate.commit -ControllerCommit $controller.commit
+            $outcome = Test-PilotOutcome -Receipt ([pscustomobject]$receipt) -LeaseId $lease.Id -CandidateCommit $candidate.commit -ControllerCommit $controller.commit -NoOverallTimeout:$NoOverallTimeout
             $receipt.reasonCodes = @($outcome.Reasons)
             if ($outcome.Passed) { $receipt.outcome = 'pass'; $exitCode = 0 }
             else { $receipt.outcome = 'failed'; $exitCode = 1; $receipt.reasonCodes += $reason }

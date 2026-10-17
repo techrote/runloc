@@ -115,7 +115,7 @@ function Read-PilotSupervisedReceipt {
         [string]$WorkParent,
         [string]$CandidateCommit, [string]$CandidateTree, [object[]]$CandidatePins,
         [string]$ControllerCommit, [object[]]$ControllerPins, [int]$ControllerBudgetSeconds,
-        [double]$ElapsedSeconds, [bool]$PreflightOnly)
+        [double]$ElapsedSeconds, [bool]$PreflightOnly, [bool]$NoOverallTimeout = $false)
     if (-not (Test-PilotSupervisorProcess -Process $Process)) { throw 'supervisor-controller-process-incomplete' }
     $markers = @($Process.records | Where-Object { $_.Text.StartsWith('RUNLOC_PILOT_RECEIPT=', [StringComparison]::Ordinal) })
     if ($markers.Count -ne 1 -or $markers[0].Channel -cne 'stdout') { throw 'supervisor-receipt-marker-invalid' }
@@ -150,6 +150,7 @@ function Read-PilotSupervisedReceipt {
         if ($digest.Value.schemaVersion -ne 1 -or $digest.Value.file -cne 'receipt.json' -or
             $digest.Value.sha256 -cnotmatch '^[a-f0-9]{64}$' -or $digest.Value.sha256 -cne $receiptFile.Sha256) { throw 'supervisor-receipt-digest-mismatch' }
         $receipt = $receiptFile.Value
+        Assert-PilotTimingPolicy -Receipt $receipt -NoOverallTimeout $NoOverallTimeout
         if ($owner.Value.schemaVersion -ne 1 -or $owner.Value.leaseId -cne $innerId -or $owner.Value.root -cne $innerRoot -or
             $owner.Value.candidateCommit -cne $CandidateCommit -or $owner.Value.controllerCommit -cne $ControllerCommit -or
             $owner.Value.workParent -cne $workPlan.Parent -or $owner.Value.fixture -cne $workPlan.Fixture -or
@@ -167,10 +168,10 @@ function Read-PilotSupervisedReceipt {
             $end -lt $start -or $end -gt $childEnd -or $markerUtc -lt $end -or $markerUtc -gt $childEnd) { throw 'supervisor-receipt-time-binding-invalid' }
         Assert-PilotTelemetryNumber -Value $receipt.elapsedSeconds
         Assert-PilotTelemetryNumber -Value $ElapsedSeconds
-        if ($receipt.controllerBudgetSeconds -ne $ControllerBudgetSeconds -or $receipt.hardWallSeconds -ne 5400 -or
-            $receipt.targetSeconds -ne 3600 -or $receipt.elapsedSeconds -gt $ElapsedSeconds -or
+        if ($receipt.controllerBudgetSeconds -ne $ControllerBudgetSeconds -or
+            ($NoOverallTimeout -and $ControllerBudgetSeconds -ne 0) -or $receipt.elapsedSeconds -gt $ElapsedSeconds -or
             [Math]::Abs(($end - $start).TotalSeconds - [double]$receipt.elapsedSeconds) -gt 2 -or
-            $ElapsedSeconds -ge 5340 -or $receipt.elapsedSeconds -gt $ControllerBudgetSeconds) { throw 'supervisor-receipt-budget-invalid' }
+            (-not $NoOverallTimeout -and ($ElapsedSeconds -ge 5340 -or $receipt.elapsedSeconds -gt $ControllerBudgetSeconds))) { throw 'supervisor-receipt-budget-invalid' }
         Assert-PilotRecordedWorkBudget -Budget $receipt.pathBudget -ExpectedFixtureCharacters $workPlan.Budget.fixtureCharacters
         Assert-PilotSupervisorSource -Source $receipt.candidate -Repository 'https://github.com/techrote/ezvm' -Commit $CandidateCommit -Tree $CandidateTree -Pins $CandidatePins
         Assert-PilotSupervisorSource -Source $receipt.controller -Repository 'https://github.com/techrote/runloc' -Commit $ControllerCommit -Pins $ControllerPins
@@ -199,8 +200,8 @@ function Read-PilotSupervisedReceipt {
                 $receipt.preflight.forced -or $receipt.preflight.fixtureCreated -or $receipt.preflight.qualificationStarted) { throw 'supervisor-preflight-outcome-invalid' }
         }
         else {
-            if ($ElapsedSeconds -gt 3600 -or $receipt.outcome -cne 'pass' -or
-                -not (Test-PilotOutcome -Receipt $receipt -LeaseId $innerId -CandidateCommit $CandidateCommit -ControllerCommit $ControllerCommit).Passed) { throw 'supervisor-physical-outcome-invalid' }
+            if ((-not $NoOverallTimeout -and $ElapsedSeconds -gt 3600) -or $receipt.outcome -cne 'pass' -or
+                -not (Test-PilotOutcome -Receipt $receipt -LeaseId $innerId -CandidateCommit $CandidateCommit -ControllerCommit $ControllerCommit -NoOverallTimeout:$NoOverallTimeout).Passed) { throw 'supervisor-physical-outcome-invalid' }
             $telemetry = Read-PilotSupervisorFile -Path (Join-Path $innerRoot 'telemetry-events.json') -MaximumBytes 16777216 -Json
             $handles.Add($telemetry.Stream)
             if ($telemetry.Sha256 -cne $receipt.telemetry.publicSha256 -or $telemetry.Value.schemaVersion -ne 1 -or

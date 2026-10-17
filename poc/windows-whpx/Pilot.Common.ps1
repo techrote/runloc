@@ -657,7 +657,8 @@ function Assert-PilotTelemetryNumber {
 }
 
 function Read-PilotTelemetry {
-    param([string]$Path, [string]$OutputPath, [Diagnostics.Stopwatch]$Clock, [double]$DeadlineSeconds)
+    param([string]$Path, [string]$OutputPath, [Diagnostics.Stopwatch]$Clock, [double]$DeadlineSeconds,
+        [switch]$NoOverallTimeout)
     $null = Assert-PilotPath -Path $Path -File
     if ((Get-Item -LiteralPath $Path).Length -gt 8MB) { throw 'telemetry-size-limit' }
     $operations = @('full-release', 'verified-identity', 'Invoke-EzVmProcess', 'Assert-EzVmQemuPayloadIntegrity',
@@ -679,7 +680,7 @@ function Read-PilotTelemetry {
                 $categories -cnotcontains $record.category -or @('start', 'end', 'failure', 'identity') -cnotcontains $record.event) { throw 'telemetry-record-invalid' }
             Assert-PilotTelemetryNumber -Value $record.elapsedSeconds
             Assert-PilotTelemetryNumber -Value $record.operationId -Integer
-            if ($record.elapsedSeconds -lt $lastSeconds -or $record.elapsedSeconds -gt 5400 -or $record.operationId -lt 1) { throw 'telemetry-clock-or-operation-invalid' }
+            if ($record.elapsedSeconds -lt $lastSeconds -or (-not $NoOverallTimeout -and $record.elapsedSeconds -gt 5400) -or $record.operationId -lt 1) { throw 'telemetry-clock-or-operation-invalid' }
             $lastSeconds = [double]$record.elapsedSeconds
             $utc = [DateTimeOffset]::MinValue
             if ($record.utc -is [DateTime] -or $record.utc -is [DateTimeOffset]) { $utc = [DateTimeOffset]$record.utc }
@@ -723,7 +724,7 @@ function Read-PilotTelemetry {
                 if ($record.operationId -ne $start.operationId -or $record.parentOperationId -ne $start.parentOperationId -or
                     $record.operation -cne $start.operation -or $record.category -cne $start.category) { throw 'telemetry-nesting-invalid' }
                 Assert-PilotTelemetryNumber -Value $record.durationSeconds
-                if ($record.durationSeconds -gt 5400) { throw 'telemetry-duration-invalid' }
+                if (-not $NoOverallTimeout -and $record.durationSeconds -gt 5400) { throw 'telemetry-duration-invalid' }
                 $clean.durationSeconds = [double]$record.durationSeconds
                 $clean.digestTotals = [ordered]@{}
                 foreach ($property in $record.digestTotals.PSObject.Properties) {
@@ -731,7 +732,7 @@ function Read-PilotTelemetry {
                     $total = $property.Value
                     foreach ($field in @('calls', 'failedCalls', 'bytes')) { Assert-PilotTelemetryNumber -Value $total.$field -Integer }
                     Assert-PilotTelemetryNumber -Value $total.elapsedSeconds
-                    if ($total.failedCalls -gt $total.calls -or $total.elapsedSeconds -gt 5400) { throw 'telemetry-digest-total-invalid' }
+                    if ($total.failedCalls -gt $total.calls -or (-not $NoOverallTimeout -and $total.elapsedSeconds -gt 5400)) { throw 'telemetry-digest-total-invalid' }
                     $clean.digestTotals[$property.Name] = [ordered]@{ calls = $total.calls; failedCalls = $total.failedCalls;
                         bytes = $total.bytes; elapsedSeconds = [double]$total.elapsedSeconds }
                 }
@@ -760,10 +761,27 @@ function Read-PilotTelemetry {
         interpretation = 'Inclusive nested durations overlap. Root digest counters count each hash once. Nested failures include required negative controls.' }
 }
 
+function Assert-PilotTimingPolicy {
+    param([object]$Receipt, [bool]$NoOverallTimeout)
+    $property = $Receipt.PSObject.Properties['overallTimeoutDisabled']
+    # Old bounded receipts remain readable. The exception always requires an
+    # explicit boolean and independently supplied matching operator policy.
+    if ($null -eq $property) { if ($NoOverallTimeout) { throw 'receipt-timing-policy-missing' } }
+    elseif ($property.Value -isnot [bool] -or $property.Value -ne $NoOverallTimeout) { throw 'receipt-timing-policy-mismatch' }
+    $target = if ($NoOverallTimeout) { 0 } else { 3600 }
+    $wall = if ($NoOverallTimeout) { 0 } else { 5400 }
+    foreach ($field in @('targetSeconds', 'hardWallSeconds')) {
+        if ($Receipt.$field -isnot [int] -and $Receipt.$field -isnot [long]) { throw 'receipt-timing-policy-type' }
+    }
+    if ($Receipt.targetSeconds -ne $target -or $Receipt.hardWallSeconds -ne $wall) { throw 'receipt-timing-policy-invalid' }
+}
+
 function Test-PilotOutcome {
-    param([object]$Receipt, [string]$LeaseId, [string]$CandidateCommit, [string]$ControllerCommit)
+    param([object]$Receipt, [string]$LeaseId, [string]$CandidateCommit, [string]$ControllerCommit,
+        [switch]$NoOverallTimeout)
     $reasons = New-Object 'System.Collections.Generic.List[string]'
     try {
+        Assert-PilotTimingPolicy -Receipt $Receipt -NoOverallTimeout ([bool]$NoOverallTimeout)
         if ($Receipt.schemaVersion -isnot [int] -and $Receipt.schemaVersion -isnot [long]) { throw 'receipt-schema-type' }
         foreach ($field in @('preflightOnly', 'vmQualificationStarted', 'sourceUnchanged', 'timedOut', 'cancelled',
                 'outputOverflow', 'outputFailed', 'harnessFailure', 'controllerFailure')) {
@@ -803,7 +821,7 @@ function Test-PilotOutcome {
         if ($Receipt.timedOut -or $Receipt.cancelled -or $Receipt.outputOverflow -or $Receipt.outputFailed -or $Receipt.harnessFailure -or $Receipt.controllerFailure) { $reasons.Add('run-incomplete') }
         if (-not $Receipt.telemetry.complete -or $Receipt.telemetry.recordCount -lt 6 -or $Receipt.telemetry.recordCount -gt 20000 -or
             $Receipt.telemetry.publicSha256 -cnotmatch '^[a-f0-9]{64}$' -or $Receipt.telemetry.publicFile -cne 'telemetry-events.json') { $reasons.Add('telemetry-incomplete') }
-        if ($Receipt.elapsedSeconds -le 0 -or $Receipt.elapsedSeconds -gt 3600 -or $Receipt.hardWallSeconds -ne 5400) { $reasons.Add('target-unmet') }
+        if ($Receipt.elapsedSeconds -le 0 -or (-not $NoOverallTimeout -and $Receipt.elapsedSeconds -gt 3600)) { $reasons.Add('target-unmet') }
         if (-not $Receipt.cleanup.childExited -or $Receipt.cleanup.activeProcesses -ne 0 -or
             -not $Receipt.cleanup.fixtureRemoved -or $Receipt.cleanup.forced -or -not $Receipt.cleanup.ownershipVerified) { $reasons.Add('cleanup-incomplete-or-forced') }
         foreach ($field in @('startSeconds', 'endSeconds')) { Assert-PilotTelemetryNumber -Value $Receipt.cleanup.$field }

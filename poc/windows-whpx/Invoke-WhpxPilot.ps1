@@ -6,7 +6,8 @@ param(
     [Parameter(Mandatory = $true)][string]$EvidenceParent,
     [Parameter(Mandatory = $true)][string]$WorkParent,
     [ValidatePattern('^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$')][string]$HostLabel = 'whpx-pilot-host',
-    [switch]$PreflightOnly
+    [switch]$PreflightOnly,
+    [switch]$NoOverallTimeout
 )
 $clock = [Diagnostics.Stopwatch]::StartNew()
 $startedUtc = [DateTime]::UtcNow.ToString('o')
@@ -23,7 +24,7 @@ if (-not (Test-PilotEarlyDedicatedFileInvocation -CommandLine ([Environment]::Ge
 $ErrorActionPreference = 'Stop'
 
 # Bootstrap occurs before any source check, lease, child, or qualification fixture.
-# Its elapsed time is charged against the same absolute deadlines. A dedicated
+# In bounded mode its elapsed time is charged against the same absolute deadlines. A dedicated
 # -File process is mandatory: the terminal timer must never end an owner's shell.
 if (-not ('RunlocPoc.SupervisorDeadline' -as [type])) {
     Add-Type -Path (Join-Path $PSScriptRoot 'SupervisorDeadline.cs') -ErrorAction Stop
@@ -35,13 +36,23 @@ if ([Environment]::OSVersion.Platform -ne [PlatformID]::Win32NT -or -not [Enviro
     Write-Error 'The supervised pilot requires a native Windows x64 process.' -ErrorAction Continue
     exit 2
 }
-$remainingExecution = [int][Math]::Floor((5340 - $clock.Elapsed.TotalSeconds) * 1000)
-$remainingTerminal = [int][Math]::Floor((5400 - $clock.Elapsed.TotalSeconds) * 1000)
-if ($remainingExecution -lt 60000 -or $remainingTerminal -le $remainingExecution) {
-    Write-Error 'The supervisor bootstrap exhausted its launch budget; qualification did not start.' -ErrorAction Continue
-    exit 124
+$executionDeadline = 5340.0; $cleanupDeadline = 5390.0; $evidenceDeadline = 5399.0; $targetLimit = 3600.0
+$policyTarget = 3600; $policyWall = 5400; $policyExecution = 5340; $policyCleanup = 5390
+if ($NoOverallTimeout) {
+    $executionDeadline = [double]::PositiveInfinity; $cleanupDeadline = [double]::PositiveInfinity
+    $evidenceDeadline = [double]::PositiveInfinity; $targetLimit = [double]::PositiveInfinity
+    $policyTarget = 0; $policyWall = 0; $policyExecution = 0; $policyCleanup = 0
+    $deadline = New-Object RunlocPoc.SupervisorDeadline(0, 0, $true, $true)
 }
-$deadline = New-Object RunlocPoc.SupervisorDeadline($remainingExecution, $remainingTerminal, $true)
+else {
+    $remainingExecution = [int][Math]::Floor((5340 - $clock.Elapsed.TotalSeconds) * 1000)
+    $remainingTerminal = [int][Math]::Floor((5400 - $clock.Elapsed.TotalSeconds) * 1000)
+    if ($remainingExecution -lt 60000 -or $remainingTerminal -le $remainingExecution) {
+        Write-Error 'The supervisor bootstrap exhausted its launch budget; qualification did not start.' -ErrorAction Continue
+        exit 124
+    }
+    $deadline = New-Object RunlocPoc.SupervisorDeadline($remainingExecution, $remainingTerminal, $true)
+}
 $lease = $null; $validated = $null; $configurationFile = $null; $receipt = $null; $process = $null
 $exitCode = 2; $reason = 'supervisor-bootstrap-or-source-failed'; $controllerBudget = 0
 
@@ -76,7 +87,8 @@ try {
         'poc/windows-whpx/Pilot.Supervisor.ps1', 'poc/windows-whpx/SupervisorDeadline.cs', 'poc/windows-whpx/Pilot.Bootstrap.ps1', 'poc/windows-whpx/Pilot.PowerShellEntry.ps1',
         'poc/windows-whpx/candidate.json')
     $controllerPins = @(Get-PilotSupervisorPins -Root $controllerRoot -Pins @($controllerNames | ForEach-Object { [pscustomobject]@{ path = $_ } }))
-    Assert-PilotDeadline -Clock $clock -DeadlineSeconds 5100
+    $bootstrapDeadline = if ($NoOverallTimeout) { [double]::PositiveInfinity } else { 5100 }
+    Assert-PilotDeadline -Clock $clock -DeadlineSeconds $bootstrapDeadline
     $lease = New-PilotLease -EvidenceParent $parent -CandidateCommit $configuration.commit -ControllerCommit $ExpectedControllerCommit
     $attempts = Join-Path $lease.Private 'attempts'
     $temporary = Join-Path $lease.Private 'controller-temp'
@@ -87,13 +99,15 @@ try {
     $started = [ordered]@{ schemaVersion = 1; issue = 'CI-POC-001'; kind = 'supervisor-started'; supervisorLeaseId = $lease.Id;
         startedUtc = $startedUtc; candidateCommit = $configuration.commit; candidateTree = $configuration.tree;
         controllerCommit = $ExpectedControllerCommit; preflightOnly = [bool]$PreflightOnly; hostLabel = $HostLabel;
-        targetSeconds = 3600; executionDeadlineSeconds = 5340; cleanupDeadlineSeconds = 5390; hardWallSeconds = 5400;
+        targetSeconds = $policyTarget; executionDeadlineSeconds = $policyExecution; cleanupDeadlineSeconds = $policyCleanup; hardWallSeconds = $policyWall;
+        overallTimeoutDisabled = [bool]$NoOverallTimeout;
         completedReceipt = 'supervisor-receipt.json'; incompleteMeansFailure = $true }
     Write-PilotNewJson -Path (Join-Path $lease.Root 'supervisor-started.json') -Value $started
     Write-Host ('RUNLOC_WHPX_SUPERVISOR_STARTED=' + (Join-Path $lease.Root 'supervisor-started.json'))
     $receipt = [ordered]@{ schemaVersion = 1; issue = 'CI-POC-001'; kind = 'supervisor'; supervisorLeaseId = $lease.Id;
         outcome = 'failed'; exitCode = 2; startedUtc = $startedUtc; endedUtc = ''; elapsedSeconds = 0;
-        targetSeconds = 3600; executionDeadlineSeconds = 5340; cleanupDeadlineSeconds = 5390; hardWallSeconds = 5400;
+        targetSeconds = $policyTarget; executionDeadlineSeconds = $policyExecution; cleanupDeadlineSeconds = $policyCleanup; hardWallSeconds = $policyWall;
+        overallTimeoutDisabled = [bool]$NoOverallTimeout;
         controllerBudgetSeconds = 0; preflightOnly = [bool]$PreflightOnly; physicalQualificationPassed = $false; hostLabel = $HostLabel;
         elapsedSecondsScope = 'through-outcome-evaluation-before-receipt-write';
         acceptanceRequires = @('matching-receipt-digest', 'terminal-outcome-marker-with-post-io-elapsed', 'actual-supervisor-exit-zero');
@@ -103,30 +117,33 @@ try {
         quarantine = [ordered]@{ required = $true; label = 'private/attempts'; fixtureLocation = 'lease-bound-work-parent'; mayContainQualificationFixture = $false } }
     $windowsPowerShell = Join-Path $env:SystemRoot 'System32/WindowsPowerShell/v1.0/powershell.exe'
     $null = Assert-PilotPath -Path $windowsPowerShell -File -AllowHardlink
-    $controllerBudget = [int][Math]::Floor(5340 - $clock.Elapsed.TotalSeconds)
-    if ($controllerBudget -lt 240 -or $controllerBudget -gt 5340 -or $deadline.ExecutionExpired) { throw 'controller-launch-budget-exhausted' }
+    $controllerBudget = if ($NoOverallTimeout) { 0 } else { [int][Math]::Floor(5340 - $clock.Elapsed.TotalSeconds) }
+    if ((-not $NoOverallTimeout -and ($controllerBudget -lt 240 -or $controllerBudget -gt 5340)) -or $deadline.ExecutionExpired) { throw 'controller-launch-budget-exhausted' }
     $receipt.controllerBudgetSeconds = $controllerBudget
     $controllerParameters = @{ CandidateRoot = $candidatePath; ExpectedControllerCommit = $ExpectedControllerCommit; EvidenceParent = $attempts;
         WorkParent = $workPlan.Parent; HostLabel = $HostLabel; BudgetSeconds = [string]$controllerBudget;
         SupervisorLeaseId = $lease.Id; SupervisorStartedUtc = $startedUtc }
     if ($PreflightOnly) { $controllerParameters.PreflightOnly = $true }
+    if ($NoOverallTimeout) { $controllerParameters.NoOverallTimeout = $true }
     $arguments = @(Get-PilotPowerShellArguments -TargetScript (Join-Path $PSScriptRoot 'Pilot.Controller.ps1') -NamedParameters $controllerParameters)
     $reason = 'supervisor-controller-incomplete'
     $receipt.quarantine.mayContainQualificationFixture = -not [bool]$PreflightOnly
     $process = Invoke-PilotSupervisedController -Executable $windowsPowerShell -Arguments $arguments -WorkingDirectory $controllerRoot `
-        -TemporaryDirectory $temporary -RawLogPath (Join-Path $lease.Private 'controller.log') -Clock $clock -Deadline $deadline
+        -TemporaryDirectory $temporary -RawLogPath (Join-Path $lease.Private 'controller.log') -Clock $clock -Deadline $deadline `
+        -ExecutionDeadlineSeconds $executionDeadline -CleanupDeadlineSeconds $cleanupDeadline
     $receipt.controllerProcess = [ordered]@{ method = 'CreateProcess-suspended-then-Job-assignment'; killOnClose = $true; breakawayAllowed = $false;
         createdUtc = $process.createdUtc; endedUtc = $process.endedUtc; exitCode = $process.exitCode; childExited = $process.childExited;
         activeProcesses = $process.activeProcesses; forced = $process.forced; timedOut = $process.timedOut;
         outputOverflow = $process.outputOverflow; outputFailed = $process.outputFailed; controllerError = $process.controllerError }
     if (-not (Test-PilotSupervisorProcess -Process $process) -or $deadline.ExecutionExpired -or $deadline.StopFailed) { throw 'controller-process-incomplete' }
     $reason = 'supervisor-inner-receipt-invalid'
-    Assert-PilotDeadline -Clock $clock -DeadlineSeconds 5390
+    Assert-PilotDeadline -Clock $clock -DeadlineSeconds $cleanupDeadline
     Assert-PilotLease -Lease $lease
     $validated = Read-PilotSupervisedReceipt -Process $process -OuterLease $lease -AttemptsRoot $attempts -StartedUtc $startedUtc `
         -WorkParent $workPlan.Parent `
         -CandidateCommit $configuration.commit -CandidateTree $configuration.tree -CandidatePins $candidatePins -ControllerCommit $ExpectedControllerCommit `
-        -ControllerPins $controllerPins -ControllerBudgetSeconds $controllerBudget -ElapsedSeconds $clock.Elapsed.TotalSeconds -PreflightOnly ([bool]$PreflightOnly)
+        -ControllerPins $controllerPins -ControllerBudgetSeconds $controllerBudget -ElapsedSeconds $clock.Elapsed.TotalSeconds -PreflightOnly ([bool]$PreflightOnly) `
+        -NoOverallTimeout ([bool]$NoOverallTimeout)
     $receipt.inner = [ordered]@{ label = $validated.Label; leaseId = $validated.LeaseId; receiptSha256 = $validated.Sha256;
         leaseSha256 = $validated.OwnerSha256; outcome = $validated.Receipt.outcome; validated = $true }
     $receipt.controller.tree = $validated.Receipt.controller.tree
@@ -139,7 +156,7 @@ try {
 catch {
     # All raw child output remains private. Public codes are assigned by our own
     # stage transitions; exception text and arbitrary child fields are not copied.
-    if ($deadline.ExecutionExpired -or $clock.Elapsed.TotalSeconds -ge 5340) { $reason = 'supervisor-deadline-exceeded'; $exitCode = 124 }
+    if ($deadline.ExecutionExpired -or $clock.Elapsed.TotalSeconds -ge $executionDeadline) { $reason = 'supervisor-deadline-exceeded'; $exitCode = 124 }
     else {
         if ($_.Exception.Message -ceq 'work-path-budget-exceeded') { $reason = 'shorter-user-writable-work-parent-required' }
         elseif ($_.Exception.Message -ceq 'evidence-path-budget-exceeded') { $reason = 'shorter-evidence-parent-required' }
@@ -150,13 +167,13 @@ finally {
     try {
         if ($null -ne $receipt) {
             $receipt.elapsedSeconds = $clock.Elapsed.TotalSeconds
-            if ($deadline.ExecutionExpired -or $deadline.StopFailed -or $receipt.elapsedSeconds -ge 5340 -or
-                (-not $PreflightOnly -and $receipt.elapsedSeconds -gt 3600)) {
+            if ($deadline.ExecutionExpired -or $deadline.StopFailed -or $receipt.elapsedSeconds -ge $executionDeadline -or
+                (-not $PreflightOnly -and $receipt.elapsedSeconds -gt $targetLimit)) {
                 $receipt.outcome = 'failed'; $receipt.physicalQualificationPassed = $false; $exitCode = 124; $reason = 'supervisor-target-or-deadline-exceeded'
             }
             if ($exitCode -ne 0) { $receipt.outcome = 'failed'; $receipt.physicalQualificationPassed = $false }
             $receipt.exitCode = $exitCode; $receipt.reasonCodes = @($reason); $receipt.endedUtc = [DateTime]::UtcNow.ToString('o')
-            Assert-PilotDeadline -Clock $clock -DeadlineSeconds 5399
+            Assert-PilotDeadline -Clock $clock -DeadlineSeconds $evidenceDeadline
             Write-PilotNewJson -Path (Join-Path $lease.Root 'supervisor-receipt.json') -Value $receipt
             $written = Read-PilotSupervisorFile -Path (Join-Path $lease.Root 'supervisor-receipt.json') -MaximumBytes 262144
             try {
@@ -164,18 +181,18 @@ finally {
             }
             finally { $written.Stream.Dispose() }
             # Close every evidence handle before reporting the final elapsed time.
-            # The native terminal deadline stays armed during these operations.
+            # In bounded mode the native terminal deadline stays armed during these operations.
             if ($null -ne $validated) { foreach ($handle in $validated.Handles) { $handle.Dispose() }; $validated = $null }
             if ($null -ne $configurationFile) { $configurationFile.Stream.Dispose(); $configurationFile = $null }
             if ($null -ne $lease.Lock) { $lease.Lock.Dispose(); $lease.Lock = $null }
             $finalElapsed = $clock.Elapsed.TotalSeconds
             $finalOutcome = [string]$receipt.outcome
-            if ($deadline.ExecutionExpired -or $deadline.StopFailed -or $finalElapsed -ge 5340 -or
-                (-not $PreflightOnly -and $finalElapsed -gt 3600)) { $exitCode = 124; $finalOutcome = 'failed' }
+            if ($deadline.ExecutionExpired -or $deadline.StopFailed -or $finalElapsed -ge $executionDeadline -or
+                (-not $PreflightOnly -and $finalElapsed -gt $targetLimit)) { $exitCode = 124; $finalOutcome = 'failed' }
             Write-Host ('RUNLOC_WHPX_SUPERVISOR_RECEIPT=' + (Join-Path $lease.Root 'supervisor-receipt.json'))
             Write-Host ('RUNLOC_WHPX_SUPERVISOR_OUTCOME=' + $finalOutcome + '; elapsedSeconds=' + $finalElapsed.ToString('R', [Globalization.CultureInfo]::InvariantCulture))
             # A blocked output consumer must not turn a late marker into success.
-            if ($clock.Elapsed.TotalSeconds -ge 5340 -or (-not $PreflightOnly -and $clock.Elapsed.TotalSeconds -gt 3600)) { $exitCode = 124 }
+            if ($clock.Elapsed.TotalSeconds -ge $executionDeadline -or (-not $PreflightOnly -and $clock.Elapsed.TotalSeconds -gt $targetLimit)) { $exitCode = 124 }
         }
         else { Write-Error ('The supervised pilot stopped before launch: ' + $reason) -ErrorAction Continue }
     }

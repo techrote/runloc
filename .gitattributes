@@ -5,3 +5,6 @@
 *.yml text eol=lf
 *.sh text eol=lf
 *.ps1 text eol=crlf
+# Receipts are published as exact observed bytes; their SHA-256 bindings must
+# survive checkout and Git publication without newline normalization.
+docs/fast-track/evidence/physical-whpx-*/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol

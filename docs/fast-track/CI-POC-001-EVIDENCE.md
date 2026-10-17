@@ -2,14 +2,17 @@
 
 ## Acceptance status
 
-**Software checks passed; physical acceptance is blocked.**
+**The reviewed software checkpoint passed; physical acceptance remains incomplete.**
 
 This checkpoint belongs to [Runloc issue #21](https://github.com/techrote/runloc/issues/21).
 The [binding PoC contract](WINDOWS-WHPX-CI-POC.md) records the owner's temporary
 hosted-TCG scheduling exception; the full physical acceptance remains required.
-This cloud session has Linux execution and GitHub access; no
-supported physical Windows/WHPX host is connected. Code, mocked results and
-hosted TCG cannot satisfy the required complete cold physical run.
+The previous checkpoint was produced in a Linux cloud session without a physical
+host. A native Windows 11 host is now connected. Its first exact-source preflight
+passed, but Windows force-restarted the first full attempt before completion.
+There is no completed receipt, numeric final exit or normal cleanup proof for
+that attempt. Code, mocked results, diagnostic probes and hosted TCG cannot
+satisfy the required complete cold physical run.
 
 The standalone helper is under `poc/windows-whpx/`. It is an invocation and
 evidence boundary for the existing EzVM scenario. RUNLOC-001 through RUNLOC-019,
@@ -357,6 +360,74 @@ A supported physical standard-user Windows host must run the complete cold WHPX
 scenario using the recorded clean immutable controller/candidate. It must return
 zero, emit the full marker set, agree on accelerator, preserve tested source,
 record the required identities/phases, and prove clean owned shutdown/disposal.
-The complete run must meet the 60-minute target within the 90-minute hard wall.
+Under the default policy the complete run must meet the 60-minute target within
+the 90-minute hard wall. The replacement attempt may instead use the later
+owner-authorized `-NoOverallTimeout` policy described in the binding contract;
+its actual elapsed time remains evidence, with no claim to the former target.
 Only then may the Runloc PR pass this issue's physical merge gate. Later runner
 registration and CI-gate work have their own trackers and are not started here.
+
+## Connected physical attempt, reboot and replacement policy
+
+The native Windows 11 ordinary-user host passed the exact synthetic preflight at
+controller `36987dfed17e69efa078d4e7b97f0c78e9992ae8`, tree
+`b2b9452b55771d276d78629fc738525d08f722c2`, against frozen EzVM
+`59eee784b8016178c5589dea32cf2c9e72b942bd`, tree
+`f609fa6aa429a9b78fa89ef763126d9ef023e8d0`, in **11.244 seconds**, exit **0**.
+The separate full attempt `9c45639521084c37a102620ad568d827` was interrupted by
+the owner's reported forced Windows restart. Its last telemetry reached
+**1,466.400 seconds**, still in tiny-image operations, with two completion
+markers. No final harness/supervisor exit, total elapsed time, completed receipt
+or normal owned shutdown is inferred. The later boot boundary is observed;
+the cause of the Windows restart is not diagnosed here.
+
+[Interrupted attempt and verified recovery](evidence/physical-whpx-20261017-reboot-interrupted.json)
+and [all retained partial phase events](evidence/physical-whpx-20261017-interrupted-telemetry.json)
+preserve the failure. The original private records are unchanged. The old mutable
+fixture was removed only after matching its lease and exclusive creation proof,
+verifying the lease digest and reboot boundary, acquiring its exclusive lock,
+finding no active process reference, and running the original safe disposal
+routine. Private JSON/log diagnostics and the complete inventory remain retained.
+No mutable guest or old receipt is reused.
+
+The [rudimentary performance diagnostics](evidence/physical-whpx-20261017-performance-diagnostics.json)
+used freshly verified immutable tools and a new 128 MiB synthetic disk:
+
+| Observation | Measured result |
+|---|---|
+| Complete 3,384-file / 1,255,872,082-byte QEMU integrity scan | First scan 55.173 seconds; subsequent scans 15.338 / 16.297 seconds |
+| Direct qemu-img version/create/info/read/write/check, including owned process startup | Approximately 0.1–0.24 seconds per call; every exit 0 |
+| Halted one-CPU / 128 MiB q35 WHPX initialization, QMP exchange and normal quit | 0.657 seconds; exit 0; zero owned processes |
+
+Tiny cached I/O is not a sustained-disk benchmark, and halted initialization is
+not guest boot or full-release acceptance. The first diagnostic parser rejected
+an asynchronous QMP event; that failed diagnostic is retained. The corrected
+probe completed normally. No qualification or performance target is claimed
+from either diagnostic. The interrupted attempt separately completed 67 full
+payload validations averaging 21.029 seconds each, which identifies a substantial
+control-path cost without permitting integrity checks to be skipped.
+
+The owner then explicitly requested removal of the target/time limit/cutoff for
+the replacement run. The new `-NoOverallTimeout` mode constructs no native
+overall timers and removes whole-invocation elapsed-time rejection while keeping
+all original operation limits and every non-timing gate. Its explicit expected
+policy must match both receipts; zero policy fields mean disabled. Default
+bounded behavior and watchdog negative controls remain. This exception does not
+restart deferred hosted TCG, merge EzVM PR46 or implement CI-POC-002/003.
+
+The implementation agent authored the exception and diagnostics. A separate
+model agent independently reviewed the source, frozen-candidate linkage and
+negative controls at Extra High reasoning; no material code issue was found.
+Its documentation corrections were applied. These are model-agent roles, not
+external human approval. Physical acceptance of the new controller remains
+outstanding; the previous checkpoint's software results do not qualify changed
+executable bytes.
+
+The final local Windows PowerShell 5.1 run passed **56 pilot groups and 20
+supervisor groups, with zero skipped platform groups**. Repository checks and
+all 21 Python tests also pass. The first new supervisor fixture used an offset
+UTC string rather than the required canonical `Z` string; the production UTC
+guard correctly refused it. The original failed software log is retained and the
+fixture was corrected, after which the complete unchanged guard suite passed.
+Exact-head hosted PS5.1 and pinned PS7.6.6 checks remain required before execution
+of the revised controller. They use synthetic processes and never start TCG.

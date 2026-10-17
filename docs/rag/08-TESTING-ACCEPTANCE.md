@@ -96,4 +96,12 @@ pass, synthetic containment test or hosted TCG result does not establish physica
 WHPX correctness or performance. Details and actual upstream dispositions are
 recorded in the [checkpoint](../fast-track/CI-POC-001-EVIDENCE.md).
 
+The later owner-authorized replacement attempt may explicitly select
+`-NoOverallTimeout`, as recorded in the [binding exception](../fast-track/WINDOWS-WHPX-CI-POC.md#later-owner-instruction-for-the-replacement-physical-attempt).
+Both the 60-minute whole-invocation target and native 90-minute timer are disabled
+only for that matching operator/controller/receipt policy. Original per-operation
+limits and all non-timing qualification gates remain. Default bounded tests
+continue to enforce the original deadlines; additional controls must reject
+cross-policy receipts and preserve failures in the no-overall-timeout mode.
+
 See [performance](09-METRICS-PERFORMANCE.md), [release](10-RELEASE-OPERATIONS.md).

@@ -1,0 +1,172 @@
+{
+  "schemaVersion": 1,
+  "kind": "rudimentary-qemu-performance-diagnostics",
+  "scope": "Complete integrity scans of verified immutable QEMU tools plus fresh 128MiB synthetic QCOW2 and halted one-CPU/128MiB q35 WHPX initialization. No old guest reuse or full-release qualification. Tiny cached I/O is not sustained disk or running-guest performance.",
+  "runs": [
+    {
+      "benchmarkId": "5c4f73310e824ffdb223cce64dd9483e",
+      "startedUtc": "2026-10-17T22:00:16.3615385Z",
+      "endedUtc": "2026-10-17T22:01:29.2731505Z",
+      "outcome": "diagnostic-failed",
+      "candidate": {
+        "repository": "https://github.com/techrote/ezvm",
+        "commit": "59eee784b8016178c5589dea32cf2c9e72b942bd",
+        "tree": "f609fa6aa429a9b78fa89ef763126d9ef023e8d0",
+        "clean": true,
+        "executedTreeSha256": "f7b19878d170fee25e7a74dfaa6e8e0f848316734b16098b6f01fc42a6d9dc6f",
+        "trackedFileCount": 184,
+        "files": []
+      },
+      "sourceUnchanged": true,
+      "measurements": [
+        {
+          "operation": "full-payload-integrity",
+          "iteration": 1,
+          "seconds": 55.173027399999995,
+          "exitCode": 0
+        },
+        {
+          "operation": "full-payload-integrity",
+          "iteration": 2,
+          "seconds": 15.3378252,
+          "exitCode": 0
+        },
+        {
+          "operation": "version",
+          "seconds": 0.2395848,
+          "exitCode": 0,
+          "activeProcesses": 0,
+          "forced": false
+        },
+        {
+          "operation": "create-128MiB",
+          "seconds": 0.12187229999999999,
+          "exitCode": 0,
+          "activeProcesses": 0,
+          "forced": false
+        },
+        {
+          "operation": "info",
+          "seconds": 0.1199242,
+          "exitCode": 0,
+          "activeProcesses": 0,
+          "forced": false
+        },
+        {
+          "operation": "write-16MiB-64KiB-depth16",
+          "seconds": 0.10686309999999999,
+          "exitCode": 0,
+          "activeProcesses": 0,
+          "forced": false
+        },
+        {
+          "operation": "read-16MiB-64KiB-depth16",
+          "seconds": 0.1181202,
+          "exitCode": 0,
+          "activeProcesses": 0,
+          "forced": false
+        },
+        {
+          "operation": "check",
+          "seconds": 0.1193664,
+          "exitCode": 0,
+          "activeProcesses": 0,
+          "forced": false
+        }
+      ],
+      "payload": {
+        "files": 3384,
+        "bytes": 1255872082,
+        "qemuImgSha256": "9d930582d0d574bb106d89982c547688e10b8f356192d302cc3d0ae4e8674534",
+        "qemuSystemSha256": "47d57a6072e0bb3bd98f87926eb129eb1736dfe818c67b3b81ef7ce4edd0b3cd"
+      },
+      "whpx": null,
+      "failureClassification": "diagnostic-parser-asynchronous-qmp-event",
+      "privateRecordSha256": "16932679a84f702d553a1b2517964ba345364527a4052dd987203acc91d7aead",
+      "physicalQualificationPassed": false
+    },
+    {
+      "benchmarkId": "9e0f74979bdd4eb2a10e0d83931a9c86",
+      "startedUtc": "2026-10-17T22:01:49.4112509Z",
+      "endedUtc": "2026-10-17T22:02:07.8182636Z",
+      "outcome": "diagnostics-completed",
+      "candidate": {
+        "repository": "https://github.com/techrote/ezvm",
+        "commit": "59eee784b8016178c5589dea32cf2c9e72b942bd",
+        "tree": "f609fa6aa429a9b78fa89ef763126d9ef023e8d0",
+        "clean": true,
+        "executedTreeSha256": "f7b19878d170fee25e7a74dfaa6e8e0f848316734b16098b6f01fc42a6d9dc6f",
+        "trackedFileCount": 184,
+        "files": []
+      },
+      "sourceUnchanged": true,
+      "measurements": [
+        {
+          "operation": "full-payload-integrity",
+          "iteration": 1,
+          "seconds": 16.297154799999998,
+          "exitCode": 0
+        },
+        {
+          "operation": "version",
+          "seconds": 0.15321659999999998,
+          "exitCode": 0,
+          "activeProcesses": 0,
+          "forced": false
+        },
+        {
+          "operation": "create-128MiB",
+          "seconds": 0.125838,
+          "exitCode": 0,
+          "activeProcesses": 0,
+          "forced": false
+        },
+        {
+          "operation": "info",
+          "seconds": 0.10727489999999999,
+          "exitCode": 0,
+          "activeProcesses": 0,
+          "forced": false
+        },
+        {
+          "operation": "write-16MiB-64KiB-depth16",
+          "seconds": 0.1254668,
+          "exitCode": 0,
+          "activeProcesses": 0,
+          "forced": false
+        },
+        {
+          "operation": "read-16MiB-64KiB-depth16",
+          "seconds": 0.1257067,
+          "exitCode": 0,
+          "activeProcesses": 0,
+          "forced": false
+        },
+        {
+          "operation": "check",
+          "seconds": 0.1253168,
+          "exitCode": 0,
+          "activeProcesses": 0,
+          "forced": false
+        }
+      ],
+      "payload": {
+        "files": 3384,
+        "bytes": 1255872082,
+        "qemuImgSha256": "9d930582d0d574bb106d89982c547688e10b8f356192d302cc3d0ae4e8674534",
+        "qemuSystemSha256": "47d57a6072e0bb3bd98f87926eb129eb1736dfe818c67b3b81ef7ce4edd0b3cd"
+      },
+      "whpx": {
+        "requestedAccelerator": "whpx",
+        "initialized": true,
+        "seconds": 0.6570022999999999,
+        "exitCode": 0,
+        "activeProcesses": 0
+      },
+      "failureClassification": null,
+      "privateRecordSha256": "298962bbf8bb88769758481fde542ce0933c858ea321070733da30e4c04cbfe1",
+      "physicalQualificationPassed": false
+    }
+  ],
+  "interpretation": "Full payload validation dominates these small tool operations. Both validation calls hash all3384files/1255872082bytes. Initial diagnostic QMP parser failed on an asynchronous event; the original record is retained and corrected probe exited0 with no owned processes."
+}

@@ -124,7 +124,7 @@ function New-GoodReceipt {
         startedUtc = $utc.ToString('o'); endedUtc = $utc.AddSeconds(100).ToString('o');
         preflightOnly = $false; vmQualificationStarted = $true; childExitCode = 0; sourceUnchanged = $true;
         requestedAccelerator = 'whpx'; observedAccelerator = 'whpx'; timedOut = $false; cancelled = $false;
-        outputOverflow = $false; outputFailed = $false; harnessFailure = $false; controllerFailure = $false; elapsedSeconds = 100; hardWallSeconds = 5400;
+        outputOverflow = $false; outputFailed = $false; harnessFailure = $false; controllerFailure = $false; elapsedSeconds = 100; targetSeconds = 3600; hardWallSeconds = 5400; overallTimeoutDisabled = $false;
         pathBudget = @{ profile = 'ezvm-pr46-full-release-v1'; fixtureCharacters = 39; relativeReserveCharacters = 215;
             maximumPathCharacters = 259; plannedMaximumCharacters = 254; relativeDirectoryReserveCharacters = 173;
             maximumDirectoryCharacters = 247; plannedMaximumDirectoryCharacters = 212 };
@@ -306,6 +306,38 @@ exit 9
         $receipt = New-GoodReceipt; $receipt.cleanup.activeProcesses = 1; Assert-True (-not (Test-Receipt $receipt).Passed)
         $receipt.cleanup.activeProcesses = 0; $receipt.cleanup.forced = $true; Assert-True (-not (Test-Receipt $receipt).Passed)
     }
+    Test-Case 'owner no-overall-timeout policy is explicit and cannot be selected by a receipt' {
+        $receipt = New-GoodReceipt
+        $receipt.overallTimeoutDisabled = $true; $receipt.targetSeconds = 0; $receipt.hardWallSeconds = 0
+        $receipt.elapsedSeconds = 7200; $receipt.endedUtc = ([DateTimeOffset]$receipt.startedUtc).AddSeconds(7200).ToString('o')
+        $arguments = @{Receipt=$receipt;LeaseId=('c'*32);CandidateCommit=('a'*40);ControllerCommit=('b'*40)}
+        Assert-True (Test-PilotOutcome @arguments -NoOverallTimeout).Passed 'Complete long evidence must pass the explicit owner policy.'
+        Assert-True (-not (Test-PilotOutcome @arguments).Passed) 'A bounded caller accepted an unbounded receipt.'
+        foreach ($value in @($false, 'true', $null)) {
+            $receipt.overallTimeoutDisabled = $value
+            Assert-True (-not (Test-PilotOutcome @arguments -NoOverallTimeout).Passed) 'Malformed/mismatched policy accepted.'
+        }
+        $receipt.PSObject.Properties.Remove('overallTimeoutDisabled')
+        Assert-True (-not (Test-PilotOutcome @arguments -NoOverallTimeout).Passed) 'Missing exception policy accepted.'
+        $receipt = New-GoodReceipt
+        Assert-True (-not (Test-PilotOutcome -Receipt $receipt -LeaseId ('c'*32) -CandidateCommit ('a'*40) -ControllerCommit ('b'*40) -NoOverallTimeout).Passed) 'Cross-policy evidence accepted.'
+    }
+    Test-Case 'no-overall-timeout retains exit assertion source ownership and cleanup gates' {
+        foreach ($fault in @('exit','marker','source','forced','active','disposal','output','cancelled')) {
+            $receipt=New-GoodReceipt; $receipt.overallTimeoutDisabled=$true; $receipt.targetSeconds=0; $receipt.hardWallSeconds=0
+            switch ($fault) {
+                exit {$receipt.childExitCode=9}
+                marker {$receipt.events=@($receipt.events|Where-Object {$_.name -cne $script:PilotMarkers[0]})}
+                source {$receipt.sourceUnchanged=$false}
+                forced {$receipt.cleanup.forced=$true}
+                active {$receipt.cleanup.activeProcesses=1}
+                disposal {$receipt.cleanup.fixtureRemoved=$false}
+                output {$receipt.outputFailed=$true}
+                cancelled {$receipt.cancelled=$true}
+            }
+            Assert-True (-not (Test-PilotOutcome -Receipt $receipt -LeaseId ('c'*32) -CandidateCommit ('a'*40) -ControllerCommit ('b'*40) -NoOverallTimeout).Passed) ('Unbounded policy hid failure: '+$fault)
+        }
+    }
     Test-Case 'native UInt32 Job counters retain strict zero-process acceptance' {
         # Controller validation occurs before JSON serialization converts native
         # UInt32 counters to the ordinary integer type used by JSON fixtures.
@@ -401,11 +433,11 @@ exit 9
         )
     }
     function Read-TestTelemetry {
-        param([object[]]$Records)
+        param([object[]]$Records, [switch]$NoOverallTimeout)
         $directory = Join-Path $testRoot ([Guid]::NewGuid().ToString('N')); [void][IO.Directory]::CreateDirectory($directory)
         $path = Join-Path $directory 'private.jsonl'
         [IO.File]::WriteAllLines($path, @($Records | ForEach-Object { $_ | ConvertTo-Json -Depth 12 -Compress }), (New-Object Text.UTF8Encoding($false)))
-        return Read-PilotTelemetry -Path $path -OutputPath (Join-Path $directory 'public.json') -Clock ([Diagnostics.Stopwatch]::StartNew()) -DeadlineSeconds 10
+        return Read-PilotTelemetry -Path $path -OutputPath (Join-Path $directory 'public.json') -Clock ([Diagnostics.Stopwatch]::StartNew()) -DeadlineSeconds 10 -NoOverallTimeout:$NoOverallTimeout
     }
     Test-Case 'nested failure telemetry retains required negative controls and counts hashes once at the root' {
         $summary = Read-TestTelemetry -Records (New-TestTelemetry)
@@ -414,6 +446,19 @@ exit 9
         $nested = @($summary.operations | Where-Object { $_.operation -ceq 'Import-EzVmManagedInstance' })[0]
         Assert-True ($nested.failedCalls -eq 1 -and $nested.inclusiveSeconds -eq 1)
         Assert-True (($summary | ConvertTo-Json -Depth 12) -notmatch 'SYNTHETIC-UNAPPROVED-TEXT')
+    }
+    Test-Case 'long telemetry requires opt-in while finite type and chronology guards remain' {
+        $records=New-TestTelemetry
+        $records[4].elapsedSeconds=7200.0; $records[4].durationSeconds=7200.0
+        $records[4].digestTotals.manifest.elapsedSeconds=7100.0
+        Assert-Throws {Read-TestTelemetry $records} 'telemetry-clock-or-operation-invalid'
+        Assert-True (Read-TestTelemetry $records -NoOverallTimeout).complete
+        foreach($value in @([double]::NaN,[double]::PositiveInfinity,'7200')) {
+            $records=New-TestTelemetry; $records[4].durationSeconds=$value
+            Assert-Throws {Read-TestTelemetry $records -NoOverallTimeout} 'telemetry-number-invalid'
+        }
+        $records=New-TestTelemetry; $records[4].elapsedSeconds=1.0
+        Assert-Throws {Read-TestTelemetry $records -NoOverallTimeout} 'telemetry-clock-or-operation-invalid'
     }
     Test-Case 'telemetry root failure incomplete nesting stale sequence and unknown operations cannot qualify' {
         $records = New-TestTelemetry; $records[4].event = 'failure'

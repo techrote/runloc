@@ -143,6 +143,17 @@ try {
         }
         finally { $deadline.Dispose() }
     }
+    Test-SupervisorCase 'explicit no-overall-timeout constructs no native timers' {
+        $watch=New-Object Diagnostics.Stopwatch
+        $deadline=New-Object RunlocPoc.SupervisorDeadline(0,0,$false,$true)
+        try {
+            $deadline.AttachTermination([Delegate]::CreateDelegate([Action],$watch,$watch.GetType().GetMethod('Start')))
+            Start-Sleep -Milliseconds 300
+            Assert-Supervisor (-not $deadline.TimersEnabled -and -not $deadline.ExecutionExpired -and -not $deadline.HardWallReached -and -not $watch.IsRunning)
+            $deadline.DetachTermination()
+        } finally {$deadline.Dispose()}
+        Assert-SupervisorThrows {New-Object RunlocPoc.SupervisorDeadline(100,1000,$false,$true)} 'zero timing'
+    }
     Test-SupervisorCase 'bounded JSON reads reject duplicate escaped keys oversize and invalid UTF8' {
         $path = Join-Path $supervisorTestRoot 'strict.json'
         foreach ($json in @('{"a":1,"a":2}', '{"a":1,"\u0061":2}', '{"A":1,"a":2}')) {
@@ -167,6 +178,27 @@ try {
         Assert-SupervisorThrows { Read-SupervisorFixture -Fixture $fixture } 'inner-outcome-incomplete'
         $fixture = New-SupervisorFixture -PreflightOnly; $fixture.Receipt.vmQualificationStarted = $true; Save-SupervisorFixture $fixture
         Assert-SupervisorThrows { Read-SupervisorFixture $fixture } 'preflight-outcome-invalid'
+    }
+    Test-SupervisorCase 'long complete receipt requires matching explicit outer timing policy' {
+        $fixture=New-SupervisorFixture
+        $fixture.Receipt['overallTimeoutDisabled']=$true
+        $fixture.Receipt.targetSeconds=0; $fixture.Receipt.hardWallSeconds=0; $fixture.Receipt.controllerBudgetSeconds=0
+        $fixture.Receipt.elapsedSeconds=7200
+        $start=([DateTimeOffset]::Parse($fixture.Receipt.startedUtc)).UtcDateTime
+        $fixture.Receipt.endedUtc=$start.AddSeconds(7200).ToString('o')
+        $fixture.Arguments.Process.endedUtc=$start.AddSeconds(7202).ToString('o')
+        $fixture.Arguments.Process.records[0].Utc=$start.AddSeconds(7201).ToString('o')
+        $fixture.Arguments.ElapsedSeconds=7210; $fixture.Arguments.ControllerBudgetSeconds=0
+        Save-SupervisorFixture $fixture
+        Assert-SupervisorThrows {Read-SupervisorFixture $fixture} 'timing-policy-mismatch'
+        $fixture.Arguments.NoOverallTimeout=$true
+        Assert-Supervisor ((Read-SupervisorFixture $fixture).Outcome -ceq 'pass')
+        foreach($value in @($false,'true',$null)) {
+            $fixture.Receipt.overallTimeoutDisabled=$value; Save-SupervisorFixture $fixture
+            Assert-SupervisorThrows {Read-SupervisorFixture $fixture} 'timing-policy-mismatch'
+        }
+        $fixture.Receipt.Remove('overallTimeoutDisabled'); Save-SupervisorFixture $fixture
+        Assert-SupervisorThrows {Read-SupervisorFixture $fixture} 'timing-policy-missing'
     }
     Test-SupervisorCase 'PASS text cannot overcome nonzero actual exit or unresolved owned processes' {
         foreach ($field in @('exitCode', 'activeProcesses', 'forced', 'timedOut', 'outputOverflow', 'outputFailed', 'controllerError', 'childExited')) {

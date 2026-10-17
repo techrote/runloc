@@ -19,14 +19,25 @@ namespace RunlocPoc
         public bool ExecutionExpired { get { return expired; } }
         public bool StopFailed { get { return stopFailed; } }
         public bool HardWallReached { get { return hardWallReached; } }
+        public bool TimersEnabled { get { return executionTimer != null; } }
 
-        // Production always uses the fixed 5340/5400-second absolute deadlines.
+        // Default production uses the fixed 5340/5400-second absolute deadlines.
+        // The explicit owner exception constructs no timers via the overload below.
         // Milliseconds and the no-exit mode permit short synthetic native tests.
         public SupervisorDeadline(int executionMilliseconds, int terminalMilliseconds, bool terminateSupervisor)
+            : this(executionMilliseconds, terminalMilliseconds, terminateSupervisor, false) { }
+
+        public SupervisorDeadline(int executionMilliseconds, int terminalMilliseconds, bool terminateSupervisor, bool noOverallTimeout)
         {
+            this.terminateSupervisor = terminateSupervisor;
+            if (noOverallTimeout)
+            {
+                if (executionMilliseconds != 0 || terminalMilliseconds != 0)
+                    throw new ArgumentException("Disabled deadlines require zero timing arguments.");
+                return; // No Timer is constructed or armed in this explicit operator mode.
+            }
             if (executionMilliseconds < 1 || terminalMilliseconds <= executionMilliseconds)
                 throw new ArgumentOutOfRangeException("executionMilliseconds");
-            this.terminateSupervisor = terminateSupervisor;
             executionTimer = new Timer(ExecutionDeadline, null, executionMilliseconds, Timeout.Infinite);
             terminalTimer = new Timer(TerminalDeadline, null, terminalMilliseconds, Timeout.Infinite);
         }
@@ -87,8 +98,8 @@ namespace RunlocPoc
                 if (disposed) return;
                 disposed = true;
                 terminateOwnedJob = null;
-                executionTimer.Dispose();
-                terminalTimer.Dispose();
+                if (executionTimer != null) executionTimer.Dispose();
+                if (terminalTimer != null) terminalTimer.Dispose();
             }
         }
 

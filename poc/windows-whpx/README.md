@@ -12,7 +12,11 @@ The [implementation checkpoint](../../docs/fast-track/CI-POC-001-EVIDENCE.md)
 records current upstream work, actual results and the remaining merge gate.
 The [binding contract](../../docs/fast-track/WINDOWS-WHPX-CI-POC.md) requires one
 complete cold physical WHPX run within 60 minutes, including preflight, evidence
-and owned cleanup, with an operational 90-minute wall.
+and owned cleanup, with an operational 90-minute wall in the default mode.
+The owner's later 17 October 2026 instruction authorizes `-NoOverallTimeout`
+for the replacement attempt after a forced Windows restart. That explicit mode
+removes both the whole-invocation target and hard cutoff; it preserves the
+original harness's per-operation limits and every other acceptance assertion.
 
 ## Candidate and source contract
 
@@ -88,7 +92,10 @@ $workParent = [Environment]::GetFolderPath('UserProfile')
 if ([IO.Path]::GetFullPath($workParent).Length -gt 20) {
     throw 'Choose a shorter existing user-writable WorkParent before continuing.'
 }
-$pilotRoot = Join-Path ([Environment]::GetFolderPath('LocalApplicationData')) ('Runloc-Pilot-' + [Guid]::NewGuid().ToString('N'))
+$pilotRoot = Join-Path ([Environment]::GetFolderPath('UserProfile')) ('Runloc-Pilot-' + [Guid]::NewGuid().ToString('N'))
+if ((Join-Path $pilotRoot 'Evidence').Length -gt 99) {
+    throw 'Choose a shorter existing user-owned parent for the fresh source/evidence hierarchy.'
+}
 New-Item -ItemType Directory -Path $pilotRoot -ErrorAction Stop | Out-Null
 $controllerRoot = Join-Path $pilotRoot 'Controller'
 $candidateRoot = Join-Path $pilotRoot 'EzVM'
@@ -98,6 +105,8 @@ git clone --no-checkout https://github.com/techrote/runloc $controllerRoot
 if ($LASTEXITCODE -ne 0) { throw 'Controller clone failed.' }
 git -C $controllerRoot config core.autocrlf false
 if ($LASTEXITCODE -ne 0) { throw 'Controller checkout configuration failed.' }
+git -C $controllerRoot config core.eol lf
+if ($LASTEXITCODE -ne 0) { throw 'Controller default newline configuration failed.' }
 git -C $controllerRoot checkout --detach $controllerCommit
 if ($LASTEXITCODE -ne 0) { throw 'Controller checkout failed.' }
 
@@ -109,6 +118,8 @@ git clone --no-checkout $candidate.repository $candidateRoot
 if ($LASTEXITCODE -ne 0) { throw 'Candidate clone failed.' }
 git -C $candidateRoot config core.autocrlf false
 if ($LASTEXITCODE -ne 0) { throw 'Candidate checkout configuration failed.' }
+git -C $candidateRoot config core.eol lf
+if ($LASTEXITCODE -ne 0) { throw 'Candidate default newline configuration failed.' }
 git -C $candidateRoot checkout --detach $candidate.commit
 if ($LASTEXITCODE -ne 0) { throw 'Candidate checkout failed.' }
 New-Item -ItemType Directory -Path $evidenceParent -ErrorAction Stop | Out-Null
@@ -120,6 +131,17 @@ $powershellExe = Join-Path $env:SystemRoot 'System32\WindowsPowerShell\v1.0\powe
 The commands intentionally create new checkouts and a new evidence parent. If a
 chosen path already contains work, choose another location. Do not remove owner
 files or reuse old fixtures to make these prerequisites pass.
+
+Use a direct local path that Git reports as the same canonical checkout root.
+The physical operator session on 17 October 2026 observed MSIX redirection of
+`LocalApplicationData` into the desktop app's package cache; the source guard
+correctly refused that alias. The user profile provided a direct path with the
+permissions required to create private owner-only directories. A merely writable
+directory may lack the access required to apply those ACLs. Both conditions must
+pass the unchanged preflight; do not weaken source or ACL checks to accommodate
+an unsuitable parent. Explicit `core.eol lf` also prevents an inherited
+`core.eol=crlf` from changing extensionless files such as `LICENSE`; repository
+attributes still select CRLF for PowerShell scripts.
 
 ## Invoke the bounded pilot
 
@@ -159,9 +181,29 @@ There is no boot-only acceptance route, cached-fixture resume or reduced marker
 set. An incomplete attempt must be diagnosed against its exact recorded source;
 a corrected source requires a new immutable candidate and a new cold attempt.
 
+### Owner-authorized completion without an overall timeout
+
+For the replacement physical attempt, append **`-NoOverallTimeout` to both
+dedicated invocations above**, including `-PreflightOnly`. This creates no native
+execution or terminal timer. The same explicit policy is passed to the inner
+controller and receipt validator; a receipt cannot opt itself into the exception.
+Both receipts and the start record contain `overallTimeoutDisabled: true`, with
+zero target, hard-wall and controller-budget fields meaning disabled, rather
+than a large finite deadline. Elapsed time is still measured and retained.
+
+The existing 120/150-second ACL probe limits, bounded Git and output operations,
+and original base-build, READY and shutdown limits remain. Failed assertions,
+process exits, output overflow, incomplete telemetry, changed source, cancelled
+execution, unresolved owned processes and failed fixture removal still fail.
+Job handles retain kill-on-close and disallow breakaway. A successful long run
+under this policy must be labelled with that policy; it does not demonstrate
+meeting the previous 60-minute performance target or a 90-minute operational wall.
+Do not use the old controller checkpoint for this switch: use the newly reviewed
+public commit containing the exception and keep its sources immutable.
+
 ## Deadline, containment and cleanup
 
-The 60-minute target measures the whole dedicated supervisor invocation, including
+In the default bounded policy, the 60-minute target measures the whole dedicated supervisor invocation, including
 bootstrap, source checks, the synthetic preflight, full scenario, shutdown,
 source revalidation and final evidence I/O. UTC timestamps accompany monotonic
 elapsed seconds. The supervisor stops its exact controller Job at 5,340 seconds,
@@ -169,8 +211,9 @@ allows bounded observation of termination through 5,390 seconds and has a native
 terminal watchdog at 5,400 seconds. Bootstrap before watchdog creation is charged
 to the same clock and reduces the remaining budget. The controller has its own
 shorter execution budget that reserves time for fixture disposal and evidence.
-A run beyond 3,600 seconds cannot pass even if it finishes before the 90-minute
-wall.
+A default bounded run beyond 3,600 seconds cannot pass even if it finishes before the 90-minute
+wall. The explicit owner-authorized `-NoOverallTimeout` policy instead has no
+whole-invocation cutoff or elapsed-time rejection; its receipts record that exception.
 
 Each child is created suspended, assigned to a Windows Job and then resumed.
 Jobs prevent breakaway and have kill-on-close semantics; nested jobs contain the
@@ -223,7 +266,10 @@ cannot be interpreted as successful cleanup merely because a timer fired.
 - Exactly one terminal
   `RUNLOC_WHPX_SUPERVISOR_OUTCOME=pass; elapsedSeconds=<duration>` line, printed
   after receipt/digest I/O and evidence-handle closure, with finite elapsed time
-  no greater than 3,600 seconds. A `preflight-pass` line never qualifies a VM run.
+  no greater than 3,600 seconds under the default bounded policy. The explicit
+  `-NoOverallTimeout` policy has no elapsed-time rejection and must match the
+  policy selected by the operator, controller and receipt validator. A
+  `preflight-pass` line never qualifies a VM run.
 - Actual dedicated supervisor exit code zero. A receipt's provisional `pass`
   cannot qualify an attempt if final I/O blocks, the terminal line is absent or
   late, or the process subsequently exits unsuccessfully.
