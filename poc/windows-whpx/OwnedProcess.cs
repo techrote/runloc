@@ -180,6 +180,24 @@ namespace RunlocPoc
             finally { if (information != IntPtr.Zero) Marshal.FreeHGlobal(information); CloseHandle(token); }
         }
 
+        public static SortedDictionary<string, string> CreateChildEnvironment(string temporary)
+        {
+            // Deliberately exclude GitHub/admin tokens and arbitrary host environment secrets.
+            // Do not inherit PSModulePath: the child PowerShell must construct its
+            // own default paths instead of autoloading modules for the parent engine.
+            // Defaults include CurrentUser/AllUsers; this is not an inbox-only policy.
+            SortedDictionary<string, string> childEnvironment = new SortedDictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+            foreach (string name in new string[] { "SystemRoot", "SystemDrive", "WINDIR", "COMSPEC", "PATH", "PATHEXT",
+                "USERPROFILE", "APPDATA", "LOCALAPPDATA", "ProgramFiles", "ProgramFiles(x86)", "ProgramData",
+                "PROCESSOR_ARCHITECTURE", "NUMBER_OF_PROCESSORS" })
+            {
+                string value = Environment.GetEnvironmentVariable(name);
+                if (value != null) childEnvironment[name] = value;
+            }
+            childEnvironment["TEMP"] = Path.GetFullPath(temporary); childEnvironment["TMP"] = Path.GetFullPath(temporary);
+            return childEnvironment;
+        }
+
         public OwnedProcess(string executable, string[] arguments, string directory, string temporary,
             string rawLogPath, long maxBytes)
         {
@@ -222,16 +240,7 @@ namespace RunlocPoc
                 startup.Start.Size = Marshal.SizeOf(typeof(StartupInfoEx)); startup.Start.Flags = 0x00000100;
                 startup.Start.Input = input.DangerousGetHandle(); startup.Start.Output = stdout.ClientSafePipeHandle.DangerousGetHandle();
                 startup.Start.Error = stderr.ClientSafePipeHandle.DangerousGetHandle(); startup.Attributes = attributes;
-                // Deliberately exclude GitHub/admin tokens and arbitrary host environment secrets.
-                SortedDictionary<string, string> childEnvironment = new SortedDictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-                foreach (string name in new string[] { "SystemRoot", "SystemDrive", "WINDIR", "COMSPEC", "PATH", "PATHEXT",
-                    "USERPROFILE", "APPDATA", "LOCALAPPDATA", "ProgramFiles", "ProgramFiles(x86)", "ProgramData",
-                    "PROCESSOR_ARCHITECTURE", "NUMBER_OF_PROCESSORS", "PSModulePath" })
-                {
-                    string value = Environment.GetEnvironmentVariable(name);
-                    if (value != null) childEnvironment[name] = value;
-                }
-                childEnvironment["TEMP"] = Path.GetFullPath(temporary); childEnvironment["TMP"] = Path.GetFullPath(temporary);
+                SortedDictionary<string, string> childEnvironment = CreateChildEnvironment(temporary);
                 StringBuilder block = new StringBuilder();
                 foreach (KeyValuePair<string, string> entry in childEnvironment) block.Append(entry.Key).Append('=').Append(entry.Value).Append('\0');
                 block.Append('\0'); environment = Marshal.StringToHGlobalUni(block.ToString());

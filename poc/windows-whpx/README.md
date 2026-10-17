@@ -179,6 +179,12 @@ and process handles. It never discovers ownership by process name or a reused
 numeric PID. Separate evidence is required for child exit, zero active owned Job
 processes, valid fixture ownership and successful fixture removal.
 
+The child receives an explicit environment with Windows runtime paths and its
+owned temporary directory. `PSModulePath` is omitted so Windows PowerShell builds
+its own default module search paths, including CurrentUser and AllUsers locations.
+This avoids inheriting incompatible module discovery state from the parent engine;
+the EzVM module itself is imported by the pinned candidate's explicit path.
+
 After descendants have exited, normal controller cleanup verifies its unique
 lease and successful exclusive fixture creation, then inventories only that
 lease's exact fixture. A planned path alone is not ownership: a pre-existing or racing

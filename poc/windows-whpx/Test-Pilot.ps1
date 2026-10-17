@@ -115,6 +115,19 @@ try {
         }
     }
     Test-Case 'Framework NUL inventory overload compatibility' { & (Join-Path $PSScriptRoot 'Test-FrameworkSplit.ps1') }
+    Test-Case 'native child environment omits inherited module discovery paths' {
+        $original = [Environment]::GetEnvironmentVariable('PSModulePath')
+        $poison = Join-Path $testRoot 'untrusted-parent-module-path'
+        try {
+            [Environment]::SetEnvironmentVariable('PSModulePath', $poison, [EnvironmentVariableTarget]::Process)
+            $environment = [RunlocPoc.OwnedProcess]::CreateChildEnvironment($testRoot)
+            Assert-True (-not $environment.ContainsKey('PSModulePath')) 'The native child inherited the parent module-discovery path.'
+            Assert-True ($environment['TEMP'] -ceq [IO.Path]::GetFullPath($testRoot) -and $environment['TMP'] -ceq [IO.Path]::GetFullPath($testRoot))
+        }
+        finally { [Environment]::SetEnvironmentVariable('PSModulePath', $original, [EnvironmentVariableTarget]::Process) }
+        Assert-True ([Environment]::GetEnvironmentVariable('PSModulePath') -ceq $original) 'The parent process module path was not restored.'
+    }
+
     Test-Case 'full synthetic evidence is accepted only by the pure oracle' {
         Assert-True (Test-Receipt (New-GoodReceipt)).Passed
         Assert-True ($script:PilotMarkers.Count -eq 24)
@@ -699,6 +712,46 @@ function Protect-EzVmControllerPrivateKey { param($Path); throw 'synthetic-exact
                 Assert-True (@($result.records | Where-Object { $_.Text -ceq 'EZVM012_REAL_COMPLETE_END_TO_END=PASS' }).Count -eq 1)
             }
         }
+        Test-Case 'contained PowerShell ignores the parent poison module and loads standard Utility' {
+            $poisonRoot = Join-Path $testRoot 'poison modules'
+            $poisonModule = Join-Path $poisonRoot 'Microsoft.PowerShell.Utility'
+            [void][IO.Directory]::CreateDirectory($poisonModule)
+            $sentinel = Join-Path $testRoot 'poison-module-loaded.txt'
+            $sentinelLiteral = $sentinel.Replace("'", "''")
+            [IO.File]::WriteAllText((Join-Path $poisonModule 'Microsoft.PowerShell.Utility.psd1'), "@{ RootModule = 'Untrusted.psm1'; ModuleVersion = '99.0.0'; FunctionsToExport = @('Write-Output'); CmdletsToExport = @(); AliasesToExport = @() }")
+            [IO.File]::WriteAllText((Join-Path $poisonModule 'Untrusted.psm1'), "[IO.File]::WriteAllText('$sentinelLiteral', 'UNTRUSTED MODULE LOADED')`nfunction Write-Output { throw 'synthetic-parent-module-loaded' }`nExport-ModuleMember -Function Write-Output")
+            $probeScript = Join-Path $testRoot 'standard utility child.ps1'
+            $probeBody = @'
+$ErrorActionPreference = 'Stop'
+if (([string][Environment]::GetEnvironmentVariable('PSModulePath')).IndexOf('__POISON_ROOT__', [StringComparison]::OrdinalIgnoreCase) -ge 0) { throw 'synthetic-parent-module-path-inherited' }
+Write-Output 'SYNTHETIC_STANDARD_UTILITY=PASS'
+$utility = @(Get-Module -Name Microsoft.PowerShell.Utility)
+if ($utility.Count -ne 1 -or -not [IO.Path]::GetFullPath($utility[0].Path).StartsWith([IO.Path]::GetFullPath($PSHOME) + [IO.Path]::DirectorySeparatorChar, [StringComparison]::OrdinalIgnoreCase)) { throw 'synthetic-standard-utility-not-from-pshome' }
+Write-Output 'SYNTHETIC_UTILITY_FROM_PSHOME=PASS'
+exit 9
+'@
+            [IO.File]::WriteAllText($probeScript, $probeBody.Replace('__POISON_ROOT__', $poisonRoot.Replace("'", "''")))
+            $original = [Environment]::GetEnvironmentVariable('PSModulePath')
+            try {
+                # This temporary environment belongs to this test process only.
+                # The production constructor must omit it from the owned child.
+                [Environment]::SetEnvironmentVariable('PSModulePath', $poisonRoot, [EnvironmentVariableTarget]::Process)
+                $clock = [Diagnostics.Stopwatch]::StartNew()
+                $result = Invoke-PilotChild -Executable $powershell -Arguments @('-NoLogo', '-NoProfile', '-NonInteractive', '-File', $probeScript) -WorkingDirectory $testRoot -TemporaryDirectory $testRoot -RawLogPath (Join-Path $testRoot 'poison-parent-child.log') -Clock $clock -ExecutionDeadlineSeconds 15 -CleanupDeadlineSeconds 20
+            }
+            finally { [Environment]::SetEnvironmentVariable('PSModulePath', $original, [EnvironmentVariableTarget]::Process) }
+            Assert-True ([Environment]::GetEnvironmentVariable('PSModulePath') -ceq $original)
+            Assert-True (-not [IO.File]::Exists($sentinel)) 'The child imported the synthetic untrusted parent module.'
+            if ($result.exitCode -ne 9 -or $result.forced -or -not $result.childExited -or $result.activeProcesses -ne 0) {
+                $diagnostic = @{ exitCode = $result.exitCode; timedOut = $result.timedOut; forced = $result.forced;
+                    childExited = $result.childExited; activeProcesses = $result.activeProcesses;
+                    output = @($result.records | Select-Object -First 4 | ForEach-Object { $value = [string]$_.Text; $value.Substring(0, [Math]::Min(240, $value.Length)) }) }
+                Write-Host ('SYNTHETIC_POISON_PARENT_FAILURE=' + ($diagnostic | ConvertTo-Json -Compress))
+            }
+            Assert-True ($result.exitCode -eq 9 -and $result.childExited -and $result.activeProcesses -eq 0 -and -not $result.forced)
+            Assert-True (@($result.records | Where-Object { $_.Text -ceq 'SYNTHETIC_STANDARD_UTILITY=PASS' }).Count -eq 1)
+            Assert-True (@($result.records | Where-Object { $_.Text -ceq 'SYNTHETIC_UTILITY_FROM_PSHOME=PASS' }).Count -eq 1)
+        }
         Test-Case 'whole owned descendant tree stops at deadline while unrelated child survives' {
             $parentScript = Join-Path $testRoot 'owned parent.ps1'
             $childScript = Join-Path $testRoot 'owned descendant.ps1'
@@ -745,7 +798,7 @@ function Protect-EzVmControllerPrivateKey { param($Path); throw 'synthetic-exact
             Assert-True ((Get-Item -LiteralPath $log).Length -le 32768)
         }
     }
-    else { $script:skipped += 6; Write-Host 'SKIP 6 Windows-only ACL/Job process groups; required Windows CI executes these. No physical WHPX qualification is claimed.' }
+    else { $script:skipped += 7; Write-Host 'SKIP 7 Windows-only ACL/Job process groups; required Windows CI executes these. No physical WHPX qualification is claimed.' }
     if ([IO.File]::Exists((Join-Path $PSScriptRoot 'Test-Supervisor.ps1'))) {
         Test-Case 'independent outer supervisor contracts' { & (Join-Path $PSScriptRoot 'Test-Supervisor.ps1') }
     }

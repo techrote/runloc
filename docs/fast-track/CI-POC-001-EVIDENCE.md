@@ -202,6 +202,34 @@ test to finalize the failed session before reading its retained output, and adds
 checks for stream disposal and both operation/full-release failure records.
 Production telemetry sharing, full-release assertions and ACL code are unchanged.
 
+### Native Windows child module-discovery correction
+
+The corrected path/ownership source `477262786f040291e247d2d4e5b7b3436bf7bdae`
+passed all 47 pilot and 17 supervisor groups under Windows PS7, with zero skips.
+PS5 passed the preceding source, path and ACL controls but failed at its first
+contained PowerShell child. The [retained Windows audit](evidence/runloc-windows-regressions.json)
+preserves this red result, the missing suite summary and subsequent diagnostics.
+The original process deadline and expected synthetic exit 9 were retained.
+
+Diagnostic `3308de7d57e218152fdf4052b461ba54f4933ccf` established that the PS5
+child entered its script and produced direct Console stdout, then stalled at
+`Write-Output`. In the [same Windows job](https://github.com/techrote/runloc/actions/runs/39057706961/job/117468984055),
+an otherwise identical child which set its own module path reached exit intent,
+captured both expected lines and exited 9 in 0.323187 seconds. The baseline timed
+out after 15.1642197 seconds with a clean forced Job stop. These are synthetic
+software observations, not VM timing results.
+
+The production correction omits inherited `PSModulePath` from the native child's
+environment so Windows PowerShell constructs its defaults, as
+[Microsoft documents for intermediate/native launches](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_psmodulepath?view=powershell-7.6#starting-windows-powershell-from-powershell-7).
+All other allowed variables, private TEMP/TMP, native handles, containment and
+deadlines are unchanged. Default module paths include CurrentUser and AllUsers;
+this is not exclusive inbox resolution. The actual environment factory regression
+was observed red before this omission and green afterward. A Windows poison-path
+regression also requires that the parent path is absent, its synthetic module
+never executes, and the actual Utility module resolves under the child PSHOME.
+Corrected exact-source Windows acceptance is recorded separately after CI.
+
 ## Frozen candidate software acceptance
 
 The approved EzVM execution manifest names public
@@ -247,8 +275,8 @@ observed failing against the initial oracle, then passed after the two native
 counters were explicitly accepted. String, boolean, floating and nonzero counts
 remain failures.
 
-Current local checks on Linux with PowerShell 7.6.6 passed all 41 pilot groups
-and the separately reported 15 supervisor groups. Six pilot and two supervisor
+Current local checks on Linux with PowerShell 7.6.6 passed all 42 pilot groups
+and the separately reported 15 supervisor groups. Seven pilot and two supervisor
 groups require Windows and are explicitly skipped locally. All PowerShell scripts
 parsed and both native C# types compiled. The Runloc repository contract and all
 21 Python tests passed after implementation. Actual Windows CI and physical
