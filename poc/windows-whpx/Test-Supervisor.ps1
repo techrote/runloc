@@ -94,16 +94,42 @@ function Read-SupervisorFixture {
 
 try {
     Test-SupervisorCase 'dedicated File invocation gate protects an existing owner shell' {
+        $wrapperPath = Join-Path $PSScriptRoot 'Invoke-WhpxPilot.ps1'
+        $tokens = $null; $parseErrors = $null
+        $wrapperAst = [Management.Automation.Language.Parser]::ParseFile((Join-Path $PSScriptRoot 'Pilot.Bootstrap.ps1'), [ref]$tokens, [ref]$parseErrors)
+        $earlyGuard = @($wrapperAst.FindAll({ param($node) $node -is [Management.Automation.Language.FunctionDefinitionAst] -and $node.Name -ceq 'Test-PilotEarlyDedicatedFileInvocation' }, $true))
+        Assert-Supervisor ($parseErrors.Count -eq 0 -and $earlyGuard.Count -eq 1)
+        # Execute the actual production guard, without launching the wrapper.
+        . ([scriptblock]::Create($earlyGuard[0].Extent.Text))
         $script = Join-Path $supervisorTestRoot 'Invoke-WhpxPilot.ps1'
         Assert-Supervisor ([RunlocPoc.SupervisorDeadline]::IsDedicatedFileInvocation(@('powershell.exe', '-NoProfile', '-NonInteractive', '-File', $script, '-CandidateRoot', 'synthetic'), $script, $script))
+        Assert-Supervisor (Test-PilotEarlyDedicatedFileInvocation -CommandLine @('powershell.exe', '-NoProfile', '-NonInteractive', '-File', $script, '-CandidateRoot', 'synthetic') -ExpectedScript $script -InvocationName $script)
         foreach ($arguments in @(
             @('powershell.exe'), @('powershell.exe', '-NoProfile', '-NonInteractive', '-Command', ('& ' + $script)),
             @('powershell.exe', '-NoProfile', '-NonInteractive', '-EncodedCommand', 'synthetic', '-File', $script),
             @('powershell.exe', '-NoProfile', '-NonInteractive', '-File', ($script + '.other')),
             @('powershell.exe', '-NonInteractive', '-File', $script))) {
             Assert-Supervisor (-not [RunlocPoc.SupervisorDeadline]::IsDedicatedFileInvocation($arguments, $script, $script))
+            Assert-Supervisor (-not (Test-PilotEarlyDedicatedFileInvocation -CommandLine $arguments -ExpectedScript $script -InvocationName $script))
         }
         Assert-Supervisor (-not [RunlocPoc.SupervisorDeadline]::IsDedicatedFileInvocation(@('powershell.exe', '-NoProfile', '-NonInteractive', '-File', $script), $script, '.'))
+        Assert-Supervisor (-not (Test-PilotEarlyDedicatedFileInvocation -CommandLine @('powershell.exe', '-NoProfile', '-NonInteractive', '-File', $script) -ExpectedScript $script -InvocationName '.'))
+    }
+    Test-SupervisorCase 'actual wrapper refuses call and dot-source without changing owner process environment' {
+        $wrapperPath = Join-Path $PSScriptRoot 'Invoke-WhpxPilot.ps1'
+        $parameters = @{ CandidateRoot = $supervisorTestRoot; ExpectedControllerCommit = ('a' * 40);
+            EvidenceParent = $supervisorTestRoot; WorkParent = $supervisorTestRoot }
+        $original = [Environment]::GetEnvironmentVariable('PSModulePath')
+        $sentinel = Join-Path $supervisorTestRoot 'unchanged owner module environment'
+        try {
+            [Environment]::SetEnvironmentVariable('PSModulePath', $sentinel, [EnvironmentVariableTarget]::Process)
+            Assert-SupervisorThrows { & $wrapperPath @parameters } 'Launch a dedicated'
+            Assert-Supervisor ([Environment]::GetEnvironmentVariable('PSModulePath') -ceq $sentinel)
+            Assert-SupervisorThrows { . $wrapperPath @parameters } 'Launch a dedicated'
+            Assert-Supervisor ([Environment]::GetEnvironmentVariable('PSModulePath') -ceq $sentinel)
+        }
+        finally { [Environment]::SetEnvironmentVariable('PSModulePath', $original, [EnvironmentVariableTarget]::Process) }
+        Assert-Supervisor ([Environment]::GetEnvironmentVariable('PSModulePath') -ceq $original)
     }
     Test-SupervisorCase 'native deadline fires without a PowerShell callback or runspace' {
         $watch = New-Object Diagnostics.Stopwatch
@@ -253,21 +279,27 @@ try {
         $powershell = Join-Path $env:SystemRoot 'System32/WindowsPowerShell/v1.0/powershell.exe'
         Test-SupervisorCase 'native watchdog kills a hung controller and nested Job while an unrelated sentinel survives' {
             $nestedScript = Join-Path $supervisorTestRoot 'nested controller.ps1'
-            $native = (Join-Path $PSScriptRoot 'OwnedProcess.cs').Replace("'", "''")
+            $common = (Join-Path $PSScriptRoot 'Pilot.Common.ps1').Replace("'", "''")
+            $leafScript = Join-Path $supervisorTestRoot 'nested leaf.ps1'
+            [IO.File]::WriteAllText($leafScript, 'Start-Sleep -Seconds 60')
+            $leafLiteral = $leafScript.Replace("'", "''")
             $testPath = $supervisorTestRoot.Replace("'", "''"); $exe = $powershell.Replace("'", "''")
             [IO.File]::WriteAllText($nestedScript, @"
-Add-Type -Path '$native'
-`$nested = New-Object RunlocPoc.OwnedProcess('$exe', @('-NoProfile', '-NonInteractive', '-Command', 'Start-Sleep -Seconds 60'), '$testPath', '$testPath', '$testPath/nested-private.log', 1048576)
+. '$common'
+Import-PilotNative
+`$nestedArguments = @(Get-PilotPowerShellArguments -TargetScript '$leafLiteral')
+`$nested = New-Object RunlocPoc.OwnedProcess('$exe', [string[]]`$nestedArguments, '$testPath', '$testPath', '$testPath/nested-private.log', 1048576)
 Write-Output 'NESTED_JOB_STARTED'
 Start-Sleep -Seconds 60
 "@)
             $sentinelInfo = New-Object Diagnostics.ProcessStartInfo
-            $sentinelInfo.FileName = $powershell; $sentinelInfo.Arguments = '-NoProfile -NonInteractive -Command "Start-Sleep -Seconds 60"'
+            $sentinelInfo.FileName = $powershell; $sentinelInfo.Arguments = '-NoProfile -NonInteractive -Command "[Threading.Thread]::Sleep(60000)"'
             $sentinelInfo.UseShellExecute = $false; $sentinelInfo.CreateNoWindow = $true
             $sentinel = [Diagnostics.Process]::Start($sentinelInfo); $null = $sentinel.Handle
             $job = $null; $deadline = $null
             try {
-                $job = New-Object RunlocPoc.OwnedProcess($powershell, @('-NoProfile', '-NonInteractive', '-File', $nestedScript),
+                $childArguments = @(Get-PilotPowerShellArguments -TargetScript $nestedScript)
+                $job = New-Object RunlocPoc.OwnedProcess($powershell, [string[]]$childArguments,
                     $supervisorTestRoot, $supervisorTestRoot, (Join-Path $supervisorTestRoot 'outer-native.log'), 1048576)
                 $deadline = New-Object RunlocPoc.SupervisorDeadline(7000, 15000, $false)
                 $deadline.AttachTermination([Delegate]::CreateDelegate([Action], $job, $job.GetType().GetMethod('Terminate')))
@@ -298,7 +330,8 @@ Write-Output 'SYNTHETIC_COMPLETED'
 "@)
             $deadline = New-Object RunlocPoc.SupervisorDeadline(15000, 20000, $false)
             try {
-                $result = Invoke-PilotSupervisedController -Executable $powershell -Arguments @('-NoProfile', '-NonInteractive', '-File', $scriptFile) `
+                $childArguments = @(Get-PilotPowerShellArguments -TargetScript $scriptFile)
+                $result = Invoke-PilotSupervisedController -Executable $powershell -Arguments $childArguments `
                     -WorkingDirectory $supervisorTestRoot -TemporaryDirectory $supervisorTestRoot -RawLogPath (Join-Path $supervisorTestRoot 'terminal.log') `
                     -Clock ([Diagnostics.Stopwatch]::StartNew()) -Deadline $deadline -ExecutionDeadlineSeconds 15 -CleanupDeadlineSeconds 18
                 Assert-Supervisor ($result.exitCode -eq 124 -and $result.childExited -and $result.activeProcesses -eq 0 -and -not $result.forced)

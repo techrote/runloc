@@ -33,7 +33,8 @@ try {
     $controller = Get-PilotSourceIdentity -Root $controllerRoot -Repository 'https://github.com/techrote/runloc' -ExpectedCommit $ExpectedControllerCommit -Clock $clock -DeadlineSeconds $executionDeadline
     foreach ($relative in @('poc/windows-whpx/Invoke-WhpxPilot.ps1', 'poc/windows-whpx/Pilot.Controller.ps1', 'poc/windows-whpx/Invoke-AclPreflight.ps1',
             'poc/windows-whpx/Pilot.Common.ps1', 'poc/windows-whpx/OwnedProcess.cs', 'poc/windows-whpx/Pilot.Supervisor.ps1',
-            'poc/windows-whpx/SupervisorDeadline.cs', 'poc/windows-whpx/candidate.json')) {
+            'poc/windows-whpx/SupervisorDeadline.cs', 'poc/windows-whpx/Pilot.PowerShellEntry.ps1',
+            'poc/windows-whpx/Pilot.Bootstrap.ps1', 'poc/windows-whpx/candidate.json')) {
         $path = Assert-PilotPath -Path (Join-Path $controllerRoot $relative) -File
         $controller.files += [ordered]@{ path = $relative; sha256Lf = (Get-PilotDigest -Path $path -NormalizeText);
             executedBytesSha256 = (Get-PilotDigest -Path $path) }
@@ -72,9 +73,9 @@ try {
     [void][IO.Directory]::CreateDirectory($preflightTemp)
     $preflightStart = $clock.Elapsed.TotalSeconds
     $receipt.cleanup.childExited = $false; $receipt.cleanup.activeProcesses = $null
-    $preflight = Invoke-PilotChild -Executable $windowsPowerShell -Arguments @('-NoLogo', '-NoProfile', '-NonInteractive', '-ExecutionPolicy', 'Bypass',
-        '-File', (Join-Path $PSScriptRoot 'Invoke-AclPreflight.ps1'), '-SourceRoot', $CandidateRoot,
-        '-ProbeDirectory', (Join-Path $lease.Private 'synthetic-acl-probe')) -WorkingDirectory $controllerRoot -TemporaryDirectory $preflightTemp `
+    $preflightArguments = @(Get-PilotPowerShellArguments -TargetScript (Join-Path $PSScriptRoot 'Invoke-AclPreflight.ps1') -NamedParameters @{
+        SourceRoot = $CandidateRoot; ProbeDirectory = (Join-Path $lease.Private 'synthetic-acl-probe') })
+    $preflight = Invoke-PilotChild -Executable $windowsPowerShell -Arguments $preflightArguments -WorkingDirectory $controllerRoot -TemporaryDirectory $preflightTemp `
         -RawLogPath (Join-Path $lease.Private 'acl-preflight.log') -Clock $clock -ExecutionDeadlineSeconds ([Math]::Min($preflightStart + 120, $executionDeadline)) `
         -CleanupDeadlineSeconds ([Math]::Min($preflightStart + 150, $cleanupDeadline)) -MaximumLogBytes 1048576
     $receipt.preflight = [ordered]@{ exitCode = $preflight.exitCode; elapsedSeconds = $preflight.endSeconds - $preflight.startSeconds;
@@ -110,9 +111,8 @@ try {
         $receipt.preflight.qualificationStarted = $true
         $receipt.cleanup.childExited = $false; $receipt.cleanup.activeProcesses = $null
         $reason = 'full-qualification-failed'
-        $harnessArguments = @('-NoLogo', '-NoProfile', '-NonInteractive', '-ExecutionPolicy', 'Bypass', '-File',
-            (Join-Path $CandidateRoot $configuration.harness), '-Root', $CandidateRoot, '-ReleaseQualification', '-Accelerator', 'whpx',
-            '-TelemetryPath', (Join-Path $lease.Private 'telemetry.jsonl'))
+        $harnessArguments = @(Get-PilotPowerShellArguments -TargetScript (Join-Path $CandidateRoot $configuration.harness) -NamedParameters @{
+            Root = $CandidateRoot; ReleaseQualification = $true; Accelerator = 'whpx'; TelemetryPath = (Join-Path $lease.Private 'telemetry.jsonl') })
         $child = Invoke-PilotChild -Executable $windowsPowerShell -Arguments $harnessArguments -WorkingDirectory $CandidateRoot -TemporaryDirectory $lease.Fixture `
             -RawLogPath (Join-Path $lease.Private 'qualification.log') -Clock $clock -ExecutionDeadlineSeconds $executionDeadline -CleanupDeadlineSeconds $cleanupDeadline
         $receipt.childExitCode = $child.exitCode; $receipt.timedOut = $child.timedOut; $receipt.outputOverflow = $child.outputOverflow

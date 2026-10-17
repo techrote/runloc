@@ -20,6 +20,37 @@ function Test-Case {
     try { & $Action; $script:passed++; Write-Host ('PASS ' + $Name) }
     catch { Write-Host ('FAIL ' + $Name); throw }
 }
+function Invoke-TestPowerShellEntry {
+    param([string]$TargetScript, [hashtable]$NamedParameters = @{}, [object[]]$PositionalArguments = @(), [string[]]$CommandArguments = @())
+    if ($CommandArguments.Count -eq 0) {
+        $CommandArguments = @(Get-PilotPowerShellArguments -TargetScript $TargetScript -NamedParameters $NamedParameters -PositionalArguments $PositionalArguments)
+    }
+    if ($script:PilotWindows) {
+        $executable = Join-Path $env:SystemRoot 'System32/WindowsPowerShell/v1.0/powershell.exe'
+        $clock = [Diagnostics.Stopwatch]::StartNew()
+        $result = Invoke-PilotChild -Executable $executable -Arguments $CommandArguments -WorkingDirectory $testRoot -TemporaryDirectory $testRoot `
+            -RawLogPath (Join-Path $testRoot ('entry-' + [Guid]::NewGuid().ToString('N') + '.log')) `
+            -Clock $clock -ExecutionDeadlineSeconds 15 -CleanupDeadlineSeconds 20
+        Assert-True ($result.childExited -and $result.activeProcesses -eq 0 -and -not $result.forced -and
+            -not $result.timedOut -and -not $result.outputFailed -and -not $result.outputOverflow) 'Contained entry did not finish normally inside its original deadline.'
+        return [pscustomobject]@{ ExitCode = $result.exitCode; Lines = @($result.records | ForEach-Object { $_.Text }) }
+    }
+    $start = New-Object Diagnostics.ProcessStartInfo
+    $start.FileName = [Diagnostics.Process]::GetCurrentProcess().MainModule.FileName
+    $start.Arguments = (@($CommandArguments | ForEach-Object { [RunlocPoc.OwnedProcess]::QuoteArgument($_) }) -join ' ')
+    $start.WorkingDirectory = $testRoot; $start.UseShellExecute = $false; $start.CreateNoWindow = $true
+    $start.RedirectStandardOutput = $true; $start.RedirectStandardError = $true
+    $process = New-Object Diagnostics.Process; $process.StartInfo = $start
+    try {
+        Assert-True $process.Start(); $null = $process.Handle
+        $stdout = $process.StandardOutput.ReadToEndAsync(); $stderr = $process.StandardError.ReadToEndAsync()
+        if (-not $process.WaitForExit(15000)) { $process.Kill(); $null = $process.WaitForExit(5000); throw 'synthetic-entry-timeout' }
+        Assert-True ($stdout.Wait(1000) -and $stderr.Wait(1000)) 'Synthetic entry output did not drain.'
+        $lines = @([string]($stdout.Result + $stderr.Result) -split '\r?\n' | Where-Object { $_.Length -gt 0 })
+        return [pscustomobject]@{ ExitCode = $process.ExitCode; Lines = $lines }
+    }
+    finally { $process.Dispose() }
+}
 function Remove-PilotTestRoot {
     param([string]$Root)
     # Git creates read-only loose objects on Windows. Validate the complete
@@ -126,6 +157,99 @@ try {
         }
         finally { [Environment]::SetEnvironmentVariable('PSModulePath', $original, [EnvironmentVariableTarget]::Process) }
         Assert-True ([Environment]::GetEnvironmentVariable('PSModulePath') -ceq $original) 'The parent process module path was not restored.'
+    }
+
+    Test-Case 'entry data envelope preserves primitive types and refuses malformed or oversized input' {
+        $targetScript = Join-Path $testRoot 'envelope target.ps1'
+        [IO.File]::WriteAllText($targetScript, "Write-Output 'ENVELOPE_TARGET=PASS'")
+        $arguments = @(Get-PilotPowerShellArguments -TargetScript $targetScript -NamedParameters @{ Root = 'a path'; Empty = ''; Enabled = $true; Disabled = $false; Budget = 42; Large = [long]2147483648; Count = 99; Keys = 'literal' } -PositionalArguments @('', '-Root'))
+        $decoded = Read-PilotPowerShellInvocation -InvocationBase64 $arguments[-1]
+        Assert-True ($decoded.TargetScript -ceq $targetScript -and $decoded.NamedParameters.Root -ceq 'a path' -and $decoded.NamedParameters.Empty -ceq '')
+        Assert-True ($decoded.NamedParameters.Enabled -is [bool] -and $decoded.NamedParameters.Enabled -and -not $decoded.NamedParameters.Disabled)
+        Assert-True ($decoded.NamedParameters.Budget -is [int] -and $decoded.NamedParameters.Large -is [long])
+        Assert-True ($decoded.NamedParameters.PSBase.Count -eq 8 -and $decoded.NamedParameters['Count'] -eq 99 -and $decoded.NamedParameters['Keys'] -ceq 'literal')
+        Assert-True ($decoded.PositionalArguments.Count -eq 2 -and $decoded.PositionalArguments[0] -ceq '' -and $decoded.PositionalArguments[1] -ceq '-Root')
+        Assert-Throws { Get-PilotPowerShellArguments -TargetScript $targetScript -NamedParameters @{ Bad = [double]1 } } 'powershell-parameter-type'
+        Assert-Throws { Get-PilotPowerShellArguments -TargetScript $targetScript -NamedParameters @{ '-Root' = 'data' } } 'powershell-parameter-name'
+        $duplicateNames = New-Object Collections.Hashtable([StringComparer]::Ordinal)
+        $duplicateNames.Add('Root', 'one'); $duplicateNames.Add('root', 'two')
+        Assert-Throws { Get-PilotPowerShellArguments -TargetScript $targetScript -NamedParameters $duplicateNames } 'powershell-parameter-duplicate'
+        Assert-Throws { Get-PilotPowerShellArguments -TargetScript $targetScript -NamedParameters @{ Bad = { throw 'must-not-evaluate' } } } 'powershell-parameter-type'
+        Assert-Throws { Get-PilotPowerShellArguments -TargetScript $targetScript -PositionalArguments @(9) } 'powershell-positional-type'
+        Assert-Throws { Get-PilotPowerShellArguments -TargetScript $targetScript -PositionalArguments @([string][char]0) } 'powershell-argument-size'
+        Assert-Throws { Get-PilotPowerShellArguments -TargetScript $targetScript -NamedParameters @{ One = ('x' * 8192); Two = ('x' * 8192); Three = ('x' * 8192) } } 'powershell-invocation-too-large'
+        Assert-Throws { Read-PilotPowerShellInvocation -InvocationBase64 ('A' * 24001) } 'powershell-invocation-encoding'
+        Assert-Throws { Read-PilotPowerShellInvocation -InvocationBase64 'not!base64' } 'powershell-invocation-encoding'
+        $doctype = [Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes('<!DOCTYPE x [<!ENTITY y SYSTEM "file:///must-not-read">]><x>&y;</x>'))
+        Assert-Throws { Read-PilotPowerShellInvocation -InvocationBase64 $doctype } 'powershell-invocation-encoding'
+        $invalid = @{ schemaVersion = 1; targetScript = $targetScript; parameters = @{ Bad = @('array') }; arguments = [string[]]@() }
+        $shadowed = @{ schemaVersion = 1; targetScript = $targetScript; parameters = @{}; arguments = [string[]]@(); Count = 4; Keys = @('schemaVersion', 'targetScript', 'parameters', 'arguments') }
+        Assert-Throws { Assert-PilotPowerShellInvocation -Value $shadowed } 'powershell-invocation-schema'
+        $arguments[-1] = [Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes([Management.Automation.PSSerializer]::Serialize($invalid, 6)))
+        $refused = Invoke-TestPowerShellEntry -CommandArguments $arguments
+        Assert-True ($refused.ExitCode -ne 0 -and $refused.Lines -cnotcontains 'ENVELOPE_TARGET=PASS') 'Malformed entry data reached the target.'
+    }
+    Test-Case 'entry named switches and literal empty hostile arguments reach the exact target script' {
+        $targetScript = Join-Path $testRoot 'argument target with spaces.ps1'
+        $resultFile = Join-Path $testRoot 'entry-arguments.xml'
+        $body = @'
+[CmdletBinding()]
+param([string]$Root, [AllowEmptyString()][string]$Empty, [switch]$ReleaseQualification, [switch]$Disabled,
+    [int]$BudgetSeconds, [long]$LargeNumber, [string]$ResultFile,
+    [Parameter(Position = 0)][AllowEmptyString()][string]$First,
+    [Parameter(Position = 1)][AllowEmptyString()][string]$Second,
+    [Parameter(Position = 2)][AllowEmptyString()][string]$Third)
+$initialPreference = [string]$ErrorActionPreference
+$strictOff = $null -eq $syntheticUndefinedTargetVariable
+$ErrorActionPreference = 'Stop'
+$target = 'target-scope-value'; $parameters = 'target-scope-value'
+$result = @{ Root = $Root; Empty = $Empty; ReleaseQualification = [bool]$ReleaseQualification; Disabled = [bool]$Disabled;
+    BudgetSeconds = $BudgetSeconds; LargeNumber = $LargeNumber; First = $First; Second = $Second; Third = $Third;
+    ScriptRoot = $PSScriptRoot; ScriptPath = $PSCommandPath; Preference = $initialPreference; StrictOff = $strictOff }
+[IO.File]::WriteAllText($ResultFile, [Management.Automation.PSSerializer]::Serialize($result))
+Write-Output 'ENTRY_LITERAL_ARGUMENTS=PASS'
+exit 9
+'@
+        [IO.File]::WriteAllText($targetScript, $body)
+        $hostile = 'literal ''single'' "double" `backtick $(throw ''must-not-evaluate''); -File C:\path with spaces\'
+        $result = Invoke-TestPowerShellEntry -TargetScript $targetScript -NamedParameters @{ Root = $hostile; Empty = ''; ReleaseQualification = $true;
+            Disabled = $false; BudgetSeconds = 123; LargeNumber = [long]2147483648; ResultFile = $resultFile } -PositionalArguments @('', '-Root', $hostile)
+        Assert-True ($result.ExitCode -eq 9 -and $result.Lines -ccontains 'ENTRY_LITERAL_ARGUMENTS=PASS') ($result.Lines -join ' | ')
+        $null = Assert-PilotPath -Path $resultFile -File
+        $actual = [Management.Automation.PSSerializer]::Deserialize([IO.File]::ReadAllText($resultFile))
+        Assert-True ($actual.Root -ceq $hostile -and $actual.Empty -ceq '' -and $actual.ReleaseQualification -and -not $actual.Disabled)
+        Assert-True ($actual.BudgetSeconds -eq 123 -and $actual.LargeNumber -eq 2147483648 -and $actual.First -ceq '' -and $actual.Second -ceq '-Root' -and $actual.Third -ceq $hostile)
+        Assert-True ($actual.ScriptRoot -ceq $testRoot -and $actual.ScriptPath -ceq $targetScript -and $actual.Preference -ceq 'Continue' -and $actual.StrictOff)
+    }
+    Test-Case 'entry preserves direct File exit semantics for explicit exits errors and normal native returns' {
+        $native = if ($script:PilotWindows) { '& ([IO.Path]::Combine($env:SystemRoot, ''System32/cmd.exe'')) /c exit 7' } else { '& /bin/sh -c ''exit 7''' }
+        $cases = @(
+            @{ Name = 'normal'; Body = "Write-Output 'ENTRY_NORMAL=PASS'"; Exit = 0; Marker = 'ENTRY_NORMAL=PASS' },
+            @{ Name = 'explicit-nine'; Body = "Write-Output 'ENTRY_EXIT_NINE=PASS'; exit 9"; Exit = 9; Marker = 'ENTRY_EXIT_NINE=PASS' },
+            @{ Name = 'explicit-zero'; Body = "Write-Output 'ENTRY_EXIT_ZERO=PASS'; exit 0"; Exit = 0; Marker = 'ENTRY_EXIT_ZERO=PASS' },
+            @{ Name = 'terminating-throw'; Body = "throw 'synthetic-entry-throw'"; Exit = 1; Marker = '' },
+            @{ Name = 'stop-preference'; Body = "`$ErrorActionPreference = 'Stop'; Write-Error 'synthetic-stop-error'; Write-Output 'MUST_NOT_REACH'"; Exit = 1; Marker = '' },
+            @{ Name = 'handled-native'; Body = ($native + "`nWrite-Output 'ENTRY_HANDLED_NATIVE=PASS'"); Exit = 0; Marker = 'ENTRY_HANDLED_NATIVE=PASS' },
+            @{ Name = 'final-native'; Body = $native; Exit = 0; Marker = '' },
+            @{ Name = 'nonterminating-error'; Body = "Write-Error 'synthetic-nonterminating-error'"; Exit = 0; Marker = '' },
+            @{ Name = 'caught-throw'; Body = "try { throw 'synthetic-caught' } catch { Write-Output 'ENTRY_CAUGHT=PASS' }"; Exit = 0; Marker = 'ENTRY_CAUGHT=PASS' },
+            @{ Name = 'return-value'; Body = 'return 9'; Exit = 0; Marker = '9' }
+        )
+        foreach ($case in $cases) {
+            $targetScript = Join-Path $testRoot ($case.Name + '.ps1'); [IO.File]::WriteAllText($targetScript, $case.Body)
+            $result = Invoke-TestPowerShellEntry -TargetScript $targetScript
+            Assert-True ($result.ExitCode -eq $case.Exit) ('Entry exit mismatch for ' + $case.Name + ': ' + $result.ExitCode + '; ' + ($result.Lines -join ' | '))
+            if ($case.Marker) { Assert-True ($result.Lines -ccontains $case.Marker) ('Entry output mismatch for ' + $case.Name) }
+            Assert-True ($result.Lines -cnotcontains 'MUST_NOT_REACH') 'Stop preference did not terminate the target.'
+        }
+    }
+    Test-Case 'entry refuses call and dot-source before changing an existing process module path' {
+        $entryPath = Join-Path $PSScriptRoot 'Pilot.PowerShellEntry.ps1'
+        $original = [Environment]::GetEnvironmentVariable('PSModulePath')
+        Assert-Throws { & $entryPath -InvocationBase64 'AAAA' } 'dedicated.*File process'
+        Assert-True ([Environment]::GetEnvironmentVariable('PSModulePath') -ceq $original)
+        Assert-Throws { . $entryPath -InvocationBase64 'AAAA' } 'dedicated.*File process'
+        Assert-True ([Environment]::GetEnvironmentVariable('PSModulePath') -ceq $original)
     }
 
     Test-Case 'full synthetic evidence is accepted only by the pure oracle' {
@@ -666,15 +790,15 @@ function Protect-EzVmControllerPrivateKey { param($Path); throw 'synthetic-exact
                 "[Console]::Out.WriteLine('RUNLOC_SYNTHETIC_DIRECT_STDOUT')",
                 "[IO.File]::WriteAllText('$phaseLiteral', 'DIRECT_STDOUT')")
             if ($InboxModules) {
-                # Change this child only. The baseline retains its actual inherited
-                # module environment and its original Write-Output/exit assertion.
+                # Retain the successful historical child-only discriminant; the
+                # baseline now relies on the same entry used in production.
                 $childLines += '[Environment]::SetEnvironmentVariable(''PSModulePath'', [IO.Path]::Combine($PSHOME, ''Modules''), [EnvironmentVariableTarget]::Process)'
             }
             $childLines += @("Write-Output 'EZVM012_REAL_COMPLETE_END_TO_END=PASS'",
                 "[IO.File]::WriteAllText('$phaseLiteral', 'EXIT_INTENT')", 'exit 9')
             [IO.File]::WriteAllText($scriptFile, (($childLines -join "`n") + "`n"))
             $clock = [Diagnostics.Stopwatch]::StartNew()
-            $result = Invoke-PilotChild -Executable $powershell -Arguments @('-NoLogo', '-NoProfile', '-NonInteractive', '-File', $scriptFile) -WorkingDirectory $testRoot -TemporaryDirectory $testRoot -RawLogPath (Join-Path $testRoot ($Name + '-child.log')) -Clock $clock -ExecutionDeadlineSeconds 15 -CleanupDeadlineSeconds 20
+            $result = Invoke-PilotChild -Executable $powershell -Arguments @(Get-PilotPowerShellArguments -TargetScript $scriptFile) -WorkingDirectory $testRoot -TemporaryDirectory $testRoot -RawLogPath (Join-Path $testRoot ($Name + '-child.log')) -Clock $clock -ExecutionDeadlineSeconds 15 -CleanupDeadlineSeconds 20
             # Synthetic process fixtures only; never publish real qualification logs.
             $diagnostic = [ordered]@{ variant = $Name; parentIs64Bit = [Environment]::Is64BitProcess;
                 executableSha256 = $result.ownership.executableSha256; exitCode = $result.exitCode; childExited = $result.childExited;
@@ -734,10 +858,11 @@ exit 9
             $original = [Environment]::GetEnvironmentVariable('PSModulePath')
             try {
                 # This temporary environment belongs to this test process only.
-                # The production constructor must omit it from the owned child.
+                # The constructor omits it and the production entry initializes
+                # the child's effective module path after PowerShell startup.
                 [Environment]::SetEnvironmentVariable('PSModulePath', $poisonRoot, [EnvironmentVariableTarget]::Process)
                 $clock = [Diagnostics.Stopwatch]::StartNew()
-                $result = Invoke-PilotChild -Executable $powershell -Arguments @('-NoLogo', '-NoProfile', '-NonInteractive', '-File', $probeScript) -WorkingDirectory $testRoot -TemporaryDirectory $testRoot -RawLogPath (Join-Path $testRoot 'poison-parent-child.log') -Clock $clock -ExecutionDeadlineSeconds 15 -CleanupDeadlineSeconds 20
+                $result = Invoke-PilotChild -Executable $powershell -Arguments @(Get-PilotPowerShellArguments -TargetScript $probeScript) -WorkingDirectory $testRoot -TemporaryDirectory $testRoot -RawLogPath (Join-Path $testRoot 'poison-parent-child.log') -Clock $clock -ExecutionDeadlineSeconds 15 -CleanupDeadlineSeconds 20
             }
             finally { [Environment]::SetEnvironmentVariable('PSModulePath', $original, [EnvironmentVariableTarget]::Process) }
             Assert-True ([Environment]::GetEnvironmentVariable('PSModulePath') -ceq $original)
@@ -756,15 +881,17 @@ exit 9
             $parentScript = Join-Path $testRoot 'owned parent.ps1'
             $childScript = Join-Path $testRoot 'owned descendant.ps1'
             [IO.File]::WriteAllText($childScript, 'Start-Sleep -Seconds 60')
-            $escapedExe = $powershell.Replace("'", "''"); $escapedChild = $childScript.Replace("'", "''")
-            [IO.File]::WriteAllText($parentScript, "`$p = Start-Process -FilePath '$escapedExe' -ArgumentList @('-NoProfile', '-NonInteractive', '-File', '`"$escapedChild`"') -PassThru`nWrite-Output ('DESCENDANT_PID=' + `$p.Id)`nStart-Sleep -Seconds 60")
+            $escapedExe = $powershell.Replace("'", "''")
+            $descendantArguments = (@(Get-PilotPowerShellArguments -TargetScript $childScript) | ForEach-Object { [RunlocPoc.OwnedProcess]::QuoteArgument($_) }) -join ' '
+            $escapedArguments = $descendantArguments.Replace("'", "''")
+            [IO.File]::WriteAllText($parentScript, "`$p = Start-Process -FilePath '$escapedExe' -ArgumentList '$escapedArguments' -PassThru`nWrite-Output ('DESCENDANT_PID=' + `$p.Id)`nStart-Sleep -Seconds 60")
             $sentinelInfo = New-Object Diagnostics.ProcessStartInfo
-            $sentinelInfo.FileName = $powershell; $sentinelInfo.Arguments = '-NoProfile -NonInteractive -Command "Start-Sleep -Seconds 60"'
+            $sentinelInfo.FileName = $powershell; $sentinelInfo.Arguments = '-NoProfile -NonInteractive -Command "[Threading.Thread]::Sleep(60000)"'
             $sentinelInfo.UseShellExecute = $false; $sentinelInfo.CreateNoWindow = $true
             $sentinel = [Diagnostics.Process]::Start($sentinelInfo); $null = $sentinel.Handle
             try {
                 $clock = [Diagnostics.Stopwatch]::StartNew()
-                $result = Invoke-PilotChild -Executable $powershell -Arguments @('-NoLogo', '-NoProfile', '-NonInteractive', '-File', $parentScript) -WorkingDirectory $testRoot -TemporaryDirectory $testRoot -RawLogPath (Join-Path $testRoot 'deadline.log') -Clock $clock -ExecutionDeadlineSeconds 3 -CleanupDeadlineSeconds 10
+                $result = Invoke-PilotChild -Executable $powershell -Arguments @(Get-PilotPowerShellArguments -TargetScript $parentScript) -WorkingDirectory $testRoot -TemporaryDirectory $testRoot -RawLogPath (Join-Path $testRoot 'deadline.log') -Clock $clock -ExecutionDeadlineSeconds 3 -CleanupDeadlineSeconds 10
                 Assert-True ($result.timedOut -and $result.forced -and $result.childExited -and $result.activeProcesses -eq 0)
                 Assert-True ($clock.Elapsed.TotalSeconds -lt 10)
                 Assert-True (@($result.records | Where-Object { $_.Text -cmatch '^DESCENDANT_PID=[0-9]+$' }).Count -eq 1) 'Descendant did not start before timeout.'
@@ -774,7 +901,7 @@ exit 9
         }
         Test-Case 'controller Job close stops an inherited pipe descendant' {
             $parentScript = Join-Path $testRoot 'owned parent.ps1'
-            $job = New-Object RunlocPoc.OwnedProcess($powershell, @('-NoLogo', '-NoProfile', '-NonInteractive', '-File', $parentScript),
+            $job = New-Object RunlocPoc.OwnedProcess($powershell, @(Get-PilotPowerShellArguments -TargetScript $parentScript),
                 $testRoot, $testRoot, (Join-Path $testRoot 'dispose.log'), 1048576)
             try {
                 $deadline = [Diagnostics.Stopwatch]::StartNew(); $childId = $null
@@ -793,7 +920,7 @@ exit 9
             $scriptFile = Join-Path $testRoot 'flood.ps1'
             [IO.File]::WriteAllText($scriptFile, "while (`$true) { Write-Output ('X' * 2000) }")
             $clock = [Diagnostics.Stopwatch]::StartNew(); $log = Join-Path $testRoot 'flood.log'
-            $result = Invoke-PilotChild -Executable $powershell -Arguments @('-NoLogo', '-NoProfile', '-NonInteractive', '-File', $scriptFile) -WorkingDirectory $testRoot -TemporaryDirectory $testRoot -RawLogPath $log -Clock $clock -ExecutionDeadlineSeconds 10 -CleanupDeadlineSeconds 15 -MaximumLogBytes 32768
+            $result = Invoke-PilotChild -Executable $powershell -Arguments @(Get-PilotPowerShellArguments -TargetScript $scriptFile) -WorkingDirectory $testRoot -TemporaryDirectory $testRoot -RawLogPath $log -Clock $clock -ExecutionDeadlineSeconds 10 -CleanupDeadlineSeconds 15 -MaximumLogBytes 32768
             Assert-True ($result.outputOverflow -and $result.forced -and $result.activeProcesses -eq 0)
             Assert-True ((Get-Item -LiteralPath $log).Length -le 32768)
         }

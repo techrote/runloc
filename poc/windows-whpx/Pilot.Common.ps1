@@ -95,6 +95,84 @@ function Test-PilotDescendant {
     return $child.StartsWith($parent + [IO.Path]::DirectorySeparatorChar, $comparison)
 }
 
+function Assert-PilotPowerShellInvocation {
+    param([object]$Value)
+    # The wire format is data only. Parameter names are never re-parsed as
+    # command text, and arbitrary serialized object types are not accepted.
+    if ($Value -isnot [hashtable] -or $Value.PSBase.Count -ne 4) { throw 'powershell-invocation-schema' }
+    foreach ($key in $Value.PSBase.Keys) {
+        if ($key -isnot [string] -or @('schemaVersion', 'targetScript', 'parameters', 'arguments') -cnotcontains $key) { throw 'powershell-invocation-schema' }
+    }
+    if ($Value.schemaVersion -isnot [int] -or $Value.schemaVersion -ne 1 -or
+        $Value.targetScript -isnot [string] -or $Value.targetScript.Length -gt 4096 -or
+        $Value.targetScript.IndexOf([char]0) -ge 0 -or
+        -not [string]::Equals([IO.Path]::GetExtension($Value.targetScript), '.ps1', [StringComparison]::OrdinalIgnoreCase)) { throw 'powershell-invocation-schema' }
+    if ($Value.parameters -isnot [hashtable] -or $Value.parameters.PSBase.Count -gt 32 -or
+        ($Value.arguments -isnot [array] -and $Value.arguments -isnot [Collections.ArrayList]) -or
+        $Value.arguments.Count -gt 32) { throw 'powershell-invocation-schema' }
+    $parameters = @{}
+    foreach ($name in $Value.parameters.PSBase.Keys) {
+        if ($name -isnot [string] -or $name -cnotmatch '^[A-Za-z][A-Za-z0-9_]{0,63}$') { throw 'powershell-parameter-name' }
+        if ($parameters.ContainsKey($name)) { throw 'powershell-parameter-duplicate' }
+        $argument = $Value.parameters[$name]
+        if ($argument -isnot [string] -and $argument -isnot [bool] -and $argument -isnot [int] -and $argument -isnot [long]) { throw 'powershell-parameter-type' }
+        if ($argument -is [string] -and ($argument.Length -gt 8192 -or $argument.IndexOf([char]0) -ge 0)) { throw 'powershell-argument-size' }
+        $parameters[$name] = $argument
+    }
+    $arguments = New-Object 'System.Collections.Generic.List[string]'
+    foreach ($argument in $Value.arguments) {
+        if ($argument -isnot [string]) { throw 'powershell-positional-type' }
+        if ($argument.Length -gt 8192 -or $argument.IndexOf([char]0) -ge 0) { throw 'powershell-argument-size' }
+        $arguments.Add($argument)
+    }
+    $target = Assert-PilotPath -Path $Value.targetScript -File
+    return [pscustomobject]@{ TargetScript = $target; NamedParameters = $parameters; PositionalArguments = $arguments.ToArray() }
+}
+
+function Get-PilotPowerShellArguments {
+    param([Parameter(Mandatory = $true)][string]$TargetScript, [hashtable]$NamedParameters = @{},
+        [AllowEmptyCollection()][object[]]$PositionalArguments = @())
+    $invocation = Assert-PilotPowerShellInvocation -Value @{ schemaVersion = 1; targetScript = $TargetScript;
+        parameters = $NamedParameters; arguments = $PositionalArguments }
+    $envelope = @{ schemaVersion = 1; targetScript = $invocation.TargetScript;
+        parameters = $invocation.NamedParameters; arguments = [string[]]$invocation.PositionalArguments }
+    $xml = [Management.Automation.PSSerializer]::Serialize($envelope, 6)
+    $encoded = [Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes($xml))
+    if ($encoded.Length -gt 24000) { throw 'powershell-invocation-too-large' }
+    $entry = Assert-PilotPath -Path ([IO.Path]::Combine($PSScriptRoot, 'Pilot.PowerShellEntry.ps1')) -File
+    $arguments = @('-NoLogo', '-NoProfile', '-NonInteractive', '-ExecutionPolicy', 'Bypass', '-File', $entry, '-InvocationBase64', $encoded)
+    # Reserve 4096 characters for the executable plus quoting below Windows'
+    # 32767-character native command-line limit. The wire is never a shell string.
+    Import-PilotNative
+    $characters = 4096
+    foreach ($argument in $arguments) { $characters += [RunlocPoc.OwnedProcess]::QuoteArgument($argument).Length + 1 }
+    if ($characters -ge 32767) { throw 'powershell-invocation-too-large' }
+    return $arguments
+}
+
+function Read-PilotPowerShellInvocation {
+    param([string]$InvocationBase64)
+    if ([string]::IsNullOrEmpty($InvocationBase64) -or $InvocationBase64.Length -gt 24000 -or
+        $InvocationBase64 -cnotmatch '^[A-Za-z0-9+/]+={0,2}$') { throw 'powershell-invocation-encoding' }
+    try {
+        $bytes = [Convert]::FromBase64String($InvocationBase64)
+        $encoding = New-Object Text.UTF8Encoding($false, $true)
+        $xml = $encoding.GetString($bytes)
+        # Validate a bounded XML document with no external entity resolution
+        # before the Core serializer consumes the primitive invocation envelope.
+        $settings = New-Object Xml.XmlReaderSettings
+        $settings.DtdProcessing = [Xml.DtdProcessing]::Prohibit
+        $settings.XmlResolver = $null
+        $settings.MaxCharactersInDocument = 18000
+        $inputText = New-Object IO.StringReader($xml)
+        $reader = [Xml.XmlReader]::Create($inputText, $settings)
+        try { while ($reader.Read()) { } } finally { $reader.Dispose(); $inputText.Dispose() }
+        $value = [Management.Automation.PSSerializer]::Deserialize($xml)
+    }
+    catch { throw 'powershell-invocation-encoding' }
+    return Assert-PilotPowerShellInvocation -Value $value
+}
+
 function Get-PilotWorkPlan {
     param([string]$WorkParent, [ValidatePattern('^[a-f0-9]{32}$')][string]$LeaseId)
     $parent = Assert-PilotPath -Path $WorkParent

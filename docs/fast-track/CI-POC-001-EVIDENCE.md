@@ -219,16 +219,41 @@ captured both expected lines and exited 9 in 0.323187 seconds. The baseline time
 out after 15.1642197 seconds with a clean forced Job stop. These are synthetic
 software observations, not VM timing results.
 
-The production correction omits inherited `PSModulePath` from the native child's
-environment so Windows PowerShell constructs its defaults, as
+The next production attempt, `dfbfb855d5971e071dd2c2a3921912fe9a0e1a9e`,
+omitted inherited `PSModulePath` from the native child's environment so Windows
+PowerShell constructs its defaults, as
 [Microsoft documents for intermediate/native launches](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_psmodulepath?view=powershell-7.6#starting-windows-powershell-from-powershell-7).
-All other allowed variables, private TEMP/TMP, native handles, containment and
-deadlines are unchanged. Default module paths include CurrentUser and AllUsers;
-this is not exclusive inbox resolution. The actual environment factory regression
-was observed red before this omission and green afterward. A Windows poison-path
-regression also requires that the parent path is absent, its synthetic module
-never executes, and the actual Utility module resolves under the child PSHOME.
-Corrected exact-source Windows acceptance is recorded separately after CI.
+The portable environment-factory regression changed from red to green, but the
+[actual Windows lanes](https://github.com/techrote/runloc/actions/runs/39058333120)
+both still failed the original contained-child test. Their reconstructed default
+paths include CurrentUser and AllUsers; omitting the inherited variable did not
+establish an effective inbox-only path. Both children captured direct stdout but
+timed out at `Write-Output` after approximately 15.1 seconds. In those same jobs,
+both controls that set their own process path to `PSHOME/Modules` reached the
+expected exit 9 and both stdout records in approximately 0.33 seconds.
+
+The retained audit includes the exact source, both red job/log identities and
+the passing repository checks. It preserves the original failure and fixed
+15/20-second deadlines. This evidence requires initialization inside each owned
+PowerShell process before command autoload; removing a variable from the parent
+environment alone is insufficient. Corrected exact-source Windows acceptance is
+recorded separately after CI.
+
+The revised startup boundary uses the tracked `Pilot.PowerShellEntry.ps1` for
+the controller, exact ACL preflight and original full harness. Before autoload,
+each dedicated process sets its effective module path to its own inbox modules.
+The entry forwards structured named parameters and literal positional arguments
+to the original target file; it preserves explicit exits, terminating failures
+and normal return after a handled native failure. The candidate's harness bytes
+and all qualification assertions remain unchanged.
+
+The outer supervisor and child entry share a BCL-only invocation guard in
+`Pilot.Bootstrap.ps1`. It refuses accidental direct calls or dot-sourcing before
+changing the calling process's module path. The outer clock still starts first,
+and its original compiled invocation guard remains mandatory before the native
+watchdog is armed. Both startup files are included in the selected controller
+pins and full tracked-source verification. Parent/user/machine module settings,
+native process ownership, output capture and original deadlines are preserved.
 
 ## Frozen candidate software acceptance
 
@@ -268,6 +293,13 @@ the original audit agent implemented the additive telemetry and launcher repair.
 The primary assistant reviewed the final production changes and integrated the
 public sources. These are actual model-agent roles, not external human approval.
 
+For the startup correction, the audit agent independently reviewed the shared
+BCL guard, both entry points' side-effect ordering, source pins and caller-refusal
+tests. The supervisor author independently reviewed the helper author's envelope,
+target invocation and production routing, then compared actual adapter subprocess
+results with direct `-File` behavior. The primary assistant reviewed and integrated
+the combined production, test and operator changes.
+
 The independent inner-controller review found a real native type mismatch:
 Windows Job active-process counts are `UInt32`, while the initial receipt oracle
 accepted only signed integers before serialization. The retained regression was
@@ -275,12 +307,20 @@ observed failing against the initial oracle, then passed after the two native
 counters were explicitly accepted. String, boolean, floating and nonzero counts
 remain failures.
 
-Current local checks on Linux with PowerShell 7.6.6 passed all 42 pilot groups
-and the separately reported 15 supervisor groups. Seven pilot and two supervisor
+Current local checks on Linux with PowerShell 7.6.6 passed all 46 pilot groups
+and the separately reported 16 supervisor groups. Seven pilot and two supervisor
 groups require Windows and are explicitly skipped locally. All PowerShell scripts
 parsed and both native C# types compiled. The Runloc repository contract and all
 21 Python tests passed after implementation. Actual Windows CI and physical
 qualification are separate required evidence; no local skip satisfies them.
+
+The startup regressions execute the real entry with ten explicit-exit, error and
+normal-return cases, plus named switches, integer types, empty values and literal
+quote/backtick/command-looking arguments. They reject malformed, oversized or
+non-primitive envelopes and case-insensitive duplicate parameter names before
+the target executes. Both entry points also have actual call/dot-source refusal
+checks that preserve the existing process module path. Windows runs use the
+production owned-process boundary for these children.
 
 ## Remaining gate
 

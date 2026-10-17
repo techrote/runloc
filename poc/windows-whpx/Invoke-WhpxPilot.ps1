@@ -10,6 +10,16 @@ param(
 )
 $clock = [Diagnostics.Stopwatch]::StartNew()
 $startedUtc = [DateTime]::UtcNow.ToString('o')
+
+. ([IO.Path]::Combine($PSScriptRoot, 'Pilot.Bootstrap.ps1'))
+
+if (-not (Test-PilotEarlyDedicatedFileInvocation -CommandLine ([Environment]::GetCommandLineArgs()) -ExpectedScript $PSCommandPath -InvocationName $MyInvocation.InvocationName)) {
+    throw 'Launch a dedicated powershell.exe -NoProfile -NonInteractive -File Invoke-WhpxPilot.ps1 process.'
+}
+# This process is dedicated to the supervisor. Setting the module path after
+# startup avoids discovery through incompatible or slow host-installed modules.
+# The setting is process-only and precedes the first cmdlet/autoload operation.
+[Environment]::SetEnvironmentVariable('PSModulePath', [IO.Path]::Combine($PSHOME, 'Modules'), [EnvironmentVariableTarget]::Process)
 $ErrorActionPreference = 'Stop'
 
 # Bootstrap occurs before any source check, lease, child, or qualification fixture.
@@ -63,7 +73,8 @@ try {
     $candidatePins = @(Get-PilotSupervisorPins -Root $candidatePath -Pins $configuration.pins -RequireExpectedDigest)
     $controllerNames = @('poc/windows-whpx/Invoke-WhpxPilot.ps1', 'poc/windows-whpx/Pilot.Controller.ps1',
         'poc/windows-whpx/Invoke-AclPreflight.ps1', 'poc/windows-whpx/Pilot.Common.ps1', 'poc/windows-whpx/OwnedProcess.cs',
-        'poc/windows-whpx/Pilot.Supervisor.ps1', 'poc/windows-whpx/SupervisorDeadline.cs', 'poc/windows-whpx/candidate.json')
+        'poc/windows-whpx/Pilot.Supervisor.ps1', 'poc/windows-whpx/SupervisorDeadline.cs', 'poc/windows-whpx/Pilot.Bootstrap.ps1', 'poc/windows-whpx/Pilot.PowerShellEntry.ps1',
+        'poc/windows-whpx/candidate.json')
     $controllerPins = @(Get-PilotSupervisorPins -Root $controllerRoot -Pins @($controllerNames | ForEach-Object { [pscustomobject]@{ path = $_ } }))
     Assert-PilotDeadline -Clock $clock -DeadlineSeconds 5100
     $lease = New-PilotLease -EvidenceParent $parent -CandidateCommit $configuration.commit -ControllerCommit $ExpectedControllerCommit
@@ -95,11 +106,11 @@ try {
     $controllerBudget = [int][Math]::Floor(5340 - $clock.Elapsed.TotalSeconds)
     if ($controllerBudget -lt 240 -or $controllerBudget -gt 5340 -or $deadline.ExecutionExpired) { throw 'controller-launch-budget-exhausted' }
     $receipt.controllerBudgetSeconds = $controllerBudget
-    $arguments = @('-NoLogo', '-NoProfile', '-NonInteractive', '-ExecutionPolicy', 'Bypass', '-File', (Join-Path $PSScriptRoot 'Pilot.Controller.ps1'),
-        '-CandidateRoot', $candidatePath, '-ExpectedControllerCommit', $ExpectedControllerCommit, '-EvidenceParent', $attempts,
-        '-WorkParent', $workPlan.Parent,
-        '-HostLabel', $HostLabel, '-BudgetSeconds', [string]$controllerBudget, '-SupervisorLeaseId', $lease.Id, '-SupervisorStartedUtc', $startedUtc)
-    if ($PreflightOnly) { $arguments += '-PreflightOnly' }
+    $controllerParameters = @{ CandidateRoot = $candidatePath; ExpectedControllerCommit = $ExpectedControllerCommit; EvidenceParent = $attempts;
+        WorkParent = $workPlan.Parent; HostLabel = $HostLabel; BudgetSeconds = [string]$controllerBudget;
+        SupervisorLeaseId = $lease.Id; SupervisorStartedUtc = $startedUtc }
+    if ($PreflightOnly) { $controllerParameters.PreflightOnly = $true }
+    $arguments = @(Get-PilotPowerShellArguments -TargetScript (Join-Path $PSScriptRoot 'Pilot.Controller.ps1') -NamedParameters $controllerParameters)
     $reason = 'supervisor-controller-incomplete'
     $receipt.quarantine.mayContainQualificationFixture = -not [bool]$PreflightOnly
     $process = Invoke-PilotSupervisedController -Executable $windowsPowerShell -Arguments $arguments -WorkingDirectory $controllerRoot `

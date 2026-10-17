@@ -180,10 +180,20 @@ numeric PID. Separate evidence is required for child exit, zero active owned Job
 processes, valid fixture ownership and successful fixture removal.
 
 The child receives an explicit environment with Windows runtime paths and its
-owned temporary directory. `PSModulePath` is omitted so Windows PowerShell builds
-its own default module search paths, including CurrentUser and AllUsers locations.
-This avoids inheriting incompatible module discovery state from the parent engine;
-the EzVM module itself is imported by the pinned candidate's explicit path.
+owned temporary directory. Each owned PowerShell child starts through the tracked
+`Pilot.PowerShellEntry.ps1`, which sets that process's effective `PSModulePath` to
+its own `PSHOME/Modules` before command autoload. It then invokes the original
+target file with structured named parameters and preserves its exit behavior.
+The EzVM module is imported by the pinned candidate's explicit path. Inherited
+module paths are also excluded from the native environment; omission alone did
+not prevent the observed Windows command-loading stall.
+
+The dedicated outer supervisor initializes the same inbox module path only
+after checking its actual `-NoProfile -NonInteractive -File` invocation using
+BCL operations. The existing compiled invocation guard still gates the native
+watchdog. Accidental dot-sourcing or invocation from an interactive or `-Command`
+host is refused before any module-path change or timer is armed. These settings
+belong to the dedicated processes and do not change user or machine settings.
 
 After descendants have exited, normal controller cleanup verifies its unique
 lease and successful exclusive fixture creation, then inventories only that
