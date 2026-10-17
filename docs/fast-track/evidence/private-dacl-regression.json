@@ -1,0 +1,186 @@
+{
+  "schemaVersion": 1,
+  "sourceCommit": "b370b78ce667b03368e859f40527b4280e438ff8",
+  "sourceTree": "0a590498574b3f9a056da1c88eb3c8c8acc011ad",
+  "runUrl": "https://github.com/techrote/ezvm/actions/runs/39052413893",
+  "claimScope": "Hosted standard-user private-DACL regression only; no VM, physical WHPX or full release performance qualification.",
+  "artifactVerification": "Downloaded ZIP SHA256 matches the corresponding GitHub advertised artifact digest; selected receipts and literal log marker counts independently checked.",
+  "lanes": [
+    {
+      "major": 5,
+      "jobUrl": "https://github.com/techrote/ezvm/actions/runs/39052413893/job/117453492279",
+      "artifactId": 12107743479,
+      "artifactSha256": "d93d5ceb05a15c254fbfaf56f0598c9b0b809331ce28441f176c221db2493a81",
+      "jobLogSha256": "6c5ca483043dbe1bc8f676028647d49fef513c2ddbb42367462bb6adb2c264f5",
+      "receipt": {
+        "schemaVersion": 1,
+        "kind": "ezvm-private-dacl-regression",
+        "outcome": "pass",
+        "startedAt": "2026-10-17T17:08:45.0425327Z",
+        "powerShellVersion": "5.1.20348.5622",
+        "candidate": {
+          "commit": "b370b78ce667b03368e859f40527b4280e438ff8",
+          "tree": "0a590498574b3f9a056da1c88eb3c8c8acc011ad",
+          "keysSha256": "89e437ce908695b9d90ddaa5cb590c3aa44c1a7c52d3696ebe9e7ae218f04fe5"
+        },
+        "baseline": {
+          "commit": "d5265c804d0d8494d8171482a85aca563b181e05",
+          "tree": "9416befc914dafcdefbc5c9bcc605b1ddd53e082",
+          "keysSha256": "7a76dd9b47b2c9665535e856f567faf309c489e9683738cf42b9e67c3d62ee1f"
+        },
+        "token": {
+          "administratorMember": false,
+          "specialPrivilegesPresent": [],
+          "observedPrivileges": [
+            "SeChangeNotifyPrivilege",
+            "SeIncreaseWorkingSetPrivilege"
+          ]
+        },
+        "baselineCases": [
+          {
+            "name": "Security: actual Windows key generation and staged copy-from preserve destination on failure",
+            "outcome": "expected-failure",
+            "signature": "SeSecurityPrivilege",
+            "message": "Failed to restrict the ezvm controller private-key ACL. The process does not possess the 'SeSecurityPrivilege' privilege which is required for this operation.",
+            "elapsedSeconds": 7.5348906
+          },
+          {
+            "name": "Security: Windows private ACL removes pre-existing broad explicit ACEs",
+            "outcome": "expected-failure",
+            "signature": "SeSecurityPrivilege",
+            "message": "Failed to restrict the ezvm controller private-key ACL. The process does not possess the 'SeSecurityPrivilege' privilege which is required for this operation.",
+            "elapsedSeconds": 0.0413105
+          },
+          {
+            "name": "Private ACL: inherited broad file access is removed and repeated protection preserves bytes",
+            "outcome": "expected-failure",
+            "signature": "SeSecurityPrivilege",
+            "message": "Failed to restrict the ezvm controller private-key ACL. The process does not possess the 'SeSecurityPrivilege' privilege which is required for this operation.",
+            "elapsedSeconds": 0.04942
+          },
+          {
+            "name": "Private ACL: directory broad ACEs are removed and protected reapplication remains private",
+            "outcome": "expected-failure",
+            "signature": "SeSecurityPrivilege",
+            "message": "The process does not possess the 'SeSecurityPrivilege' privilege which is required for this operation.",
+            "elapsedSeconds": 0.0262051
+          }
+        ],
+        "fixedRequiredCases": [
+          "Security: actual Windows key generation and staged copy-from preserve destination on failure",
+          "Security: Windows private ACL removes pre-existing broad explicit ACEs",
+          "Private ACL: inherited broad file access is removed and repeated protection preserves bytes",
+          "Private ACL: directory broad ACEs are removed and protected reapplication remains private"
+        ],
+        "fullSuite": "RESULT: 358 passed, 0 failed, 0 skipped, 358 total.",
+        "sourceUnchanged": true,
+        "reason": "",
+        "exitCode": 0,
+        "elapsedSeconds": 288.759272,
+        "endedAt": "2026-10-17T17:13:33.7958598Z"
+      },
+      "hostReceipt": {
+        "schemaVersion": 1,
+        "sourceCommit": "b370b78ce667b03368e859f40527b4280e438ff8",
+        "childExitCode": 0,
+        "childExited": true,
+        "temporaryAccountRemoved": true,
+        "fixtureRemoved": true,
+        "reason": ""
+      },
+      "verifiedPassMarkerCount": 358,
+      "verifiedExpectedLegacyFailureMarkers": 4,
+      "verifiedLaunchRegressionPassMarkers": 6,
+      "verifiedFailAndSkipMarkers": 0,
+      "fixedSuiteLogSha256": "f097d6deff52c88722320816439b6e1c0ea841bc657ff372c6bfbec502d76e4d"
+    },
+    {
+      "major": 7,
+      "jobUrl": "https://github.com/techrote/ezvm/actions/runs/39052413893/job/117453492134",
+      "artifactId": 12108158148,
+      "artifactSha256": "5e76429ce0be031694be8a909abf191bacc4efa99ce56834da2ead376a1c9cf8",
+      "jobLogSha256": "87106a9e455cfcf08c96de83229eb41f43681bf98367a755a74c66883a0b5703",
+      "receipt": {
+        "schemaVersion": 1,
+        "kind": "ezvm-private-dacl-regression",
+        "outcome": "pass",
+        "startedAt": "2026-10-17T17:08:59.5075040Z",
+        "powerShellVersion": "7.6.6",
+        "candidate": {
+          "commit": "b370b78ce667b03368e859f40527b4280e438ff8",
+          "tree": "0a590498574b3f9a056da1c88eb3c8c8acc011ad",
+          "keysSha256": "89e437ce908695b9d90ddaa5cb590c3aa44c1a7c52d3696ebe9e7ae218f04fe5"
+        },
+        "baseline": {
+          "commit": "d5265c804d0d8494d8171482a85aca563b181e05",
+          "tree": "9416befc914dafcdefbc5c9bcc605b1ddd53e082",
+          "keysSha256": "7a76dd9b47b2c9665535e856f567faf309c489e9683738cf42b9e67c3d62ee1f"
+        },
+        "token": {
+          "administratorMember": false,
+          "specialPrivilegesPresent": [],
+          "observedPrivileges": [
+            "SeChangeNotifyPrivilege",
+            "SeIncreaseWorkingSetPrivilege"
+          ]
+        },
+        "baselineCases": [
+          {
+            "name": "Security: actual Windows key generation and staged copy-from preserve destination on failure",
+            "outcome": "expected-failure",
+            "signature": "SeSecurityPrivilege",
+            "message": "Failed to restrict the ezvm controller private-key ACL. The process does not possess the 'SeSecurityPrivilege' privilege which is required for this operation.",
+            "elapsedSeconds": 1.9985642
+          },
+          {
+            "name": "Security: Windows private ACL removes pre-existing broad explicit ACEs",
+            "outcome": "expected-failure",
+            "signature": "SeSecurityPrivilege",
+            "message": "Failed to restrict the ezvm controller private-key ACL. The process does not possess the 'SeSecurityPrivilege' privilege which is required for this operation.",
+            "elapsedSeconds": 0.0466698
+          },
+          {
+            "name": "Private ACL: inherited broad file access is removed and repeated protection preserves bytes",
+            "outcome": "expected-failure",
+            "signature": "SeSecurityPrivilege",
+            "message": "Failed to restrict the ezvm controller private-key ACL. The process does not possess the 'SeSecurityPrivilege' privilege which is required for this operation.",
+            "elapsedSeconds": 0.0708426
+          },
+          {
+            "name": "Private ACL: directory broad ACEs are removed and protected reapplication remains private",
+            "outcome": "expected-failure",
+            "signature": "SeSecurityPrivilege",
+            "message": "The process does not possess the 'SeSecurityPrivilege' privilege which is required for this operation.",
+            "elapsedSeconds": 0.0375105
+          }
+        ],
+        "fixedRequiredCases": [
+          "Security: actual Windows key generation and staged copy-from preserve destination on failure",
+          "Security: Windows private ACL removes pre-existing broad explicit ACEs",
+          "Private ACL: inherited broad file access is removed and repeated protection preserves bytes",
+          "Private ACL: directory broad ACEs are removed and protected reapplication remains private"
+        ],
+        "fullSuite": "RESULT: 358 passed, 0 failed, 0 skipped, 358 total.",
+        "sourceUnchanged": true,
+        "reason": "",
+        "exitCode": 0,
+        "elapsedSeconds": 212.9012244,
+        "endedAt": "2026-10-17T17:12:32.4086714Z"
+      },
+      "hostReceipt": {
+        "schemaVersion": 1,
+        "sourceCommit": "b370b78ce667b03368e859f40527b4280e438ff8",
+        "childExitCode": 0,
+        "childExited": true,
+        "temporaryAccountRemoved": true,
+        "fixtureRemoved": true,
+        "reason": ""
+      },
+      "verifiedPassMarkerCount": 358,
+      "verifiedExpectedLegacyFailureMarkers": 4,
+      "verifiedLaunchRegressionPassMarkers": 6,
+      "verifiedFailAndSkipMarkers": 0,
+      "fixedSuiteLogSha256": "310465d96ce2f26ef1ff505431f1b07260fdec7f614dd3ee84e0f93fd0d45a14"
+    }
+  ]
+}

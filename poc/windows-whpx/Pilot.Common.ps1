@@ -95,6 +95,63 @@ function Test-PilotDescendant {
     return $child.StartsWith($parent + [IO.Path]::DirectorySeparatorChar, $comparison)
 }
 
+function Get-PilotWorkPlan {
+    param([string]$WorkParent, [ValidatePattern('^[a-f0-9]{32}$')][string]$LeaseId)
+    $parent = Assert-PilotPath -Path $WorkParent
+    if (-not [IO.Directory]::Exists($parent)) { throw 'work-parent-not-directory' }
+    # Encode all 128 lease bits in a filename-safe 22-character token. Keep the
+    # full hex ID in the lease and refuse any existing mapped directory.
+    $token = [Convert]::ToBase64String(([Guid]::ParseExact($LeaseId, 'N')).ToByteArray()).TrimEnd([char[]]@('='))
+    $fixture = Join-Path $parent ('q' + $token.Replace('+', '-').Replace('/', '_'))
+    # Measured pinned QEMU installer maximum member is 87 characters; its
+    # original root-A staging prefix makes 215 below the exact TEMP fixture.
+    # This also covers relocation, base IDs, snapshot and atomic JSON paths.
+    # Audit: docs/fast-track/evidence/windows-path-budget.json. Candidate review
+    # must retain its measured source/archive pins or repeat this path audit.
+    # Keep the native/Framework path limit independent of host long-path policy.
+    $relativeReserve = 215; $maximumPath = 259; $directoryReserve = 173; $maximumDirectory = 247
+    if ($fixture.Length + $relativeReserve -gt $maximumPath -or
+        $fixture.Length + $directoryReserve -gt $maximumDirectory) { throw 'work-path-budget-exceeded' }
+    $null = Assert-PilotPath -Path $fixture -AllowMissing
+    return [pscustomobject]@{ Parent = $parent; Fixture = $fixture; Budget = [ordered]@{
+        profile = 'ezvm-pr46-full-release-v1'; fixtureCharacters = $fixture.Length;
+        relativeReserveCharacters = $relativeReserve; maximumPathCharacters = $maximumPath;
+        plannedMaximumCharacters = $fixture.Length + $relativeReserve;
+        relativeDirectoryReserveCharacters = $directoryReserve; maximumDirectoryCharacters = $maximumDirectory;
+        plannedMaximumDirectoryCharacters = $fixture.Length + $directoryReserve } }
+}
+
+function Assert-PilotFixtureSeparation {
+    param([string]$Fixture, [string[]]$ProtectedRoots)
+    foreach ($root in $ProtectedRoots) {
+        if ([IO.Path]::GetFullPath($Fixture) -ieq [IO.Path]::GetFullPath($root) -or
+            (Test-PilotDescendant -Path $Fixture -Root $root) -or
+            (Test-PilotDescendant -Path $root -Root $Fixture)) { throw 'fixture-and-protected-root-overlap' }
+    }
+}
+
+function Assert-PilotMetadataBudget {
+    param([string]$EvidenceParent)
+    # Outer lease, private/attempts, inner lease and the preflight compiler's
+    # temporary filenames must fit before a controller or ACL probe is launched.
+    if ($EvidenceParent.Length + 160 -gt 259) { throw 'evidence-path-budget-exceeded' }
+}
+
+function Assert-PilotRecordedWorkBudget {
+    param([object]$Budget, [int]$ExpectedFixtureCharacters = -1)
+    if ($Budget.profile -isnot [string] -or $Budget.profile -cne 'ezvm-pr46-full-release-v1') { throw 'work-path-budget-invalid' }
+    foreach ($field in @('fixtureCharacters', 'relativeReserveCharacters', 'maximumPathCharacters', 'plannedMaximumCharacters',
+            'relativeDirectoryReserveCharacters', 'maximumDirectoryCharacters', 'plannedMaximumDirectoryCharacters')) {
+        if ($Budget.$field -isnot [int] -and $Budget.$field -isnot [long]) { throw 'work-path-budget-type' }
+    }
+    if ($Budget.fixtureCharacters -lt 24 -or $Budget.fixtureCharacters -gt 44 -or
+        ($ExpectedFixtureCharacters -ge 0 -and $Budget.fixtureCharacters -ne $ExpectedFixtureCharacters) -or
+        $Budget.relativeReserveCharacters -ne 215 -or $Budget.maximumPathCharacters -ne 259 -or
+        $Budget.plannedMaximumCharacters -ne ($Budget.fixtureCharacters + 215) -or $Budget.plannedMaximumCharacters -gt 259 -or
+        $Budget.relativeDirectoryReserveCharacters -ne 173 -or $Budget.maximumDirectoryCharacters -ne 247 -or
+        $Budget.plannedMaximumDirectoryCharacters -ne ($Budget.fixtureCharacters + 173) -or $Budget.plannedMaximumDirectoryCharacters -gt 247) { throw 'work-path-budget-invalid' }
+}
+
 function Assert-PilotDeadline {
     param([Diagnostics.Stopwatch]$Clock, [double]$DeadlineSeconds)
     if ($Clock.Elapsed.TotalSeconds -ge $DeadlineSeconds) { throw 'deadline-exceeded' }
@@ -149,11 +206,14 @@ function Get-PilotSourceIdentity {
     foreach ($arguments in @(@('ls-files', '--others', '--exclude-standard', '-z'), @('ls-files', '--others', '--ignored', '--exclude-standard', '-z'))) {
         if (Invoke-PilotGit -Root $root -Arguments $arguments -Clock $Clock -DeadlineSeconds $DeadlineSeconds) { throw 'source-dirty-or-staged' }
     }
-    $index = (Invoke-PilotGit -Root $root -Arguments @('ls-files', '-v', '-z') -Clock $Clock -DeadlineSeconds $DeadlineSeconds).Split([char]0, [StringSplitOptions]::RemoveEmptyEntries)
+    # Windows PowerShell's Framework overloads otherwise bind scalar char plus
+    # options to params char[], retaining a trailing empty inventory entry.
+    $separators = [char[]]@([char]0)
+    $index = (Invoke-PilotGit -Root $root -Arguments @('ls-files', '-v', '-z') -Clock $Clock -DeadlineSeconds $DeadlineSeconds).Split($separators, [StringSplitOptions]::RemoveEmptyEntries)
     foreach ($entry in $index) { if (-not $entry.StartsWith('H ', [StringComparison]::Ordinal)) { throw 'source-index-flags-unsupported' } }
-    $tracked = (Invoke-PilotGit -Root $root -Arguments @('ls-tree', '-r', '-z', 'HEAD') -Clock $Clock -DeadlineSeconds $DeadlineSeconds).Split([char]0, [StringSplitOptions]::RemoveEmptyEntries)
+    $tracked = (Invoke-PilotGit -Root $root -Arguments @('ls-tree', '-r', '-z', 'HEAD') -Clock $Clock -DeadlineSeconds $DeadlineSeconds).Split($separators, [StringSplitOptions]::RemoveEmptyEntries)
     if ($tracked.Count -ne $index.Count) { throw 'source-index-tree-count-mismatch' }
-    $staged = (Invoke-PilotGit -Root $root -Arguments @('ls-files', '--stage', '-z') -Clock $Clock -DeadlineSeconds $DeadlineSeconds).Split([char]0, [StringSplitOptions]::RemoveEmptyEntries)
+    $staged = (Invoke-PilotGit -Root $root -Arguments @('ls-files', '--stage', '-z') -Clock $Clock -DeadlineSeconds $DeadlineSeconds).Split($separators, [StringSplitOptions]::RemoveEmptyEntries)
     if ($staged.Count -ne $tracked.Count) { throw 'source-dirty-or-staged' }
     $fingerprints = New-Object 'System.Collections.Generic.List[string]'
     foreach ($entry in $tracked) {
@@ -231,11 +291,20 @@ function Write-PilotNewJson {
 }
 
 function New-PilotLease {
-    param([string]$EvidenceParent, [string]$CandidateCommit, [string]$ControllerCommit, [string]$SupervisorLeaseId = '', [string]$SupervisorStartedUtc = '')
+    param([string]$EvidenceParent, [string]$CandidateCommit, [string]$ControllerCommit, [string]$SupervisorLeaseId = '',
+        [string]$SupervisorStartedUtc = '', [string]$WorkParent = '')
     $parent = Assert-PilotPath -Path $EvidenceParent
     if (-not [IO.Directory]::Exists($parent)) { throw 'evidence-parent-not-directory' }
     $id = [Guid]::NewGuid().ToString('N')
     $root = Join-Path $parent ('runloc-whpx-' + $id)
+    $work = $null
+    $fixture = Join-Path $root 'fixture'
+    if ($WorkParent) {
+        $work = Get-PilotWorkPlan -WorkParent $WorkParent -LeaseId $id
+        $WorkParent = $work.Parent; $fixture = $work.Fixture
+        Assert-PilotFixtureSeparation -Fixture $fixture -ProtectedRoots @($root)
+        if ([IO.Directory]::Exists($fixture) -or [IO.File]::Exists($fixture)) { throw 'fixture-already-exists' }
+    }
     if ([IO.Directory]::Exists($root) -or [IO.File]::Exists($root)) { throw 'lease-already-exists' }
     [void][IO.Directory]::CreateDirectory($root)
     Set-PilotPrivateDirectory -Path $root
@@ -245,11 +314,13 @@ function New-PilotLease {
         [void][IO.Directory]::CreateDirectory($private)
         $data = [ordered]@{ schemaVersion = 1; leaseId = $id; root = $root; candidateCommit = $CandidateCommit;
             controllerCommit = $ControllerCommit; createdUtc = [DateTime]::UtcNow.ToString('o');
-            supervisorLeaseId = $SupervisorLeaseId; supervisorStartedUtc = $SupervisorStartedUtc }
+            supervisorLeaseId = $SupervisorLeaseId; supervisorStartedUtc = $SupervisorStartedUtc;
+            workParent = $WorkParent; fixture = $fixture }
         Write-PilotNewJson -Path (Join-Path $root 'lease.json') -Value $data
         $ownerDigest = Get-PilotDigest -Path (Join-Path $root 'lease.json')
-        return [pscustomobject]@{ Id = $id; Root = $root; Private = $private; Fixture = (Join-Path $root 'fixture');
-            Lock = $lock; OwnerDigest = $ownerDigest; CandidateCommit = $CandidateCommit; ControllerCommit = $ControllerCommit }
+        return [pscustomobject]@{ Id = $id; Root = $root; Private = $private; Fixture = $fixture; WorkParent = $WorkParent;
+            Lock = $lock; OwnerDigest = $ownerDigest; CandidateCommit = $CandidateCommit; ControllerCommit = $ControllerCommit;
+            FixtureCreated = $false; FixtureCreationDigest = '' }
     }
     catch { $lock.Dispose(); throw }
 }
@@ -264,7 +335,10 @@ function Assert-PilotLease {
     $owner = [IO.File]::ReadAllText($path) | ConvertFrom-Json
     if ($owner.leaseId -cne $Lease.Id -or $owner.root -cne $root -or $owner.candidateCommit -cne $Lease.CandidateCommit -or
         $owner.controllerCommit -cne $Lease.ControllerCommit) { throw 'lease-owner-mismatch' }
-    if ($Lease.Fixture -cne (Join-Path $root 'fixture')) { throw 'lease-fixture-mismatch' }
+    $expectedFixture = Join-Path $root 'fixture'
+    if ($Lease.WorkParent) { $expectedFixture = (Get-PilotWorkPlan -WorkParent $Lease.WorkParent -LeaseId $Lease.Id).Fixture }
+    if ($Lease.Fixture -cne $expectedFixture -or $owner.fixture -cne $expectedFixture -or
+        $owner.workParent -cne $Lease.WorkParent) { throw 'lease-fixture-mismatch' }
     $null = Assert-PilotPath -Path $Lease.Fixture -AllowMissing
 }
 
@@ -272,7 +346,19 @@ function Remove-PilotFixture {
     param([object]$Lease, [Diagnostics.Stopwatch]$Clock, [double]$DeadlineSeconds, [bool]$OwnedProcessesExited)
     Assert-PilotLease -Lease $Lease
     if (-not $OwnedProcessesExited) { throw 'cleanup-process-ownership-unresolved' }
-    if (-not [IO.Directory]::Exists($Lease.Fixture)) { return }
+    $directoryExists = [IO.Directory]::Exists($Lease.Fixture)
+    $fileExists = [IO.File]::Exists($Lease.Fixture)
+    if (-not $directoryExists -and -not $fileExists) { return }
+    # A planned path in lease.json is not creation authority. In particular,
+    # finally must preserve a collision that New-PilotFixture refused to create.
+    if ($Lease.FixtureCreated -isnot [bool] -or -not $Lease.FixtureCreated) { throw 'cleanup-fixture-not-created' }
+    if (-not $directoryExists) { throw 'cleanup-fixture-not-directory' }
+    if ($Lease.FixtureCreationDigest -cnotmatch '^[a-f0-9]{64}$') { throw 'cleanup-fixture-creation-unproven' }
+    $creationPath = Assert-PilotPath -Path (Join-Path $Lease.Root 'fixture-created.json') -File
+    if ((Get-PilotDigest -Path $creationPath) -cne $Lease.FixtureCreationDigest) { throw 'cleanup-fixture-creation-proof-changed' }
+    $creation = [IO.File]::ReadAllText($creationPath) | ConvertFrom-Json
+    if ($creation.schemaVersion -ne 1 -or $creation.leaseId -cne $Lease.Id -or $creation.fixture -cne $Lease.Fixture -or
+        $creation.ownerDigest -cne $Lease.OwnerDigest -or $creation.createdBy -cne 'exclusive-directory-create') { throw 'cleanup-fixture-creation-proof-invalid' }
     $stack = New-Object 'System.Collections.Generic.Stack[string]'
     $directories = New-Object 'System.Collections.Generic.List[string]'
     $files = New-Object 'System.Collections.Generic.List[string]'
@@ -302,6 +388,28 @@ function Remove-PilotFixture {
         [IO.Directory]::Delete($directories[$index], $false)
     }
     if ([IO.Directory]::Exists($Lease.Fixture)) { throw 'cleanup-fixture-still-exists' }
+}
+
+function New-PilotFixture {
+    param([object]$Lease)
+    Assert-PilotLease -Lease $Lease
+    if ([IO.Directory]::Exists($Lease.Fixture) -or [IO.File]::Exists($Lease.Fixture)) { throw 'fixture-already-exists' }
+    if ($Lease.FixtureCreated -isnot [bool] -or $Lease.FixtureCreated) { throw 'fixture-already-created' }
+    if ($script:PilotWindows) {
+        Import-PilotNative
+        [RunlocPoc.OwnedProcess]::CreateNewDirectory($Lease.Fixture)
+    }
+    else { $null = New-Item -ItemType Directory -Path $Lease.Fixture -ErrorAction Stop }
+    # Set only after exclusive creation succeeds. A failed/racing create cannot
+    # authorize finally to delete another fixture. Incomplete durable proof
+    # deliberately quarantines the new directory even when this latch is true.
+    $Lease.FixtureCreated = $true
+    $creationPath = Join-Path $Lease.Root 'fixture-created.json'
+    Write-PilotNewJson -Path $creationPath -Value @{ schemaVersion = 1; leaseId = $Lease.Id; fixture = $Lease.Fixture;
+        ownerDigest = $Lease.OwnerDigest; createdBy = 'exclusive-directory-create'; createdUtc = [DateTime]::UtcNow.ToString('o') }
+    $Lease.FixtureCreationDigest = Get-PilotDigest -Path $creationPath
+    if ($script:PilotWindows) { Set-PilotPrivateDirectory -Path $Lease.Fixture }
+    Assert-PilotLease -Lease $Lease
 }
 
 function Invoke-PilotExactAclPreflight {
@@ -482,82 +590,87 @@ function Read-PilotTelemetry {
     $stack = New-Object 'System.Collections.Generic.Stack[object]'
     $public = New-Object 'System.Collections.Generic.List[object]'
     $groups = @{}; $identities = @(); $lastSeconds = 0.0; $nextOperation = 1; $sequence = 0; $rootTerminal = $null
-    foreach ($line in [IO.File]::ReadLines($Path)) {
-        Assert-PilotDeadline -Clock $Clock -DeadlineSeconds $DeadlineSeconds
-        if ($line.Length -gt 16384 -or ++$sequence -gt 20000) { throw 'telemetry-record-limit' }
-        $record = $line | ConvertFrom-Json
-        if ($record.schemaVersion -ne 1 -or $record.sequence -ne $sequence -or $operations -cnotcontains $record.operation -or
-            $categories -cnotcontains $record.category -or @('start', 'end', 'failure', 'identity') -cnotcontains $record.event) { throw 'telemetry-record-invalid' }
-        Assert-PilotTelemetryNumber -Value $record.elapsedSeconds
-        Assert-PilotTelemetryNumber -Value $record.operationId -Integer
-        if ($record.elapsedSeconds -lt $lastSeconds -or $record.elapsedSeconds -gt 5400 -or $record.operationId -lt 1) { throw 'telemetry-clock-or-operation-invalid' }
-        $lastSeconds = [double]$record.elapsedSeconds
-        $utc = [DateTimeOffset]::MinValue
-        if ($record.utc -is [DateTime] -or $record.utc -is [DateTimeOffset]) { $utc = [DateTimeOffset]$record.utc }
-        elseif ($record.utc -isnot [string] -or -not [DateTimeOffset]::TryParse($record.utc, [ref]$utc)) { throw 'telemetry-utc-invalid' }
-        $clean = [ordered]@{ schemaVersion = 1; sequence = $sequence; utc = $utc.ToUniversalTime().ToString('o');
-            elapsedSeconds = [double]$record.elapsedSeconds; event = $record.event; operationId = $record.operationId;
-            parentOperationId = $record.parentOperationId; operation = $record.operation; category = $record.category }
-        if ($record.event -ceq 'identity') {
-            if ($record.operation -cne 'verified-identity' -or $record.category -cne 'identity' -or $record.operationId -ne 1 -or
-                $null -ne $record.parentOperationId -or $stack.Count -eq 0) { throw 'telemetry-identity-context-invalid' }
-            $details = $record.details
-            if (@('qemu-system', 'qemu-img', 'source-image', 'prepared-base') -cnotcontains $details.kind -or $details.sha256 -cnotmatch '^[a-f0-9]{64}$') { throw 'telemetry-identity-invalid' }
-            Assert-PilotTelemetryNumber -Value $details.sizeBytes -Integer
-            $clean.details = [ordered]@{ kind = $details.kind; sha256 = $details.sha256; sizeBytes = $details.sizeBytes }
-            if ($null -ne $details.PSObject.Properties['version']) {
-                if ($details.version -cnotmatch '^[A-Za-z0-9._+-]{1,64}$') { throw 'telemetry-version-invalid' }
-                $clean.details.version = $details.version
+    $lines = [IO.File]::ReadLines($Path).GetEnumerator()
+    try {
+        while ($lines.MoveNext()) {
+            $line = [string]$lines.Current
+            Assert-PilotDeadline -Clock $Clock -DeadlineSeconds $DeadlineSeconds
+            if ($line.Length -gt 16384 -or ++$sequence -gt 20000) { throw 'telemetry-record-limit' }
+            $record = $line | ConvertFrom-Json
+            if ($record.schemaVersion -ne 1 -or $record.sequence -ne $sequence -or $operations -cnotcontains $record.operation -or
+                $categories -cnotcontains $record.category -or @('start', 'end', 'failure', 'identity') -cnotcontains $record.event) { throw 'telemetry-record-invalid' }
+            Assert-PilotTelemetryNumber -Value $record.elapsedSeconds
+            Assert-PilotTelemetryNumber -Value $record.operationId -Integer
+            if ($record.elapsedSeconds -lt $lastSeconds -or $record.elapsedSeconds -gt 5400 -or $record.operationId -lt 1) { throw 'telemetry-clock-or-operation-invalid' }
+            $lastSeconds = [double]$record.elapsedSeconds
+            $utc = [DateTimeOffset]::MinValue
+            if ($record.utc -is [DateTime] -or $record.utc -is [DateTimeOffset]) { $utc = [DateTimeOffset]$record.utc }
+            elseif ($record.utc -isnot [string] -or -not [DateTimeOffset]::TryParse($record.utc, [ref]$utc)) { throw 'telemetry-utc-invalid' }
+            $clean = [ordered]@{ schemaVersion = 1; sequence = $sequence; utc = $utc.ToUniversalTime().ToString('o');
+                elapsedSeconds = [double]$record.elapsedSeconds; event = $record.event; operationId = $record.operationId;
+                parentOperationId = $record.parentOperationId; operation = $record.operation; category = $record.category }
+            if ($record.event -ceq 'identity') {
+                if ($record.operation -cne 'verified-identity' -or $record.category -cne 'identity' -or $record.operationId -ne 1 -or
+                    $null -ne $record.parentOperationId -or $stack.Count -eq 0) { throw 'telemetry-identity-context-invalid' }
+                $details = $record.details
+                if (@('qemu-system', 'qemu-img', 'source-image', 'prepared-base') -cnotcontains $details.kind -or $details.sha256 -cnotmatch '^[a-f0-9]{64}$') { throw 'telemetry-identity-invalid' }
+                Assert-PilotTelemetryNumber -Value $details.sizeBytes -Integer
+                $clean.details = [ordered]@{ kind = $details.kind; sha256 = $details.sha256; sizeBytes = $details.sizeBytes }
+                if ($null -ne $details.PSObject.Properties['version']) {
+                    if ($details.version -cnotmatch '^[A-Za-z0-9._+-]{1,64}$') { throw 'telemetry-version-invalid' }
+                    $clean.details.version = $details.version
+                }
+                $identities += $clean.details
             }
-            $identities += $clean.details
-        }
-        elseif ($record.event -ceq 'start') {
-            if ($record.operationId -ne $nextOperation++) { throw 'telemetry-operation-sequence-invalid' }
-            $parent = $null; if ($stack.Count) { $parent = $stack.Peek().operationId }
-            if ($record.parentOperationId -ne $parent -or ($record.operationId -eq 1 -and
-                ($record.operation -cne 'full-release' -or $record.category -cne 'qualification')) -or
-                ($record.operationId -ne 1 -and $record.operation -ceq 'full-release') -or $stack.Count -gt 64) { throw 'telemetry-nesting-invalid' }
-            $clean.details = [ordered]@{}
-            if ($record.operation -ceq 'Invoke-EzVmProcess') {
-                if (@('qemu-img.exe', 'qemu-system-x86_64.exe', 'ssh.exe', 'scp.exe', 'other') -cnotcontains $record.details.tool) { throw 'telemetry-tool-invalid' }
-                $clean.details.tool = $record.details.tool
-                if ($null -ne $record.details.PSObject.Properties['action']) {
-                    if (@('info', 'compare', 'create', 'convert', 'check', 'rebase', 'resize', '--version', 'other') -cnotcontains $record.details.action) { throw 'telemetry-action-invalid' }
-                    $clean.details.action = $record.details.action
+            elseif ($record.event -ceq 'start') {
+                if ($record.operationId -ne $nextOperation++) { throw 'telemetry-operation-sequence-invalid' }
+                $parent = $null; if ($stack.Count) { $parent = $stack.Peek().operationId }
+                if ($record.parentOperationId -ne $parent -or ($record.operationId -eq 1 -and
+                    ($record.operation -cne 'full-release' -or $record.category -cne 'qualification')) -or
+                    ($record.operationId -ne 1 -and $record.operation -ceq 'full-release') -or $stack.Count -gt 64) { throw 'telemetry-nesting-invalid' }
+                $clean.details = [ordered]@{}
+                if ($record.operation -ceq 'Invoke-EzVmProcess') {
+                    if (@('qemu-img.exe', 'qemu-system-x86_64.exe', 'ssh.exe', 'scp.exe', 'other') -cnotcontains $record.details.tool) { throw 'telemetry-tool-invalid' }
+                    $clean.details.tool = $record.details.tool
+                    if ($null -ne $record.details.PSObject.Properties['action']) {
+                        if (@('info', 'compare', 'create', 'convert', 'check', 'rebase', 'resize', '--version', 'other') -cnotcontains $record.details.action) { throw 'telemetry-action-invalid' }
+                        $clean.details.action = $record.details.action
+                    }
+                }
+                $stack.Push([pscustomobject]$clean)
+            }
+            else {
+                if (-not $stack.Count) { throw 'telemetry-unmatched-terminal' }
+                $start = $stack.Pop()
+                if ($record.operationId -ne $start.operationId -or $record.parentOperationId -ne $start.parentOperationId -or
+                    $record.operation -cne $start.operation -or $record.category -cne $start.category) { throw 'telemetry-nesting-invalid' }
+                Assert-PilotTelemetryNumber -Value $record.durationSeconds
+                if ($record.durationSeconds -gt 5400) { throw 'telemetry-duration-invalid' }
+                $clean.durationSeconds = [double]$record.durationSeconds
+                $clean.digestTotals = [ordered]@{}
+                foreach ($property in $record.digestTotals.PSObject.Properties) {
+                    if (@('manifest', 'qemu-payload', 'base-image', 'source-image', 'other') -cnotcontains $property.Name) { throw 'telemetry-digest-kind-invalid' }
+                    $total = $property.Value
+                    foreach ($field in @('calls', 'failedCalls', 'bytes')) { Assert-PilotTelemetryNumber -Value $total.$field -Integer }
+                    Assert-PilotTelemetryNumber -Value $total.elapsedSeconds
+                    if ($total.failedCalls -gt $total.calls -or $total.elapsedSeconds -gt 5400) { throw 'telemetry-digest-total-invalid' }
+                    $clean.digestTotals[$property.Name] = [ordered]@{ calls = $total.calls; failedCalls = $total.failedCalls;
+                        bytes = $total.bytes; elapsedSeconds = [double]$total.elapsedSeconds }
+                }
+                $key = $record.operation + '/' + $record.category
+                if (-not $groups.ContainsKey($key)) { $groups[$key] = [ordered]@{ operation = $record.operation; category = $record.category; calls = 0; failedCalls = 0; inclusiveSeconds = 0.0 } }
+                $groups[$key].calls++; $groups[$key].inclusiveSeconds += [double]$record.durationSeconds
+                if ($record.event -ceq 'failure') { $groups[$key].failedCalls++ }
+                if ($record.operationId -eq 1) {
+                    if ($null -ne $rootTerminal) { throw 'telemetry-duplicate-root-terminal' }
+                    $rootTerminal = $clean
                 }
             }
-            $stack.Push([pscustomobject]$clean)
+            if ($null -ne $rootTerminal -and $record.operationId -ne 1) { throw 'telemetry-after-root-terminal' }
+            $public.Add([pscustomobject]$clean)
         }
-        else {
-            if (-not $stack.Count) { throw 'telemetry-unmatched-terminal' }
-            $start = $stack.Pop()
-            if ($record.operationId -ne $start.operationId -or $record.parentOperationId -ne $start.parentOperationId -or
-                $record.operation -cne $start.operation -or $record.category -cne $start.category) { throw 'telemetry-nesting-invalid' }
-            Assert-PilotTelemetryNumber -Value $record.durationSeconds
-            if ($record.durationSeconds -gt 5400) { throw 'telemetry-duration-invalid' }
-            $clean.durationSeconds = [double]$record.durationSeconds
-            $clean.digestTotals = [ordered]@{}
-            foreach ($property in $record.digestTotals.PSObject.Properties) {
-                if (@('manifest', 'qemu-payload', 'base-image', 'source-image', 'other') -cnotcontains $property.Name) { throw 'telemetry-digest-kind-invalid' }
-                $total = $property.Value
-                foreach ($field in @('calls', 'failedCalls', 'bytes')) { Assert-PilotTelemetryNumber -Value $total.$field -Integer }
-                Assert-PilotTelemetryNumber -Value $total.elapsedSeconds
-                if ($total.failedCalls -gt $total.calls -or $total.elapsedSeconds -gt 5400) { throw 'telemetry-digest-total-invalid' }
-                $clean.digestTotals[$property.Name] = [ordered]@{ calls = $total.calls; failedCalls = $total.failedCalls;
-                    bytes = $total.bytes; elapsedSeconds = [double]$total.elapsedSeconds }
-            }
-            $key = $record.operation + '/' + $record.category
-            if (-not $groups.ContainsKey($key)) { $groups[$key] = [ordered]@{ operation = $record.operation; category = $record.category; calls = 0; failedCalls = 0; inclusiveSeconds = 0.0 } }
-            $groups[$key].calls++; $groups[$key].inclusiveSeconds += [double]$record.durationSeconds
-            if ($record.event -ceq 'failure') { $groups[$key].failedCalls++ }
-            if ($record.operationId -eq 1) {
-                if ($null -ne $rootTerminal) { throw 'telemetry-duplicate-root-terminal' }
-                $rootTerminal = $clean
-            }
-        }
-        if ($null -ne $rootTerminal -and $record.operationId -ne 1) { throw 'telemetry-after-root-terminal' }
-        $public.Add([pscustomobject]$clean)
     }
+    finally { $lines.Dispose() }
     if ($sequence -eq 0 -or $stack.Count -ne 0 -or $null -eq $rootTerminal -or
         $public[$public.Count - 1].operation -cne 'full-release') { throw 'telemetry-incomplete' }
     $digest = Get-PilotDigest -Path $Path
@@ -591,6 +704,7 @@ function Test-PilotOutcome {
             if ($value -isnot [int] -and $value -isnot [long] -and $value -isnot [uint32]) { throw 'receipt-process-count-type' }
         }
         Assert-PilotTelemetryNumber -Value $Receipt.elapsedSeconds
+        Assert-PilotRecordedWorkBudget -Budget $Receipt.pathBudget
         foreach ($source in @($Receipt.candidate, $Receipt.controller)) {
             if ($source.clean -isnot [bool] -or -not $source.clean -or $source.commit -cnotmatch '^[a-f0-9]{40}$' -or
                 $source.tree -cnotmatch '^[a-f0-9]{40}$' -or $source.executedTreeSha256 -cnotmatch '^[a-f0-9]{64}$') { throw 'receipt-source-identity' }

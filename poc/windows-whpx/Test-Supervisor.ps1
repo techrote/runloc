@@ -31,12 +31,15 @@ function New-SupervisorFixture {
     $root = Join-Path $supervisorTestRoot ([Guid]::NewGuid().ToString('N'))
     $attempts = Join-Path $root 'private/attempts'
     $id = [Guid]::NewGuid().ToString('N'); $innerRoot = Join-Path $attempts ('runloc-whpx-' + $id)
+    $workParent = if ($script:PilotWindows) { $env:USERPROFILE } else { [IO.Path]::GetTempPath() }
+    $workPlan = Get-PilotWorkPlan -WorkParent $workParent -LeaseId $id
     [void][IO.Directory]::CreateDirectory($innerRoot)
     [IO.File]::WriteAllBytes((Join-Path $innerRoot 'active.lock'), (New-Object byte[] 0))
     $utc = [DateTime]::UtcNow.AddSeconds(-120); $started = $utc.ToString('o'); $innerStart = $utc.AddSeconds(3)
     $candidatePins = @([pscustomobject]@{ path = 'scripts/harness.ps1'; sha256Lf = ('a' * 64); executedBytesSha256 = ('b' * 64) })
     $controllerPins = @([pscustomobject]@{ path = 'poc/windows-whpx/Invoke-WhpxPilot.ps1'; sha256Lf = ('c' * 64); executedBytesSha256 = ('d' * 64) })
     $owner = [ordered]@{ schemaVersion = 1; leaseId = $id; root = $innerRoot; candidateCommit = ('a' * 40); controllerCommit = ('b' * 40);
+        workParent = $workPlan.Parent; fixture = $workPlan.Fixture;
         supervisorLeaseId = ('c' * 32); supervisorStartedUtc = $started; createdUtc = $utc.AddSeconds(5).ToString('o') }
     $events = @(); $seconds = 1.0
     foreach ($line in (@(('EZVM010_STARTED_AT=' + $innerStart.ToString('o')), 'EZVM010_ACCELERATOR=whpx') +
@@ -53,6 +56,7 @@ function New-SupervisorFixture {
     $receipt = [ordered]@{ schemaVersion = 1; issue = 'CI-POC-001'; leaseId = $id; supervisorLeaseId = ('c' * 32); supervisorStartedUtc = $started;
         startedUtc = $innerStart.ToString('o'); endedUtc = $innerStart.AddSeconds(100).ToString('o'); elapsedSeconds = 100;
         targetSeconds = 3600; hardWallSeconds = 5400; controllerBudgetSeconds = 5338; outcome = 'pass'; exitCode = 0;
+        pathBudget = $workPlan.Budget;
         candidate = @{ repository = 'https://github.com/techrote/ezvm'; commit = ('a' * 40); tree = ('d' * 40); executedTreeSha256 = ('1' * 64); clean = $true; files = $candidatePins };
         controller = @{ repository = 'https://github.com/techrote/runloc'; commit = ('b' * 40); tree = ('e' * 40); executedTreeSha256 = ('2' * 64); clean = $true; files = $controllerPins };
         preflightOnly = [bool]$PreflightOnly; vmQualificationStarted = -not [bool]$PreflightOnly; childExitCode = 0; sourceUnchanged = $true;
@@ -73,6 +77,7 @@ function New-SupervisorFixture {
         outputOverflow = $false; outputFailed = $false; controllerError = $false; createdUtc = $utc.AddSeconds(2).ToString('o');
         endedUtc = $utc.AddSeconds(105).ToString('o'); records = @([pscustomobject]@{ Channel = 'stdout'; Text = ('RUNLOC_PILOT_RECEIPT=' + $path); Utc = $utc.AddSeconds(104).ToString('o') }) }
     $arguments = @{ Process = $process; OuterLease = [pscustomobject]@{ Id = ('c' * 32) }; AttemptsRoot = $attempts; StartedUtc = $started;
+        WorkParent = $workPlan.Parent;
         CandidateCommit = ('a' * 40); CandidateTree = ('d' * 40); CandidatePins = $candidatePins; ControllerCommit = ('b' * 40);
         ControllerPins = $controllerPins; ControllerBudgetSeconds = 5338; ElapsedSeconds = 110; PreflightOnly = [bool]$PreflightOnly }
     $fixture = [pscustomobject]@{ Root = $root; InnerRoot = $innerRoot; Path = $path; Owner = $owner; Receipt = $receipt; Arguments = $arguments }
@@ -220,6 +225,23 @@ try {
         $sentinel = Join-Path $retained 'unrelated-or-unknown.txt'; [IO.File]::WriteAllText($sentinel, 'KEEP')
         Assert-SupervisorThrows { Read-SupervisorFixture $fixture } 'inner-outcome-incomplete'
         Assert-Supervisor ([IO.File]::ReadAllText($sentinel) -ceq 'KEEP')
+    }
+    Test-SupervisorCase 'external fixture absence and exact lease mapping are independently required' {
+        $fixture = New-SupervisorFixture
+        $retained = $fixture.Owner.fixture
+        $fixture.Owner.fixture = Join-Path $fixture.Root 'unrelated'
+        Save-SupervisorFixture $fixture
+        Assert-SupervisorThrows { Read-SupervisorFixture $fixture } 'receipt-lease-mismatch'
+        $fixture.Owner.fixture = $retained
+        Save-SupervisorFixture $fixture
+        [void][IO.Directory]::CreateDirectory($retained)
+        $sentinel = Join-Path $retained 'owned-test-sentinel.txt'
+        try {
+            [IO.File]::WriteAllText($sentinel, 'KEEP')
+            Assert-SupervisorThrows { Read-SupervisorFixture $fixture } 'inner-outcome-incomplete'
+            Assert-Supervisor ([IO.File]::ReadAllText($sentinel) -ceq 'KEEP')
+        }
+        finally { [IO.File]::Delete($sentinel); [IO.Directory]::Delete($retained, $false) }
     }
     Test-SupervisorCase 'receipt hardlinks are refused before reading shared bytes' {
         $fixture = New-SupervisorFixture; $link = Join-Path $fixture.Root 'receipt-copy.json'

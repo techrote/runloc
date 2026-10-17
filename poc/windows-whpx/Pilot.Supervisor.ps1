@@ -112,6 +112,7 @@ function Test-PilotSupervisorProcess {
 
 function Read-PilotSupervisedReceipt {
     param([object]$Process, [object]$OuterLease, [string]$AttemptsRoot, [string]$StartedUtc,
+        [string]$WorkParent,
         [string]$CandidateCommit, [string]$CandidateTree, [object[]]$CandidatePins,
         [string]$ControllerCommit, [object[]]$ControllerPins, [int]$ControllerBudgetSeconds,
         [double]$ElapsedSeconds, [bool]$PreflightOnly)
@@ -126,6 +127,8 @@ function Read-PilotSupervisedReceipt {
     $name = [IO.Path]::GetFileName($innerRoot)
     if ([IO.Path]::GetDirectoryName($innerRoot) -cne $AttemptsRoot -or $name -cnotmatch '^runloc-whpx-([a-f0-9]{32})$') { throw 'supervisor-receipt-parent-invalid' }
     $innerId = $Matches[1]
+    $workPlan = Get-PilotWorkPlan -WorkParent $WorkParent -LeaseId $innerId
+    Assert-PilotFixtureSeparation -Fixture $workPlan.Fixture -ProtectedRoots @($innerRoot)
     # Enumerate only the immediate fresh metadata parent, never an unknown fixture.
     $entries = [IO.Directory]::EnumerateFileSystemEntries($AttemptsRoot).GetEnumerator()
     try {
@@ -149,6 +152,7 @@ function Read-PilotSupervisedReceipt {
         $receipt = $receiptFile.Value
         if ($owner.Value.schemaVersion -ne 1 -or $owner.Value.leaseId -cne $innerId -or $owner.Value.root -cne $innerRoot -or
             $owner.Value.candidateCommit -cne $CandidateCommit -or $owner.Value.controllerCommit -cne $ControllerCommit -or
+            $owner.Value.workParent -cne $workPlan.Parent -or $owner.Value.fixture -cne $workPlan.Fixture -or
             $owner.Value.supervisorLeaseId -cne $OuterLease.Id -or $owner.Value.supervisorStartedUtc -cne $StartedUtc -or
             $receipt.schemaVersion -ne 1 -or $receipt.issue -cne 'CI-POC-001' -or $receipt.leaseId -cne $innerId -or
             $receipt.supervisorLeaseId -cne $OuterLease.Id -or $receipt.supervisorStartedUtc -cne $StartedUtc) { throw 'supervisor-receipt-lease-mismatch' }
@@ -167,6 +171,7 @@ function Read-PilotSupervisedReceipt {
             $receipt.targetSeconds -ne 3600 -or $receipt.elapsedSeconds -gt $ElapsedSeconds -or
             [Math]::Abs(($end - $start).TotalSeconds - [double]$receipt.elapsedSeconds) -gt 2 -or
             $ElapsedSeconds -ge 5340 -or $receipt.elapsedSeconds -gt $ControllerBudgetSeconds) { throw 'supervisor-receipt-budget-invalid' }
+        Assert-PilotRecordedWorkBudget -Budget $receipt.pathBudget -ExpectedFixtureCharacters $workPlan.Budget.fixtureCharacters
         Assert-PilotSupervisorSource -Source $receipt.candidate -Repository 'https://github.com/techrote/ezvm' -Commit $CandidateCommit -Tree $CandidateTree -Pins $CandidatePins
         Assert-PilotSupervisorSource -Source $receipt.controller -Repository 'https://github.com/techrote/runloc' -Commit $ControllerCommit -Pins $ControllerPins
         foreach ($field in @('preflightOnly', 'vmQualificationStarted', 'sourceUnchanged', 'timedOut', 'cancelled', 'outputOverflow', 'outputFailed', 'harnessFailure', 'controllerFailure')) {
@@ -186,6 +191,7 @@ function Read-PilotSupervisedReceipt {
             $receipt.timedOut -or $receipt.cancelled -or $receipt.outputOverflow -or $receipt.outputFailed -or $receipt.harnessFailure -or $receipt.controllerFailure -or
             -not $receipt.cleanup.childExited -or $receipt.cleanup.activeProcesses -ne 0 -or $receipt.cleanup.forced -or
             -not $receipt.cleanup.fixtureRemoved -or -not $receipt.cleanup.ownershipVerified -or
+            [IO.Directory]::Exists($workPlan.Fixture) -or [IO.File]::Exists($workPlan.Fixture) -or
             [IO.Directory]::Exists((Join-Path $innerRoot 'fixture')) -or [IO.File]::Exists((Join-Path $innerRoot 'fixture'))) { throw 'supervisor-inner-outcome-incomplete' }
         if ($PreflightOnly) {
             if ($receipt.outcome -cne 'preflight-pass' -or $receipt.vmQualificationStarted -or $null -ne $receipt.childExitCode -or

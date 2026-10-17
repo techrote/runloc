@@ -5,8 +5,9 @@
 **Implementation in progress; physical acceptance is held.**
 
 This checkpoint belongs to [Runloc issue #21](https://github.com/techrote/runloc/issues/21).
-The [binding PoC contract](WINDOWS-WHPX-CI-POC.md) and original issue acceptance
-remain unchanged. This cloud session has Linux execution and GitHub access; no
+The [binding PoC contract](WINDOWS-WHPX-CI-POC.md) records the owner's temporary
+hosted-TCG scheduling exception; the full physical acceptance remains required.
+This cloud session has Linux execution and GitHub access; no
 supported physical Windows/WHPX host is connected. Code, mocked results and
 hosted TCG cannot satisfy the required complete cold physical run.
 
@@ -21,8 +22,8 @@ this change. CI-POC-001 remains open until every full-run and timing clause pass
 |---|---|---|
 | [EzVM #43](https://github.com/techrote/ezvm/pull/43), GitHub-hosted migration | `9f9e4f5762cd6251249b46c093039a4ef0e985fe` | Full original TCG release and core Windows checks passed. Independently reviewed; merged as `2f79e6b836a4592acfd6015bee58177fb15e3022`. |
 | [EzVM #45](https://github.com/techrote/ezvm/pull/45), captured-start/lifecycle work | `8d4bacbe74e8c4d83d3cec9845e8a6026c62fd46` | Open. Core/DASH software checks passed, but full release failed on fresh-clone authenticated READY. Not imported or merged to advance this PoC. |
-| [EzVM #46](https://github.com/techrote/ezvm/pull/46), explicit accelerator/pilot | Original `26c61967e91a008082ebc197f16dd94b943ad27c` | Draft. Reusable original full assertions; original pilot lacks the new Runloc ownership/evidence boundary. Its full hosted run failed on source-restart READY. |
-| [EzVM #47](https://github.com/techrote/ezvm/issues/47) / [PR #48](https://github.com/techrote/ezvm/pull/48), private owner/DACL repair | Published draft; standard-user fixture corrections under test | Narrow software prerequisite, with exact-source standard-user legacy-red/candidate-green regression requirements. Closing it cannot close Runloc #21. |
+| [EzVM #46](https://github.com/techrote/ezvm/pull/46), explicit accelerator/pilot | Original `26c61967e91a008082ebc197f16dd94b943ad27c`; reviewed integrated candidate `59eee784b8016178c5589dea32cf2c9e72b942bd` | Draft. Original assertions preserved with additive bounded telemetry, public ACL repair and the temporary TCG exception. Use the Runloc supervisor for acceptance. Its original hosted READY failure remains retained below. |
+| [EzVM #47](https://github.com/techrote/ezvm/issues/47) / [PR #48](https://github.com/techrote/ezvm/pull/48), private owner/DACL repair | Final head `d5fdebf2d759ee44e2ac4c604ffc2116c75cf740`; merged as `7b829f8352a9fa30c965e57386965767c5969e0d` | Exact-head repository, Windows core, standard-user ACL and DASH checks passed. The owner explicitly deferred only full hosted TCG. This software prerequisite does not close Runloc #21. |
 
 The routine merge of #43 followed a four-file diff review, exact-head check
 inspection, current-main reconciliation and an independent agent review. The
@@ -70,6 +71,59 @@ retains both PowerShell artifacts. The same source passed the ordinary
 [Windows repository and control-plane checks](https://github.com/techrote/ezvm/actions/runs/39051034115)
 and [both DASH replay lanes](https://github.com/techrote/ezvm/actions/runs/39051034101).
 
+## Proven standard-user private-DACL correction
+
+At public `b370b78ce667b03368e859f40527b4280e438ff8`, tree
+`0a590498574b3f9a056da1c88eb3c8c8acc011ad`, both actual ordinary-user lanes
+completed **358 PASS / 0 FAIL / 0 SKIP**. Four retained controls reproduced the
+expected `SeSecurityPrivilege` failure on baseline
+`d5265c804d0d8494d8171482a85aca563b181e05`; all four passed on the candidate.
+Six launcher regressions also passed. Both receipts prove a non-administrator
+token with no special privileges, unchanged source, numeric child exit zero,
+and removal of the owned temporary account and fixture.
+
+| Actual lane | Evidence | Receipt duration |
+|---|---|---|
+| Windows PowerShell 5.1.20348.5622 | [Job 117453492279](https://github.com/techrote/ezvm/actions/runs/39052413893/job/117453492279) | 288.759272 seconds |
+| PowerShell 7.6.6 | [Job 117453492134](https://github.com/techrote/ezvm/actions/runs/39052413893/job/117453492134) | 212.9012244 seconds |
+
+The [allowlisted receipts and independent audit](evidence/private-dacl-regression.json)
+include exact source/baseline identities, artifact/log SHA256 values, native
+token observations, literal case counts and cleanup. Both downloaded ZIPs match
+GitHub's advertised hashes. These times measure the ACL qualification, not a VM
+workload or WHPX performance. All applicable checks also passed on final head
+`d5fdebf2d759ee44e2ac4c604ffc2116c75cf740`, whose product, fixture and test files
+are unchanged from the proven source.
+
+The #48 merge's tree is exactly `2aa3170d8ba0a60ae98bb07803f63d9c04d41de0`.
+Its actual post-merge [repository and both Windows core lanes](https://github.com/techrote/ezvm/actions/runs/39054219143),
+[both standard-user ACL lanes](https://github.com/techrote/ezvm/actions/runs/39054219124)
+and [both DASH replay lanes](https://github.com/techrote/ezvm/actions/runs/39054219122)
+all passed. EzVM #47 is closed; Runloc #21 retains its separate physical gate.
+
+## Temporary full hosted TCG deferral
+
+On **2026-10-17**, the owner explicitly requested postponing the approximately
+three-hour automatic TCG run until the end of CI-PoC. The reviewed change is
+public [d5fdebf](https://github.com/techrote/ezvm/commit/d5fdebf2d759ee44e2ac4c604ffc2116c75cf740)
+and included in the #48 merge. It changes only the full-job scheduling condition
+for same-repository `ci-poc-*` and `ezvm-ci-whpx-pilot` PR heads, adds a visible
+deferral notice and records the temporary AGENTS/RAG exception. Manual dispatch,
+all other checks and physical WHPX acceptance remain available or required as
+documented in the [binding exception](WINDOWS-WHPX-CI-POC.md#owner-authorized-temporary-hosted-tcg-deferral).
+
+The [exact requested run](https://github.com/techrote/ezvm/actions/runs/39052413967/job/117453709701)
+was observed **cancelled** after the replacement used the existing concurrency
+group. The [replacement full job](https://github.com/techrote/ezvm/actions/runs/39053611174/job/117457228894)
+is **skipped**; its [notice](https://github.com/techrote/ezvm/actions/runs/39053611174/job/117457227613)
+completed successfully. TCG remains unmeasured; neither cancellation nor a green
+notice is a qualification PASS. Original failed runs above retain their findings.
+
+[CI-POC-003 / #23](https://github.com/techrote/runloc/issues/23) now explicitly
+requires removing the temporary exception or replacing it with the reviewed
+qualified-WHPX/independent-hosted-fallback policy and proving hosted-only rollback
+before closing. The temporary change does not implement that later CI gate.
+
 ## Why the standalone evidence boundary is needed
 
 The original full harness performs the original image, base, concurrent guest,
@@ -98,6 +152,80 @@ An independently timed supervisor contains the controller as well as its childre
 it must run in its own PowerShell process so its terminal deadline cannot close an
 interactive owner shell.
 
+## Windows compatibility regressions retained
+
+The first public Runloc helper `9966a10f99427843aa690555216ec42ce078bf35`
+failed its [Windows software lanes](https://github.com/techrote/runloc/actions/runs/39052753848).
+Test teardown attempted to remove read-only Git objects and masked the primary
+failure. Diagnostic successor `0138fe202d344acff9f4b5822dac66e1b124a6ff`
+preserves the first failure and validates the complete owned test inventory before
+clearing ordinary file attributes and deleting it. Its
+[actual Windows logs](https://github.com/techrote/runloc/actions/runs/39053709996)
+exposed the distinct source-parser and long-path failures below.
+
+Windows PowerShell 5.1 selected the wrong Framework `String.Split` overload for
+a scalar NUL separator plus options, leaving an empty source-index entry. The
+explicit `char[]` overload preserves the required parsing semantics. A retained
+Framework-overload regression reproduces the old result and verifies the new
+form, including whitespace, control characters and empty inventories. Telemetry
+line iterators are also explicitly disposed when negative parsing throws, so
+failed validation cannot leave a Windows file handle open during cleanup.
+
+The PS7 failure reached native file-link validation on a fixture path beyond
+Windows' legacy limit. The [pinned archive and source-path audit](evidence/windows-path-budget.json)
+measured the actual QEMU/extractor archives and immutable source definitions,
+including long icon filenames, relocation, immutable-base and atomic temporary
+paths. The original full harness needs a maximum fixture length of 44 UTF-16 code
+units: the measured file suffix of 215 reaches 259; the directory reserve is 173.
+
+The helper therefore uses a separate existing user-writable `WorkParent` and a
+compact filename encoding all 128 lease bits, while retaining the full lease ID
+and exact fixture mapping privately. It rejects insufficient work/evidence path
+space before a controller, download or qualification fixture starts. The original
+harness layout, assertions and host long-path policy remain unchanged. Creation
+and cleanup require positive ownership; an existing or racing directory must
+remain untouched. The creation latch is set only after exclusive creation succeeds;
+cleanup also verifies a digest-bound creation receipt before inspecting an existing
+fixture. An independent production-API probe changed from deleting a refused
+sentinel directory to preserving it, and passed all four ownership cases. Missing
+or incompletely persisted creation proof quarantines the attempt. The outer
+supervisor independently checks the recorded external
+fixture's absence and quarantines uncertain attempts.
+
+The first integrated EzVM candidate `ef713d831bca1de02935f411f4e22b49102970e1`
+also exposed one test-only Windows sharing error: both control-plane lanes and
+the retained ordinary-user PS5 artifact reported **375 PASS / 1 FAIL / 0 SKIP**.
+The [original evidence](evidence/integration-windows-regression.json) preserves
+job/source identities and the failed fixture's quarantine. The repaired public
+candidate `59eee784b8016178c5589dea32cf2c9e72b942bd` changes only the telemetry
+test to finalize the failed session before reading its retained output, and adds
+checks for stream disposal and both operation/full-release failure records.
+Production telemetry sharing, full-release assertions and ACL code are unchanged.
+
+## Frozen candidate software acceptance
+
+The approved EzVM execution manifest names public
+`59eee784b8016178c5589dea32cf2c9e72b942bd`, tree
+`f609fa6aa429a9b78fa89ef763126d9ef023e8d0`. Its
+[final ordinary-user Windows lanes](https://github.com/techrote/ezvm/actions/runs/39055025533)
+each executed that exact head directly and completed **376 PASS / 0 FAIL / 0 SKIP**.
+The [retained audit](evidence/final-candidate-windows.json) verifies both artifact
+digests and literal counts, all four legacy/corrected ACL controls, all seven
+telemetry cases, all six launcher cases, the ordinary token, unchanged source,
+numeric child exit zero and successful account/fixture cleanup.
+
+The [repository and both core checks](https://github.com/techrote/ezvm/actions/runs/39055025578)
+also passed. Core executed GitHub PR-merge commit
+`2f25017e7b7a2a60c6817a3a225b247450a98840`, whose tree is exactly the frozen
+candidate's `f609fa6aa429a9b78fa89ef763126d9ef023e8d0`; both suites report 376/0/0.
+[Both DASH checks](https://github.com/techrote/ezvm/actions/runs/39055025546)
+passed. [Full hosted TCG](https://github.com/techrote/ezvm/actions/runs/39055025413)
+is explicitly deferred under the owner's temporary exception.
+
+The manifest's `executionApproved: true` approves this software source for the
+physical attempt. It does not mean that the physical run passed, that the Runloc
+helper is qualified solely by upstream tests, or that draft EzVM #46 is merged.
+
 ## Executed checks and review roles
 
 Before implementation, the Runloc repository contract and all 21 existing Python
@@ -119,8 +247,8 @@ observed failing against the initial oracle, then passed after the two native
 counters were explicitly accepted. String, boolean, floating and nonzero counts
 remain failures.
 
-Current local checks on Linux with PowerShell 7.6.6 passed all 33 pilot groups
-and the separately reported 14 supervisor groups. Six pilot and two supervisor
+Current local checks on Linux with PowerShell 7.6.6 passed all 41 pilot groups
+and the separately reported 15 supervisor groups. Six pilot and two supervisor
 groups require Windows and are explicitly skipped locally. All PowerShell scripts
 parsed and both native C# types compiled. The Runloc repository contract and all
 21 Python tests passed after implementation. Actual Windows CI and physical

@@ -61,6 +61,8 @@ namespace RunlocPoc
         }
         [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
         static extern IntPtr CreateJobObject(IntPtr attributes, string name);
+        [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
+        static extern bool CreateDirectory(string path, IntPtr attributes);
         [DllImport("kernel32.dll", SetLastError = true)]
         static extern bool SetInformationJobObject(IntPtr job, int kind, ref ExtendedLimits info, uint size);
         [DllImport("kernel32.dll", SetLastError = true)]
@@ -142,6 +144,14 @@ namespace RunlocPoc
                 if (!GetFileInformationByHandle(file, out info)) throw new Win32Exception(Marshal.GetLastWin32Error());
                 return info.Links;
             }
+        }
+
+        public static void CreateNewDirectory(string path)
+        {
+            if (Environment.OSVersion.Platform != PlatformID.Win32NT) throw new PlatformNotSupportedException();
+            // An existing path, including a differently-cased name, must not be
+            // mistaken for this attempt's newly created empty directory.
+            if (!CreateDirectory(Path.GetFullPath(path), IntPtr.Zero)) throw new Win32Exception(Marshal.GetLastWin32Error());
         }
 
         public static bool CurrentTokenHasPrivilege(string expectedName)

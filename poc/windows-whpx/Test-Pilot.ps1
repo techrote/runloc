@@ -56,17 +56,23 @@ function Remove-PilotTestRoot {
     }
 }
 function New-TestLease {
+    param([switch]$ExternalFixture)
     $parent = Join-Path $testRoot ([Guid]::NewGuid().ToString('N'))
     [void][IO.Directory]::CreateDirectory($parent)
-    if ($script:PilotWindows) { return New-PilotLease -EvidenceParent $parent -CandidateCommit ('a' * 40) -ControllerCommit ('b' * 40) }
+    $workParent = ''
+    if ($ExternalFixture) { $workParent = if ($script:PilotWindows) { $env:USERPROFILE } else { [IO.Path]::GetTempPath() } }
+    if ($script:PilotWindows) { return New-PilotLease -EvidenceParent $parent -CandidateCommit ('a' * 40) -ControllerCommit ('b' * 40) -WorkParent $workParent }
     # POSIX tests exercise the pure ownership contract; Windows CI separately exercises real DACLs.
     $id = [Guid]::NewGuid().ToString('N'); $root = Join-Path $parent ('runloc-whpx-' + $id)
+    $fixture = Join-Path $root 'fixture'
+    if ($ExternalFixture) { $work = Get-PilotWorkPlan -WorkParent $workParent -LeaseId $id; $workParent = $work.Parent; $fixture = $work.Fixture }
     [void][IO.Directory]::CreateDirectory($root)
     $lock = [IO.File]::Open((Join-Path $root 'active.lock'), [IO.FileMode]::CreateNew, [IO.FileAccess]::ReadWrite, [IO.FileShare]::None)
     Write-PilotNewJson -Path (Join-Path $root 'lease.json') -Value @{ schemaVersion = 1; leaseId = $id; root = $root;
-        candidateCommit = ('a' * 40); controllerCommit = ('b' * 40) }
-    return [pscustomobject]@{ Id = $id; Root = $root; Private = (Join-Path $root 'private'); Fixture = (Join-Path $root 'fixture');
-        Lock = $lock; OwnerDigest = (Get-PilotDigest -Path (Join-Path $root 'lease.json')); CandidateCommit = ('a' * 40); ControllerCommit = ('b' * 40) }
+        candidateCommit = ('a' * 40); controllerCommit = ('b' * 40); workParent = $workParent; fixture = $fixture }
+    return [pscustomobject]@{ Id = $id; Root = $root; Private = (Join-Path $root 'private'); Fixture = $fixture; WorkParent = $workParent;
+        Lock = $lock; OwnerDigest = (Get-PilotDigest -Path (Join-Path $root 'lease.json')); CandidateCommit = ('a' * 40); ControllerCommit = ('b' * 40);
+        FixtureCreated = $false; FixtureCreationDigest = '' }
 }
 function New-GoodReceipt {
     $events = @(); $seconds = 1.0; $utc = [DateTime]::UtcNow
@@ -88,6 +94,9 @@ function New-GoodReceipt {
         preflightOnly = $false; vmQualificationStarted = $true; childExitCode = 0; sourceUnchanged = $true;
         requestedAccelerator = 'whpx'; observedAccelerator = 'whpx'; timedOut = $false; cancelled = $false;
         outputOverflow = $false; outputFailed = $false; harnessFailure = $false; controllerFailure = $false; elapsedSeconds = 100; hardWallSeconds = 5400;
+        pathBudget = @{ profile = 'ezvm-pr46-full-release-v1'; fixtureCharacters = 39; relativeReserveCharacters = 215;
+            maximumPathCharacters = 259; plannedMaximumCharacters = 254; relativeDirectoryReserveCharacters = 173;
+            maximumDirectoryCharacters = 247; plannedMaximumDirectoryCharacters = 212 };
         telemetry = @{ complete = $true; recordCount = 6; publicSha256 = ('3' * 64); publicFile = 'telemetry-events.json' };
         host = @{ standardUser = $true; seSecurityPrivilegePresent = $false };
         preflight = @{ childExited = $true; exitCode = 0; activeProcesses = 0; forced = $false };
@@ -105,6 +114,7 @@ try {
             Assert-True ($errors.Count -eq 0) ('Parser errors: ' + $file.Name + ' ' + ($errors -join '; '))
         }
     }
+    Test-Case 'Framework NUL inventory overload compatibility' { & (Join-Path $PSScriptRoot 'Test-FrameworkSplit.ps1') }
     Test-Case 'full synthetic evidence is accepted only by the pure oracle' {
         Assert-True (Test-Receipt (New-GoodReceipt)).Passed
         Assert-True ($script:PilotMarkers.Count -eq 24)
@@ -200,6 +210,8 @@ try {
         $receipt = New-GoodReceipt; $receipt.telemetry.recordCount = 6.0; Assert-True (-not (Test-Receipt $receipt).Passed)
         $receipt = New-GoodReceipt; $receipt.preflight = $null; Assert-True (-not (Test-Receipt $receipt).Passed)
         $receipt = New-GoodReceipt; $receipt.host.seSecurityPrivilegePresent = $true; Assert-True (-not (Test-Receipt $receipt).Passed)
+        $receipt = New-GoodReceipt; $receipt.pathBudget.fixtureCharacters = '39'; Assert-True (-not (Test-Receipt $receipt).Passed)
+        $receipt = New-GoodReceipt; $receipt.pathBudget.relativeReserveCharacters = 200; Assert-True (-not (Test-Receipt $receipt).Passed)
     }
     Test-Case 'duplicate binary names missing guests and forged marker chronology cannot pass' {
         $receipt = New-GoodReceipt; $receipt.identities.qemuBinaries[1].name = 'qemu-system-x86_64.exe'
@@ -277,6 +289,17 @@ try {
         $records = New-TestTelemetry; $records[4].elapsedSeconds = 1; Assert-Throws { Read-TestTelemetry -Records $records } 'telemetry-clock-or-operation-invalid'
         $records = New-TestTelemetry; $records[3].details.sha256 = 'secret'; Assert-Throws { Read-TestTelemetry -Records $records } 'telemetry-identity-invalid'
     }
+    Test-Case 'failed telemetry parsing releases its file handle before cleanup' {
+        $records = New-TestTelemetry; $records[2].sequence = 99
+        $path = Join-Path $testRoot 'invalid-telemetry-handle.jsonl'
+        [IO.File]::WriteAllLines($path, [string[]]@($records | ForEach-Object { $_ | ConvertTo-Json -Depth 8 -Compress }))
+        Assert-Throws { Read-PilotTelemetry -Path $path -OutputPath (Join-Path $testRoot 'invalid-telemetry-public.json') `
+            -Clock ([Diagnostics.Stopwatch]::StartNew()) -DeadlineSeconds 10 } 'telemetry-record-invalid'
+        $exclusive = [IO.File]::Open($path, [IO.FileMode]::Open, [IO.FileAccess]::ReadWrite, [IO.FileShare]::None)
+        $exclusive.Dispose()
+        [IO.File]::Delete($path)
+        Assert-True (-not [IO.File]::Exists($path))
+    }
 
     $source = Join-Path $testRoot 'clean source with spaces'
     [void][IO.Directory]::CreateDirectory($source)
@@ -294,6 +317,7 @@ try {
     Test-Case 'real Git exact clean commit tree remote and byte pins are accepted' {
         $identity = Get-TestSource
         Assert-True ($identity.commit -ceq $head -and $identity.tree -ceq $tree -and $identity.clean)
+        Assert-True ($identity.trackedFileCount -eq 3) 'The NUL-terminated Git inventories must contain exactly the three tracked files, with no trailing empty entry.'
         Assert-True ($identity.files[0].executedBytesSha256 -cmatch '^[a-f0-9]{64}$')
     }
     Test-Case 'dirty source is rejected and source restoration preserves identity' {
@@ -387,11 +411,111 @@ try {
         Assert-Throws { Write-PilotNewJson -Path $path -Value @{ lease = 'replayed' } } 'exist|file'
         Assert-True ((Get-PilotDigest -Path $path) -ceq $digest)
     }
+    Test-Case 'full-scenario path budget refuses deep parents before creating fixtures' {
+        $before = @([IO.Directory]::EnumerateFileSystemEntries($testRoot))
+        Assert-Throws { Get-PilotWorkPlan -WorkParent $testRoot -LeaseId ('a' * 32) } 'work-path-budget-exceeded'
+        Assert-True (@([IO.Directory]::EnumerateFileSystemEntries($testRoot)).Count -eq $before.Count)
+        Assert-Throws { Assert-PilotMetadataBudget -EvidenceParent ('x' * 100) } 'evidence-path-budget-exceeded'
+    }
+    Test-Case 'exact 44-character fixture boundary fits both measured suffixes and 45 refuses' {
+        $budget = (New-GoodReceipt).pathBudget
+        $budget.fixtureCharacters = 44; $budget.plannedMaximumCharacters = 259; $budget.plannedMaximumDirectoryCharacters = 217
+        Assert-PilotRecordedWorkBudget -Budget $budget -ExpectedFixtureCharacters 44
+        Assert-True ($budget.fixtureCharacters + $budget.relativeReserveCharacters -eq 259)
+        Assert-True ($budget.fixtureCharacters + $budget.relativeDirectoryReserveCharacters -eq 217 -and $budget.maximumDirectoryCharacters -eq 247)
+        $budget.fixtureCharacters = 45; $budget.plannedMaximumCharacters = 260; $budget.plannedMaximumDirectoryCharacters = 218
+        Assert-Throws { Assert-PilotRecordedWorkBudget -Budget $budget -ExpectedFixtureCharacters 45 } 'work-path-budget-invalid'
+    }
+    Test-Case 'compact external fixture mapping preserves every lease bit and refuses overlap' {
+        $lease = New-TestLease -ExternalFixture
+        try {
+            $plan = Get-PilotWorkPlan -WorkParent $lease.WorkParent -LeaseId $lease.Id
+            $leaf = [IO.Path]::GetFileName($plan.Fixture)
+            Assert-True ($leaf -cmatch '^q[A-Za-z0-9_-]{22}$' -and $plan.Fixture -ceq $lease.Fixture)
+            $bytes = [Convert]::FromBase64String($leaf.Substring(1).Replace('-', '+').Replace('_', '/') + '==')
+            $decoded = New-Object Guid (,$bytes)
+            Assert-True ($decoded.ToString('N') -ceq $lease.Id) 'The compact path must retain all 128 lease bits.'
+            Assert-True ($plan.Budget.plannedMaximumCharacters -le 259 -and $plan.Budget.plannedMaximumDirectoryCharacters -le 247)
+            Assert-True (-not [IO.Directory]::Exists($lease.Fixture)) 'Lease creation must precede fixture mutation.'
+            Assert-PilotFixtureSeparation -Fixture $lease.Fixture -ProtectedRoots @($lease.Root)
+            Assert-Throws { Assert-PilotFixtureSeparation -Fixture $lease.Fixture -ProtectedRoots @($lease.Fixture) } 'fixture-and-protected-root-overlap'
+            New-PilotFixture -Lease $lease
+            [IO.File]::WriteAllText((Join-Path $lease.Fixture 'sentinel.txt'), 'OWNED')
+            Assert-Throws { New-PilotFixture -Lease $lease } 'fixture-already-exists'
+            $wrong = $lease.Fixture; $lease.Fixture = $lease.Root
+            Assert-Throws { Assert-PilotLease -Lease $lease } 'lease-fixture-mismatch'
+            $lease.Fixture = $wrong
+            Remove-PilotFixture -Lease $lease -Clock ([Diagnostics.Stopwatch]::StartNew()) -DeadlineSeconds 10 -OwnedProcessesExited $true
+            Assert-True (-not [IO.Directory]::Exists($lease.Fixture))
+        }
+        finally { $lease.Lock.Dispose() }
+    }
+    Test-Case 'refused fixture creation cannot authorize finally to delete existing sentinels' {
+        $lease = New-TestLease -ExternalFixture
+        $sentinel = Join-Path $lease.Fixture 'unrelated.txt'
+        try {
+            Remove-PilotFixture -Lease $lease -Clock ([Diagnostics.Stopwatch]::StartNew()) -DeadlineSeconds 10 -OwnedProcessesExited $true
+            Assert-True (-not $lease.FixtureCreated -and -not [IO.Directory]::Exists($lease.Fixture))
+            [void][IO.Directory]::CreateDirectory($lease.Fixture)
+            [IO.File]::WriteAllText($sentinel, 'EXISTING DIRECTORY SENTINEL')
+            Assert-Throws { New-PilotFixture -Lease $lease } 'fixture-already-exists'
+            Assert-Throws { Remove-PilotFixture -Lease $lease -Clock ([Diagnostics.Stopwatch]::StartNew()) -DeadlineSeconds 10 -OwnedProcessesExited $true } 'cleanup-fixture-not-created'
+            Assert-True (-not $lease.FixtureCreated -and [IO.File]::ReadAllText($sentinel) -ceq 'EXISTING DIRECTORY SENTINEL')
+            [IO.File]::Delete($sentinel); [IO.Directory]::Delete($lease.Fixture, $false)
+            [IO.File]::WriteAllText($lease.Fixture, 'EXISTING FILE SENTINEL')
+            Assert-Throws { New-PilotFixture -Lease $lease } 'fixture-already-exists'
+            Assert-Throws { Remove-PilotFixture -Lease $lease -Clock ([Diagnostics.Stopwatch]::StartNew()) -DeadlineSeconds 10 -OwnedProcessesExited $true } 'cleanup-fixture-not-created'
+            Assert-True (-not $lease.FixtureCreated -and [IO.File]::ReadAllText($lease.Fixture) -ceq 'EXISTING FILE SENTINEL')
+        }
+        finally {
+            # This test, not the refused lease, created these two exact sentinels.
+            if ([IO.File]::Exists($sentinel)) { [IO.File]::Delete($sentinel) }
+            if ([IO.Directory]::Exists($lease.Fixture)) { [IO.Directory]::Delete($lease.Fixture, $false) }
+            if ([IO.File]::Exists($lease.Fixture)) { [IO.File]::Delete($lease.Fixture) }
+            $lease.Lock.Dispose()
+        }
+    }
+    Test-Case 'failed durable creation proof quarantines the newly created fixture' {
+        $lease = New-TestLease -ExternalFixture
+        $proof = Join-Path $lease.Root 'fixture-created.json'
+        try {
+            [IO.File]::WriteAllText($proof, 'PREEXISTING PROOF SENTINEL')
+            Assert-Throws { New-PilotFixture -Lease $lease } 'exist|file'
+            Assert-True ($lease.FixtureCreated -and [IO.Directory]::Exists($lease.Fixture))
+            Assert-Throws { Remove-PilotFixture -Lease $lease -Clock ([Diagnostics.Stopwatch]::StartNew()) -DeadlineSeconds 10 -OwnedProcessesExited $true } 'cleanup-fixture-creation-unproven'
+            Assert-True ([IO.Directory]::Exists($lease.Fixture) -and [IO.File]::ReadAllText($proof) -ceq 'PREEXISTING PROOF SENTINEL')
+        }
+        finally {
+            if ([IO.Directory]::Exists($lease.Fixture)) { [IO.Directory]::Delete($lease.Fixture, $false) }
+            $lease.Lock.Dispose()
+        }
+    }
+    Test-Case 'measured longest pinned QEMU member fits the real native path budget' {
+        $lease = New-TestLease -ExternalFixture
+        try {
+            New-PilotFixture -Lease $lease
+            $relative = 'ezvm010 qualification ' + ('a' * 32) + '/root A with spaces/runtime/.qemu-stage-' + ('b' * 32) +
+                '/share/icons/Adwaita/symbolic/legacy/preferences-desktop-keyboard-shortcuts-symbolic.svg'
+            $path = Join-Path $lease.Fixture $relative
+            Assert-True (($path.Length - $lease.Fixture.Length) -eq 215)
+            [void][IO.Directory]::CreateDirectory([IO.Path]::GetDirectoryName($path))
+            [IO.File]::WriteAllText($path, 'SYNTHETIC PAYLOAD BYTES')
+            $canonical = Assert-PilotPath -Path $path -File
+            Assert-True ([IO.File]::ReadAllText($canonical) -ceq 'SYNTHETIC PAYLOAD BYTES')
+            if ($script:PilotWindows) { Assert-True ([RunlocPoc.OwnedProcess]::FileLinkCount($canonical) -eq 1) }
+        }
+        finally {
+            try { Remove-PilotFixture -Lease $lease -Clock ([Diagnostics.Stopwatch]::StartNew()) -DeadlineSeconds 10 -OwnedProcessesExited $true }
+            finally { $lease.Lock.Dispose() }
+        }
+    }
     Test-Case 'owned cleanup deletes only the exact lease fixture and preserves unrelated sentinels' {
         $lease = New-TestLease
         try {
+            New-PilotFixture -Lease $lease
             [void][IO.Directory]::CreateDirectory((Join-Path $lease.Fixture 'nested'))
             [IO.File]::WriteAllText((Join-Path $lease.Fixture 'nested/synthetic-disk.txt'), 'owned synthetic bytes')
+            [IO.File]::SetAttributes((Join-Path $lease.Fixture 'nested/synthetic-disk.txt'), [IO.FileAttributes]::ReadOnly)
             $sentinel = Join-Path (Split-Path $lease.Root -Parent) 'unrelated sentinel.txt'
             [IO.File]::WriteAllText($sentinel, 'UNRELATED')
             $clock = [Diagnostics.Stopwatch]::StartNew()
@@ -404,7 +528,7 @@ try {
     Test-Case 'wrong ownership unresolved processes changed receipts and expired cleanup refuse deletion' {
         $lease = New-TestLease
         try {
-            [void][IO.Directory]::CreateDirectory($lease.Fixture)
+            New-PilotFixture -Lease $lease
             $path = Join-Path $lease.Fixture 'sentinel.txt'; [IO.File]::WriteAllText($path, 'KEEP')
             $clock = [Diagnostics.Stopwatch]::StartNew()
             Assert-Throws { Remove-PilotFixture -Lease $lease -Clock $clock -DeadlineSeconds 10 -OwnedProcessesExited $false } 'cleanup-process-ownership-unresolved'
@@ -412,6 +536,9 @@ try {
             $originalFixture = $lease.Fixture; $lease.Fixture = Split-Path $lease.Root -Parent
             Assert-Throws { Remove-PilotFixture -Lease $lease -Clock $clock -DeadlineSeconds 10 -OwnedProcessesExited $true } 'lease-fixture-mismatch'
             $lease.Fixture = $originalFixture
+            $creationPath = Join-Path $lease.Root 'fixture-created.json'
+            [IO.File]::AppendAllText($creationPath, ' ')
+            Assert-Throws { Remove-PilotFixture -Lease $lease -Clock $clock -DeadlineSeconds 10 -OwnedProcessesExited $true } 'cleanup-fixture-creation-proof-changed'
             [IO.File]::AppendAllText((Join-Path $lease.Root 'lease.json'), ' ')
             Assert-Throws { Remove-PilotFixture -Lease $lease -Clock $clock -DeadlineSeconds 10 -OwnedProcessesExited $true } 'lease-receipt-changed'
             Assert-True ([IO.File]::ReadAllText($path) -ceq 'KEEP')
@@ -421,7 +548,7 @@ try {
     Test-Case 'symlink or junction cleanup refuses before deleting any entry' {
         $lease = New-TestLease; $link = ''
         try {
-            [void][IO.Directory]::CreateDirectory($lease.Fixture)
+            New-PilotFixture -Lease $lease
             $outside = Join-Path (Split-Path $lease.Root -Parent) 'outside'
             [void][IO.Directory]::CreateDirectory($outside)
             [IO.File]::WriteAllText((Join-Path $outside 'sentinel.txt'), 'OUTSIDE')
@@ -438,7 +565,7 @@ try {
     Test-Case 'hardlink cleanup refuses before touching external bytes' {
         $lease = New-TestLease
         try {
-            [void][IO.Directory]::CreateDirectory($lease.Fixture)
+            New-PilotFixture -Lease $lease
             $outside = Join-Path (Split-Path $lease.Root -Parent) 'outside.txt'; [IO.File]::WriteAllText($outside, 'KEEP')
             $link = Join-Path $lease.Fixture 'hardlink.txt'
             $null = New-Item -ItemType HardLink -Path $link -Target $outside
@@ -449,8 +576,9 @@ try {
         finally { $lease.Lock.Dispose() }
     }
     Test-Case 'both relocated roots independently bind every stopped guest accelerator and tool bytes' {
-        $lease = New-TestLease
+        $lease = New-TestLease -ExternalFixture
         try {
+            New-PilotFixture -Lease $lease
             $work = Join-Path $lease.Fixture ('ezvm010 qualification ' + [Guid]::NewGuid().ToString('N'))
             $baseId = 'synthetic-base'; $imageHash = 'a' * 64
             foreach ($rootName in @('root A with spaces', 'moved root B with spaces')) {
@@ -481,7 +609,10 @@ try {
             [IO.File]::AppendAllText((Join-Path $work 'moved root B with spaces/runtime/qemu/qemu-img.exe'), 'modified')
             Assert-Throws { Get-PilotFixtureIdentity -Lease $lease -Events $events -ExpectedImageSha256 $imageHash -ExpectedQemuVersion '11.1.0' -Clock $clock -DeadlineSeconds 10 } 'fixture-relocated-tool-mismatch'
         }
-        finally { $lease.Lock.Dispose() }
+        finally {
+            try { Remove-PilotFixture -Lease $lease -Clock ([Diagnostics.Stopwatch]::StartNew()) -DeadlineSeconds 10 -OwnedProcessesExited $true }
+            finally { $lease.Lock.Dispose() }
+        }
     }
 
     if ($script:PilotWindows) {

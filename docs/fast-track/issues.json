@@ -39,7 +39,7 @@
       "issue_number": 22,
       "status": "planned",
       "scope": [
-        "Use001's accepted frozen candidate/helper/evidence and its Runloc main merge; do not wait for RUNLOC-001–019 or upstream source PRs still correctly awaiting their gates.",
+        "Use001's accepted frozen candidate/helper/evidence and its Runloc main merge; do not wait for RUNLOC-001\u2013019 or upstream source PRs still correctly awaiting their gates.",
         "Implement minimal start/status/stop/reconcile helpers for a pinned verified official native Windows runner, foreground JIT/ephemeral registration, one job, unique repository/name/label and owned working directory. Reuse existing authorized host CLI/App credentials without enrolling or exporting long-lived admin material.",
         "Add an approved manual-only EzVM private workflow or reconcile PR46's existing one; bind definition and exact candidate SHA/comparison ID. It runs001's full original WHPX harness on the physical Windows host. Do not run it in the Linux TRIO VM or claim Windows host isolation.",
         "Capture real GitHub run/job/runner identity, full receipt, diagnostics and exact cleanup/deregistration. Keep workflows/helpers small; no service, webhook daemon, image builder, fleet or scheduler."
@@ -69,14 +69,16 @@
         "Integrate the accepted001/002 helpers as a narrowly scoped EzVM CI PoC. Start hosted TCG independently and use private WHPX only through explicit approved-source opt-in and bounded available capacity; do not depend on RUNLOC-019 or the full product.",
         "Implement a stable source-bound qualification coordinator/result which can finish on a complete valid private run without waiting for the slow diagnostic lane. Bind candidate, approved definition/harness and real run/job/runner/receipt identities; no raw PASS-artifact acceptance or check-name spoofing.",
         "Handle offline/busy/unknown host, disappearance after dispatch, private queue TTL, lost POST responses and cancellation with independent hosted fallback. Cancel only an exact owned private attempt; never cancel hosted merely because a private run starts or finishes.",
-        "Make the exact required-versus-diagnostic check policy explicit in EzVM workflows and AGENTS/RAG, including any reviewed settings migration and hosted-only rollback. Inspect current branch rules; do not silently weaken them or use an admin override. Test the concrete migration before activation."
+        "Make the exact required-versus-diagnostic check policy explicit in EzVM workflows and AGENTS/RAG, including any reviewed settings migration and hosted-only rollback. Inspect current branch rules; do not silently weaken them or use an admin override. Test the concrete migration before activation.",
+        "Remove the owner-authorized 2026-10-17 temporary hosted-TCG deferral for ci-poc-* and ezvm-ci-whpx-pilot PRs, or replace it with this reviewed qualified-WHPX/independent-hosted-fallback policy. Remove the temporary workflow notice/condition and reconcile EzVM/Runloc AGENTS and RAG; the exception cannot survive completion as an undocumented permanent skip."
       ],
       "acceptance": [
         "A second successful automated full-WHPX run on a clean approved candidate produces an accepted exact-source qualification result before hosted completion; record timestamps and actual accepted completion versus the old wait. Optional parallel execution alone is insufficient.",
         "With the private host absent before dispatch, hosted execution proceeds and supplies the result; with private capacity lost afterwards, queue handling is bounded and cannot strand the gate. A fully offline controller cannot promise immediate cancellation; restart reconciliation is explicit.",
         "Wrong SHA/definition/harness/profile/runner, replayed receipt, partial logs, failed exit or forged PASS cannot satisfy the gate. Genuine functional assertion failure is surfaced, not hidden by selecting a different green lane. Infrastructure failure can fall back under the documented policy.",
         "WHPX acceptance is labelled Windows/WHPX, not TCG coverage. Keep hosted TCG logs/failures visible and classified. If policy/permissions do not permit the concrete gate migration, preserve a reviewable PR and keep the issue open rather than claiming the bottleneck is fixed.",
-        "The exact workflow/policy changes are reviewed, merged only with their actual required checks/acceptance satisfied, and verified on main/post-merge. Hosted-only rollback is exercised. No owner VM/patch or other19-issue programme scope is changed."
+        "The exact workflow/policy changes are reviewed, merged only with their actual required checks/acceptance satisfied, and verified on main/post-merge. Hosted-only rollback is exercised. No owner VM/patch or other19-issue programme scope is changed.",
+        "The temporary hosted-TCG deferral is removed or replaced by the accepted gate policy before this issue closes. A complete actual hosted comparison/fallback and the exercised hosted-only rollback establish their own evidence; the prior deferral remains recorded as SKIP/unmeasured, never PASS."
       ],
       "tests": [
         "Truth-table/state tests cover hosted/private success, assertion failure, infrastructure failure, offline/busy, vanished runner, queue timeout, cancelled run, permissions/rate limits and ambiguous dispatch. Assert call order/count and exact cancellation IDs.",

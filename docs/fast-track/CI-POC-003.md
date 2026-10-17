@@ -30,6 +30,7 @@ Do not wait for or implement RUNLOC-001–019. This is an interim native Windows
 - Implement a stable source-bound qualification coordinator/result which can finish on a complete valid private run without waiting for the slow diagnostic lane. Bind candidate, approved definition/harness and real run/job/runner/receipt identities; no raw PASS-artifact acceptance or check-name spoofing.
 - Handle offline/busy/unknown host, disappearance after dispatch, private queue TTL, lost POST responses and cancellation with independent hosted fallback. Cancel only an exact owned private attempt; never cancel hosted merely because a private run starts or finishes.
 - Make the exact required-versus-diagnostic check policy explicit in EzVM workflows and AGENTS/RAG, including any reviewed settings migration and hosted-only rollback. Inspect current branch rules; do not silently weaken them or use an admin override. Test the concrete migration before activation.
+- Remove the owner-authorized 2026-10-17 temporary hosted-TCG deferral for ci-poc-* and ezvm-ci-whpx-pilot PRs, or replace it with this reviewed qualified-WHPX/independent-hosted-fallback policy. Remove the temporary workflow notice/condition and reconcile EzVM/Runloc AGENTS and RAG; the exception cannot survive completion as an undocumented permanent skip.
 
 
 ## Observable acceptance
@@ -39,6 +40,7 @@ Do not wait for or implement RUNLOC-001–019. This is an interim native Windows
 - Wrong SHA/definition/harness/profile/runner, replayed receipt, partial logs, failed exit or forged PASS cannot satisfy the gate. Genuine functional assertion failure is surfaced, not hidden by selecting a different green lane. Infrastructure failure can fall back under the documented policy.
 - WHPX acceptance is labelled Windows/WHPX, not TCG coverage. Keep hosted TCG logs/failures visible and classified. If policy/permissions do not permit the concrete gate migration, preserve a reviewable PR and keep the issue open rather than claiming the bottleneck is fixed.
 - The exact workflow/policy changes are reviewed, merged only with their actual required checks/acceptance satisfied, and verified on main/post-merge. Hosted-only rollback is exercised. No owner VM/patch or other19-issue programme scope is changed.
+- The temporary hosted-TCG deferral is removed or replaced by the accepted gate policy before this issue closes. A complete actual hosted comparison/fallback and the exercised hosted-only rollback establish their own evidence; the prior deferral remains recorded as SKIP/unmeasured, never PASS.
 
 
 ## Required tests and evidence

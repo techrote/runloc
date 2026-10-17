@@ -12,7 +12,10 @@ The owner's urgent [three-issue Windows CI PoC](docs/fast-track/WINDOWS-WHPX-CI-
 is a separate fast track. Its native-Windows platform, helper path and reviewed
 cross-repository candidate dependency override the product-only assumptions below
 for CI-POC-001–003. It does not depend on RUNLOC-001–019 or change their Linux-first
-scope. All ownership, evidence and no-bypass rules still apply.
+scope. All ownership, evidence and no-bypass rules still apply. The owner's
+2026-10-17 temporary hosted-TCG deferral is documented in the fast-track contract;
+it expires at CI-POC-003 completion and leaves software/ACL and physical WHPX
+acceptance required.
 
 Do not start a dependent issue until its dependencies are merged and accepted on
 main. Parallel work is allowed only on independent scope in isolated branches.

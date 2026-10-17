@@ -23,7 +23,11 @@ repair and additive qualification telemetry. `executionApproved: true` means the
 software candidate is approved to attempt execution; it does not mean physical
 qualification passed. An unapproved or placeholder manifest refuses execution.
 Candidate updates are reviewed and committed in Runloc, not patched into the
-operator's checkout. The recorded upstream PR disposition may still be draft;
+operator's checkout. Review includes the
+[measured work-path budget](../../docs/fast-track/evidence/windows-path-budget.json):
+changes to the harness, archive or extraction/base/relocation path definitions
+require rechecking its bounds before approving a successor. The recorded upstream
+PR disposition may still be draft;
 approval of this frozen candidate does not merge an upstream PR or call it main.
 
 `-ExpectedControllerCommit` is the independently reviewed public Runloc SHA.
@@ -40,7 +44,10 @@ change remains a failure even when the public tree ID is unchanged.
 Use separate fresh checkouts for the qualification. Repository tests that leave
 ignored caches or diagnostics should run in a separate test checkout. A prior
 EzVM runtime or owner checkout is not a qualification source. The controller,
-candidate and evidence parent must be separate local directory trees.
+candidate and evidence parent must be separate local directory trees. Disposable
+qualification storage uses a separate existing `WorkParent`. That parent may be
+a common ancestor, such as the user profile, but the exact new fixture must be
+disjoint from both sources and the evidence tree.
 
 ## Physical host prerequisites
 
@@ -49,9 +56,22 @@ PowerShell 5.1. Run as an ordinary non-elevated user whose token does not contai
 `SeSecurityPrivilege`, including a disabled instance of that privilege. The
 helper refuses administrator tokens and does not grant privileges or change host
 virtualization, firewall, services or drivers. At preflight the host must have at
-least 16 GiB free physical memory and 60 GiB free space on the evidence volume.
+least 16 GiB free physical memory and 60 GiB free space on the work volume.
 Downloads need ordinary outbound network access. No GitHub credential or JIT
 runner payload is needed.
+
+The canonical `WorkParent` must fit **20 UTF-16 code units**, excluding its trailing
+separator. The helper adds a 23-character fixture name encoding the full random
+128-bit lease ID, keeping the original harness's longest extracted file within
+259 code units. For example, `C:\Users\runneradmin` fits; a typical profile's
+`AppData\Local\Temp` does not. Use a short directory that already exists and is
+writable by the ordinary user. A path that does not fit refuses before the
+qualification fixture, downloads or VMs are created. Do not change Windows path
+policy or elevate to work around this check.
+
+The canonical evidence parent must fit 99 code units to leave room for both
+supervisors' private metadata and the synthetic ACL probe. Sources/evidence can
+use the ordinary user's application-data directory independently of `WorkParent`.
 
 Use an operator-assigned `HostLabel` such as `lab-win11-01`. Do not put a username,
 hostname or other private identifier into that label. Public evidence includes
@@ -64,6 +84,10 @@ before continuing:
 
 ```powershell
 $controllerCommit = '<reviewed-public-Runloc-40-character-commit>'
+$workParent = [Environment]::GetFolderPath('UserProfile')
+if ([IO.Path]::GetFullPath($workParent).Length -gt 20) {
+    throw 'Choose a shorter existing user-writable WorkParent before continuing.'
+}
 $pilotRoot = Join-Path ([Environment]::GetFolderPath('LocalApplicationData')) ('Runloc-Pilot-' + [Guid]::NewGuid().ToString('N'))
 New-Item -ItemType Directory -Path $pilotRoot -ErrorAction Stop | Out-Null
 $controllerRoot = Join-Path $pilotRoot 'Controller'
@@ -108,7 +132,7 @@ $entryPoint = Join-Path $controllerRoot 'poc\windows-whpx\Invoke-WhpxPilot.ps1'
 $powershellExe = Join-Path $env:SystemRoot 'System32\WindowsPowerShell\v1.0\powershell.exe'
 & $powershellExe -NoLogo -NoProfile -NonInteractive -ExecutionPolicy Bypass -File $entryPoint `
     -CandidateRoot $candidateRoot -ExpectedControllerCommit $controllerCommit `
-    -EvidenceParent $evidenceParent -HostLabel 'lab-win11-01' -PreflightOnly
+    -EvidenceParent $evidenceParent -WorkParent $workParent -HostLabel 'lab-win11-01' -PreflightOnly
 $preflightExitCode = $LASTEXITCODE
 if ($preflightExitCode -ne 0) { throw "Preflight failed with exit $preflightExitCode; inspect its private attempt." }
 ```
@@ -122,7 +146,7 @@ attempt repeats the preflight and creates a different lease:
 ```powershell
 & $powershellExe -NoLogo -NoProfile -NonInteractive -ExecutionPolicy Bypass -File $entryPoint `
     -CandidateRoot $candidateRoot -ExpectedControllerCommit $controllerCommit `
-    -EvidenceParent $evidenceParent -HostLabel 'lab-win11-01'
+    -EvidenceParent $evidenceParent -WorkParent $workParent -HostLabel 'lab-win11-01'
 $pilotExitCode = $LASTEXITCODE
 if ($pilotExitCode -ne 0) { throw "Physical qualification failed with exit $pilotExitCode; retain the attempt." }
 ```
@@ -155,7 +179,9 @@ numeric PID. Separate evidence is required for child exit, zero active owned Job
 processes, valid fixture ownership and successful fixture removal.
 
 After descendants have exited, normal controller cleanup verifies its unique
-lease and inventories only that lease's exact fixture. Reparse points, junctions,
+lease and successful exclusive fixture creation, then inventories only that
+lease's exact fixture. A planned path alone is not ownership: a pre-existing or racing
+directory that the attempt refused remains untouched. Reparse points, junctions,
 hardlinks, a modified lease or unknown ownership refuse deletion. Unrelated
 directories and sentinel files survive. A forced controller stop cannot safely
 reconstruct the inner ownership state, so the outer supervisor quarantines the

@@ -1,34 +1,34 @@
 {
   "schemaVersion": 1,
-  "executionApproved": false,
+  "executionApproved": true,
   "repository": "https://github.com/techrote/ezvm",
-  "commit": "0000000000000000000000000000000000000000",
-  "tree": "0000000000000000000000000000000000000000",
+  "commit": "59eee784b8016178c5589dea32cf2c9e72b942bd",
+  "tree": "f609fa6aa429a9b78fa89ef763126d9ef023e8d0",
   "harness": "scripts/Invoke-EzVm010RealPortability.ps1",
   "pins": [
     {
       "path": "scripts/Invoke-EzVm010RealPortability.ps1",
-      "sha256Lf": "0000000000000000000000000000000000000000000000000000000000000000"
+      "sha256Lf": "a201ec5494ed6a128bf7f3f628011119b09d0e399de472b20eef214b356aabbb"
     },
     {
       "path": "scripts/QualificationTelemetry.ps1",
-      "sha256Lf": "0000000000000000000000000000000000000000000000000000000000000000"
+      "sha256Lf": "f5c91a34be2cf43f25fdba4b0b4ac8491a3654fe24be7f3bb4077af14d4a9651"
     },
     {
       "path": "src/EzVm/Keys.ps1",
-      "sha256Lf": "0000000000000000000000000000000000000000000000000000000000000000"
+      "sha256Lf": "89e437ce908695b9d90ddaa5cb590c3aa44c1a7c52d3696ebe9e7ae218f04fe5"
     },
     {
       "path": "src/EzVm/Security.ps1",
-      "sha256Lf": "0000000000000000000000000000000000000000000000000000000000000000"
+      "sha256Lf": "eebfdaac48c8b424dfe4c01b7d50cf50e78941bd67d5a31d5257f7c22a2867ac"
     },
     {
       "path": "manifests/qemu-windows.json",
-      "sha256Lf": "0000000000000000000000000000000000000000000000000000000000000000"
+      "sha256Lf": "d89b6013bcb5e8bc27038e2f5aa2ec39e08b2674d725b62658db3e8592ba002a"
     },
     {
       "path": "manifests/ubuntu-noble-amd64.json",
-      "sha256Lf": "0000000000000000000000000000000000000000000000000000000000000000"
+      "sha256Lf": "f261a3781920fbce1ad1f6811ccb75ec1544754a4ab3f86cc376f2f4513c7f64"
     }
   ]
 }

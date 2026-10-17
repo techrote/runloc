@@ -64,6 +64,14 @@ Follow-ons may legitimately end in a reviewed no-go decision when their issue sa
 
 ## CI-POC-001 software and physical evidence
 
+The owner authorized a temporary automatic hosted-TCG scheduling deferral on
+2026-10-17 for the scoped EzVM CI-PoC PRs. See the
+[binding exception](../fast-track/WINDOWS-WHPX-CI-POC.md#owner-authorized-temporary-hosted-tcg-deferral).
+It leaves the software/ACL checks and physical acceptance below required, records
+TCG as SKIP/unmeasured, and expires when CI-POC-003 restores or replaces the policy
+with its reviewed gate and independent hosted fallback. Prior failures remain
+visible. A successful deferral notice is not a successful release qualification.
+
 The standalone Windows helper has a separate credential-free hosted workflow,
 `Windows WHPX PoC software contracts`, on `windows-2022`. It runs the real helper
 contracts under Windows PowerShell 5.1 and hash-pinned official PowerShell 7.6.6.

@@ -4,6 +4,7 @@ param(
     [Parameter(Mandatory = $true)][string]$CandidateRoot,
     [Parameter(Mandatory = $true)][ValidatePattern('^[a-f0-9]{40}$')][string]$ExpectedControllerCommit,
     [Parameter(Mandatory = $true)][string]$EvidenceParent,
+    [Parameter(Mandatory = $true)][string]$WorkParent,
     [ValidatePattern('^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$')][string]$HostLabel = 'whpx-pilot-host',
     [switch]$PreflightOnly
 )
@@ -44,6 +45,9 @@ try {
     $controllerRoot = Assert-PilotPath -Path ([IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../..')))
     $candidatePath = Assert-PilotPath -Path $CandidateRoot
     $parent = Assert-PilotPath -Path $EvidenceParent
+    $reason = 'supervisor-work-path-prerequisite'
+    Assert-PilotMetadataBudget -EvidenceParent $parent
+    $workPlan = Get-PilotWorkPlan -WorkParent $WorkParent -LeaseId ('0' * 32)
     foreach ($root in @($candidatePath, $controllerRoot)) {
         if ($root -ieq $parent -or (Test-PilotDescendant -Path $parent -Root $root) -or
             (Test-PilotDescendant -Path $root -Root $parent)) { throw 'source-and-evidence-must-be-separate' }
@@ -85,7 +89,7 @@ try {
         candidate = [ordered]@{ repository = $configuration.repository; commit = $configuration.commit; tree = $configuration.tree; files = $candidatePins };
         controller = [ordered]@{ repository = 'https://github.com/techrote/runloc'; commit = $ExpectedControllerCommit; tree = ''; files = $controllerPins };
         reasonCodes = @(); controllerProcess = $null; inner = $null;
-        quarantine = [ordered]@{ required = $true; label = 'private/attempts'; mayContainQualificationFixture = $false } }
+        quarantine = [ordered]@{ required = $true; label = 'private/attempts'; fixtureLocation = 'lease-bound-work-parent'; mayContainQualificationFixture = $false } }
     $windowsPowerShell = Join-Path $env:SystemRoot 'System32/WindowsPowerShell/v1.0/powershell.exe'
     $null = Assert-PilotPath -Path $windowsPowerShell -File -AllowHardlink
     $controllerBudget = [int][Math]::Floor(5340 - $clock.Elapsed.TotalSeconds)
@@ -93,6 +97,7 @@ try {
     $receipt.controllerBudgetSeconds = $controllerBudget
     $arguments = @('-NoLogo', '-NoProfile', '-NonInteractive', '-ExecutionPolicy', 'Bypass', '-File', (Join-Path $PSScriptRoot 'Pilot.Controller.ps1'),
         '-CandidateRoot', $candidatePath, '-ExpectedControllerCommit', $ExpectedControllerCommit, '-EvidenceParent', $attempts,
+        '-WorkParent', $workPlan.Parent,
         '-HostLabel', $HostLabel, '-BudgetSeconds', [string]$controllerBudget, '-SupervisorLeaseId', $lease.Id, '-SupervisorStartedUtc', $startedUtc)
     if ($PreflightOnly) { $arguments += '-PreflightOnly' }
     $reason = 'supervisor-controller-incomplete'
@@ -108,6 +113,7 @@ try {
     Assert-PilotDeadline -Clock $clock -DeadlineSeconds 5390
     Assert-PilotLease -Lease $lease
     $validated = Read-PilotSupervisedReceipt -Process $process -OuterLease $lease -AttemptsRoot $attempts -StartedUtc $startedUtc `
+        -WorkParent $workPlan.Parent `
         -CandidateCommit $configuration.commit -CandidateTree $configuration.tree -CandidatePins $candidatePins -ControllerCommit $ExpectedControllerCommit `
         -ControllerPins $controllerPins -ControllerBudgetSeconds $controllerBudget -ElapsedSeconds $clock.Elapsed.TotalSeconds -PreflightOnly ([bool]$PreflightOnly)
     $receipt.inner = [ordered]@{ label = $validated.Label; leaseId = $validated.LeaseId; receiptSha256 = $validated.Sha256;
@@ -123,7 +129,11 @@ catch {
     # All raw child output remains private. Public codes are assigned by our own
     # stage transitions; exception text and arbitrary child fields are not copied.
     if ($deadline.ExecutionExpired -or $clock.Elapsed.TotalSeconds -ge 5340) { $reason = 'supervisor-deadline-exceeded'; $exitCode = 124 }
-    else { $exitCode = 2 }
+    else {
+        if ($_.Exception.Message -ceq 'work-path-budget-exceeded') { $reason = 'shorter-user-writable-work-parent-required' }
+        elseif ($_.Exception.Message -ceq 'evidence-path-budget-exceeded') { $reason = 'shorter-evidence-parent-required' }
+        $exitCode = 2
+    }
 }
 finally {
     try {

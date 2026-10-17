@@ -4,6 +4,7 @@ param(
     [Parameter(Mandatory = $true)][string]$CandidateRoot,
     [Parameter(Mandatory = $true)][ValidatePattern('^[a-f0-9]{40}$')][string]$ExpectedControllerCommit,
     [Parameter(Mandatory = $true)][string]$EvidenceParent,
+    [Parameter(Mandatory = $true)][string]$WorkParent,
     [ValidatePattern('^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$')][string]$HostLabel = 'whpx-pilot-host',
     [Parameter(Mandatory = $true)][ValidateRange(60, 5340)][int]$BudgetSeconds,
     [Parameter(Mandatory = $true)][ValidatePattern('^[a-f0-9]{32}$')][string]$SupervisorLeaseId,
@@ -48,10 +49,14 @@ try {
             (Test-PilotDescendant -Path $root -Root $evidenceParent)) { throw 'source-and-evidence-must-be-separate' }
     }
     if ((Test-PilotDescendant -Path $CandidateRoot -Root $controllerRoot) -or (Test-PilotDescendant -Path $controllerRoot -Root $CandidateRoot)) { throw 'source-checkouts-must-be-separate' }
-    $lease = New-PilotLease -EvidenceParent $evidenceParent -CandidateCommit $candidate.commit -ControllerCommit $controller.commit -SupervisorLeaseId $SupervisorLeaseId -SupervisorStartedUtc $SupervisorStartedUtc
+    $lease = New-PilotLease -EvidenceParent $evidenceParent -CandidateCommit $candidate.commit -ControllerCommit $controller.commit `
+        -SupervisorLeaseId $SupervisorLeaseId -SupervisorStartedUtc $SupervisorStartedUtc -WorkParent $WorkParent
+    $workPlan = Get-PilotWorkPlan -WorkParent $lease.WorkParent -LeaseId $lease.Id
+    Assert-PilotFixtureSeparation -Fixture $lease.Fixture -ProtectedRoots @($CandidateRoot, $controllerRoot, $lease.Root)
     $receipt = [ordered]@{ schemaVersion = 1; issue = 'CI-POC-001'; leaseId = $lease.Id; outcome = 'blocked';
         startedUtc = $startedUtc; endedUtc = ''; elapsedSeconds = 0; targetSeconds = $target; hardWallSeconds = $hardWall; controllerBudgetSeconds = $BudgetSeconds;
         supervisorLeaseId = $SupervisorLeaseId; supervisorStartedUtc = $SupervisorStartedUtc;
+        pathBudget = $workPlan.Budget;
         candidate = $candidate; controller = $controller; preflightOnly = [bool]$PreflightOnly;
         vmQualificationStarted = $false; sourceUnchanged = $false; requestedAccelerator = 'whpx'; observedAccelerator = '';
         childExitCode = $null; exitCode = 2; timedOut = $false; cancelled = $false; outputOverflow = $false;
@@ -91,7 +96,7 @@ try {
         harnessPowerShellSha256 = (Get-PilotDigest -Path $windowsPowerShell); standardUser = $true; seSecurityPrivilegePresent = $false }
     $receipt.host = $hostIdentity
     if ($hostIdentity.availableMemoryBytes -lt 16GB) { throw 'host-memory-prerequisite' }
-    $volume = New-Object IO.DriveInfo ([IO.Path]::GetPathRoot($lease.Root))
+    $volume = New-Object IO.DriveInfo ([IO.Path]::GetPathRoot($lease.Fixture))
     if ($volume.AvailableFreeSpace -lt 60GB) { throw 'host-free-space-prerequisite' }
     $receipt.host['availableDiskBytes'] = $volume.AvailableFreeSpace
     Assert-PilotDeadline -Clock $clock -DeadlineSeconds $executionDeadline
@@ -99,7 +104,7 @@ try {
     else {
         Assert-PilotLease -Lease $lease
         # The expensive harness cannot create a fixture or download until the exact ACL probe has succeeded.
-        [void][IO.Directory]::CreateDirectory($lease.Fixture)
+        New-PilotFixture -Lease $lease
         $receipt.preflight.fixtureCreated = $true
         $receipt.vmQualificationStarted = $true
         $receipt.preflight.qualificationStarted = $true

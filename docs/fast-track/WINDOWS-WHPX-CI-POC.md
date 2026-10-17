@@ -55,6 +55,27 @@ real acceptance.002/003 consume that frozen candidate, avoiding a circular wait 
 the old TCG gate. This is not permission to merge red upstream PRs or call their
 unmerged commits main. Record every upstream PR's real disposition.
 
+### Owner-authorized temporary hosted TCG deferral
+
+On **17 October 2026**, the owner explicitly asked to skip the approximately
+three-hour automatic hosted TCG qualification until the end of this CI PoC.
+EzVM's full hosted TCG job is temporarily deferred for same-repository PR heads
+beginning `ci-poc-` and the existing `ezvm-ci-whpx-pilot` branch. A visible notice
+records SKIP and unmeasured TCG coverage. Manual dispatch remains available;
+other PRs retain their existing qualification policy.
+
+This explicit scheduling exception supersedes waiting for that automatic job on
+the scoped CI-PoC PRs. Preserve repository/control-plane checks, both Windows
+PowerShell lanes, standard-user ACL regressions and actual physical WHPX acceptance.
+Do not turn a deferred check into qualification evidence or discard any previous
+failure. No branch-protection change is part of this temporary exception.
+
+**CI-POC-003 must remove this exception and the corresponding EzVM workflow
+condition/notice and AGENTS/RAG text, or replace them with its reviewed qualified
+WHPX/independent-hosted-fallback policy, before completion.** Exercise hosted-only
+rollback and retain TCG coverage as unmeasured until a complete actual run passes.
+The deferral does not implement the final gate or satisfy CI-POC-001 acceptance.
+
 ## Full qualification and time bounds
 
 Preserve original assertions: real image operations, prepared base, authenticated
