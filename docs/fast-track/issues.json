@@ -10,7 +10,7 @@
       "title": "Unblock clean-source ACLs and complete the timed EzVM WHPX pilot",
       "depends_on": [],
       "issue_number": 21,
-      "status": "planned",
+      "status": "active",
       "scope": [
         "Inspect current EzVM main and PRs43/45/46 plus their actual failing logs. Reuse the reviewed explicit-accelerator harness from PR46 in a clean pinned checkout. Do not resume the dirty owner checkout or old incomplete fixtures.",
         "Implement a narrow independently reviewed upstream EzVM private-DACL fix and retained standard-user regressions: preserve confidentiality while avoiding the SeSecurityPrivilege failure. Do not copy owner patches, elevate or grant privileges. Keep the exact synthetic preflight before expensive work.",
@@ -39,7 +39,7 @@
       "issue_number": 22,
       "status": "planned",
       "scope": [
-        "Use001's accepted frozen candidate/helper/evidence and its Runloc main merge; do not wait for RUNLOC-001\u2013019 or upstream source PRs still correctly awaiting their gates.",
+        "Use001's accepted frozen candidate/helper/evidence and its Runloc main merge; do not wait for RUNLOC-001–019 or upstream source PRs still correctly awaiting their gates.",
         "Implement minimal start/status/stop/reconcile helpers for a pinned verified official native Windows runner, foreground JIT/ephemeral registration, one job, unique repository/name/label and owned working directory. Reuse existing authorized host CLI/App credentials without enrolling or exporting long-lived admin material.",
         "Add an approved manual-only EzVM private workflow or reconcile PR46's existing one; bind definition and exact candidate SHA/comparison ID. It runs001's full original WHPX harness on the physical Windows host. Do not run it in the Linux TRIO VM or claim Windows host isolation.",
         "Capture real GitHub run/job/runner identity, full receipt, diagnostics and exact cleanup/deregistration. Keep workflows/helpers small; no service, webhook daemon, image builder, fleet or scheduler."

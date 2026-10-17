@@ -1,6 +1,6 @@
 # CI-POC-001 — Unblock clean-source ACLs and complete the timed EzVM WHPX pilot
 
-**Urgent Windows CI proof of concept. Status: planned.** Creating this issue is not implementation or qualification.
+**Urgent Windows CI proof of concept. Status: active.** Creating this issue is not implementation or qualification.
 
 ## Dependencies and autonomous prompt
 

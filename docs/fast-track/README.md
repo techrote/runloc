@@ -1,6 +1,6 @@
 # Immediate EzVM CI fast track
 
-**Three issues; no dependency on the19-issue Runloc product.** Planning only.
+**Three issues; no dependency on the19-issue Runloc product.**
 The owner requested a small proof of concept to resolve the existing Windows CI
 bottleneck now, using the already prepared local WHPX test setup.
 
@@ -19,4 +19,6 @@ The third issue must remove the effective CI wait through an explicit reviewed
 gate/fallback policy; adding optional comparisons alone does not complete the PoC.
 
 [Catalogue](issues.json) and adjacent issue mirrors are checked locally and in CI.
-No issues are closed and no runner is registered by publishing this chain.
+The [CI-POC-001 implementation checkpoint](CI-POC-001-EVIDENCE.md) records current
+software evidence, upstream dispositions and the physical gate. A draft helper or
+green software check does not complete the full WHPX acceptance or register a runner.

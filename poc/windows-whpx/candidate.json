@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "executionApproved": false,
+  "repository": "https://github.com/techrote/ezvm",
+  "commit": "0000000000000000000000000000000000000000",
+  "tree": "0000000000000000000000000000000000000000",
+  "harness": "scripts/Invoke-EzVm010RealPortability.ps1",
+  "pins": [
+    {
+      "path": "scripts/Invoke-EzVm010RealPortability.ps1",
+      "sha256Lf": "0000000000000000000000000000000000000000000000000000000000000000"
+    },
+    {
+      "path": "scripts/QualificationTelemetry.ps1",
+      "sha256Lf": "0000000000000000000000000000000000000000000000000000000000000000"
+    },
+    {
+      "path": "src/EzVm/Keys.ps1",
+      "sha256Lf": "0000000000000000000000000000000000000000000000000000000000000000"
+    },
+    {
+      "path": "src/EzVm/Security.ps1",
+      "sha256Lf": "0000000000000000000000000000000000000000000000000000000000000000"
+    },
+    {
+      "path": "manifests/qemu-windows.json",
+      "sha256Lf": "0000000000000000000000000000000000000000000000000000000000000000"
+    },
+    {
+      "path": "manifests/ubuntu-noble-amd64.json",
+      "sha256Lf": "0000000000000000000000000000000000000000000000000000000000000000"
+    }
+  ]
+}
