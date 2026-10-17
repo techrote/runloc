@@ -1,6 +1,6 @@
 # CI-POC-001 — Unblock clean-source ACLs and complete the timed EzVM WHPX pilot
 
-**Urgent Windows CI proof of concept. Status: active.** Creating this issue is not implementation or qualification.
+**Urgent Windows CI proof of concept. Status: blocked.** Creating this issue is not implementation or qualification.
 
 ## Dependencies and autonomous prompt
 
@@ -48,7 +48,7 @@ Do not wait for or implement RUNLOC-001–019. This is an interim native Windows
 
 ## Excluded scope
 
-No runner registration, host privilege/configuration change, branch-rule bypass, full Runloc implementation, Windows guest/nested-WHPX work or disabled original test. Do not merge the currently red EzVM PR46 merely to unblock the chain.
+No runner registration, host privilege/configuration change, branch-rule bypass, full Runloc implementation, Windows guest/nested-WHPX work or removal of original qualification assertions. The owner-authorized temporary hosted-TCG scheduling deferral is documented in the dedicated contract and expires at CI-POC-003 completion; physical WHPX acceptance remains required. Do not merge unqualified EzVM PR46 merely to unblock the chain.
 
 ## PR and completion gate
 

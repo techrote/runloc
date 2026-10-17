@@ -649,6 +649,18 @@ function Protect-EzVmControllerPrivateKey { param($Path); throw 'synthetic-exact
             [IO.File]::WriteAllText($scriptFile, "Write-Output 'EZVM012_REAL_COMPLETE_END_TO_END=PASS'`nexit 9`n")
             $clock = [Diagnostics.Stopwatch]::StartNew()
             $result = Invoke-PilotChild -Executable $powershell -Arguments @('-NoLogo', '-NoProfile', '-NonInteractive', '-File', $scriptFile) -WorkingDirectory $testRoot -TemporaryDirectory $testRoot -RawLogPath (Join-Path $testRoot 'child.log') -Clock $clock -ExecutionDeadlineSeconds 15 -CleanupDeadlineSeconds 20
+            # These are synthetic process fixtures only. Keep bounded diagnostics
+            # before the assertion so a native/Framework failure retains its cause.
+            $diagnostic = [ordered]@{ exitCode = $result.exitCode; childExited = $result.childExited;
+                activeProcesses = $result.activeProcesses; forced = $result.forced; timedOut = $result.timedOut;
+                outputOverflow = $result.outputOverflow; outputFailed = $result.outputFailed;
+                startSeconds = $result.startSeconds; endSeconds = $result.endSeconds; recordCount = @($result.records).Count }
+            Write-Host ('SYNTHETIC_CHILD_RESULT=' + ($diagnostic | ConvertTo-Json -Compress))
+            foreach ($record in @($result.records | Select-Object -First 12)) {
+                $text = [string]$record.Text
+                if ($text.Length -gt 512) { $text = $text.Substring(0, 512) }
+                Write-Host ('SYNTHETIC_CHILD_OUTPUT=' + (@{ channel = $record.Channel; text = $text } | ConvertTo-Json -Compress))
+            }
             Assert-True ($result.exitCode -eq 9 -and $result.childExited -and $result.activeProcesses -eq 0 -and -not $result.forced)
             Assert-True (@($result.records | Where-Object { $_.Text -ceq 'EZVM012_REAL_COMPLETE_END_TO_END=PASS' }).Count -eq 1)
         }

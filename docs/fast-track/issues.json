@@ -10,7 +10,7 @@
       "title": "Unblock clean-source ACLs and complete the timed EzVM WHPX pilot",
       "depends_on": [],
       "issue_number": 21,
-      "status": "active",
+      "status": "blocked",
       "scope": [
         "Inspect current EzVM main and PRs43/45/46 plus their actual failing logs. Reuse the reviewed explicit-accelerator harness from PR46 in a clean pinned checkout. Do not resume the dirty owner checkout or old incomplete fixtures.",
         "Implement a narrow independently reviewed upstream EzVM private-DACL fix and retained standard-user regressions: preserve confidentiality while avoiding the SeSecurityPrivilege failure. Do not copy owner patches, elevate or grant privileges. Keep the exact synthetic preflight before expensive work.",
@@ -28,7 +28,7 @@
         "PoC helper tests reject dirty/staged/wrong-SHA source, mismatched accelerator, missing completion markers, failed exit despite PASS text, wrong fixture ownership and stale reused receipts. Use synthetic files/processes; unrelated sentinels must survive cleanup.",
         "Run one complete cold physical Windows/WHPX qualification with phase/exit/cleanup evidence. Failed attempts remain immutable; source changes require retesting the changed tree. Run Runloc's existing repository/unit checks without credentials in PR CI."
       ],
-      "excludes": "No runner registration, host privilege/configuration change, branch-rule bypass, full Runloc implementation, Windows guest/nested-WHPX work or disabled original test. Do not merge the currently red EzVM PR46 merely to unblock the chain."
+      "excludes": "No runner registration, host privilege/configuration change, branch-rule bypass, full Runloc implementation, Windows guest/nested-WHPX work or removal of original qualification assertions. The owner-authorized temporary hosted-TCG scheduling deferral is documented in the dedicated contract and expires at CI-POC-003 completion; physical WHPX acceptance remains required. Do not merge unqualified EzVM PR46 merely to unblock the chain."
     },
     {
       "id": "CI-POC-002",

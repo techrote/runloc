@@ -112,6 +112,9 @@ if ($LASTEXITCODE -ne 0) { throw 'Candidate checkout configuration failed.' }
 git -C $candidateRoot checkout --detach $candidate.commit
 if ($LASTEXITCODE -ne 0) { throw 'Candidate checkout failed.' }
 New-Item -ItemType Directory -Path $evidenceParent -ErrorAction Stop | Out-Null
+
+$entryPoint = Join-Path $controllerRoot 'poc\windows-whpx\Invoke-WhpxPilot.ps1'
+$powershellExe = Join-Path $env:SystemRoot 'System32\WindowsPowerShell\v1.0\powershell.exe'
 ```
 
 The commands intentionally create new checkouts and a new evidence parent. If a
@@ -128,8 +131,6 @@ watchdog may end that process.
 First, the optional inexpensive probe can verify this host and exact candidate:
 
 ```powershell
-$entryPoint = Join-Path $controllerRoot 'poc\windows-whpx\Invoke-WhpxPilot.ps1'
-$powershellExe = Join-Path $env:SystemRoot 'System32\WindowsPowerShell\v1.0\powershell.exe'
 & $powershellExe -NoLogo -NoProfile -NonInteractive -ExecutionPolicy Bypass -File $entryPoint `
     -CandidateRoot $candidateRoot -ExpectedControllerCommit $controllerCommit `
     -EvidenceParent $evidenceParent -WorkParent $workParent -HostLabel 'lab-win11-01' -PreflightOnly
