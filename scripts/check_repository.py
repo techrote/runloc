@@ -7,6 +7,7 @@ import re
 import sys
 from urllib.parse import unquote, urlparse
 from render_programme import COMMON, render_issue, render_index
+from fast_track import validate as validate_fast_track
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -129,6 +130,7 @@ def check(root: Path, *, require_published: bool = True) -> list[str]:
     if not index.is_file() or index.read_text(encoding='utf-8') != render_index(data):
         errors.append('Stale programme index')
     errors.extend(markdown_errors(root))
+    errors.extend(validate_fast_track(root, require_published=require_published))
     # Runtime artifacts/credential material must never become programme inputs.
     for path in (root / 'docs').rglob('*'):
         if path.is_file() and path.suffix.lower() in {'.qcow2','.iso','.pem','.key','.exe','.zip','.gz'}:
@@ -145,6 +147,8 @@ def main() -> int:
         print('\n'.join('FAIL: ' + e for e in errors), file=sys.stderr)
         return 1
     print('PASS: 19 issue contracts, first-release boundary, DAG, mirrors and repository links')
+    if (args.root / 'docs/fast-track').exists():
+        print('PASS: independent three-issue Windows CI PoC, dependency chain and complete mirrors')
     return 0
 
 if __name__ == '__main__':

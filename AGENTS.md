@@ -8,6 +8,12 @@ main and read the actual issue/comments, dependencies, overlapping PRs and live 
 before implementation. Never work from a historical handoff alone. Each issue
 provides a reusable execution prompt; start at its referenced documents.
 
+The owner's urgent [three-issue Windows CI PoC](docs/fast-track/WINDOWS-WHPX-CI-POC.md)
+is a separate fast track. Its native-Windows platform, helper path and reviewed
+cross-repository candidate dependency override the product-only assumptions below
+for CI-POC-001–003. It does not depend on RUNLOC-001–019 or change their Linux-first
+scope. All ownership, evidence and no-bypass rules still apply.
+
 Do not start a dependent issue until its dependencies are merged and accepted on
 main. Parallel work is allowed only on independent scope in isolated branches.
 Do not duplicate another actor's useful WIP or assume a new agent is required.
