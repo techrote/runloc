@@ -1,0 +1,89 @@
+{
+  "schema_version": 1,
+  "repository": "techrote/runloc",
+  "track": "immediate-ezvm-windows-ci",
+  "maximum_issues": 3,
+  "product_programme_dependency": false,
+  "issues": [
+    {
+      "id": "CI-POC-001",
+      "title": "Unblock clean-source ACLs and complete the timed EzVM WHPX pilot",
+      "depends_on": [],
+      "issue_number": 21,
+      "status": "planned",
+      "scope": [
+        "Inspect current EzVM main and PRs43/45/46 plus their actual failing logs. Reuse the reviewed explicit-accelerator harness from PR46 in a clean pinned checkout. Do not resume the dirty owner checkout or old incomplete fixtures.",
+        "Implement a narrow independently reviewed upstream EzVM private-DACL fix and retained standard-user regressions: preserve confidentiality while avoiding the SeSecurityPrivilege failure. Do not copy owner patches, elevate or grant privileges. Keep the exact synthetic preflight before expensive work.",
+        "Add the minimal standalone PoC invocation/evidence helper and tests under poc/windows-whpx in Runloc. Pin public EzVM candidate/controller/harness identities; this does not require RUNLOC-001 or an installed Runloc product.",
+        "Run the whole original Windows/WHPX release/portability scenario, not a boot smoke. Diagnose and narrowly repair any real subsequent READY/pipe/cleanup/validation blocker, preserving assertions and exact before/after evidence. Profile expensive validation/image work without disabling integrity checks."
+      ],
+      "acceptance": [
+        "Both existing failing ACL tests and new broad/inherited-ACE regressions prove old failure then fixed standard-user behavior under PowerShell5.1; applicable PS7 and repository checks also pass. Wrong-path/ACL failure still refuses work.",
+        "A fresh clean immutable public candidate completes the full WHPX scenario with exit0, complete original release markers, actual accelerator agreement, unchanged tested source/tree and clean owned fixture shutdown. No unqualified PASS from detection, a single READY or a skipped clause.",
+        "Record all phase times and tool/image/host/source identities. Target <=60minutes with90minute hard wall and owned bounded cleanup; a cancelled or timed-out run is failure, not a speed benchmark. Keep this issue open while any full-run clause or target is unresolved.",
+        "Publish a reusable redacted receipt/evidence set and exact candidate/controller SHA plus upstream PR links/disposition. Its Runloc helper/docs PR is merged after its own checks and actual physical acceptance; upstream EzVM PRs remain subject to their own gates. A frozen reviewed candidate may be used before upstream merge without claiming it is main."
+      ],
+      "tests": [
+        "Run candidate EzVM scripts/Test-Repository.ps1 and tests/Run-Tests.ps1 in PowerShell5.1 and its supported pinned PS7 lane. Retain exact-source ACL positive/negative controls, no privilege assumption and failed preflight before fixture/download mutation.",
+        "PoC helper tests reject dirty/staged/wrong-SHA source, mismatched accelerator, missing completion markers, failed exit despite PASS text, wrong fixture ownership and stale reused receipts. Use synthetic files/processes; unrelated sentinels must survive cleanup.",
+        "Run one complete cold physical Windows/WHPX qualification with phase/exit/cleanup evidence. Failed attempts remain immutable; source changes require retesting the changed tree. Run Runloc's existing repository/unit checks without credentials in PR CI."
+      ],
+      "excludes": "No runner registration, host privilege/configuration change, branch-rule bypass, full Runloc implementation, Windows guest/nested-WHPX work or disabled original test. Do not merge the currently red EzVM PR46 merely to unblock the chain."
+    },
+    {
+      "id": "CI-POC-002",
+      "title": "Run full EzVM qualification on an on-demand one-job Windows runner",
+      "depends_on": [
+        "CI-POC-001"
+      ],
+      "issue_number": 22,
+      "status": "planned",
+      "scope": [
+        "Use001's accepted frozen candidate/helper/evidence and its Runloc main merge; do not wait for RUNLOC-001\u2013019 or upstream source PRs still correctly awaiting their gates.",
+        "Implement minimal start/status/stop/reconcile helpers for a pinned verified official native Windows runner, foreground JIT/ephemeral registration, one job, unique repository/name/label and owned working directory. Reuse existing authorized host CLI/App credentials without enrolling or exporting long-lived admin material.",
+        "Add an approved manual-only EzVM private workflow or reconcile PR46's existing one; bind definition and exact candidate SHA/comparison ID. It runs001's full original WHPX harness on the physical Windows host. Do not run it in the Linux TRIO VM or claim Windows host isolation.",
+        "Capture real GitHub run/job/runner identity, full receipt, diagnostics and exact cleanup/deregistration. Keep workflows/helpers small; no service, webhook daemon, image builder, fleet or scheduler."
+      ],
+      "acceptance": [
+        "A real GitHub job executes the same full scenario for the exact accepted candidate using physical WHPX and exits successfully within001's bounds, with public redacted receipts tied to actual runner/run/job IDs.",
+        "Registration is genuinely single-job; the used runner cannot take a second job. Runner process exits, exact registration is removed, owned qualification QEMU guests stop and owned sensitive working material is removed. Do not erase unrelated host data or pretend the host OS is disposed.",
+        "Only approved same-repository exact candidates and trusted definitions can use the host. No automatic fork execution, service installation, privilege/account/driver changes or admin token in job files, workflow secrets/argv/logs.",
+        "Failed/cancelled job, no-job timeout, lost registration response, startup error and API cleanup failure have bounded truthful outcomes. Remote uncertainty remains explicit and cannot yield a clean-success receipt. Normal PR CI never registers a runner."
+      ],
+      "tests": [
+        "Stub/injected tests assert binary hash/version checks, unique labels, at-most-one job, lost-POST reconciliation, exact-ID cleanup, rate/permission failures, TTL expiry and owned-process/path sentinels. Use synthetic secrets to inspect all logs/error/export paths.",
+        "Perform a real trusted GitHub full-WHPX run and capture API association plus host completion/disposal evidence. Then exercise a failed/cancelled or no-job case and show deregistration/cleanup without affecting unrelated VMs/runners.",
+        "Verify the second-job prohibition independently, not from the --ephemeral flag alone. Run existing Runloc checks and focused helper tests; inspect applicable EzVM workflow/source checks on the exact head."
+      ],
+      "excludes": "No permanent runner, global host installation, arbitrary public PR execution, native Windows-as-disposable-VM claim or CI speed-resolution claim while the required hosted wait remains unchanged."
+    },
+    {
+      "id": "CI-POC-003",
+      "title": "Make qualified WHPX results unblock CI with hosted fallback",
+      "depends_on": [
+        "CI-POC-002"
+      ],
+      "issue_number": 23,
+      "status": "planned",
+      "scope": [
+        "Integrate the accepted001/002 helpers as a narrowly scoped EzVM CI PoC. Start hosted TCG independently and use private WHPX only through explicit approved-source opt-in and bounded available capacity; do not depend on RUNLOC-019 or the full product.",
+        "Implement a stable source-bound qualification coordinator/result which can finish on a complete valid private run without waiting for the slow diagnostic lane. Bind candidate, approved definition/harness and real run/job/runner/receipt identities; no raw PASS-artifact acceptance or check-name spoofing.",
+        "Handle offline/busy/unknown host, disappearance after dispatch, private queue TTL, lost POST responses and cancellation with independent hosted fallback. Cancel only an exact owned private attempt; never cancel hosted merely because a private run starts or finishes.",
+        "Make the exact required-versus-diagnostic check policy explicit in EzVM workflows and AGENTS/RAG, including any reviewed settings migration and hosted-only rollback. Inspect current branch rules; do not silently weaken them or use an admin override. Test the concrete migration before activation."
+      ],
+      "acceptance": [
+        "A second successful automated full-WHPX run on a clean approved candidate produces an accepted exact-source qualification result before hosted completion; record timestamps and actual accepted completion versus the old wait. Optional parallel execution alone is insufficient.",
+        "With the private host absent before dispatch, hosted execution proceeds and supplies the result; with private capacity lost afterwards, queue handling is bounded and cannot strand the gate. A fully offline controller cannot promise immediate cancellation; restart reconciliation is explicit.",
+        "Wrong SHA/definition/harness/profile/runner, replayed receipt, partial logs, failed exit or forged PASS cannot satisfy the gate. Genuine functional assertion failure is surfaced, not hidden by selecting a different green lane. Infrastructure failure can fall back under the documented policy.",
+        "WHPX acceptance is labelled Windows/WHPX, not TCG coverage. Keep hosted TCG logs/failures visible and classified. If policy/permissions do not permit the concrete gate migration, preserve a reviewable PR and keep the issue open rather than claiming the bottleneck is fixed.",
+        "The exact workflow/policy changes are reviewed, merged only with their actual required checks/acceptance satisfied, and verified on main/post-merge. Hosted-only rollback is exercised. No owner VM/patch or other19-issue programme scope is changed."
+      ],
+      "tests": [
+        "Truth-table/state tests cover hosted/private success, assertion failure, infrastructure failure, offline/busy, vanished runner, queue timeout, cancelled run, permissions/rate limits and ambiguous dispatch. Assert call order/count and exact cancellation IDs.",
+        "Negative controls reject tampered/replayed receipts and mismatched candidate/definition/runner; test both private-fast completion and hosted fallback without a needs dependency on the slow job.",
+        "Live approved GitHub proof: private available, private absent and private disappears after dispatch, plus a deliberately failing assertion path and rollback. Record actual status contexts, source associations, timings and unchanged assertions. Run Runloc/EzVM applicable checks; no new issue prerequisites."
+      ],
+      "excludes": "No first-green-wins shortcut, hidden failing test, silent required-check removal, mandatory offline self-hosted matrix leg, new autoscaler/product dependency or assertion that Linux runners solved the Windows-only job."
+    }
+  ]
+}

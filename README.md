@@ -7,6 +7,10 @@ The repository contains the programme, autonomous issue prompts, RAG contracts a
 fast documentation checks. Planned CLI examples are interfaces to implement, not
 commands that work today.
 
+For the urgent existing EzVM CI bottleneck, use the separate
+[three-issue Windows/WHPX PoC](docs/fast-track/README.md). It reuses the current
+pilot and an on-demand native Windows runner without waiting for the full product.
+
 The first release targets **Linux x64 runners in fresh VMs on a Windows 11 x64
 host using WHPX**. Each guest accepts one job and is then destroyed. Windows
 guests and Linux/KVM hosts are separate follow-on work. A Linux guest cannot
