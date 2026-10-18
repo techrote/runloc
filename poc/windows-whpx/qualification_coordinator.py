@@ -64,11 +64,12 @@ def run_powershell(script, arguments):
 
 
 class Coordinator:
-    def __init__(self, state, api=None):
+    def __init__(self, state, api=None, *, read_only=False):
         self.state = state
         self.api = api or GitHub()
         self.policy = state.value["policy"]
         self.folder = state.path.parent
+        self.read_only = read_only
 
     def source(self):
         approved = load(SCRIPT / "gate-policy.json")
@@ -214,9 +215,14 @@ class Coordinator:
         dispatched = [event for event in events if event["kind"] == "dispatched"]
         if dispatched:
             require(len(dispatched) == 1, "private-duplicate-dispatch")
-            private["runId"] = dispatched[0]["data"]["runId"]
-            self.state.save()
+            run_id = dispatched[0]["data"]["runId"]
+            if self.read_only:
+                require(private.get("runId") == run_id, "private-dispatch-not-durable")
+            elif private.get("runId") != run_id:
+                private["runId"] = run_id
+                self.state.save()
         if value["selection"] == "loss-before-harness" and dispatched and not private.get("stopIntentUtc"):
+            require(not self.read_only, "uncompleted-fault-control")
             # Real opt-in fault control. Only the exact owned supervisor observes this file.
             private["stopIntentUtc"] = now()
             self.state.save()
@@ -392,13 +398,18 @@ def main():
         Coordinator(state).source()
         state.save()
         return 0
+    if args.verify_for_merge:
+        # The observer retains its own state lock while TCG runs. Verification
+        # takes the candidate publication lock, reloads an atomic snapshot, and
+        # performs no state saves or operator writes.
+        with exclusive(Path(state.value["backingRoot"]) / "gate-publication.lock"):
+            return Coordinator(State(args.state), read_only=True).verify_for_merge()
     import msvcrt
     with state.path.with_suffix(".lock").open("a+b") as lock:
         lock.seek(0); lock.write(b"0"); lock.flush(); lock.seek(0)
         msvcrt.locking(lock.fileno(), msvcrt.LK_NBLCK, 1)
         try:
-            coordinator = Coordinator(state)
-            return coordinator.verify_for_merge() if args.verify_for_merge else coordinator.run()
+            return Coordinator(state).run()
         finally:
             lock.seek(0); msvcrt.locking(lock.fileno(), msvcrt.LK_UNLCK, 1)
 
