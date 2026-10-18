@@ -16,7 +16,7 @@ function Test-GateHostedOutcome {
     $bad=@($expected|Where-Object {$marker=$_;@($Events|Where-Object {$_.kind -ceq 'marker' -and $_.name -ceq $marker -and $_.value -ceq 'PASS'}).Count -ne 1})
     if($Child.exitCode -ne 0 -or -not $Child.childExited -or $null -eq $Child.activeProcesses -or $Child.activeProcesses -ne 0 -or
         $Child.forced -or $Child.outputOverflow -or $Child.outputFailed -or -not $SourceUnchanged -or $bad.Count -ne 0 -or
-        $null -eq $Telemetry -or $Telemetry.complete -ne $true){return $false}
+        $null -eq $Telemetry -or $Telemetry.complete -isnot [bool] -or $Telemetry.complete -ne $true){return $false}
     foreach($kind in @('source-image','prepared-base','qemu-system','qemu-img')){
         if(@($Telemetry.identities|Where-Object {$_.kind -ceq $kind -and $_.sha256 -cmatch '^[a-f0-9]{64}$'}).Count -ne 1){return $false}
     }
@@ -39,10 +39,11 @@ function Test-GateHostedOutcome {
     if($begin.Count -ne 1 -or $end.Count -ne 1 -or $begin[0].seconds -ge $end[0].seconds){return $false}
     $last=-1.0
     foreach($event in $Events){
+        if($event.kind -isnot [string] -or $event.name -isnot [string] -or $event.value -isnot [string]){return $false}
         if($event.seconds -isnot [double] -and $event.seconds -isnot [int] -and $event.seconds -isnot [long] -and $event.seconds -isnot [decimal]){return $false}
         if([double]::IsNaN([double]$event.seconds) -or [double]::IsInfinity([double]$event.seconds) -or $event.seconds -lt $last){return $false}
         $last=$event.seconds
-        if($event.kind -cin @('marker','accelerator','guest-cpus') -and ($event.seconds -le $begin[0].seconds -or $event.seconds -ge $end[0].seconds)){return $false}
+        if(($event.kind -cin @('marker','accelerator','guest-cpus') -or ($event.kind -ceq 'phase' -and $event.name -cin @('guest_start','guest_ready'))) -and ($event.seconds -le $begin[0].seconds -or $event.seconds -ge $end[0].seconds)){return $false}
     }
     $accelerators=@($Events|Where-Object {$_.kind -ceq 'accelerator'})
     $cpus=@($Events|Where-Object {$_.kind -ceq 'guest-cpus'})

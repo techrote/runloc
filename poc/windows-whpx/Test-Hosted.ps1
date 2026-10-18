@@ -23,7 +23,7 @@ foreach($field in @('exitCode','activeProcesses','forced','outputOverflow','outp
     if(Test-GateHostedOutcome -Child $bad -Events $events -Telemetry $telemetry -SourceUnchanged $true -Identities $identities){throw ('unsafe-hosted-child-accepted-'+$field)};$count++
 }
 if(Test-GateHostedOutcome -Child $child -Events $events -Telemetry $telemetry -SourceUnchanged $false -Identities $identities){throw 'changed-source-accepted'};$count++
-foreach($variant in @('missing-marker','duplicate-marker','wrong-cpu','conflicting-accelerator','cleanup-error','missing-ready','missing-boundaries','replayed-instance','proof-after-ready')){
+foreach($variant in @('missing-marker','duplicate-marker','wrong-cpu','conflicting-accelerator','cleanup-error','missing-ready','missing-boundaries','replayed-instance','proof-after-ready','ready-after-completion')){
     $bad=($events|ConvertTo-Json -Depth 10)|ConvertFrom-Json
     switch($variant){
         'missing-marker' {$bad=@($bad|Where-Object {$_.kind -cne 'marker' -or $_.name -cne $script:PilotMarkers[0]})}
@@ -33,6 +33,7 @@ foreach($variant in @('missing-marker','duplicate-marker','wrong-cpu','conflicti
         'cleanup-error' {$bad+=@{kind='failure';name='harness-failure'}}
         'missing-boundaries' {$bad=@($bad|Where-Object {$_.kind -cne 'boundary'})}
         'replayed-instance' {foreach($event in $bad){if($event.kind -ceq 'guest-cpus'){$event.name='ezvm010-source'};if($event.kind -ceq 'phase' -and $event.name -ceq 'guest_ready'){$event.value='ezvm010-source'}}}
+        'ready-after-completion' {($bad|Where-Object {$_.kind -ceq 'phase' -and $_.name -ceq 'guest_ready'}|Select-Object -Last 1).seconds=(@($bad|Where-Object {$_.kind -ceq 'boundary' -and $_.name -ceq 'COMPLETED_AT'})[0].seconds+0.1);$bad=@($bad|Sort-Object seconds)}
         'proof-after-ready' {($bad|Where-Object {$_.kind -ceq 'guest-cpus'}|Select-Object -First 1).seconds+=100}
         'missing-ready' {$firstReady=$bad|Where-Object {$_.kind -ceq 'phase' -and $_.name -ceq 'guest_ready'}|Select-Object -First 1;$bad=@($bad|Where-Object {-not [object]::ReferenceEquals($_,$firstReady)})}
     }
