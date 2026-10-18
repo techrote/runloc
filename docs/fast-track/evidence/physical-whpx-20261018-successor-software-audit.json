@@ -1,0 +1,112 @@
+{
+  "schemaVersion": 1,
+  "issue": "CI-POC-001",
+  "scope": "Software only; not physical qualification.",
+  "candidateCommit": "2afcd6a61b16e08cb7e35925e6d2cfc46cac24c0",
+  "candidateTree": "a5f70cc1a7018b77518b83e7c3a393a2c8068cd7",
+  "coreRun": 39082457441,
+  "standardUserRun": 39082457439,
+  "standardUserLanes": [
+    {
+      "artifactId": 12119701828,
+      "artifactSha256": "c25130a76f26bf31f3cb67e24ac1b5ae1298702b794269b4f0eb02de0a65bd1e",
+      "powerShellVersion": "5.1.20348.5622",
+      "candidate": {
+        "commit": "2afcd6a61b16e08cb7e35925e6d2cfc46cac24c0",
+        "tree": "a5f70cc1a7018b77518b83e7c3a393a2c8068cd7",
+        "keysSha256": "89e437ce908695b9d90ddaa5cb590c3aa44c1a7c52d3696ebe9e7ae218f04fe5"
+      },
+      "exitCode": 0,
+      "fullSuite": "RESULT: 379 passed, 0 failed, 0 skipped, 379 total.",
+      "sourceUnchanged": true,
+      "token": {
+        "administratorMember": false,
+        "specialPrivilegesPresent": [],
+        "observedPrivileges": [
+          "SeChangeNotifyPrivilege",
+          "SeIncreaseWorkingSetPrivilege"
+        ]
+      },
+      "baselineRedCases": 4,
+      "requiredFixedGreenCases": 4,
+      "cleanup": {
+        "schemaVersion": 1,
+        "sourceCommit": "2afcd6a61b16e08cb7e35925e6d2cfc46cac24c0",
+        "childExitCode": 0,
+        "childExited": true,
+        "temporaryAccountRemoved": true,
+        "fixtureRemoved": true,
+        "reason": ""
+      }
+    },
+    {
+      "artifactId": 12119622001,
+      "artifactSha256": "fd6cc8b1873a5f519e7d889b3f5c5f6f8b584eea6e37935d0f07d50f98bf9be0",
+      "powerShellVersion": "7.6.6",
+      "candidate": {
+        "commit": "2afcd6a61b16e08cb7e35925e6d2cfc46cac24c0",
+        "tree": "a5f70cc1a7018b77518b83e7c3a393a2c8068cd7",
+        "keysSha256": "89e437ce908695b9d90ddaa5cb590c3aa44c1a7c52d3696ebe9e7ae218f04fe5"
+      },
+      "exitCode": 0,
+      "fullSuite": "RESULT: 379 passed, 0 failed, 0 skipped, 379 total.",
+      "sourceUnchanged": true,
+      "token": {
+        "administratorMember": false,
+        "specialPrivilegesPresent": [],
+        "observedPrivileges": [
+          "SeChangeNotifyPrivilege",
+          "SeIncreaseWorkingSetPrivilege"
+        ]
+      },
+      "baselineRedCases": 4,
+      "requiredFixedGreenCases": 4,
+      "cleanup": {
+        "schemaVersion": 1,
+        "sourceCommit": "2afcd6a61b16e08cb7e35925e6d2cfc46cac24c0",
+        "childExitCode": 0,
+        "childExited": true,
+        "temporaryAccountRemoved": true,
+        "fixtureRemoved": true,
+        "reason": ""
+      }
+    }
+  ],
+  "coreMergeCheckout": "bb83228",
+  "coreMergeTreeMatchesCandidate": true,
+  "controllerCommit": "90ed76448f13cbb7048888ae67451de2f9b28819",
+  "controllerTree": "b03b1ead72b195c6ab32e2f791e9906219ff5e2a",
+  "controllerRun": 39082751816,
+  "controllerEachEngine": {
+    "pilotPassed": 57,
+    "supervisorPassed": 21,
+    "skipped": 0
+  },
+  "localCleanPs51": {
+    "passed": 379,
+    "failed": 0,
+    "skipped": 0,
+    "actualExitCode": 0,
+    "logSha256": "7a7256f9cac422253e902f8822fb8ead747405c049ab691ba6c66251106c40d0"
+  },
+  "hostedTcg": "owner-deferred; not restarted; unmeasured",
+  "physicalQualificationPassed": false,
+  "logDigests": [
+    {
+      "name": "ci-poc-001-2afcd6a-core-ps51.log",
+      "sha256": "9d3da13f11c2d265210e2377d25184b2459e33ca967839b580e0259094ec4299"
+    },
+    {
+      "name": "ci-poc-001-2afcd6a-core-ps766.log",
+      "sha256": "520ce37ef74a957c053f59fde4bfb60dcdff763f26519c82b948512ae6e5b3fa"
+    },
+    {
+      "name": "ci-poc-001-90ed764-ps51.log",
+      "sha256": "3ec5afcef81f98c64045d131030b4dd925ee54615f89623719a619a18a36db7d"
+    },
+    {
+      "name": "ci-poc-001-90ed764-ps766.log",
+      "sha256": "76c324306a7e1402045a6f05312ad1c0da71f364c0ada77cfd85a1ddbc452469"
+    }
+  ]
+}

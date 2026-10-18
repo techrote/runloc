@@ -525,3 +525,43 @@ and guest template. Its software CI and a fresh exact-source full physical attem
 remain acceptance gates. Earlier physical evidence cannot qualify changed source.
 The owner-selected no-overall-timeout policy and hosted-TCG deferral remain; no
 runner registration, gate migration, privilege change or merge is claimed.
+
+## First authenticated READY failure after successful base build
+
+Fresh controller `90ed76448f13cbb7048888ae67451de2f9b28819`, tree
+`b03b1ead72b195c6ab32e2f791e9906219ff5e2a`, and EzVM
+`2afcd6a61b16e08cb7e35925e6d2cfc46cac24c0`, tree
+`a5f70cc1a7018b77518b83e7c3a393a2c8068cd7`, passed exact preflight and
+all applicable software checks. The [successor software audit](evidence/physical-whpx-20261018-successor-software-audit.json)
+retains both ordinary-user artifact digests, source/token/exit/cleanup proof and
+379/0/0 suites. The actual core merge tree matches the candidate, and the exact
+Runloc Windows lanes each passed 57 pilot/21 supervisor groups with zero skips.
+
+Full lease `9c11f61361b94f99b0597324b13f3865` nevertheless **failed**.
+The [named receipts, digests, all 928 telemetry events and marker results](evidence/physical-whpx-20261018-first-ready-failure/index.json)
+and [failure analysis](evidence/physical-whpx-20261018-first-ready-failure-analysis.json)
+remain retained. Actual harness/controller exit was **1**, actual supervisor exit
+**2**, receipt elapsed **3697.9171798 seconds**, post-I/O supervised elapsed
+**3697.9679774 seconds**, and operator elapsed **3698.8844856 seconds**. The
+owner-selected no-overall-timeout policy was in force; these failed timings are
+not a completed performance result.
+
+Seven of 24 completion markers were present. Prepared-base construction completed
+in **223.4133664 seconds**, with source/tool/base identities retained in phase
+telemetry. The first source guest then exhausted its original **900-second**
+READY budget; its final SSH child timed out. Graceful cleanup failed after
+**30.2783112 seconds** and left guest state STOPPING. Inner native containment
+therefore required forced disposal, reached zero processes, and removed the owned
+fixture. Both sources and observed tools remained unchanged and the unrelated
+sentinel survived. Normal guest shutdown was **not** established. The outer
+controller's normal process exit does not override that inner cleanup failure.
+
+Retained serial shows cloud-init completing at guest time 01:15:12Z, followed by
+finalizer stages cloud-init/identity/reboot and the kernel reboot message at
+uptime 12.702402 seconds. These prior guest lines were copied into the host log
+at 01:29:05Z. No second boot is shown; a reboot loop is not proven. A stall at
+the intentional identity reboot is the current differential hypothesis. Related
+upstream WHPX reset/APIC reports are supporting context, not proof about this
+pinned binary and host. A fresh focused normal-profile comparison is required
+before changing accelerator arguments. No code from EzVM PR45 is imported and no
+ACL, PowerShell startup or historical hosted root cause is assumed.
