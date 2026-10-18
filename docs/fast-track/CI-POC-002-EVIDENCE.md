@@ -38,15 +38,43 @@ next attempt. The successor controller/oracle requires6 for intent, request and
 each authenticated guest CPU observation; all eight READY occurrences and all24
 markers remain required. Earlier numeric8 requests/proofs are negative controls.
 The generic frozen EzVM resource helper supports6 without a product source
-change. The existing workflow still selects the earlier controller, so its pin
-is explicitly executionApproved=false until the six-vCPU controller is
-published, reviewed and repinned.
+change. At the d3be2aa preparation checkpoint the existing workflow still
+selected the earlier controller, so its pin was executionApproved=false until
+the six-vCPU controller could be published, reviewed and repinned. An actual
+clean-source Start check refused the old workflow with exit1 and
+approved-workflow-pin-required, before any registration.
 
 The [real independent-console test](evidence/ci-poc-002-independent-console-test.json)
 started no live job/registration. Terminating the launching process's owned
 Windows Job left the Explorer-owned console heartbeat advancing; the probe
 then exited0 on request. This tests launcher lifetime, not qualification.
 The visible read-only monitor likewise starts no runner/guest/job.
+
+The six-vCPU checkpoint d3be2aa's first PowerShell7.6.6 CI job
+[117691251496](https://github.com/techrote/runloc/actions/runs/39132807556/job/117691251496)
+failed the existing contained-child normal-completion assertion in the entry
+exit-semantics group. Its generic failure text does not identify which result
+flag failed, so no root cause is claimed. The original failed log is retained.
+An unchanged-source rerun
+[117691697930](https://github.com/techrote/runloc/actions/runs/39132807556/job/117691697930)
+passed59 pilot/21 supervisor/14 runner groups, with0 platform skips. The
+PowerShell5.1 lane also passed, as did Windows/Ubuntu repository checks. No
+assertion or deadline was changed to obtain this result; the red attempt is
+not erased or attributed to the physical interruption.
+
+The next-attempt definition was published through normal expected-head merge
+of [EzVM PR52](https://github.com/techrote/ezvm/pull/52), after independent source
+review and green core/repository/ordinary-user checks. Hosted full TCG remained
+explicitly deferred. Merged commit
+a3c6d3ec4c7506d8f8d1c553eb7a4560ddc61d4d has tree
+0a2d286f0bb7a97dccb2f07e82005f195c93ce91, identical to its reviewed head.
+Immutable tag ci-poc-002-a3c6d3ec4c7506d8f8d1c553eb7a4560ddc61d4d and
+workflow LF SHA25672f38d9e740b21743bb73805b043d32c0e292945b26fdea11291c45bd85f8b23
+bind frozen six-vCPU job controller d3be2aa7677c338fab86508da6f390fcae1bc541.
+The host workflow pin is now execution-approved for that exact definition.
+Publication, approval and a live read-only monitor are not a new run. No full
+attempt was restarted under the owner's next-time instruction; CI-POC-002
+remains open and unqualified pending the next complete physical execution.
 
 ## Actual software results
 

@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "controllerCommit": "d3be2aa7677c338fab86508da6f390fcae1bc541",
+  "runId": 39132807556,
+  "firstJobId": 117691251496,
+  "firstConclusion": "failure",
+  "failure": "Contained entry did not finish normally inside its original deadline.",
+  "rootCauseEstablished": false,
+  "retryJobId": 117691697930,
+  "retryConclusion": "success",
+  "sourceChangedForRetry": false,
+  "assertionsOrDeadlinesWeakened": false,
+  "pilotGroups": 59,
+  "supervisorGroups": 21,
+  "runnerGroups": 14,
+  "platformGroupsSkipped": 0,
+  "retainedOriginalLogSha256": "7f570d5326cf1d639151eda25c969a1109d9e8df8cfe22ec1cbbad14dac8c5db"
+}

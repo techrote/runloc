@@ -35,9 +35,9 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File poc/windows-whpx/Open-Ru
 Monitor is read-only and starts no runner, guest or job. For an approved new
 attempt use Mode Start, ExpectedControllerCommit, WorkflowRef and optional
 QualificationMode. Start requires clean reviewed immutable source and an
-execution-approved workflow pin. The six-vCPU successor is blocked until its
-updated job controller is published and repinned; the old eight-vCPU workflow
-must not silently be reused.
+execution-approved workflow pin. Publish and repin the updated job controller
+before approving a successor; the old eight-vCPU workflow must not silently be
+reused. The current pin selects the reviewed six-vCPU controller.
 
 The opener binds to the existing Explorer desktop COM object; a fresh
 Shell.Application's direct ShellExecute is insufficient because it can launch
