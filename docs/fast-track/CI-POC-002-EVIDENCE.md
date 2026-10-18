@@ -48,9 +48,19 @@ mutable-ref verification, diagnostic-write failure, nested fixture disposal,
 dispatch identity and failure-after-success were repaired and re-reviewed.
 This is model review, not external human approval.
 
-The approved workflow hash/tag pin must be finalized after normal publication
-of its manual-only definition on EzVM main. Start refuses missing pins before
-registration. No runner registration or workflow dispatch has occurred yet.
+The manual-only workflow was published by normal expected-head squash merge of
+[EzVM PR49](https://github.com/techrote/ezvm/pull/49) at
+`62038cf8db68e8b863054c112d79b727e8776031`, tree
+`d48b97e2baa848c415a79b7beee85122c4238ec8`. The merged tree equals the
+independently reviewed PR head tree. All exact-head automated checks passed;
+the hosted full TCG lane remained intentionally skipped. Immutable tag
+`ci-poc-002-62038cf8db68e8b863054c112d79b727e8776031` identifies that source.
+The workflow LF SHA256 is
+`85c64bbe9e19a4ab303f40dcff83cadde06ba5099eab7981115f33402a10e410`.
+It checks out job controller `14c39e467f170e48f33af4e50b2c0e8e095b4f6e`.
+The host dispatcher separately pins that commit, workflow commit and hash in
+`runner-workflow.json`; moving a tag or supplying an equivalent definition from
+another commit is refused. No registration or dispatch has occurred yet.
 
 Completion still requires a real full eight-CPU WHPX Actions job and exact
 run/job/runner/receipt evidence, actual process exit and deregistration404,

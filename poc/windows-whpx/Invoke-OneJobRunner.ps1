@@ -63,9 +63,11 @@ Assert-PilotFixtureSeparation -Fixture $backing -ProtectedRoots @($controllerRoo
 $workflowPinPath = Assert-PilotPath -Path (Join-Path $PSScriptRoot 'runner-workflow.json') -File
 $workflowPin = [IO.File]::ReadAllText($workflowPinPath) | ConvertFrom-Json
 if ($workflowPin.repository -cne 'techrote/ezvm' -or $workflowPin.path -cne '.github/workflows/ezvm-ci-poc-002.yml' -or
-    $workflowPin.sha256Lf -cnotmatch '^[a-f0-9]{64}$') { throw 'approved-workflow-pin-required' }
+    $workflowPin.sha256Lf -cnotmatch '^[a-f0-9]{64}$' -or
+    $workflowPin.workflowCommit -cnotmatch '^[a-f0-9]{40}$') { throw 'approved-workflow-pin-required' }
 $commitResponse = Invoke-RunnerApi -Endpoint ('repos/techrote/ezvm/commits/' + [Uri]::EscapeDataString($WorkflowRef))
-if ($commitResponse.Status -ne 200 -or $commitResponse.Data.sha -cne $WorkflowRef.Substring('ci-poc-002-'.Length)) { throw 'workflow-tag-commit-mismatch' }
+if ($commitResponse.Status -ne 200 -or $commitResponse.Data.sha -cne $WorkflowRef.Substring('ci-poc-002-'.Length) -or
+    $commitResponse.Data.sha -cne $workflowPin.workflowCommit) { throw 'workflow-tag-commit-mismatch' }
 $workflowCommit = $commitResponse.Data.sha
 $workflowResponse = Invoke-RunnerApi -Endpoint ('repos/techrote/ezvm/contents/' + $workflowPin.path + '?ref=' + $workflowCommit)
 if ($workflowResponse.Status -ne 200 -or $workflowResponse.Data.encoding -cne 'base64') { throw 'workflow-definition-unavailable' }

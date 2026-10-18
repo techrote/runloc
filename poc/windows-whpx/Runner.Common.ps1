@@ -42,7 +42,7 @@ function Invoke-RunnerApi {
     if ($Endpoint -cnotmatch '^repos/techrote/ezvm/(actions/|contents/|git/|commits/)') { throw 'api-endpoint-not-approved' }
     $start = New-Object Diagnostics.ProcessStartInfo
     $start.FileName = (Get-Command gh.exe -CommandType Application -ErrorAction Stop).Source
-    $arguments = @('api', '--include', '--method', $Method, '-H', 'Accept: application/vnd.github+json', '-H', 'X-GitHub-Api-Version: 2026-03-10', $Endpoint)
+    $arguments = @('api', '--hostname', 'github.com', '--include', '--method', $Method, '-H', 'Accept: application/vnd.github+json', '-H', 'X-GitHub-Api-Version: 2026-03-10', $Endpoint)
     if ($null -ne $Body) { $arguments += @('--input', '-') }
     Import-PilotNative
     $start.Arguments = (@($arguments | ForEach-Object { [RunlocPoc.OwnedProcess]::QuoteArgument($_) }) -join ' ')
