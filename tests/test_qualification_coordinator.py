@@ -78,7 +78,7 @@ class CoordinatorTests(unittest.TestCase):
 
     def test_merge_verifier_requires_completed_acceptance(self):
         with patch.object(self.controller, 'source'):
-            with self.assertRaisesRegex(coordinator.InvalidEvidence, 'comparison-not-finally-accepted'):
+            with self.assertRaisesRegex(coordinator.InvalidEvidence, 'comparison-not-accepted'):
                 self.controller.verify_for_merge()
 
 

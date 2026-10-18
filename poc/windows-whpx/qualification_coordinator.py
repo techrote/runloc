@@ -307,11 +307,11 @@ class Coordinator:
         """Refetch provenance and mutable ledger/status; check names alone grant nothing."""
         self.source()
         value = self.state.value
-        require(value.get("finalOutcome", "").startswith("accepted-"), "comparison-not-finally-accepted")
+        require(value.get("lastOutcome", "").startswith("accepted-"), "comparison-not-accepted")
         hosted, hp = self.observe_hosted()
         private, pp = self.observe_private()
         latch = Path(value["backingRoot"]) / "ci-poc-003-private-quarantine.json"
-        require(decide(private, hosted, quarantined=latch.exists()) == value["finalOutcome"], "acceptance-no-longer-valid")
+        require(decide(private, hosted, quarantined=latch.exists()) == value["lastOutcome"], "acceptance-no-longer-valid")
         ledger = value["lastLedger"]
         status, comment = self.api.request("GET", f"repos/techrote/runloc/issues/comments/{ledger['commentId']}")
         require(status == 200 and comment["user"]["login"] == "techrote" and comment["html_url"] == ledger["url"]
@@ -320,13 +320,15 @@ class Coordinator:
         proof = json_bytes(serialized)
         require(digest(canonical(proof)) == value["lastProofKey"] and proof["candidate"] == value["candidate"]
                 and proof["policySha256"] == value["policySha256"] and proof["private"] == {"state": private, "proof": pp}
-                and proof["hosted"] == {"state": hosted, "proof": hp}, "ledger-provenance-changed")
+                and proof["hosted"]["state"] == hosted and proof["hosted"]["proof"]["runId"] == hp["runId"], "ledger-provenance-changed")
+        if hosted != "pending":
+            require(proof["hosted"]["proof"] == hp, "hosted-proof-changed")
         status, statuses = self.api.request("GET", f"repos/techrote/ezvm/commits/{value['candidate']['commit']}/statuses?per_page=100")
         require(status == 200, "statuses-unavailable")
         context = [entry for entry in statuses if entry["context"] == self.policy["statusContext"]]
         require(context and context[0]["creator"]["login"] == "techrote" and context[0]["state"] == "success"
                 and context[0]["target_url"] == ledger["url"]
-                and context[0]["description"] == f"{value['finalOutcome']} proof:{ledger['bodySha256']}", "latest-status-not-bound")
+                and context[0]["description"] == f"{value['lastOutcome']} proof:{ledger['bodySha256']}", "latest-status-not-bound")
         require(any(isinstance(entry, dict) and entry.get("id") == context[0]["id"]
                     and key.startswith("status-") for key, entry in value.items()), "unowned-status-id")
         print(f"{now()} VERIFIED_FOR_MERGE candidate={value['candidate']['commit']} ledger={ledger['url']}", flush=True)

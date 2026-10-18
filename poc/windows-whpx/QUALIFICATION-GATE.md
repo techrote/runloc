@@ -45,7 +45,8 @@ absence. Missing or partial steps are unknown, not proof of a safe fallback.
 This host-side observer is not an independent cloud service. Hosted execution
 continues if the PC goes offline, but publication/revocation can wait for observer
 restart. A completed merge cannot be undone by a later diagnostic failure. The
-merge verifier therefore requires final hosted observation for ordinary closeout.
+merge verifier can verify early WHPX acceptance while continuing hosted observation;
+issue closeout also requires the actual hosted comparison and fallback controls.
 Branch-rule migration and future unapproved-source behavior must be documented
 and tested in EzVM before CI-POC003 completion. Existing legacy hosted deferral is
 still pending replacement; this file alone does not complete issue23.
