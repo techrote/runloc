@@ -687,3 +687,30 @@ binds 19 private artifacts. A separate Extra High model reviewer verified source
 build/import closure, resources, completed receipts, failure evidence and privacy.
 The component producing the fault remains unresolved; replacing the provider
 binary alone did not resolve it. This control is not cold full qualification.
+
+The [checked partition-reset comparison](evidence/physical-whpx-20261018-partition-reset-comparison.json)
+now isolates a successful correction. The private QEMU experiment resets the
+WHPX partition with exact `S_OK` checking after CPU synchronization and before
+board/device reset, then clears five stale interrupt-window cache fields. It
+refuses missing capability, running VPs or any uncertain API result. Seven native
+unit groups, 29 PS5 staged-artifact controls and 23 PS5 wrapper-result controls
+passed before two fresh physical WHPX comparisons.
+
+Both used the same immutable prepared base, original firmware and normal
+four-vCPU/8192-MiB profile. Each retained one successful API-reset trace, exactly
+two Linux boots, authenticated different boot IDs, complete READY and normal
+shutdown. Child and outer wrapper exits were all zero; native elapsed times were
+230.9122107 and 263.4513553 seconds. Neither required forced containment, and both
+reached zero active processes with unchanged source/tools/resources. Each stderr
+retains one ignored-vector warning and six socket warnings; stderr is not empty.
+A bounded local TCG firmware reset control passed in 5.6868891 seconds; the
+deferred hosted full TCG job was not started.
+
+A separate Extra High model reviewer verified the source, launch guards, both
+complete results, copied-source bytes, resources, loaded modules, all 53 sealed
+artifacts and the combined publication's privacy. These are focused diagnostic
+results, not complete cold release qualification. The private experiment is
+Windows 11 only. A separately reviewed capability-gated shipping build and pinned
+acquisition are being prepared without narrowing EzVM's Windows 10 contract.
+PR #25 remains draft and #21 remains open until the complete original scenario
+passes on the final exact source and tool bytes.

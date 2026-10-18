@@ -1,0 +1,1740 @@
+{
+  "schemaVersion": 1,
+  "kind": "reviewed-private-partition-reset-positive-comparison",
+  "issue": "CI-POC-001",
+  "comparison": "Same prepared base, original firmware, same four-vCPU/8192-MiB original WHPX profile; upstream unpatched failed, checked pre-device partition reset passed twice.",
+  "unpatchedControl": {
+    "evidence": "physical-whpx-20261018-upstream-baseline-failure.json",
+    "sha256": "ce5c5751c651fb8ca5d503479570ce6cc476e11d160ceb286b52d3336b930361"
+  },
+  "qemuUpstreamCommit": "4fc49f46dc95d4a27de2509e7fceb2931e91faeb",
+  "qemuUpstreamTree": "0e6dfe70f3ae7b3ffc985c183e9df1b7ae3df4de",
+  "qemuBuildCommit": "c0d2e711f3a8ec2e59aeed0801d8e77d19d8ac4c",
+  "qemuBuildTree": "08d5e0fe08c05455b6e9e179eeda74933324aeee",
+  "qemuVersion": "QEMU emulator version 11.1.2 (v11.1.2-2-gc0d2e71)\nCopyright (c) 2003-2026 Fabrice Bellard and the QEMU Project developers\n",
+  "stageManifestSha256": "8d9b3924abc05fb1bd7a285e97a5e588133d589d53570e826c0870b8de0147eb",
+  "stagedTools": [
+    {
+      "name": "libglib-2.0-0.dll",
+      "bytes": 1568604,
+      "sha256": "3a1abec0184b238db54399cb9243393d9436d96b8fdb9bd9f2875da207c5b458"
+    },
+    {
+      "name": "libiconv-2.dll",
+      "bytes": 1141951,
+      "sha256": "94ec68fb8d342b6c91b6b48a8d95092819cdcd006a7166e0b68062f946afd08a"
+    },
+    {
+      "name": "libintl-8.dll",
+      "bytes": 298164,
+      "sha256": "0e5a178731e6be6d115442a6ade3df7f03265cd1fc4338f8b6f86a8001cbf582"
+    },
+    {
+      "name": "libpcre2-8-0.dll",
+      "bytes": 706022,
+      "sha256": "1f609cde2ce432efb7d2b0c7b84a14a6dbfc9622d1ac1a3cbadf51c5b0b4dada"
+    },
+    {
+      "name": "libslirp-0.dll",
+      "bytes": 214158,
+      "sha256": "4b547f2324ddba5bf5222ea31530b621e8ca7baf4884c5c52059aa88b64af782"
+    },
+    {
+      "name": "libwinpthread-1.dll",
+      "bytes": 68731,
+      "sha256": "a5df05bf091bc2ba0a89f83a60d2049e9d434bb9631fec82faf20ff64a53456a"
+    },
+    {
+      "name": "libzstd.dll",
+      "bytes": 1217412,
+      "sha256": "48368ab0ca622d0ec12f41ce85d91f22866bf5da92c77a69a06483564c93816c"
+    },
+    {
+      "name": "qemu-img.exe",
+      "bytes": 11010267,
+      "sha256": "88a8b340620b7027da46427420c28ef96596e923786a405c47439691794ea579"
+    },
+    {
+      "name": "qemu-system-x86_64.exe",
+      "bytes": 77342644,
+      "sha256": "b496e25ee5878288ed3f53a06de0729afef4a933f88bd277feec2c7b44f31d44"
+    },
+    {
+      "name": "zlib1.dll",
+      "bytes": 127291,
+      "sha256": "11cd91171765cd65f1c3362e3df67e5f5a618a6b88c8cdec899b802eaf1c7b0d"
+    }
+  ],
+  "whpxResetPatchSha256": "63d90d7d2c176bc943d0ec55a16771d254cea9647ecd48f4d0a8f2e406d81239",
+  "buildScriptSha256": "c168c014ab2cf2e709ecf7c220d51c3923c2782f1c3e49128f3b4a643f68e7b8",
+  "buildLogSha256": "b4a84bf7c1b8ddf7632c088437e3171c0045a3ad54435e126f48bfad1efdcb85",
+  "nativeFocusedUnitGroupsPassed": 7,
+  "powerShell51StageValidatorControlsPassed": 29,
+  "powerShell51WrapperGateControlsPassed": 23,
+  "cycles": [
+    {
+      "summarySha256": "96b8ace2b41dc6c3f05c8ead9a1451b4d36dcb1d7c12973892a3f57fc9662d8a",
+      "independentReview": "Separate Extra High model source, execution, seal and privacy review passed.",
+      "result": {
+        "schemaVersion": 1,
+        "kind": "private-patched-whpx-reset-comparison",
+        "mode": "patched-reset-a",
+        "controllerCommit": "90ed76448f13cbb7048888ae67451de2f9b28819",
+        "candidateCommit": "2afcd6a61b16e08cb7e35925e6d2cfc46cac24c0",
+        "candidateTree": "a5f70cc1a7018b77518b83e7c3a393a2c8068cd7",
+        "qemuBuildCommit": "c0d2e711f3a8ec2e59aeed0801d8e77d19d8ac4c",
+        "qemuBuildTree": "08d5e0fe08c05455b6e9e179eeda74933324aeee",
+        "stageManifestSha256": "8d9b3924abc05fb1bd7a285e97a5e588133d589d53570e826c0870b8de0147eb",
+        "requestedAccelerator": "whpx",
+        "actualAcceleratorArgument": "whpx",
+        "cpus": 4,
+        "memoryMiB": 8192,
+        "startedUtc": "2026-10-18T03:26:14.7551271Z",
+        "endedUtc": "2026-10-18T03:30:03.1934976Z",
+        "actualChildExitCode": 0,
+        "actualWrapperExitCode": 0,
+        "elapsedSeconds": 230.91221069999997,
+        "forcedContainment": false,
+        "childExited": true,
+        "activeProcesses": 0,
+        "nativeFailureFlags": {
+          "timedOut": false,
+          "cancelled": false,
+          "outputFailed": false,
+          "outputOverflow": false
+        },
+        "resetEvidence": {
+          "resetSuccessCount": 1,
+          "criticalErrorCount": 0,
+          "decoderFailure": false,
+          "cleanResetEvidence": true
+        },
+        "resetLogReadFailed": false,
+        "authenticatedSecondBootProved": true,
+        "normalGuestShutdownProved": true,
+        "loadedModuleAuditVerified": true,
+        "unassisted": true,
+        "executedScriptSha256": {
+          "ci-poc-001-qemu-patched-comparison.ps1": "fe39a007117339a3b77c7d24fdd5a365dcbf97b64259ac55820a200696c8c49f",
+          "ci-poc-001-qemu-patched-comparison-child.ps1": "c7a611fcadea79b31626143efabb902aa27c6741cde85be354074723b73e1766",
+          "ci-poc-001-comparison-patched-stage.ps1": "7e8e8820c840bb7a9cf796bdd751b80dd64a6ee82ea16f91227a46095eea971e"
+        },
+        "sourceBefore": "40e9c5d1858d7dda4e408f5b86c74a1378d900644bba7893b45cee38a1f79ad6",
+        "sourceAfter": "40e9c5d1858d7dda4e408f5b86c74a1378d900644bba7893b45cee38a1f79ad6",
+        "sourceUnchanged": true,
+        "toolsAndResourcesUnchanged": true,
+        "focusedComparisonPassed": true,
+        "phaseDurations": [
+          {
+            "operationId": 3,
+            "parentOperationId": 2,
+            "operation": "Assert-EzVmQemuPayloadIntegrity",
+            "category": "validation",
+            "durationSeconds": 20.7349072
+          },
+          {
+            "operationId": 4,
+            "parentOperationId": 2,
+            "operation": "Invoke-EzVmProcess",
+            "category": "image",
+            "durationSeconds": 0.1176955
+          },
+          {
+            "operationId": 2,
+            "parentOperationId": 1,
+            "operation": "Test-EzVmPreparedBaseDirectory",
+            "category": "validation",
+            "durationSeconds": 24.1445701
+          },
+          {
+            "operationId": 6,
+            "parentOperationId": 5,
+            "operation": "Assert-EzVmQemuPayloadIntegrity",
+            "category": "validation",
+            "durationSeconds": 20.01345
+          },
+          {
+            "operationId": 7,
+            "parentOperationId": 5,
+            "operation": "Invoke-EzVmProcess",
+            "category": "image",
+            "durationSeconds": 0.0333603
+          },
+          {
+            "operationId": 5,
+            "parentOperationId": 1,
+            "operation": "Test-EzVmPreparedBaseDirectory",
+            "category": "validation",
+            "durationSeconds": 23.2167397
+          },
+          {
+            "operationId": 9,
+            "parentOperationId": 8,
+            "operation": "Assert-EzVmQemuPayloadIntegrity",
+            "category": "validation",
+            "durationSeconds": 19.3623208
+          },
+          {
+            "operationId": 10,
+            "parentOperationId": 8,
+            "operation": "Invoke-EzVmProcess",
+            "category": "image",
+            "durationSeconds": 0.0317055
+          },
+          {
+            "operationId": 8,
+            "parentOperationId": 1,
+            "operation": "Test-EzVmPreparedBaseDirectory",
+            "category": "validation",
+            "durationSeconds": 22.4367597
+          },
+          {
+            "operationId": 11,
+            "parentOperationId": 1,
+            "operation": "Assert-EzVmQemuPayloadIntegrity",
+            "category": "validation",
+            "durationSeconds": 19.5494882
+          },
+          {
+            "operationId": 12,
+            "parentOperationId": 1,
+            "operation": "Invoke-EzVmProcess",
+            "category": "image",
+            "durationSeconds": 0.043079
+          },
+          {
+            "operationId": 14,
+            "parentOperationId": 13,
+            "operation": "Assert-EzVmQemuPayloadIntegrity",
+            "category": "validation",
+            "durationSeconds": 18.7844312
+          },
+          {
+            "operationId": 15,
+            "parentOperationId": 13,
+            "operation": "Invoke-EzVmProcess",
+            "category": "image",
+            "durationSeconds": 0.0328271
+          },
+          {
+            "operationId": 13,
+            "parentOperationId": 1,
+            "operation": "Test-EzVmPreparedBaseDirectory",
+            "category": "validation",
+            "durationSeconds": 21.8510387
+          },
+          {
+            "operationId": 16,
+            "parentOperationId": 1,
+            "operation": "Assert-EzVmQemuPayloadIntegrity",
+            "category": "validation",
+            "durationSeconds": 17.7769785
+          },
+          {
+            "operationId": 17,
+            "parentOperationId": 1,
+            "operation": "Invoke-EzVmProcess",
+            "category": "image",
+            "durationSeconds": 0.036447
+          },
+          {
+            "operationId": 19,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.0234527
+          },
+          {
+            "operationId": 20,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.0328934
+          },
+          {
+            "operationId": 23,
+            "parentOperationId": 22,
+            "operation": "Assert-EzVmQemuPayloadIntegrity",
+            "category": "validation",
+            "durationSeconds": 21.0533033
+          },
+          {
+            "operationId": 24,
+            "parentOperationId": 22,
+            "operation": "Invoke-EzVmProcess",
+            "category": "image",
+            "durationSeconds": 0.0350511
+          },
+          {
+            "operationId": 22,
+            "parentOperationId": 21,
+            "operation": "Test-EzVmPreparedBaseDirectory",
+            "category": "validation",
+            "durationSeconds": 24.0016757
+          },
+          {
+            "operationId": 25,
+            "parentOperationId": 21,
+            "operation": "Assert-EzVmQemuPayloadIntegrity",
+            "category": "validation",
+            "durationSeconds": 23.7888985
+          },
+          {
+            "operationId": 26,
+            "parentOperationId": 21,
+            "operation": "Invoke-EzVmProcess",
+            "category": "image",
+            "durationSeconds": 0.0602731
+          },
+          {
+            "operationId": 21,
+            "parentOperationId": 18,
+            "operation": "Test-EzVmInstanceStorage",
+            "category": "validation",
+            "durationSeconds": 47.8955358
+          },
+          {
+            "operationId": 27,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 6.7574651
+          },
+          {
+            "operationId": 28,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.0474597
+          },
+          {
+            "operationId": 29,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.0462889
+          },
+          {
+            "operationId": 30,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.0471788
+          },
+          {
+            "operationId": 31,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.0456984
+          },
+          {
+            "operationId": 32,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.0418403
+          },
+          {
+            "operationId": 33,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.0451793
+          },
+          {
+            "operationId": 34,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.0457746
+          },
+          {
+            "operationId": 35,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.0420277
+          },
+          {
+            "operationId": 36,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.0505115
+          },
+          {
+            "operationId": 37,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.0475275
+          },
+          {
+            "operationId": 38,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.0452201
+          },
+          {
+            "operationId": 39,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.0408233
+          },
+          {
+            "operationId": 40,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.0472828
+          },
+          {
+            "operationId": 41,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 1.1418627
+          },
+          {
+            "operationId": 42,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.5429651
+          },
+          {
+            "operationId": 43,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.187194
+          },
+          {
+            "operationId": 44,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.2562194
+          },
+          {
+            "operationId": 45,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.060917
+          },
+          {
+            "operationId": 46,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.0540576
+          },
+          {
+            "operationId": 47,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.0529217
+          },
+          {
+            "operationId": 48,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.055528
+          },
+          {
+            "operationId": 49,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.0604162
+          },
+          {
+            "operationId": 50,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.0496724
+          },
+          {
+            "operationId": 51,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.044912
+          },
+          {
+            "operationId": 52,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.5759015
+          },
+          {
+            "operationId": 53,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.0501384
+          },
+          {
+            "operationId": 54,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.0476831
+          },
+          {
+            "operationId": 55,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.0497098
+          },
+          {
+            "operationId": 56,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 6.2369378
+          },
+          {
+            "operationId": 57,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.0470153
+          },
+          {
+            "operationId": 58,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.0448672
+          },
+          {
+            "operationId": 59,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.0564678
+          },
+          {
+            "operationId": 60,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.0464937
+          },
+          {
+            "operationId": 61,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.0473097
+          },
+          {
+            "operationId": 62,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.046607
+          },
+          {
+            "operationId": 63,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.0457658
+          },
+          {
+            "operationId": 64,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.0435193
+          },
+          {
+            "operationId": 65,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.0466306
+          },
+          {
+            "operationId": 66,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.0500516
+          },
+          {
+            "operationId": 67,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.0535216
+          },
+          {
+            "operationId": 68,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.5712638
+          },
+          {
+            "operationId": 69,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.1831691
+          },
+          {
+            "operationId": 70,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.1835747
+          },
+          {
+            "operationId": 71,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.1709198
+          },
+          {
+            "operationId": 72,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.1606636
+          },
+          {
+            "operationId": 73,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.1693496
+          },
+          {
+            "operationId": 74,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.1834563
+          },
+          {
+            "operationId": 75,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.1839101
+          },
+          {
+            "operationId": 76,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.1832552
+          },
+          {
+            "operationId": 77,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.1788593
+          },
+          {
+            "operationId": 78,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.1837403
+          },
+          {
+            "operationId": 79,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.1698054
+          },
+          {
+            "operationId": 80,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.1935312
+          },
+          {
+            "operationId": 81,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 3.48753
+          },
+          {
+            "operationId": 18,
+            "parentOperationId": 1,
+            "operation": "Start-EzVmReadyInstance",
+            "category": "ready",
+            "durationSeconds": 95.8996699
+          },
+          {
+            "operationId": 82,
+            "parentOperationId": 1,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.0212584
+          },
+          {
+            "operationId": 83,
+            "parentOperationId": 1,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.0288393
+          },
+          {
+            "operationId": 84,
+            "parentOperationId": 1,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.1426329
+          },
+          {
+            "operationId": 85,
+            "parentOperationId": 1,
+            "operation": "Stop-EzVmInstance",
+            "category": "shutdown",
+            "durationSeconds": 1.522214
+          },
+          {
+            "operationId": 1,
+            "parentOperationId": null,
+            "operation": "full-release",
+            "category": "qualification",
+            "durationSeconds": 228.5392335
+          }
+        ],
+        "telemetryRecordCount": 170,
+        "sealedIndexSha256": "f50bd8dd94d8a764c1255752f4dd9fd268f1b8a7e156b092c6dde2030601372f",
+        "sealedPrivateArtifacts": [
+          {
+            "label": "capture-patched-reset-a-launch-environment.json",
+            "bytes": 158,
+            "sha256": "ffeecb9c15e5a3c47692de5de423dc544f62e8e135559b4335f759b0dbf88441"
+          },
+          {
+            "label": "capture-patched-reset-a-loaded-modules.json",
+            "bytes": 9803,
+            "sha256": "b9b8611dec56b0a38dedb793c0419c007679556298d010271a677d6a4704d0d5"
+          },
+          {
+            "label": "capture-patched-reset-a-observation.json",
+            "bytes": 3804,
+            "sha256": "da75bebaf773efb0d188e9a57b97e1a06e58660824c63ae7a65f7d2a5a20519f"
+          },
+          {
+            "label": "capture-patched-reset-a-private-argv.json",
+            "bytes": 1804,
+            "sha256": "c169d849d26c42bfe4ed0ccc3503d96170b73f0947816588ced988285c9e5ef8"
+          },
+          {
+            "label": "capture-patched-reset-a-process.json",
+            "bytes": 768,
+            "sha256": "d55956b0e0c18bd932069fa8ae6225288efd404d72dc8f89c0496e138354e566"
+          },
+          {
+            "label": "capture-patched-reset-a-qemu.stderr.txt",
+            "bytes": 1254,
+            "sha256": "b8ed45606d653d74b4817d184d171ab2e4b4d5385f2632365746bb3edcbba59e"
+          },
+          {
+            "label": "capture-patched-reset-a-qemu.stdout.txt",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "label": "capture-patched-reset-a-ready-window-closed.json",
+            "bytes": 92,
+            "sha256": "e46bab1baa0be678191580a59524d4aee4fd026ac1dc88e740ec47854c23fbd3"
+          },
+          {
+            "label": "capture-patched-reset-a-ready-window.json",
+            "bytes": 439,
+            "sha256": "f9ddf1b8245fe008872c6efcede5ebe98030eb3264c2c4a782cfb8586d96d5a6"
+          },
+          {
+            "label": "capture-patched-reset-a-reset-evidence.json",
+            "bytes": 197,
+            "sha256": "0a0cbd5cd65c37b076c3aba20910810dc4812613189eab8b5d1937e1ac60e3cd"
+          },
+          {
+            "label": "capture-patched-reset-a-source-proof.json",
+            "bytes": 560,
+            "sha256": "5bedad4627caeff0ead4ee2f672245dbc4b759b0e7fbf3db39f6a17ec596a2a9"
+          },
+          {
+            "label": "capture-patched-reset-a-telemetry.jsonl",
+            "bytes": 46314,
+            "sha256": "76bc3b5bb38d7df8a7da3a16744b743d9ad9ff1f6f158f74bb68df9b768cb394"
+          },
+          {
+            "label": "capture-patched-reset-a-tool-after.json",
+            "bytes": 203,
+            "sha256": "68138a7b4a516ca7c8a1466ea1c893da3e2c8a6dbb3da4597cf43967ec66dbd5"
+          },
+          {
+            "label": "capture-patched-reset-a-wrapper-exit.txt",
+            "bytes": 1,
+            "sha256": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9"
+          },
+          {
+            "label": "capture-patched-reset-a.log",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "label": "serial-6a634d77478b4a26a8bd2b55abcc507b.log",
+            "bytes": 169647,
+            "sha256": "4ff221f62412c50705092cf952c4672cf670034b405833fe81453e8f2e2b8a2b"
+          },
+          {
+            "label": "qemu-6a634d77478b4a26a8bd2b55abcc507b.log",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "label": "stage-patched-manifest.json",
+            "bytes": 617408,
+            "sha256": "8d9b3924abc05fb1bd7a285e97a5e588133d589d53570e826c0870b8de0147eb"
+          },
+          {
+            "label": "private-whpx-reset-experiment-v1.diff",
+            "bytes": 9845,
+            "sha256": "63d90d7d2c176bc943d0ec55a16771d254cea9647ecd48f4d0a8f2e406d81239"
+          },
+          {
+            "label": "build-patched-clean.sh",
+            "bytes": 464,
+            "sha256": "c168c014ab2cf2e709ecf7c220d51c3923c2782f1c3e49128f3b4a643f68e7b8"
+          },
+          {
+            "label": "ci-poc-001-qemu-patched-comparison.ps1",
+            "bytes": 8834,
+            "sha256": "fe39a007117339a3b77c7d24fdd5a365dcbf97b64259ac55820a200696c8c49f"
+          },
+          {
+            "label": "ci-poc-001-qemu-patched-comparison-child.ps1",
+            "bytes": 11629,
+            "sha256": "c7a611fcadea79b31626143efabb902aa27c6741cde85be354074723b73e1766"
+          },
+          {
+            "label": "ci-poc-001-comparison-patched-stage.ps1",
+            "bytes": 6752,
+            "sha256": "7e8e8820c840bb7a9cf796bdd751b80dd64a6ee82ea16f91227a46095eea971e"
+          },
+          {
+            "label": "ci-poc-001-patched-result-gate-tests.ps1",
+            "bytes": 5315,
+            "sha256": "66111af98344b8186cd6d46ef661a1d41ddf616ceeb6fa3ccb48501cdbc91003"
+          }
+        ],
+        "physicalQualificationPassed": false,
+        "qualificationEligible": false,
+        "limitations": [
+          "Focused comparison uses an existing prepared base; complete cold release/portability qualification remains required.",
+          "Private Windows 11 experiment; production acquisition and Windows 10 compatibility policy are not established.",
+          "Diagnostic fixture remains privately owned and retained pending further controls and verified disposal."
+        ],
+        "review": "Independent pre-execution source/artifact/guard review passed; independent final evidence review is pending."
+      }
+    },
+    {
+      "summarySha256": "9edb38d0897a7af8fb9ea6ac6fe2935679d84972f63b094c6e99e41371908cfc",
+      "independentReview": "Separate Extra High model source, execution, seal and privacy review passed.",
+      "result": {
+        "schemaVersion": 1,
+        "kind": "private-patched-whpx-reset-comparison",
+        "mode": "patched-reset-b",
+        "controllerCommit": "90ed76448f13cbb7048888ae67451de2f9b28819",
+        "candidateCommit": "2afcd6a61b16e08cb7e35925e6d2cfc46cac24c0",
+        "candidateTree": "a5f70cc1a7018b77518b83e7c3a393a2c8068cd7",
+        "qemuBuildCommit": "c0d2e711f3a8ec2e59aeed0801d8e77d19d8ac4c",
+        "qemuBuildTree": "08d5e0fe08c05455b6e9e179eeda74933324aeee",
+        "stageManifestSha256": "8d9b3924abc05fb1bd7a285e97a5e588133d589d53570e826c0870b8de0147eb",
+        "requestedAccelerator": "whpx",
+        "actualAcceleratorArgument": "whpx",
+        "cpus": 4,
+        "memoryMiB": 8192,
+        "startedUtc": "2026-10-18T03:30:58.0005545Z",
+        "endedUtc": "2026-10-18T03:35:19.3256265Z",
+        "actualChildExitCode": 0,
+        "actualWrapperExitCode": 0,
+        "elapsedSeconds": 263.4513553,
+        "forcedContainment": false,
+        "childExited": true,
+        "activeProcesses": 0,
+        "nativeFailureFlags": {
+          "timedOut": false,
+          "cancelled": false,
+          "outputFailed": false,
+          "outputOverflow": false
+        },
+        "resetEvidence": {
+          "resetSuccessCount": 1,
+          "criticalErrorCount": 0,
+          "decoderFailure": false,
+          "cleanResetEvidence": true
+        },
+        "resetLogReadFailed": false,
+        "authenticatedSecondBootProved": true,
+        "normalGuestShutdownProved": true,
+        "loadedModuleAuditVerified": true,
+        "unassisted": true,
+        "executedScriptSha256": {
+          "ci-poc-001-qemu-patched-comparison.ps1": "fe39a007117339a3b77c7d24fdd5a365dcbf97b64259ac55820a200696c8c49f",
+          "ci-poc-001-qemu-patched-comparison-child.ps1": "c7a611fcadea79b31626143efabb902aa27c6741cde85be354074723b73e1766",
+          "ci-poc-001-comparison-patched-stage.ps1": "7e8e8820c840bb7a9cf796bdd751b80dd64a6ee82ea16f91227a46095eea971e"
+        },
+        "sourceBefore": "40e9c5d1858d7dda4e408f5b86c74a1378d900644bba7893b45cee38a1f79ad6",
+        "sourceAfter": "40e9c5d1858d7dda4e408f5b86c74a1378d900644bba7893b45cee38a1f79ad6",
+        "sourceUnchanged": true,
+        "toolsAndResourcesUnchanged": true,
+        "focusedComparisonPassed": true,
+        "phaseDurations": [
+          {
+            "operationId": 3,
+            "parentOperationId": 2,
+            "operation": "Assert-EzVmQemuPayloadIntegrity",
+            "category": "validation",
+            "durationSeconds": 22.7110111
+          },
+          {
+            "operationId": 4,
+            "parentOperationId": 2,
+            "operation": "Invoke-EzVmProcess",
+            "category": "image",
+            "durationSeconds": 0.1260668
+          },
+          {
+            "operationId": 2,
+            "parentOperationId": 1,
+            "operation": "Test-EzVmPreparedBaseDirectory",
+            "category": "validation",
+            "durationSeconds": 26.4262447
+          },
+          {
+            "operationId": 6,
+            "parentOperationId": 5,
+            "operation": "Assert-EzVmQemuPayloadIntegrity",
+            "category": "validation",
+            "durationSeconds": 22.442551
+          },
+          {
+            "operationId": 7,
+            "parentOperationId": 5,
+            "operation": "Invoke-EzVmProcess",
+            "category": "image",
+            "durationSeconds": 0.0335838
+          },
+          {
+            "operationId": 5,
+            "parentOperationId": 1,
+            "operation": "Test-EzVmPreparedBaseDirectory",
+            "category": "validation",
+            "durationSeconds": 25.8533446
+          },
+          {
+            "operationId": 9,
+            "parentOperationId": 8,
+            "operation": "Assert-EzVmQemuPayloadIntegrity",
+            "category": "validation",
+            "durationSeconds": 22.6811349
+          },
+          {
+            "operationId": 10,
+            "parentOperationId": 8,
+            "operation": "Invoke-EzVmProcess",
+            "category": "image",
+            "durationSeconds": 0.0338479
+          },
+          {
+            "operationId": 8,
+            "parentOperationId": 1,
+            "operation": "Test-EzVmPreparedBaseDirectory",
+            "category": "validation",
+            "durationSeconds": 26.279419
+          },
+          {
+            "operationId": 11,
+            "parentOperationId": 1,
+            "operation": "Assert-EzVmQemuPayloadIntegrity",
+            "category": "validation",
+            "durationSeconds": 22.6168951
+          },
+          {
+            "operationId": 12,
+            "parentOperationId": 1,
+            "operation": "Invoke-EzVmProcess",
+            "category": "image",
+            "durationSeconds": 0.0413859
+          },
+          {
+            "operationId": 14,
+            "parentOperationId": 13,
+            "operation": "Assert-EzVmQemuPayloadIntegrity",
+            "category": "validation",
+            "durationSeconds": 22.5808371
+          },
+          {
+            "operationId": 15,
+            "parentOperationId": 13,
+            "operation": "Invoke-EzVmProcess",
+            "category": "image",
+            "durationSeconds": 0.0313588
+          },
+          {
+            "operationId": 13,
+            "parentOperationId": 1,
+            "operation": "Test-EzVmPreparedBaseDirectory",
+            "category": "validation",
+            "durationSeconds": 26.0201697
+          },
+          {
+            "operationId": 16,
+            "parentOperationId": 1,
+            "operation": "Assert-EzVmQemuPayloadIntegrity",
+            "category": "validation",
+            "durationSeconds": 23.598559
+          },
+          {
+            "operationId": 17,
+            "parentOperationId": 1,
+            "operation": "Invoke-EzVmProcess",
+            "category": "image",
+            "durationSeconds": 0.0384783
+          },
+          {
+            "operationId": 19,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.0329544
+          },
+          {
+            "operationId": 20,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.0327273
+          },
+          {
+            "operationId": 23,
+            "parentOperationId": 22,
+            "operation": "Assert-EzVmQemuPayloadIntegrity",
+            "category": "validation",
+            "durationSeconds": 25.2350122
+          },
+          {
+            "operationId": 24,
+            "parentOperationId": 22,
+            "operation": "Invoke-EzVmProcess",
+            "category": "image",
+            "durationSeconds": 0.0489023
+          },
+          {
+            "operationId": 22,
+            "parentOperationId": 21,
+            "operation": "Test-EzVmPreparedBaseDirectory",
+            "category": "validation",
+            "durationSeconds": 28.9318123
+          },
+          {
+            "operationId": 25,
+            "parentOperationId": 21,
+            "operation": "Assert-EzVmQemuPayloadIntegrity",
+            "category": "validation",
+            "durationSeconds": 23.8523066
+          },
+          {
+            "operationId": 26,
+            "parentOperationId": 21,
+            "operation": "Invoke-EzVmProcess",
+            "category": "image",
+            "durationSeconds": 0.0391959
+          },
+          {
+            "operationId": 21,
+            "parentOperationId": 18,
+            "operation": "Test-EzVmInstanceStorage",
+            "category": "validation",
+            "durationSeconds": 52.8784132
+          },
+          {
+            "operationId": 27,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 6.4598529
+          },
+          {
+            "operationId": 28,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.0416921
+          },
+          {
+            "operationId": 29,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.0409176
+          },
+          {
+            "operationId": 30,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.0427438
+          },
+          {
+            "operationId": 31,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.0406427
+          },
+          {
+            "operationId": 32,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.0475282
+          },
+          {
+            "operationId": 33,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.0506467
+          },
+          {
+            "operationId": 34,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.0422588
+          },
+          {
+            "operationId": 35,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.0442001
+          },
+          {
+            "operationId": 36,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.0480721
+          },
+          {
+            "operationId": 37,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.0476661
+          },
+          {
+            "operationId": 38,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.0464876
+          },
+          {
+            "operationId": 39,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.0472113
+          },
+          {
+            "operationId": 40,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.0451477
+          },
+          {
+            "operationId": 41,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.0463326
+          },
+          {
+            "operationId": 42,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 1.1273669
+          },
+          {
+            "operationId": 43,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.50724
+          },
+          {
+            "operationId": 44,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.2001812
+          },
+          {
+            "operationId": 45,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.0594841
+          },
+          {
+            "operationId": 46,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.0491414
+          },
+          {
+            "operationId": 47,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.0478175
+          },
+          {
+            "operationId": 48,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.0476112
+          },
+          {
+            "operationId": 49,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.0540911
+          },
+          {
+            "operationId": 50,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.0442758
+          },
+          {
+            "operationId": 51,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.0424783
+          },
+          {
+            "operationId": 52,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.0463113
+          },
+          {
+            "operationId": 53,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.560772
+          },
+          {
+            "operationId": 54,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.0447213
+          },
+          {
+            "operationId": 55,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.0468885
+          },
+          {
+            "operationId": 56,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.0506394
+          },
+          {
+            "operationId": 57,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.0460481
+          },
+          {
+            "operationId": 58,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.042898
+          },
+          {
+            "operationId": 59,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 6.7689527
+          },
+          {
+            "operationId": 60,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.0423334
+          },
+          {
+            "operationId": 61,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.0450259
+          },
+          {
+            "operationId": 62,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.0476285
+          },
+          {
+            "operationId": 63,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.0466962
+          },
+          {
+            "operationId": 64,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.0417968
+          },
+          {
+            "operationId": 65,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.0458743
+          },
+          {
+            "operationId": 66,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.0437028
+          },
+          {
+            "operationId": 67,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.0482174
+          },
+          {
+            "operationId": 68,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.0526912
+          },
+          {
+            "operationId": 69,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.0506822
+          },
+          {
+            "operationId": 70,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.0469425
+          },
+          {
+            "operationId": 71,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.042568
+          },
+          {
+            "operationId": 72,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.0476708
+          },
+          {
+            "operationId": 73,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.5873954
+          },
+          {
+            "operationId": 74,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.1851786
+          },
+          {
+            "operationId": 75,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.1710932
+          },
+          {
+            "operationId": 76,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.1753519
+          },
+          {
+            "operationId": 77,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.1899195
+          },
+          {
+            "operationId": 78,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.1779518
+          },
+          {
+            "operationId": 79,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.1834907
+          },
+          {
+            "operationId": 80,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.1896886
+          },
+          {
+            "operationId": 81,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.1758235
+          },
+          {
+            "operationId": 82,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.1763133
+          },
+          {
+            "operationId": 83,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.1840891
+          },
+          {
+            "operationId": 84,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.1793569
+          },
+          {
+            "operationId": 85,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.175069
+          },
+          {
+            "operationId": 86,
+            "parentOperationId": 18,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 3.5395392
+          },
+          {
+            "operationId": 18,
+            "parentOperationId": 1,
+            "operation": "Start-EzVmReadyInstance",
+            "category": "ready",
+            "durationSeconds": 106.9438036
+          },
+          {
+            "operationId": 87,
+            "parentOperationId": 1,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.0223101
+          },
+          {
+            "operationId": 88,
+            "parentOperationId": 1,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.0295914
+          },
+          {
+            "operationId": 89,
+            "parentOperationId": 1,
+            "operation": "Invoke-EzVmProcess",
+            "category": "process",
+            "durationSeconds": 0.1489177
+          },
+          {
+            "operationId": 90,
+            "parentOperationId": 1,
+            "operation": "Stop-EzVmInstance",
+            "category": "shutdown",
+            "durationSeconds": 1.5190448
+          },
+          {
+            "operationId": 1,
+            "parentOperationId": null,
+            "operation": "full-release",
+            "category": "qualification",
+            "durationSeconds": 261.4137886
+          }
+        ],
+        "telemetryRecordCount": 180,
+        "sealedIndexSha256": "c9688ba715e55b985590013e538216f10d08147ce9b3b63632fbd9e95811390d",
+        "sealedPrivateArtifacts": [
+          {
+            "label": "capture-patched-reset-b-launch-environment.json",
+            "bytes": 158,
+            "sha256": "ffeecb9c15e5a3c47692de5de423dc544f62e8e135559b4335f759b0dbf88441"
+          },
+          {
+            "label": "capture-patched-reset-b-loaded-modules.json",
+            "bytes": 9803,
+            "sha256": "1d5f43cae978526d5ccb80fc5c86b9fdfa46a956755b8a514eb423132c4f16c1"
+          },
+          {
+            "label": "capture-patched-reset-b-observation.json",
+            "bytes": 3804,
+            "sha256": "936344700b69ec11996303813cc02bd715fdb2d6be8a629f574e8d18dfc430a5"
+          },
+          {
+            "label": "capture-patched-reset-b-private-argv.json",
+            "bytes": 1804,
+            "sha256": "615a85c6292ba5a210a91b8132f25e78f639a711e3ac80d9d04041ddbb548187"
+          },
+          {
+            "label": "capture-patched-reset-b-process.json",
+            "bytes": 778,
+            "sha256": "0f0cc6314c88f5f3725014d27e46c1342b687fb1083f2ddd448a8f73c2e93bf9"
+          },
+          {
+            "label": "capture-patched-reset-b-qemu.stderr.txt",
+            "bytes": 1254,
+            "sha256": "b8ed45606d653d74b4817d184d171ab2e4b4d5385f2632365746bb3edcbba59e"
+          },
+          {
+            "label": "capture-patched-reset-b-qemu.stdout.txt",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "label": "capture-patched-reset-b-ready-window-closed.json",
+            "bytes": 92,
+            "sha256": "0c66169ce37add8f8e0165c601a54154c13d77688499a6c1e48a6fc1f091a502"
+          },
+          {
+            "label": "capture-patched-reset-b-ready-window.json",
+            "bytes": 438,
+            "sha256": "b4db56a6b2c6f887017a680249087765dcc931b27ff83d936d8bc3745ed870ff"
+          },
+          {
+            "label": "capture-patched-reset-b-reset-evidence.json",
+            "bytes": 197,
+            "sha256": "0a0cbd5cd65c37b076c3aba20910810dc4812613189eab8b5d1937e1ac60e3cd"
+          },
+          {
+            "label": "capture-patched-reset-b-source-proof.json",
+            "bytes": 560,
+            "sha256": "5bedad4627caeff0ead4ee2f672245dbc4b759b0e7fbf3db39f6a17ec596a2a9"
+          },
+          {
+            "label": "capture-patched-reset-b-telemetry.jsonl",
+            "bytes": 48861,
+            "sha256": "b57eb94321c10a4b13980bd5b8e1ca6c0c6dc50f3e91896ca034bc37f4916b48"
+          },
+          {
+            "label": "capture-patched-reset-b-tool-after.json",
+            "bytes": 203,
+            "sha256": "68138a7b4a516ca7c8a1466ea1c893da3e2c8a6dbb3da4597cf43967ec66dbd5"
+          },
+          {
+            "label": "capture-patched-reset-b-wrapper-exit.txt",
+            "bytes": 1,
+            "sha256": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9"
+          },
+          {
+            "label": "capture-patched-reset-b.log",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "label": "serial-9eb01aabe91d49b0b2a8449c9b77e917.log",
+            "bytes": 169730,
+            "sha256": "6dca2fbe042b7aab835f89342e9eedf9d1c34d3336824bfc56a54647f2b92103"
+          },
+          {
+            "label": "qemu-9eb01aabe91d49b0b2a8449c9b77e917.log",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "label": "stage-patched-manifest.json",
+            "bytes": 617408,
+            "sha256": "8d9b3924abc05fb1bd7a285e97a5e588133d589d53570e826c0870b8de0147eb"
+          },
+          {
+            "label": "private-whpx-reset-experiment-v1.diff",
+            "bytes": 9845,
+            "sha256": "63d90d7d2c176bc943d0ec55a16771d254cea9647ecd48f4d0a8f2e406d81239"
+          },
+          {
+            "label": "build-patched-clean.sh",
+            "bytes": 464,
+            "sha256": "c168c014ab2cf2e709ecf7c220d51c3923c2782f1c3e49128f3b4a643f68e7b8"
+          },
+          {
+            "label": "ci-poc-001-qemu-patched-comparison.ps1",
+            "bytes": 8834,
+            "sha256": "fe39a007117339a3b77c7d24fdd5a365dcbf97b64259ac55820a200696c8c49f"
+          },
+          {
+            "label": "ci-poc-001-qemu-patched-comparison-child.ps1",
+            "bytes": 11629,
+            "sha256": "c7a611fcadea79b31626143efabb902aa27c6741cde85be354074723b73e1766"
+          },
+          {
+            "label": "ci-poc-001-comparison-patched-stage.ps1",
+            "bytes": 6752,
+            "sha256": "7e8e8820c840bb7a9cf796bdd751b80dd64a6ee82ea16f91227a46095eea971e"
+          },
+          {
+            "label": "ci-poc-001-patched-result-gate-tests.ps1",
+            "bytes": 5315,
+            "sha256": "66111af98344b8186cd6d46ef661a1d41ddf616ceeb6fa3ccb48501cdbc91003"
+          }
+        ],
+        "physicalQualificationPassed": false,
+        "qualificationEligible": false,
+        "limitations": [
+          "Focused comparison uses an existing prepared base; complete cold release/portability qualification remains required.",
+          "Private Windows 11 experiment; production acquisition and Windows 10 compatibility policy are not established.",
+          "Diagnostic fixture remains privately owned and retained pending further controls and verified disposal."
+        ],
+        "review": "Independent pre-execution source/artifact/guard review passed; independent final evidence review is pending."
+      }
+    }
+  ],
+  "boundedLocalTcgRegression": {
+    "result": {
+      "kind": "bounded-private-tcg-generic-reset-regression",
+      "stageManifestSha256": "8d9b3924abc05fb1bd7a285e97a5e588133d589d53570e826c0870b8de0147eb",
+      "accelerator": "tcg",
+      "preResetResponsive": true,
+      "postResetResponsive": true,
+      "forced": false,
+      "qualificationEligible": false,
+      "physicalQualificationPassed": false,
+      "hostedTcgQualificationStarted": false,
+      "freshHostResetEventObserved": true,
+      "outputDrained": true,
+      "activeProcesses": 0,
+      "exitCode": 0,
+      "outputFailed": false,
+      "outputOverflow": false,
+      "elapsedSeconds": 5.6868891,
+      "succeeded": true
+    },
+    "actualWrapperExitCode": 0,
+    "sealedIndexSha256": "095742f60bd6bd1ce380a6c9eb86dc63a860d982f6797c5e2db015c59754b898",
+    "sealedPrivateArtifacts": [
+      {
+        "label": "result.json",
+        "bytes": 653,
+        "sha256": "a69b5272e3128d5cfa4841261085b9c726d1b4aadcdea865c034395018f34e9f"
+      },
+      {
+        "label": "qmp-transcript.json",
+        "bytes": 6173,
+        "sha256": "1a68e9542189eedb53ab5b9c1838b33a176858281c0644ab9cbe3a00bcb3672b"
+      },
+      {
+        "label": "qemu.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "label": "ci-poc-001-patched-tcg-reset-regression.ps1",
+        "bytes": 6442,
+        "sha256": "c4d32a8a1e5590038ddeded880c5309eec528127fc773c087c3e869f1f797c03"
+      },
+      {
+        "label": "patched-tcg-reset-regression-wrapper-exit.txt",
+        "bytes": 1,
+        "sha256": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9"
+      }
+    ],
+    "independentReview": "Separate Extra High model verified actual result, reset-event order, running states, normal quit and privacy.",
+    "limitation": "Bounded firmware generic-reset control only. Its receipt does not include a native PID/executable ownership record; reviewed script hash and stage manifest bind the controlled invocation. Hosted full TCG remains deferred."
+  },
+  "retainedWarnings": {
+    "perWhpxCycle": {
+      "ignoredInterruptVectorZeroLines": 1,
+      "wsaEventSelectSocketWarningLines": 6
+    },
+    "effectObserved": "Both focused guests authenticated and stopped normally despite warnings. Full release behavior remains unmeasured."
+  },
+  "conclusion": "A checked WHPX partition reset before board/device reset resolves the reproduced first-identity-reboot blocker in two fresh focused controls. Shipping capability policy, acquisition and fresh complete qualification remain required.",
+  "physicalQualificationPassed": false,
+  "qualificationEligible": false,
+  "review": "Separate Extra High model completed source, execution, source/tool/resource/module, all 53 sealed artifacts, final combined publication fidelity and privacy review with no material findings. Embedded historical pending fields are retained unchanged."
+}
