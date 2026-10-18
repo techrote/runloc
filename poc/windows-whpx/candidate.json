@@ -2,13 +2,17 @@
   "schemaVersion": 1,
   "executionApproved": true,
   "repository": "https://github.com/techrote/ezvm",
-  "commit": "59eee784b8016178c5589dea32cf2c9e72b942bd",
-  "tree": "f609fa6aa429a9b78fa89ef763126d9ef023e8d0",
+  "commit": "2afcd6a61b16e08cb7e35925e6d2cfc46cac24c0",
+  "tree": "a5f70cc1a7018b77518b83e7c3a393a2c8068cd7",
   "harness": "scripts/Invoke-EzVm010RealPortability.ps1",
   "pins": [
     {
       "path": "scripts/Invoke-EzVm010RealPortability.ps1",
-      "sha256Lf": "a201ec5494ed6a128bf7f3f628011119b09d0e399de472b20eef214b356aabbb"
+      "sha256Lf": "471c6938edd54a834a80d0064f3cff604a5b832d171d34ede0baf26bdc52fee6"
+    },
+    {
+      "path": "guest/base-cloud-init/user-data.yaml",
+      "sha256Lf": "68b19eedf46aba223aa5b4b3760fd6f496e86b3225606fa5b32c0c1d288b8f40"
     },
     {
       "path": "scripts/QualificationTelemetry.ps1",

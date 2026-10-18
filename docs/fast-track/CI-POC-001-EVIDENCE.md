@@ -14,6 +14,11 @@ There is no completed receipt, numeric final exit or normal cleanup proof for
 that attempt. Code, mocked results, diagnostic probes and hosted TCG cannot
 satisfy the required complete cold physical run.
 
+The second full attempt was also interrupted by an owner-reported unrelated PC
+crash. The third produced a failed receipt: prepared-base provisioning rejected
+its serial build identity. Its complete retained failure record and subsequent
+diagnosis are appended below; no physical qualification is claimed.
+
 The standalone helper is under `poc/windows-whpx/`. It is an invocation and
 evidence boundary for the existing EzVM scenario. RUNLOC-001 through RUNLOC-019,
 CI-POC-002 runner registration and CI-POC-003 gate/fallback migration are outside
@@ -451,3 +456,72 @@ while retaining the actual finite 15-second Git and 3-second output limits.
 New regressions exercise real Git source verification and both actual owned
 child/supervisor output paths with an unbounded overall deadline. The original
 timers, operation limits, source validation and cleanup assertions are preserved.
+
+## Completed physical failure and serial framing successor (18 October 2026)
+
+Controller `b314f6cfbafd3306eb929f7e4fbf729cf26c7e18`, tree
+`7639b365e566718a23d01d84f1d023d83f01f5bc`, passed actual exact-head Windows
+PS5.1 and pinned PS7.6.6 checks: **57 pilot / 21 supervisor groups, zero skips**,
+plus Windows/Ubuntu repository checks. Its first unbounded full attempt was
+[interrupted by another owner-reported PC crash](evidence/physical-whpx-20261018-second-reboot-interrupted.json).
+All [597 partial telemetry events](evidence/physical-whpx-20261018-second-interrupted-telemetry.json)
+remain retained. Exact owned-fixture recovery verified its lease, creation digest,
+reboot, exclusive lock and zero process references before disposal; no mutable
+guest or receipt was reused.
+
+The next fresh exact preflight passed, actual exit **0**, terminal supervised
+**14.366025 seconds**. Full attempt `085483ce040f4e6d8e8d7b110296f8de`
+then **failed**, with harness/controller exit **1** and actual supervisor exit
+**2**. Receipt elapsed was **2743.6430265 seconds**, terminal post-I/O elapsed
+**2743.6650385 seconds**, and independent operator elapsed **2744.7103702
+seconds**. This is a failed attempt, not a completed performance result. Seven
+of 24 markers were present. The original tiny-image assertions completed, then
+prepared-base construction rejected its serial build identity. No prepared-base
+or authenticated guest READY agreement was established. Both sources remained
+unchanged, owned processes reached zero without forced termination, the owned
+fixture was removed, and the unrelated sentinel survived.
+
+[All named receipts, digests, marker results and 685 phase events](evidence/physical-whpx-20261018-base-build-failure/index.json)
+are retained with hashes. The outer `supervisor-controller-incomplete` is the
+expected rejection of actual controller exit 1, not a timeout or lost stdout.
+The failure log identifies `Guest provisioning READY marker belongs to a different
+build identity.` Full fixture identities were intentionally not claimed after a
+failed harness. Partial tool/source identities remain in the telemetry. The
+private serial staging log was removed with the fixture, so its actual contents
+cannot prove whether the rejected build ID was absent or different.
+
+The [failure analysis](evidence/physical-whpx-20261018-base-build-failure-analysis.json)
+distinguishes that limitation from the independently reproduced framing defect.
+An unfinished serial login prompt can consume the first build-ID marker because
+the guest emitted it without a leading newline and the parser correctly requires
+an anchored line. A generated-seed regression reproduces the same exception on
+the old source and passes after adding the newline; wrong/missing identities and
+READY/tool/cleanup facts still refuse under both LF and CRLF. A focused fresh
+physical WHPX base build on the original candidate succeeded, exit 0 and zero
+owned processes. It is diagnostic only, does not establish the original failure's
+cause, and cannot qualify the complete release scenario.
+
+The reviewed successor EzVM candidate is
+`2afcd6a61b16e08cb7e35925e6d2cfc46cac24c0`, tree
+`a5f70cc1a7018b77518b83e7c3a393a2c8068cd7`. It contains only the serial framing
+correction, bounded private base-failure diagnostics and focused tests/docs
+relative to `59eee784b8016178c5589dea32cf2c9e72b942bd`. Current EzVM main
+`7b829f8352a9fa30c965e57386965767c5969e0d` was merged cleanly without changing
+that reviewed repair tree. No PR #45 code was imported. The original assertions,
+24 markers, exact identity/accelerator gates and operation limits remain.
+
+Private diagnostic reads validate all ancestors and single-link files, cap each
+read at 256 KiB even with a growing writer, limit output to four stages/200 lines/
+4096 characters, and prefix every CRLF/LF/CR-delimited line. Link/junction refusal,
+oversized input and PASS-injection negative controls pass in actual PS5.1. Seed,
+disk and key files are excluded. Diagnostic failures preserve the original
+exception. A separate Extra High model reviewer found and rechecked these guards;
+no material findings remain. The primary agent implemented the correction.
+
+The [successor path audit](evidence/windows-path-budget-serial-successor.json)
+rechecks all unchanged archive/path sources and the unchanged harness path
+definitions. `candidate.json` now pins the successor commit/tree, changed harness
+and guest template. Its software CI and a fresh exact-source full physical attempt
+remain acceptance gates. Earlier physical evidence cannot qualify changed source.
+The owner-selected no-overall-timeout policy and hosted-TCG deferral remain; no
+runner registration, gate migration, privilege change or merge is claimed.

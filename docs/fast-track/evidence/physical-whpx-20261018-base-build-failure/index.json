@@ -1,0 +1,99 @@
+{
+  "schemaVersion": 1,
+  "scope": "Named allowlisted receipts and telemetry only; raw logs, leases, keys and fixture contents remain private.",
+  "attempts": [
+    {
+      "mode": "physical",
+      "attemptIdentity": "085483ce040f4e6d8e8d7b110296f8de",
+      "qualificationResult": "failed",
+      "physicalQualificationPassed": false,
+      "totalSupervisedElapsedSeconds": 2743.6650385,
+      "numericSupervisorExitCode": 2
+    },
+    {
+      "mode": "preflight",
+      "attemptIdentity": "add82b3f781e46ea947ca9cf12c123d6",
+      "qualificationResult": "preflight-pass",
+      "physicalQualificationPassed": false,
+      "totalSupervisedElapsedSeconds": 14.366024999999999,
+      "numericSupervisorExitCode": 0
+    }
+  ],
+  "files": [
+    {
+      "path": "085483ce040f4e6d8e8d7b110296f8de/operator-observation.json",
+      "sha256": "78c616d226c8486c51e20ab01e5c2e6f45700f08f5e9184af653e36511ddaa8b",
+      "bytes": 16690
+    },
+    {
+      "path": "085483ce040f4e6d8e8d7b110296f8de/operator-tool-identities-after.json",
+      "sha256": "7619d08e485bfa2c4c5a4cf965feaf678903cd0ccbb8f5e74c6e1ebacfead65a",
+      "bytes": 1625
+    },
+    {
+      "path": "085483ce040f4e6d8e8d7b110296f8de/operator-tool-identities-before.json",
+      "sha256": "2a233fb3e0fb5ced58fc16c6e576647ee266799f1eac512aab196d56952e7b0c",
+      "bytes": 1626
+    },
+    {
+      "path": "085483ce040f4e6d8e8d7b110296f8de/receipt-digest.json",
+      "sha256": "7d0f6d844ea29f09652202cea724263cdfaaef1ef1ce797e9d052f85f97ebbed",
+      "bytes": 144
+    },
+    {
+      "path": "085483ce040f4e6d8e8d7b110296f8de/receipt.json",
+      "sha256": "cf36bec997bc8fb3f84aaab94310f55aeebedb061d62d37f5dc10d64ea18cbe2",
+      "bytes": 31522
+    },
+    {
+      "path": "085483ce040f4e6d8e8d7b110296f8de/supervisor-receipt-digest.json",
+      "sha256": "ac1c6b4444ee5d41e5f67ea4eb7fd00f9d07971f75d6ca54d90bf25b0e625cc1",
+      "bytes": 155
+    },
+    {
+      "path": "085483ce040f4e6d8e8d7b110296f8de/supervisor-receipt.json",
+      "sha256": "2fe6dd4cad38ae9329e36a505edb0ae9e9a4dec4081435162813f0633b6c559c",
+      "bytes": 9658
+    },
+    {
+      "path": "085483ce040f4e6d8e8d7b110296f8de/supervisor-started.json",
+      "sha256": "421bd34819207f99acdd4db6a4e66978b659e4b8e91356fc3f8817b20f92f0ed",
+      "bytes": 736
+    },
+    {
+      "path": "085483ce040f4e6d8e8d7b110296f8de/telemetry-events.json",
+      "sha256": "765b29a13d8d03666fda4bcb1a5ee19b655048730a306a384afd5d9fa89c8053",
+      "bytes": 671428
+    },
+    {
+      "path": "add82b3f781e46ea947ca9cf12c123d6/operator-observation.json",
+      "sha256": "9cfff5909629929713ee452cc3a491c7d99fcf87e01ea475988745ab04586c8e",
+      "bytes": 10367
+    },
+    {
+      "path": "add82b3f781e46ea947ca9cf12c123d6/receipt-digest.json",
+      "sha256": "8e3f8ddf48527fdf1c3e364c543dd06fd573793066571d123dbd2ad37ea9bdaf",
+      "bytes": 144
+    },
+    {
+      "path": "add82b3f781e46ea947ca9cf12c123d6/receipt.json",
+      "sha256": "4efa76b6ff9ff39a9ca4eb8e40baa4f91bdbf3b944aea3487f49a9bc4d630f4f",
+      "bytes": 12064
+    },
+    {
+      "path": "add82b3f781e46ea947ca9cf12c123d6/supervisor-receipt-digest.json",
+      "sha256": "559f513730ae996fa66b40fcfeb568e1c8059350d8b1e3baa91e024d9a7c8efe",
+      "bytes": 155
+    },
+    {
+      "path": "add82b3f781e46ea947ca9cf12c123d6/supervisor-receipt.json",
+      "sha256": "9cc17a39ec72e4778c9fcd261f4a107cd246a15c1155260659f3db4bf9140255",
+      "bytes": 10194
+    },
+    {
+      "path": "add82b3f781e46ea947ca9cf12c123d6/supervisor-started.json",
+      "sha256": "76496a0cfbaa303b77db1f1b8d5dc84b3c9378768266d2aa1c7ca8b61ab52ce9",
+      "bytes": 735
+    }
+  ]
+}
