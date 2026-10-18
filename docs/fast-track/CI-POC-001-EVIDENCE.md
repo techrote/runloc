@@ -608,3 +608,32 @@ controls. A separate guest-paravirtualization control remains diagnostic work;
 WHPX acceleration, guest resources, security-domain settings and host policy are
 preserved. The owned private diagnostic fixture remains retained for that work,
 with disposal still to be proved. Full physical acceptance remains outstanding.
+
+## Further option and CPU failure controls
+
+The [subsequent option/CPU record](evidence/physical-whpx-20261018-option-and-cpu-failure-controls.json)
+retains three further failed controls. Guest-paravirtualization off took effect:
+Linux changed its hypervisor detection from Hyper-V to VMware/frequency reporting.
+The four-vCPU guest nevertheless paused with three observed WHPX exit-4 lines.
+Combining that setting with software IRQ emulation at four vCPUs also paused,
+with one observed exit-4 line. Neither setting is an approved correction.
+
+A legitimate custom one-vCPU/8192-MiB intent retained original WHPX. It remained
+QMP-running in firmware after reboot, without a second Linux boot or authenticated
+READY. Absence of exit-4 text does not establish progress or success. This reduced
+CPU diagnostic cannot qualify the required normal profile. All three controls
+exited 1, failed normal shutdown, required forced native containment and reached
+zero active processes. The 180/10-second diagnostic bounds and launcher differ
+from the earlier uncaptured IRQ-only 300/10-second control; no claim that both
+options are necessary or sufficient is made.
+
+Per-phase proofs bind the clean input checkout. A retained post-control audit
+separately verifies all 166 copied tracked file bytes, with the same canonical
+digest as the initial audit. In-memory diagnostic argument/launch proxies are
+identified by their script hashes and actual argument records. Private artifact
+digests, snapshots, exact numeric exits and source scope are explicit. A separate
+Extra High model reviewer checked the failed controls and privacy. The private
+owned fixture remains retained for further separately identified recovery
+experiments. Those latch the initial unassisted failure before intervention and
+remain ineligible for qualification even if later authenticated READY succeeds.
+No runtime/candidate correction, full physical PASS or merge is claimed.

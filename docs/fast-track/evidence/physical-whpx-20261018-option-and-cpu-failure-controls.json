@@ -1,0 +1,266 @@
+{
+  "schemaVersion": 1,
+  "kind": "focused-whpx-option-and-cpu-failure-controls",
+  "issue": "CI-POC-001",
+  "precedingRecord": "physical-whpx-20261018-reset-failure-controls.json",
+  "precedingRecordSha256": "e4928861f1ceae6156fd591b1a054275bdf17aabf5ee67db599669896e160482",
+  "phases": [
+    {
+      "mode": "hyperv-off",
+      "startedUtc": "2026-10-18T02:01:32.7013428Z",
+      "endedUtc": "2026-10-18T02:06:41.5694787Z",
+      "candidateCommit": "2afcd6a61b16e08cb7e35925e6d2cfc46cac24c0",
+      "candidateTree": "a5f70cc1a7018b77518b83e7c3a393a2c8068cd7",
+      "diagnosticScriptSha256": "46889e2a489b099790e6ad2a59573af9c99c33ea906ff3711fe6ac1d3161af88",
+      "requestedAccelerator": "whpx",
+      "actualAcceleratorArgument": "whpx,hyperv=off",
+      "cpus": 4,
+      "memoryMiB": 8192,
+      "resourceProfile": "normal",
+      "readyTimeoutSeconds": 180,
+      "shutdownTimeoutSeconds": 10,
+      "actualChildExitCode": 1,
+      "childExited": true,
+      "activeProcesses": 0,
+      "forcedCleanup": true,
+      "nativeSupervisorTimedOut": false,
+      "outputFailed": false,
+      "outputOverflow": false,
+      "elapsedSeconds": 311.6122709,
+      "telemetryRecordCount": 134,
+      "authenticatedReadyEstablished": false,
+      "postInitializationBootProofEstablished": false,
+      "normalGuestShutdownEstablished": false,
+      "sourceUnchanged": true,
+      "sourceBefore": "40e9c5d1858d7dda4e408f5b86c74a1378d900644bba7893b45cee38a1f79ad6",
+      "sourceAfter": "40e9c5d1858d7dda4e408f5b86c74a1378d900644bba7893b45cee38a1f79ad6",
+      "unexpectedVpExit4Count": 3,
+      "privateArtifactDigests": [
+        {
+          "label": "capture-hyperv-off-observation.json",
+          "bytes": 2251,
+          "sha256": "548895cba5f37af35f44802e6755de657180c6a7a80e145945e5c2cb614faaf2"
+        },
+        {
+          "label": "capture-hyperv-off-process.json",
+          "bytes": 1964,
+          "sha256": "60399a160db326ae192d9d2ecf38ee481a38a1a4c00cc14dd140668c4a337faa"
+        },
+        {
+          "label": "capture-hyperv-off-source-proof.json",
+          "bytes": 536,
+          "sha256": "7810111cbd2a76a7f3c3fbbebe72e378ee64a4902896659ad8834c9750855ba3"
+        },
+        {
+          "label": "capture-hyperv-off-private-argv.json",
+          "bytes": 1690,
+          "sha256": "b84de3c40916526467c8d5a19cc57ce841667f531abc51b577db7748cc2aaf84"
+        },
+        {
+          "label": "capture-hyperv-off-telemetry.jsonl",
+          "bytes": 37631,
+          "sha256": "5fcd1e24614f914c2d94b871f5e83cb0bca6a4c700203f02786a0f80c6a79285"
+        },
+        {
+          "label": "capture-hyperv-off-qemu.stderr.txt",
+          "bytes": 497,
+          "sha256": "8c49088a1e78bd0d78f9f5c823a7f0972ff876625d63bb4862cada495928d8d8"
+        }
+      ]
+    },
+    {
+      "mode": "combined-off",
+      "startedUtc": "2026-10-18T02:07:42.4376876Z",
+      "endedUtc": "2026-10-18T02:12:52.3481167Z",
+      "candidateCommit": "2afcd6a61b16e08cb7e35925e6d2cfc46cac24c0",
+      "candidateTree": "a5f70cc1a7018b77518b83e7c3a393a2c8068cd7",
+      "diagnosticScriptSha256": "31823b6e3f2a95f14ac82b164a3ac21052e60869981f24dfed336b79c5739193",
+      "requestedAccelerator": "whpx",
+      "actualAcceleratorArgument": "whpx,kernel-irqchip=off,hyperv=off",
+      "cpus": 4,
+      "memoryMiB": 8192,
+      "resourceProfile": "normal",
+      "readyTimeoutSeconds": 180,
+      "shutdownTimeoutSeconds": 10,
+      "actualChildExitCode": 1,
+      "childExited": true,
+      "activeProcesses": 0,
+      "forcedCleanup": true,
+      "nativeSupervisorTimedOut": false,
+      "outputFailed": false,
+      "outputOverflow": false,
+      "elapsedSeconds": 312.4800595,
+      "telemetryRecordCount": 86,
+      "authenticatedReadyEstablished": false,
+      "postInitializationBootProofEstablished": false,
+      "normalGuestShutdownEstablished": false,
+      "sourceUnchanged": true,
+      "sourceBefore": "40e9c5d1858d7dda4e408f5b86c74a1378d900644bba7893b45cee38a1f79ad6",
+      "sourceAfter": "40e9c5d1858d7dda4e408f5b86c74a1378d900644bba7893b45cee38a1f79ad6",
+      "unexpectedVpExit4Count": 1,
+      "privateArtifactDigests": [
+        {
+          "label": "capture-combined-off-observation.json",
+          "bytes": 2263,
+          "sha256": "b3e73f24d4605bbeae0ae47ca77eb21d8df98289bdc50154829fea404687e5fa"
+        },
+        {
+          "label": "capture-combined-off-process.json",
+          "bytes": 1964,
+          "sha256": "7e96ad1f9c4dfcff014b9a2779fca31db9898c76c1b6dd273b5aae21c033d7c5"
+        },
+        {
+          "label": "capture-combined-off-source-proof.json",
+          "bytes": 536,
+          "sha256": "7810111cbd2a76a7f3c3fbbebe72e378ee64a4902896659ad8834c9750855ba3"
+        },
+        {
+          "label": "capture-combined-off-private-argv.json",
+          "bytes": 1721,
+          "sha256": "35565641032b213faa2d83c56c89b3d04b48ed4dcdeae6f9a510e222985cd60e"
+        },
+        {
+          "label": "capture-combined-off-telemetry.jsonl",
+          "bytes": 25621,
+          "sha256": "ca6629d31961051afeb5b171d487a9dadaba4c8ed71f078f0fbba4c120d334e6"
+        },
+        {
+          "label": "capture-combined-off-qemu.stderr.txt",
+          "bytes": 816,
+          "sha256": "5acb526d9c4fc66bbb5be5ef6f852c3c0f99afa4b97d979e41f8db4283c01805"
+        }
+      ]
+    },
+    {
+      "mode": "single-cpu",
+      "startedUtc": "2026-10-18T02:13:12.9072651Z",
+      "endedUtc": "2026-10-18T02:18:20.6330255Z",
+      "candidateCommit": "2afcd6a61b16e08cb7e35925e6d2cfc46cac24c0",
+      "candidateTree": "a5f70cc1a7018b77518b83e7c3a393a2c8068cd7",
+      "diagnosticScriptSha256": "31823b6e3f2a95f14ac82b164a3ac21052e60869981f24dfed336b79c5739193",
+      "requestedAccelerator": "whpx",
+      "actualAcceleratorArgument": "whpx",
+      "cpus": 1,
+      "memoryMiB": 8192,
+      "resourceProfile": "custom-one-cpu-diagnostic",
+      "readyTimeoutSeconds": 180,
+      "shutdownTimeoutSeconds": 10,
+      "actualChildExitCode": 1,
+      "childExited": true,
+      "activeProcesses": 0,
+      "forcedCleanup": true,
+      "nativeSupervisorTimedOut": false,
+      "outputFailed": false,
+      "outputOverflow": false,
+      "elapsedSeconds": 310.24728709999994,
+      "telemetryRecordCount": 140,
+      "authenticatedReadyEstablished": false,
+      "postInitializationBootProofEstablished": false,
+      "normalGuestShutdownEstablished": false,
+      "sourceUnchanged": true,
+      "sourceBefore": "40e9c5d1858d7dda4e408f5b86c74a1378d900644bba7893b45cee38a1f79ad6",
+      "sourceAfter": "40e9c5d1858d7dda4e408f5b86c74a1378d900644bba7893b45cee38a1f79ad6",
+      "unexpectedVpExit4Count": 0,
+      "privateArtifactDigests": [
+        {
+          "label": "capture-single-cpu-observation.json",
+          "bytes": 2251,
+          "sha256": "e332ee6b65a5227e4995318d00c27d7fa1473e8485b2a0b74775a7888764f003"
+        },
+        {
+          "label": "capture-single-cpu-process.json",
+          "bytes": 1971,
+          "sha256": "622470dabd7023558203674a17f32194306113b195e63db02a8702c1894fba91"
+        },
+        {
+          "label": "capture-single-cpu-source-proof.json",
+          "bytes": 536,
+          "sha256": "7810111cbd2a76a7f3c3fbbebe72e378ee64a4902896659ad8834c9750855ba3"
+        },
+        {
+          "label": "capture-single-cpu-private-argv.json",
+          "bytes": 1679,
+          "sha256": "e6d972bfcf1ec829aa992585d93ca005ca4d5a5fc2303ce8c99c97817aaf1bf6"
+        },
+        {
+          "label": "capture-single-cpu-telemetry.jsonl",
+          "bytes": 39071,
+          "sha256": "f84c7d5e1b781238570910b936b6f108b124a95cbbfb095574b255608fd3bf64"
+        },
+        {
+          "label": "capture-single-cpu-qemu.stderr.txt",
+          "bytes": 137,
+          "sha256": "e2889937aafbb8fcadf796dbff41105b49b21b5b76f97b974a3ffa5f6ca99a0b"
+        }
+      ]
+    }
+  ],
+  "ownedSnapshots": [
+    {
+      "mode": "hyperv-off",
+      "utc": "2026-10-18T02:05:26.9328491Z",
+      "ownershipVerified": true,
+      "status": {
+        "status": "paused",
+        "running": false
+      },
+      "privateLabel": "capture-hyperv-off-readonly-9977d95d1328476bb65497a7b0e8220a.json",
+      "privateSha256": "30bbce1d0eceb5517fd6a751021cfe68ca6659e066d1fdd319151bd946de4c45",
+      "observationError": null
+    },
+    {
+      "mode": "combined-off",
+      "utc": "2026-10-18T02:11:17.0488679Z",
+      "ownershipVerified": true,
+      "status": {
+        "status": "paused",
+        "running": false
+      },
+      "privateLabel": "capture-combined-off-readonly-7c0ed5a25fd3498587eb5e2541c67741.json",
+      "privateSha256": "f303087b05ac38575514042e7dcdf12313b64632ed969d9161c07f8a859aa900",
+      "observationError": null
+    },
+    {
+      "mode": "single-cpu",
+      "utc": "2026-10-18T02:17:33.6906236Z",
+      "ownershipVerified": true,
+      "status": {
+        "status": "running",
+        "running": true
+      },
+      "privateLabel": "capture-single-cpu-readonly-b397cdacb5ab4ddc9612793d592808e0.json",
+      "privateSha256": "13c83c87bd69682a26f9b3bf0098cdcdac9f0b954c885c0f4f23c4c64c0532a7",
+      "observationError": "Readonly QMP command failed: accelerator-properties"
+    },
+    {
+      "mode": "single-cpu",
+      "utc": "2026-10-18T02:16:56.4104716Z",
+      "ownershipVerified": true,
+      "status": {
+        "status": "running",
+        "running": true
+      },
+      "privateLabel": "capture-single-cpu-readonly-fc33b558fe1c428e84e29646867dec1e.json",
+      "privateSha256": "7646711ef4027e8bf06f62c6895696ca8c1eca10277ce23edc5c70870ce47f5e",
+      "observationError": null
+    }
+  ],
+  "findings": [
+    "Guest-paravirtualization off took effect (serial changed Hyper-V detection to VMware/frequency reporting), but four-vCPU reboot still paused with exit4.",
+    "Combined software IRQ plus guest-paravirtualization off at four vCPU also paused with exit4; no candidate correction is supported.",
+    "A legitimate custom one-vCPU intent retained8192MiB and original WHPX. It remained QMP-running in firmware after reboot without another Linux boot or authenticated READY; absence of exit4 is not success.",
+    "All three trials failed normal shutdown and required owned native containment; each reached zero active processes with unchanged source.",
+    "Captured modes use180/10 diagnostic bounds; the earlier uncaptured IRQ-only trial used300/10. No claim that both options are necessary or sufficient is made."
+  ],
+  "fixtureLifecycleAtCollection": "Private owned diagnostic fixture retained for further controls; no full acceptance/disposal claim.",
+  "completeRedirectedStderrDrainEstablished": false,
+  "physicalQualificationPassed": false,
+  "copiedSourceAfterControlsAudit": {
+    "observedUtc": "2026-10-18T02:26:03.184304+00:00",
+    "matchedTrackedFileCount": 166,
+    "allCopiedTrackedBytesMatch": true,
+    "canonicalCopiedSourceDigest": "b17d4ac5664fc83af85bbbdcbe84eeabda1da054d53b32bb49d3a7e859c16d4a",
+    "privateAuditSha256": "90574c1d47f2a2a5e554510ae1158890956826eb976a0683a6fed00a9b5955c7"
+  },
+  "sourceProofScope": "Per-phase wrappers bind the clean input checkout; the separate post-control audit binds all166 copied tracked file bytes to that same source. In-memory diagnostic proxies are recorded separately by script hash and actual arguments."
+}
