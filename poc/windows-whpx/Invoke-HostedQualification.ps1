@@ -20,12 +20,13 @@ $controller=Get-PilotSourceIdentity -Root $root -Repository 'https://github.com/
 $candidate=Get-PilotSourceIdentity -Root $CandidateRoot -Repository 'https://github.com/techrote/ezvm' -ExpectedCommit $CandidateCommit
 $parent=Assert-PilotPath -Path $EvidenceParent
 $lease=New-PilotLease -EvidenceParent $parent -CandidateCommit $CandidateCommit -ControllerCommit $ControllerCommit -WorkParent ([Environment]::GetFolderPath('UserProfile'))
-$child=$null;$preflight=$null;$sourceUnchanged=$false;$fixtureRemoved=$false;$events=@();$telemetry=$null;$reason='hosted-controller-incomplete'
+$child=$null;$preflight=$null;$childAttempted=$false;$preflightAttempted=$false;$identities=$null;$sourceUnchanged=$false;$fixtureRemoved=$false;$events=@();$telemetry=$null;$reason='hosted-controller-incomplete'
 try {
     New-PilotFixture -Lease $lease
     $exe=Join-Path $env:SystemRoot 'System32/WindowsPowerShell/v1.0/powershell.exe'
     $aclArguments=Get-PilotPowerShellArguments -TargetScript (Join-Path $PSScriptRoot 'Invoke-AclPreflight.ps1') -NamedParameters @{
-        SourceRoot=$CandidateRoot;ProbeDirectory=(Join-Path $lease.Fixture 'acl-probe')}
+        SourceRoot=$CandidateRoot;ProbeDirectory=(Join-Path $lease.Private 'acl-probe')}
+    $preflightAttempted=$true
     $preflight=Invoke-PilotChild -Executable $exe -Arguments $aclArguments -WorkingDirectory $CandidateRoot -TemporaryDirectory $lease.Fixture `
         -RawLogPath (Join-Path $lease.Private 'preflight.log') -Clock $clock -ExecutionDeadlineSeconds ($clock.Elapsed.TotalSeconds+60) -CleanupDeadlineSeconds ($clock.Elapsed.TotalSeconds+70)
     if($preflight.exitCode -ne 0 -or -not $preflight.childExited -or $preflight.activeProcesses -ne 0 -or $preflight.forced -or
@@ -33,6 +34,7 @@ try {
     $telemetryPath=Join-Path $lease.Private 'telemetry.jsonl'
     $arguments=Get-PilotPowerShellArguments -TargetScript (Join-Path $CandidateRoot 'scripts/Invoke-EzVm010RealPortability.ps1') -NamedParameters @{
         Root=$CandidateRoot;ReleaseQualification=$true;Accelerator='tcg';QualificationCpus=6;TelemetryPath=$telemetryPath}
+    $childAttempted=$true
     $child=Invoke-PilotChild -Executable $exe -Arguments $arguments `
         -WorkingDirectory $CandidateRoot -TemporaryDirectory $lease.Fixture -RawLogPath (Join-Path $lease.Private 'harness.log') `
         -Clock $clock -ExecutionDeadlineSeconds ([double]::PositiveInfinity) -CleanupDeadlineSeconds ([double]::PositiveInfinity)
@@ -46,16 +48,20 @@ try {
     }
     $telemetry=Read-PilotTelemetry -Path $telemetryPath -OutputPath (Join-Path $parent 'telemetry-events.json') -Clock $clock -DeadlineSeconds ([double]::PositiveInfinity) -NoOverallTimeout
     $after=Get-PilotSourceIdentity -Root $CandidateRoot -Repository 'https://github.com/techrote/ezvm' -ExpectedCommit $CandidateCommit -ExpectedTree $candidate.tree
-    $sourceUnchanged=$after.executedTreeSha256 -ceq $candidate.executedTreeSha256
-    $functional=Test-GateHostedOutcome -Child $child -Events $events -Telemetry $telemetry -SourceUnchanged $sourceUnchanged
+    $controllerAfter=Get-PilotSourceIdentity -Root $root -Repository 'https://github.com/techrote/runloc' -ExpectedCommit $ControllerCommit -ExpectedTree $controller.tree
+    $sourceUnchanged=$after.executedTreeSha256 -ceq $candidate.executedTreeSha256 -and $controllerAfter.executedTreeSha256 -ceq $controller.executedTreeSha256
+    $image=[IO.File]::ReadAllText((Join-Path $CandidateRoot 'manifests/ubuntu-noble-amd64.json'))|ConvertFrom-Json
+    $qemu=[IO.File]::ReadAllText((Join-Path $CandidateRoot 'manifests/qemu-windows.json'))|ConvertFrom-Json
+    $identities=Get-HostedFixtureIdentity -Lease $lease -Events $events -ExpectedImageSha256 $image.sha256 -ExpectedQemuVersion (Get-PilotExpectedQemuVersion $qemu) -Clock $clock -DeadlineSeconds ([double]::PositiveInfinity) -CandidateRoot $CandidateRoot
+    $functional=Test-GateHostedOutcome -Child $child -Events $events -Telemetry $telemetry -SourceUnchanged $sourceUnchanged -Identities $identities
     $reason=if($functional){'complete-functional-scenario'}else{'functional-or-evidence-failure'}
 } catch {
     # No arbitrary exception/log/guest text is exported.
     $reason='functional-or-controller-failure'
 } finally {
     try {
-        $empty=($null -eq $child -or ($child.childExited -and $child.activeProcesses -eq 0)) -and
-            ($null -eq $preflight -or ($preflight.childExited -and $preflight.activeProcesses -eq 0))
+        $empty=(Test-HostedProcessResolved -Attempted $childAttempted -Result $child) -and
+            (Test-HostedProcessResolved -Attempted $preflightAttempted -Result $preflight)
         if($lease.FixtureCreated){Remove-PilotFixture -Lease $lease -Clock $clock -DeadlineSeconds ($clock.Elapsed.TotalSeconds+180) -OwnedProcessesExited $empty}
         $fixtureRemoved=-not [IO.Directory]::Exists($lease.Fixture)
     } catch {$reason='cleanup-failure'}
@@ -69,7 +75,7 @@ $receipt=[ordered]@{schemaVersion=1;issue='CI-POC-003';lane='hosted-tcg';compari
     startedUtc=$started;endedUtc=[DateTime]::UtcNow.ToString('o');elapsedSeconds=$clock.Elapsed.TotalSeconds;
     sourceUnchanged=$sourceUnchanged;passed=$passed;classification=$(if($passed){'pass'}else{'assertion-or-unknown'});reason=$reason;
     preflightExitCode=$(if($null -ne $preflight){$preflight.exitCode}else{$null});
-    exitCode=$(if($null -ne $child){$child.exitCode}else{$null});events=$events;telemetry=$telemetry;
+    exitCode=$(if($null -ne $child){$child.exitCode}else{$null});events=$events;telemetry=$telemetry;identities=$identities;
     phaseDurations=(Get-PilotPhaseDurations -Events $events -TotalSeconds $clock.Elapsed.TotalSeconds);
     cleanup=@{childExited=$(if($null -ne $child){$child.childExited}else{$false});activeProcesses=$(if($null -ne $child){$child.activeProcesses}else{$null});
         forced=$(if($null -ne $child){$child.forced}else{$false});fixtureRemoved=$fixtureRemoved};
