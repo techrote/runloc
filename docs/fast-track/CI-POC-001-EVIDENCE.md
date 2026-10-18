@@ -666,3 +666,24 @@ audit. A separate Extra High model reviewer verified the evidence and privacy.
 The private diagnostic fixture remains retained for further separately identified
 comparison tests and verified disposal. No production reset-and-resume behavior
 has been introduced; PR #25 remains draft and CI-POC-001 remains incomplete.
+
+The [same-source upstream control](evidence/physical-whpx-20261018-upstream-baseline-failure.json)
+also reproduced the first-reboot failure. QEMU v11.1.2 upstream commit
+`4fc49f46dc95d4a27de2509e7fceb2931e91faeb` was built with a separately reviewed
+six-line Windows build-only adjustment that skips its optional development
+symlink bundle. No WHPX reset correction was present. The complete ten-file
+EXE/DLL closure was isolated from the old runtime, while all 3,201 original
+firmware/resource files and the prepared base were retained unchanged. The
+binary's `v11.1.2-dirty` version and the precise source-checkpoint timing are
+recorded explicitly; this is a diagnostic build, not a release artifact.
+
+The fresh normal four-vCPU/8192-MiB guest again stopped at its first identity
+reboot, with three WHPX exit-4 messages and ownership-verified QMP paused state.
+No manual reset or resume was sent. Child exit was 1, forced containment reached
+zero active processes, normal guest shutdown failed, and source/tools/resources
+remained unchanged. The loaded-module audit verified all 42 observed modules,
+including the staged executable and its eight DLLs. A create-only final seal
+binds 19 private artifacts. A separate Extra High model reviewer verified source,
+build/import closure, resources, completed receipts, failure evidence and privacy.
+The component producing the fault remains unresolved; replacing the provider
+binary alone did not resolve it. This control is not cold full qualification.
