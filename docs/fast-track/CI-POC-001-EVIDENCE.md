@@ -565,3 +565,46 @@ upstream WHPX reset/APIC reports are supporting context, not proof about this
 pinned binary and host. A fresh focused normal-profile comparison is required
 before changing accelerator arguments. No code from EzVM PR45 is imported and no
 ACL, PowerShell startup or historical hosted root cause is assumed.
+
+## Focused reset failure controls and captured WHPX exception
+
+The [reset failure control record](evidence/physical-whpx-20261018-reset-failure-controls.json)
+retains four completed diagnostic phases, native exit/ownership results, private
+artifact digests, read-only QMP observations and the copied-source byte audit.
+These are focused diagnostics, not the original complete release scenario.
+
+A fresh prepared base built successfully using unchanged WHPX. Separate fresh
+normal-profile guests used four vCPUs and 8192 MiB, first with `whpx`, then with
+`whpx,kernel-irqchip=off`. Both exhausted identical 300-second diagnostic READY
+bounds, failed their separate 10-second normal shutdown bounds, exited 1 and
+required native containment. Both reached zero active processes. The same
+diagnostic script SHA, actual argument vectors and unchanged source were checked;
+no authenticated second-boot proof was produced. This comparison does **not**
+support changing the interrupt-controller setting.
+
+A third fresh guest retained original WHPX with a diagnostic-only capture
+launcher. QEMU emitted three `WHPX: Unexpected VP exit code 4` lines around the
+first identity reboot. An ownership-verified QMP snapshot reports paused/not
+running. Retained private registers and disassembly show an instruction writing
+through `RBP - 0x360`; `RBP=0x46` yields `0xfffffffffffffce6`, matching CR2.
+The zero-length IDT is consistent with failed exception delivery after a guest
+firmware memory fault. Microsoft defines exit 4 as an unrecoverable exception.
+This identifies the immediate execution failure, not the component that first
+produced the invalid state. Stderr lines have no CPU identifiers; a post-pause
+snapshot does not establish event order, bootstrap-CPU identity or causality for
+the preceding interrupt-vector-zero warning. Empty redirected output is not a
+complete-drain oracle after forced cleanup. Native exit was 1, forced cleanup
+reached zero processes, and source remained unchanged.
+
+The actual approved binary reports `v11.1.0-12130-ge470268ff4`. Its installer
+checksum matches the approved pin and provider checksum, but that revision was
+not resolved to available upstream/provider source. A v11.1.0 tag comparison is
+supporting context rather than an exact source audit of the installed binary.
+The record includes the observed Windows WHPX library version/hash. All 166
+copied tracked source files match the clean candidate; omitted dashboard files
+are listed. A separate Extra High model reviewer checked the failed controls and
+fault arithmetic. No candidate/runtime code change is justified by these failed
+controls. A separate guest-paravirtualization control remains diagnostic work;
+WHPX acceleration, guest resources, security-domain settings and host policy are
+preserved. The owned private diagnostic fixture remains retained for that work,
+with disposal still to be proved. Full physical acceptance remains outstanding.

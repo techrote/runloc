@@ -1,0 +1,346 @@
+{
+  "schemaVersion": 1,
+  "kind": "focused-whpx-reset-failure-controls",
+  "issue": "CI-POC-001",
+  "diagnosticId": "342821e0bd07490eab5d00919644ec32",
+  "executedControllerCommit": "90ed76448f13cbb7048888ae67451de2f9b28819",
+  "candidateCommit": "2afcd6a61b16e08cb7e35925e6d2cfc46cac24c0",
+  "candidateTree": "a5f70cc1a7018b77518b83e7c3a393a2c8068cd7",
+  "sourceProof": {
+    "candidateCommit": "2afcd6a61b16e08cb7e35925e6d2cfc46cac24c0",
+    "candidateTree": "a5f70cc1a7018b77518b83e7c3a393a2c8068cd7",
+    "sourceBefore": "40e9c5d1858d7dda4e408f5b86c74a1378d900644bba7893b45cee38a1f79ad6",
+    "sourceAfter": "40e9c5d1858d7dda4e408f5b86c74a1378d900644bba7893b45cee38a1f79ad6",
+    "sourceUnchanged": true,
+    "comparisonChildScriptSha256": "9973309d0540eea07cab54f35a67977744cfa47184ed45ca2d769e91405911c4",
+    "physicalQualificationPassed": false
+  },
+  "captureSourceProof": {
+    "controllerCommit": "90ed76448f13cbb7048888ae67451de2f9b28819",
+    "candidateCommit": "2afcd6a61b16e08cb7e35925e6d2cfc46cac24c0",
+    "candidateTree": "a5f70cc1a7018b77518b83e7c3a393a2c8068cd7",
+    "sourceBefore": "40e9c5d1858d7dda4e408f5b86c74a1378d900644bba7893b45cee38a1f79ad6",
+    "sourceAfter": "40e9c5d1858d7dda4e408f5b86c74a1378d900644bba7893b45cee38a1f79ad6",
+    "sourceUnchanged": true,
+    "exitCode": 1,
+    "activeProcesses": 0,
+    "forced": true,
+    "physicalQualificationPassed": false
+  },
+  "copiedSourceAudit": {
+    "matchedTrackedFileCount": 166,
+    "allCopiedTrackedBytesMatch": true,
+    "copiedTrackedFileDigest": "b17d4ac5664fc83af85bbbdcbe84eeabda1da054d53b32bb49d3a7e859c16d4a",
+    "omittedTrackedFiles": [
+      "dashboard.ps1",
+      "dashboard/config.example.json",
+      "dashboard/ezvm_dashboard/__init__.py",
+      "dashboard/ezvm_dashboard/app.py",
+      "dashboard/ezvm_dashboard/collectors.py",
+      "dashboard/ezvm_dashboard/evidence.py",
+      "dashboard/ezvm_dashboard/guest_probe.py",
+      "dashboard/ezvm_dashboard/model.py",
+      "dashboard/ezvm_dashboard/research.py",
+      "dashboard/ezvm_dashboard/ui.py",
+      "dashboard/fixtures/dash01/README.md",
+      "dashboard/fixtures/dash01/corpus.json",
+      "dashboard/fixtures/dash01/manifest.json",
+      "dashboard/main.py",
+      "dashboard/replay.py",
+      "dashboard/requirements.txt",
+      "dashboard/tests/test_dashboard.py",
+      "dashboard/tests/test_evidence.py"
+    ]
+  },
+  "hostLabel": "lab-win11-01",
+  "whpxPlatform": {
+    "schemaVersion": 1,
+    "kind": "readonly-whpx-platform-identity",
+    "observedUtc": "2026-10-18T01:56:29.2740030Z",
+    "winHvPlatformSha256": "141f1d552b6c9c13efea53f4ed56c15a585aad2e1bc39e3c55a12280fa93ae98",
+    "winHvPlatformFileVersion": "10.0.26100.9711 (WinBuild.160101.0800)",
+    "physicalQualificationPassed": false
+  },
+  "qemuSystemSha256": "47d57a6072e0bb3bd98f87926eb129eb1736dfe818c67b3b81ef7ce4edd0b3cd",
+  "base": {
+    "schemaVersion": 1,
+    "baseId": "base-182ea63128b37dc8334133769a065897a8eca25e649caf1f90e01ce44819bbd1",
+    "baseSha256": "182ea63128b37dc8334133769a065897a8eca25e649caf1f90e01ce44819bbd1",
+    "virtualSizeBytes": 17179869184,
+    "builtAt": "2026-10-18T01:40:29.8732411Z",
+    "source": {
+      "manifestSha256": "f261a3781920fbce1ad1f6811ccb75ec1544754a4ab3f86cc376f2f4513c7f64",
+      "imageSha256": "6a81c37564db9b1ee84e141922625e1d7c5b389b99bb3c572e0243607d5bb4d2",
+      "publication": "20260926",
+      "filename": "ubuntu-24.04-server-cloudimg-amd64.img"
+    },
+    "provisioning": {
+      "recipeVersion": "2",
+      "digest": "c7ee93c8da6fb11e42e1081ff808188596910d014fa5a41f0ad4ecdd0950813e"
+    },
+    "qemu": {
+      "manifestSha256": "d89b6013bcb5e8bc27038e2f5aa2ec39e08b2674d725b62658db3e8592ba002a",
+      "qemuSystemVersion": "QEMU emulator version 11.1.0 (v11.1.0-12130-ge470268ff4)",
+      "qemuImgVersion": "qemu-img version 11.1.0 (v11.1.0-12130-ge470268ff4)",
+      "providerBuild": "20260811"
+    },
+    "guest": {
+      "osId": "ubuntu",
+      "osVersion": "24.04",
+      "cloudInitVersion": "/usr/bin/cloud-init 26.1-0ubuntu1~24.04.1",
+      "baselineToolsValidated": true,
+      "identityCleaned": true
+    },
+    "build": {
+      "accelerator": "whpx",
+      "machine": "q35",
+      "firmwareCode": "edk2-x86_64-code.fd",
+      "firmwareVariablesTemplate": "edk2-i386-vars.fd"
+    }
+  },
+  "phases": [
+    {
+      "phase": "build",
+      "startedUtc": "2026-10-18T01:36:01.5456586Z",
+      "endedUtc": "2026-10-18T01:40:49.7264698Z",
+      "actualExitCode": 0,
+      "succeeded": true,
+      "childExited": true,
+      "forced": false,
+      "activeProcesses": 0,
+      "nativeTimedOut": false,
+      "outputOverflow": false,
+      "outputFailed": false,
+      "supervisedElapsedSeconds": 291.1309636,
+      "telemetryRecordCount": 64,
+      "completeDiagnosticQualification": false
+    },
+    {
+      "phase": "baseline",
+      "startedUtc": "2026-10-18T01:40:52.0556079Z",
+      "endedUtc": "2026-10-18T01:48:10.2044607Z",
+      "actualExitCode": 1,
+      "succeeded": false,
+      "childExited": true,
+      "forced": true,
+      "activeProcesses": 0,
+      "nativeTimedOut": false,
+      "outputOverflow": false,
+      "outputFailed": false,
+      "supervisedElapsedSeconds": 440.5848542,
+      "telemetryRecordCount": 154,
+      "completeDiagnosticQualification": false,
+      "cpus": 4,
+      "memoryMiB": 8192,
+      "requestedAccelerator": "whpx",
+      "actualAcceleratorArgument": "whpx",
+      "argumentTokenCount": 44,
+      "schema2RebootAllowed": true,
+      "readyTimeoutSeconds": 300,
+      "shutdownTimeoutSeconds": 10,
+      "diagnosticScriptSha256": "9973309d0540eea07cab54f35a67977744cfa47184ed45ca2d769e91405911c4",
+      "authenticatedReadyEstablished": false,
+      "postInitializationBootProofEstablished": false,
+      "normalShutdownEstablished": false,
+      "observedStateBeforeContainment": "STOPPING",
+      "serialTailLastNonemptyLine": "[   12.511853] reboot: Restarting system"
+    },
+    {
+      "phase": "irqchip-off",
+      "startedUtc": "2026-10-18T01:48:12.5504672Z",
+      "endedUtc": "2026-10-18T01:55:24.2215462Z",
+      "actualExitCode": 1,
+      "succeeded": false,
+      "childExited": true,
+      "forced": true,
+      "activeProcesses": 0,
+      "nativeTimedOut": false,
+      "outputOverflow": false,
+      "outputFailed": false,
+      "supervisedElapsedSeconds": 434.0191718,
+      "telemetryRecordCount": 156,
+      "completeDiagnosticQualification": false,
+      "cpus": 4,
+      "memoryMiB": 8192,
+      "requestedAccelerator": "whpx",
+      "actualAcceleratorArgument": "whpx,kernel-irqchip=off",
+      "argumentTokenCount": 44,
+      "schema2RebootAllowed": true,
+      "readyTimeoutSeconds": 300,
+      "shutdownTimeoutSeconds": 10,
+      "diagnosticScriptSha256": "9973309d0540eea07cab54f35a67977744cfa47184ed45ca2d769e91405911c4",
+      "authenticatedReadyEstablished": false,
+      "postInitializationBootProofEstablished": false,
+      "normalShutdownEstablished": false,
+      "observedStateBeforeContainment": "STOPPING",
+      "serialTailLastNonemptyLine": "[   12.854260] reboot: Restarting system"
+    },
+    {
+      "phase": "capture-baseline",
+      "startedUtc": "2026-10-18T01:55:54.5208303Z",
+      "endedUtc": "2026-10-18T02:01:05.3547612Z",
+      "actualExitCode": 1,
+      "succeeded": false,
+      "childExited": true,
+      "forced": true,
+      "activeProcesses": 0,
+      "nativeTimedOut": false,
+      "outputOverflow": false,
+      "outputFailed": false,
+      "supervisedElapsedSeconds": 313.5534714,
+      "telemetryRecordCount": 136,
+      "completeDiagnosticQualification": false,
+      "cpus": 4,
+      "memoryMiB": 8192,
+      "requestedAccelerator": "whpx",
+      "actualAcceleratorArgument": "whpx",
+      "argumentTokenCount": 44,
+      "schema2RebootAllowed": true,
+      "readyTimeoutSeconds": 180,
+      "shutdownTimeoutSeconds": 10,
+      "diagnosticScriptSha256": "46889e2a489b099790e6ad2a59573af9c99c33ea906ff3711fe6ac1d3161af88",
+      "authenticatedReadyEstablished": false,
+      "postInitializationBootProofEstablished": false,
+      "normalShutdownEstablished": false,
+      "observedStateBeforeContainment": "STOPPING",
+      "serialTailLastNonemptyLine": "[   13.822153] reboot: Restarting system"
+    }
+  ],
+  "ownedReadonlySnapshots": [
+    {
+      "phase": "baseline",
+      "observedUtc": "2026-10-18T01:44:59.4322559Z",
+      "ownershipVerified": true,
+      "qmpStatus": "paused",
+      "qmpRunning": false,
+      "privateArtifactLabel": "baseline-readonly-5d9376bd853141898b5211d483f84239.json",
+      "privateArtifactSha256": "bfe94ba2fc984d88e257937d339da20099ab546f1ca71fba46b6887ca6e29233",
+      "cpuSeconds": 15.5,
+      "serialBytes": 86199
+    },
+    {
+      "phase": "irqchip-off",
+      "observedUtc": "2026-10-18T01:51:30.2399493Z",
+      "ownershipVerified": true,
+      "qmpStatus": "paused",
+      "qmpRunning": false,
+      "privateArtifactLabel": "irqchip-off-readonly-ce93eabe5ace4294b95354e5d30a0e36.json",
+      "privateArtifactSha256": "7859a060ac09ddb6d8237ae08836e06c7eef1ab48d220b251179339805927f57",
+      "cpuSeconds": 16.484375,
+      "serialBytes": 86206
+    },
+    {
+      "phase": "capture-baseline",
+      "observedUtc": "2026-10-18T02:00:05.9488000Z",
+      "ownershipVerified": true,
+      "qmpStatus": "paused",
+      "qmpRunning": false,
+      "privateArtifactLabel": "capture-baseline-readonly-546cdaf7dbac483ab86d118b2cfe8091.json",
+      "privateArtifactSha256": "09fac917cbbac95bdd8c83e3a709cc7554e6acdc65d7249c84596975ce7d77ca",
+      "faultTuple": {
+        "instructionPointer": "0x00000000fffd3da2",
+        "instruction": "movl %eax,-0x360(%rbp)",
+        "rbp": "0x46",
+        "computedFaultAddress": "0xfffffffffffffce6",
+        "cr2": "0xfffffffffffffce6",
+        "matchingPostPauseCpuIndexes": [
+          0,
+          1,
+          3
+        ],
+        "exitLinesDoNotIdentifyCpuIndexes": true
+      }
+    },
+    {
+      "phase": "capture-baseline",
+      "observedUtc": "2026-10-18T01:59:27.0730807Z",
+      "ownershipVerified": true,
+      "qmpStatus": "paused",
+      "qmpRunning": false,
+      "privateArtifactLabel": "capture-baseline-readonly-71b2c7cfa83f4b798febe4070cbaa33d.json",
+      "privateArtifactSha256": "5fddad4e3311f00f86d19b68102087388e9d48f6ad794833606dc343fa141b6b"
+    }
+  ],
+  "privateArtifactDigests": [
+    {
+      "privateArtifactLabel": "build-observation.json",
+      "sha256": "c4b93ab9d7865189a7b64cb8d1413d6ebb47ea25a7e4581de5e5b639052126ef",
+      "bytes": 336
+    },
+    {
+      "privateArtifactLabel": "build-process.json",
+      "sha256": "768ba44ad190733ab8d913e8e5bf034da737a59082edea44a8b9308df4c49e27",
+      "bytes": 1641
+    },
+    {
+      "privateArtifactLabel": "build-telemetry.jsonl",
+      "sha256": "070e64d980025b2a46c1b020c389383d0a1e8afc45d6da560f4316aaeee13f36",
+      "bytes": 19944
+    },
+    {
+      "privateArtifactLabel": "baseline-observation.json",
+      "sha256": "059c785492fbbb4f7d6fda99bcc50206fc47926314ebd19e8cd311533c6c6ca9",
+      "bytes": 2211
+    },
+    {
+      "privateArtifactLabel": "baseline-process.json",
+      "sha256": "ac1c31a064d5c94cc087de00c990886f6103b90a1cb6defe7d9f693220083cba",
+      "bytes": 2219
+    },
+    {
+      "privateArtifactLabel": "baseline-telemetry.jsonl",
+      "sha256": "9cdd1c4b98437a651de90067cfe3c858e9b460375c612e33e59d701b7e438608",
+      "bytes": 42664
+    },
+    {
+      "privateArtifactLabel": "irqchip-off-observation.json",
+      "sha256": "00bf2ae3c2a7321ed718e7762a4bfe65b292f494ad8fe13fee5981f94ac1f12e",
+      "bytes": 2229
+    },
+    {
+      "privateArtifactLabel": "irqchip-off-process.json",
+      "sha256": "3d0607d23bcd4ec1f18269a050f3dae08a67946113ddbf5136ceed53378e0360",
+      "bytes": 2228
+    },
+    {
+      "privateArtifactLabel": "irqchip-off-telemetry.jsonl",
+      "sha256": "45d155044bc229cf6d746a17f000d3dc7d34833cc6b215560186151add42c82a",
+      "bytes": 43062
+    },
+    {
+      "privateArtifactLabel": "capture-baseline-observation.json",
+      "sha256": "496c9ebf0e43c5d6a24b66dd732a0b8beb3b19a6890d505890dc57f5d66a7b55",
+      "bytes": 2239
+    },
+    {
+      "privateArtifactLabel": "capture-baseline-process.json",
+      "sha256": "719820aaf3af9b964b707ed387d1aef533c8a1ccc531b0ffd8a8fbe3126e384b",
+      "bytes": 1965
+    },
+    {
+      "privateArtifactLabel": "capture-baseline-telemetry.jsonl",
+      "sha256": "24d474763c96ec0ce01a6a650ac40ca8e89571f1a3d4d6a711c79f4c2bf046e3",
+      "bytes": 38094
+    }
+  ],
+  "sanitizedQemuStderr": {
+    "unexpectedVpExitCodes": [
+      4,
+      4,
+      4
+    ],
+    "precedingInterruptVectorZeroWarningObserved": true,
+    "warningCausalityEstablished": false,
+    "privateSha256": "8c49088a1e78bd0d78f9f5c823a7f0972ff876625d63bb4862cada495928d8d8",
+    "completeRedirectedStderrDrainEstablished": false
+  },
+  "finding": "Original WHPX and kernel-irqchip=off both pause at the first identity reboot. Captured original WHPX reports unrecoverable VP exit4; retained post-pause registers/disassembly identify a guest firmware memory fault consistent with failed exception delivery. The component first producing the invalid register state is unresolved.",
+  "sourceProvenanceLimitation": "Approved provider binary reports v11.1.0-12130-ge470268ff4. Its installer checksum matches the pinned/provider value, but e470268ff4 was not resolved to available upstream/provider source. Tag v11.1.0 source is supporting context, not a certified exact binary source audit.",
+  "diagnosticFixtureLifecycleAtCollection": "Private owned fixture retained for further diagnostic controls; no disposal or full acceptance claim.",
+  "review": "Separate Extra High model reviewer independently checked argv, source byte audit, native exits, cleanup, QMP ownership, stderr and fault arithmetic. Primary model authored/executed diagnostics. No independent human approval is claimed.",
+  "physicalQualificationPassed": false,
+  "references": [
+    "https://learn.microsoft.com/en-us/virtualization/api/hypervisor-platform/funcs/whvexitcontextdatatypes",
+    "https://qemu.weilnetz.de/w64/2026/qemu-w64-setup-20260811.sha512"
+  ]
+}
