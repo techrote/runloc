@@ -1,5 +1,12 @@
 #requires -Version 5.1
 # Observational metrics only: none of these values can qualify a run.
+function ConvertTo-ConsoleUtc {
+    param([object]$Value)
+    if($Value -is [DateTimeOffset]){return $Value.UtcDateTime}
+    if($Value -is [DateTime]){return $Value.ToUniversalTime()}
+    if($Value -isnot [string]){throw 'monitor-timestamp-invalid'}
+    return [DateTimeOffset]::Parse($Value,[Globalization.CultureInfo]::InvariantCulture,[Globalization.DateTimeStyles]::AssumeUniversal).UtcDateTime
+}
 function Get-ConsoleActivityState {
     param([bool]$ControllerKnown,[bool]$ControllerAlive,[bool]$ListenerAlive,[bool]$HasFinal,
         [double]$TelemetryAgeSeconds=-1)
@@ -64,7 +71,7 @@ function Read-ConsoleLeaseSnapshot {
     if($listener.Count){
         # OwnedProcess.CreatedUtc precedes CreateProcess, so use a bounded
         # creation window plus exact PID/name for this observational snapshot.
-        $began=[DateTime]::Parse($listener[0].data.createdUtc).ToUniversalTime()
+        $began=ConvertTo-ConsoleUtc $listener[0].data.createdUtc
         $listenerProcess=@($Processes|Where-Object {$_.ProcessId -eq $listener[0].data.processId -and $_.Name -ceq 'Runner.Listener.exe' -and
             $_.CreationDate.ToUniversalTime() -ge $began -and $_.CreationDate.ToUniversalTime() -le $began.AddSeconds(5)})
         $listenerAlive=$listenerProcess.Count -eq 1
@@ -77,7 +84,7 @@ function Read-ConsoleLeaseSnapshot {
         phaseRecordedUtc=$null;phaseAgeSeconds=-1;phaseElapsedSeconds=$null;openOperation=$null;openOperationAgeSeconds=$null;
         completedIntegrityChecks=0;integrityCheckSeconds=0;telemetryFailures=0;markersObserved=0;guestReadyObserved=0;guestCpuProofsObserved=0;
         guestStartsObserved=0;baseBuildStartedObserved=$false;guestStage='GUEST_STAGE_UNOBSERVED'}
-    if($null -ne $last){$snapshot.lastEvent=$last.kind;$snapshot.lastEventUtc=$last.utc}
+    if($null -ne $last){$snapshot.lastEvent=$last.kind;$snapshot.lastEventUtc=(ConvertTo-ConsoleUtc $last.utc).ToString('o')}
     if($null -ne $registered){$snapshot.runnerId=$registered.data.runnerId}
     if($null -ne $dispatched){$snapshot.runId=$dispatched.data.runId}
     if($listenerAlive){$snapshot.listenerProcessId=$listenerProcess[0].ProcessId;$snapshot.listenerCreatedUtc=$listenerProcess[0].CreationDate.ToUniversalTime().ToString('o')}
@@ -105,13 +112,14 @@ function Read-ConsoleLeaseSnapshot {
         if($null -eq $phase){return $snapshot}
         if($phase.operation -cmatch '^[A-Za-z0-9-]+$' -and $phase.event -cmatch '^[a-z-]+$'){
             $snapshot.phaseSequence=$phase.sequence;$snapshot.phaseEvent=$phase.event;$snapshot.phaseOperation=$phase.operation
-            $snapshot.phaseRecordedUtc=$phase.utc;$snapshot.phaseElapsedSeconds=$phase.elapsedSeconds
-            $snapshot.phaseAgeSeconds=[Math]::Round([Math]::Max(0,($NowUtc-[DateTime]::Parse($phase.utc).ToUniversalTime()).TotalSeconds),1)
+            $phaseUtc=ConvertTo-ConsoleUtc $phase.utc
+            $snapshot.phaseRecordedUtc=$phaseUtc.ToString('o');$snapshot.phaseElapsedSeconds=$phase.elapsedSeconds
+            $snapshot.phaseAgeSeconds=[Math]::Round([Math]::Max(0,($NowUtc-$phaseUtc).TotalSeconds),1)
         }
         $closed=@($records|Where-Object {$_.event -cin @('end','failure')}|ForEach-Object {$_.operationId})
         $open=$records|Where-Object {$_.event -ceq 'start' -and $closed -cnotcontains $_.operationId}|Select-Object -Last 1
         if($null -ne $open -and $open.operation -cmatch '^[A-Za-z0-9-]+$'){
-            $snapshot.openOperation=$open.operation;$snapshot.openOperationAgeSeconds=[Math]::Round([Math]::Max(0,($NowUtc-[DateTime]::Parse($open.utc).ToUniversalTime()).TotalSeconds),1)
+            $snapshot.openOperation=$open.operation;$snapshot.openOperationAgeSeconds=[Math]::Round([Math]::Max(0,($NowUtc-(ConvertTo-ConsoleUtc $open.utc)).TotalSeconds),1)
         }
         $integrity=@($records|Where-Object {$_.event -ceq 'end' -and $_.operation -ceq 'Assert-EzVmQemuPayloadIntegrity'})
         $snapshot.completedIntegrityChecks=$integrity.Count

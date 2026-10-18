@@ -74,7 +74,7 @@ do {
         if($leases.Count){
             $snapshot=Read-ConsoleLeaseSnapshot -LeaseRoot $leases[0].FullName -Processes $processes -NowUtc $now
             $activity=Get-ConsoleActivityState -ControllerKnown ($null -ne $child) -ControllerAlive $controllerAlive -ListenerAlive $snapshot.listenerAlive -HasFinal $snapshot.hasFinal -TelemetryAgeSeconds $snapshot.phaseAgeSeconds
-            if($null -eq $child -and $snapshot.listenerAlive){$tree=@(Select-ConsoleProcessTree -Processes $processes -RootId $snapshot.listenerProcessId -RootCreatedUtc ([DateTime]::Parse($snapshot.listenerCreatedUtc)))}
+            if($null -eq $child -and $snapshot.listenerAlive){$tree=@(Select-ConsoleProcessTree -Processes $processes -RootId $snapshot.listenerProcessId -RootCreatedUtc (ConvertTo-ConsoleUtc $snapshot.listenerCreatedUtc))}
         }
         elseif($null -eq $child){$activity='NO_ACTIVE_RUN_NO_EVIDENCE'}
         if(($now-$lastMemory).TotalSeconds -ge 60){
