@@ -94,6 +94,34 @@ class RuntimeTests(unittest.TestCase):
         api = FakeAPI([runtime.UnknownWrite(), (200, {"workflow_runs": [wrong]})])
         with self.assertRaises(runtime.UnknownWrite): runtime.dispatch_once(self.state, api, **self.arguments)
 
+    def test_ledger_lost_post_reconciles_exact_author_and_body(self):
+        evidence = {'candidate': self.state.value['candidate'], 'outcome': 'pending'}
+        body = f"CI-POC-003 proof {'a'*32} {runtime.digest(runtime.canonical(evidence))}\n\n```json\n{runtime.canonical(evidence).decode()}\n```"
+        comment = {'id': 91, 'html_url': 'https://github.com/techrote/runloc/issues/23#issuecomment-91',
+                   'user': {'login': 'techrote'}, 'body': body}
+        api = FakeAPI([runtime.UnknownWrite(), (200, [comment])], self.state)
+        ledger = runtime.create_ledger_once(self.state, api, evidence)
+        self.assertEqual(91, ledger['commentId'])
+        self.assertEqual(runtime.digest(body.encode()), ledger['bodySha256'])
+        self.assertEqual(['POST', 'GET'], [c[0] for c in api.calls])
+        self.assertEqual(ledger, runtime.create_ledger_once(runtime.State(self.state.path), FakeAPI([]), evidence))
+
+    def test_status_lost_post_refuses_wrong_author_and_never_reposts(self):
+        ledger = {'url': 'https://example.invalid/proof', 'bodySha256': 'c'*64}
+        api = FakeAPI([runtime.UnknownWrite(), (200, [])], self.state)
+        with self.assertRaises(runtime.UnknownWrite):
+            runtime.publish_status_once(self.state, api, outcome='accepted-whpx', ledger=ledger)
+        saved = next(v for k,v in self.state.value.items() if k.startswith('status-'))
+        wrong = saved['body'] | {'id': 33, 'creator': {'login': 'untrusted'}}
+        api = FakeAPI([(200, [wrong])])
+        with self.assertRaises(runtime.UnknownWrite):
+            runtime.publish_status_once(runtime.State(self.state.path), api, outcome='accepted-whpx', ledger=ledger)
+        self.assertEqual(['GET'], [c[0] for c in api.calls])
+        right = wrong | {'creator': {'login': 'techrote'}}
+        api = FakeAPI([(200, [right])])
+        runtime.publish_status_once(runtime.State(self.state.path), api, outcome='accepted-whpx', ledger=ledger)
+        self.assertEqual(['GET'], [c[0] for c in api.calls])
+
 
 if __name__ == "__main__":
     unittest.main()

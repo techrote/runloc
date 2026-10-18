@@ -72,14 +72,14 @@ class Coordinator:
 
     def source(self):
         approved = load(SCRIPT / "gate-policy.json")
-        require(approved == self.policy and digest(canonical(approved)) == self.state.value["policySha256"], "state-policy-not-committed")
+        require(canonical(approved) == canonical(self.policy) and digest(canonical(approved)) == self.state.value["policySha256"], "state-policy-not-committed")
         require(self.state.value["selection"] in {"available", "hosted-only", "loss-before-harness"}, "unapproved-selection")
         require(approved["schemaVersion"] == 1 and approved["profile"] == {"cpus": 6, "overallTimeoutDisabled": True}
                 and approved["privateQueueSeconds"] == 600 and approved["pollSeconds"] == 30
                 and approved["publicationWallSeconds"] == 28800 and approved["statusContext"] == "EzVM qualification / source-bound", "unapproved-policy-profile")
         identity = json_bytes(run_powershell(SCRIPT / "Get-GateSource.ps1",
                              ["-ExpectedCommit", self.state.value["gateController"]["commit"]]).encode())
-        require(identity == self.state.value["gateController"], "gate-source-identity-changed")
+        require(canonical(identity) == canonical(self.state.value["gateController"]), "gate-source-identity-changed")
         return identity
 
     def definition(self, lane):
@@ -366,7 +366,7 @@ class Coordinator:
             if (datetime.now(timezone.utc) - utc(value["createdUtc"])).total_seconds() > self.policy["publicationWallSeconds"]:
                 self.publish("unknown", {"reason": "publication-wall-reached"}, "pending", {})
                 return 1
-            print(f"{now()} OBSERVER_HEARTBEAT hostedRun={value['hosted']['runId']} privateRun={value.get('private', {}).get('runId')}", flush=True)
+            print(f"{now()} OBSERVER_HEARTBEAT hostedRun={value.get('hosted', {}).get('runId')} privateRun={value.get('private', {}).get('runId')}", flush=True)
             time.sleep(2 if value["selection"] == "loss-before-harness" and not value.get("private", {}).get("stopIntentUtc") else self.policy["pollSeconds"])
 
 

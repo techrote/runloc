@@ -81,6 +81,35 @@ class CoordinatorTests(unittest.TestCase):
             with self.assertRaisesRegex(coordinator.InvalidEvidence, 'comparison-not-accepted'):
                 self.controller.verify_for_merge()
 
+    def test_ambiguous_hosted_start_stays_observational_until_reconciled(self):
+        self.controller.policy = self.policy | {'executionApproved': True}
+        calls = []
+        def hosted():
+            calls.append('hosted')
+            if len(calls) == 1:
+                self.state.value['hosted'] = {'writeState': 'unknown', 'intent': {}}
+                self.state.save()
+                raise coordinator.UnknownWrite('no-match-yet')
+            self.state.value['hosted']['runId'] = 12
+            return 12
+        def private():
+            self.assertEqual(12, self.state.value['hosted']['runId'])
+            calls.append('private')
+        with patch.object(self.controller, 'source'), patch.object(self.controller, 'start_hosted', side_effect=hosted), \
+             patch.object(self.controller, 'start_private', side_effect=private), \
+             patch.object(self.controller, 'observe_hosted', return_value=('pass', {})), \
+             patch.object(self.controller, 'observe_private', return_value=('hosted-only', {})), \
+             patch.object(self.controller, 'publish', return_value='accepted-tcg'), patch.object(coordinator.time, 'sleep'):
+            self.assertEqual(0, self.controller.run())
+        self.assertEqual(['hosted', 'hosted', 'private'], calls)
+
+    def test_torn_local_snapshot_is_unavailable_not_a_permanent_verdict(self):
+        path = self.root / 'event-000001.json'; path.write_text('{')
+        with patch.object(coordinator.time, 'sleep'):
+            with self.assertRaises(coordinator.UnknownWrite): coordinator.snapshot(path)
+        path.write_text('{"kind":"registered"}')
+        self.assertEqual({'kind': 'registered'}, coordinator.snapshot(path))
+
 
 if __name__ == '__main__':
     unittest.main()
