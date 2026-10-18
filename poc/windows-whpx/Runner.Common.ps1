@@ -125,8 +125,13 @@ function ConvertTo-RunnerPinnedJitConfig {
         }
         foreach ($required in $allowed) { if ($null -eq $files.PSObject.Properties[$required]) { throw 'missing-file' } }
         $settings = [Text.Encoding]::UTF8.GetString([Convert]::FromBase64String($files.'.runner')) | ConvertFrom-Json
-        if ($settings.agentId -ne $RunnerId -or $settings.agentName -cne $Name -or $settings.ephemeral -isnot [bool] -or
-            -not $settings.ephemeral -or $settings.workFolder -cne '_work') { throw 'settings-mismatch' }
+        # GitHub's live JIT service serializes this setting as a JSON string.
+        # Accept only explicit true literals, never PowerShell string truthiness.
+        $ephemeralTrue = ($settings.ephemeral -is [bool] -and $settings.ephemeral) -or
+            ($settings.ephemeral -is [string] -and @('True', 'true') -ccontains $settings.ephemeral)
+        if ($settings.agentId -ne $RunnerId -or $settings.agentName -cne $Name -or -not $ephemeralTrue -or
+            $settings.workFolder -cne '_work') { throw 'settings-mismatch' }
+        $settings | Add-Member -MemberType NoteProperty -Name ephemeral -Value $true -Force
         # Freeze the verified runner version. A later version needs new review,
         # never an automatic executable replacement during this registration.
         $settings | Add-Member -MemberType NoteProperty -Name disableUpdate -Value $true -Force

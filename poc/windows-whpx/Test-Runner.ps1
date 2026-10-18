@@ -155,8 +155,17 @@ Test-RunnerCase 'JIT file vocabulary ephemeral identity and work-folder are inde
     Assert-RunnerThrows { ConvertTo-RunnerPinnedJitConfig -Encoded $good -RunnerId 8 -Name $runnerName }
     Assert-RunnerThrows { ConvertTo-RunnerPinnedJitConfig -Encoded $good -RunnerId 7 -Name ('runloc-' + ('b' * 32)) }
     Assert-RunnerThrows { ConvertTo-RunnerPinnedJitConfig -Encoded (New-SyntheticJit $settings -Unexpected) -RunnerId 7 -Name $runnerName }
-    $settings.ephemeral = $false
-    Assert-RunnerThrows { ConvertTo-RunnerPinnedJitConfig -Encoded (New-SyntheticJit $settings) -RunnerId 7 -Name $runnerName }
+    foreach ($literal in @('True', 'true')) {
+        $settings.ephemeral = $literal
+        $encoded = ConvertTo-RunnerPinnedJitConfig -Encoded (New-SyntheticJit $settings) -RunnerId 7 -Name $runnerName
+        $files = [Text.Encoding]::UTF8.GetString([Convert]::FromBase64String($encoded)) | ConvertFrom-Json
+        $observed = [Text.Encoding]::UTF8.GetString([Convert]::FromBase64String($files.'.runner')) | ConvertFrom-Json
+        Assert-RunnerTest ($observed.ephemeral -is [bool] -and $observed.ephemeral -and $observed.disableUpdate -eq $true)
+    }
+    foreach ($invalid in @($false, 'False', 'false', '', 'yes', '1', 1, $null)) {
+        $settings.ephemeral = $invalid
+        Assert-RunnerThrows { ConvertTo-RunnerPinnedJitConfig -Encoded (New-SyntheticJit $settings) -RunnerId 7 -Name $runnerName }
+    }
     $settings.ephemeral = $true; $settings.workFolder = '../external'
     Assert-RunnerThrows { ConvertTo-RunnerPinnedJitConfig -Encoded (New-SyntheticJit $settings) -RunnerId 7 -Name $runnerName }
 }

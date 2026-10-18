@@ -60,7 +60,20 @@ The workflow LF SHA256 is
 It checks out job controller `14c39e467f170e48f33af4e50b2c0e8e095b4f6e`.
 The host dispatcher separately pins that commit, workflow commit and hash in
 `runner-workflow.json`; moving a tag or supplying an equivalent definition from
-another commit is refused. No registration or dispatch has occurred yet.
+another commit is refused.
+
+The [first real startup failure](evidence/ci-poc-002-jit-startup-failure.json)
+is retained with its exact controller identity and exit1. Registration37 was
+created, but no listener or workflow started: the live JIT service supplies the
+Ephemeral setting as a string, whereas the initial validator required a JSON
+boolean. An independent diagnostic registration38 recorded only schema names,
+types and comparison results, never the capability or credential values. Both
+registrations were independently confirmed absent. Owned processes were0,
+the owned fixture was removed, source and unrelated sentinel were unchanged,
+and the pinned backing archive survived. This is failure evidence, not a
+successful no-job-timeout or qualification result. The narrow repair accepts
+only explicit true boolean/string literals and normalizes them to a boolean;
+false, numeric, missing and truthy arbitrary strings remain negative controls.
 
 Completion still requires a real full eight-CPU WHPX Actions job and exact
 run/job/runner/receipt evidence, actual process exit and deregistration404,
