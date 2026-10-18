@@ -143,7 +143,7 @@ try {
         if ($child.exitCode -eq 0 -and $child.childExited -and $child.activeProcesses -eq 0 -and -not $child.forced) {
             $imageManifest = [IO.File]::ReadAllText((Join-Path $CandidateRoot 'manifests/ubuntu-noble-amd64.json')) | ConvertFrom-Json
             $qemuManifest = [IO.File]::ReadAllText((Join-Path $CandidateRoot 'manifests/qemu-windows.json')) | ConvertFrom-Json
-            $receipt.identities = Get-PilotFixtureIdentity -Lease $lease -Events $events -ExpectedImageSha256 $imageManifest.sha256 -ExpectedQemuVersion $qemuManifest.qemu.version `
+            $receipt.identities = Get-PilotFixtureIdentity -Lease $lease -Events $events -ExpectedImageSha256 $imageManifest.sha256 -ExpectedQemuVersion (Get-PilotExpectedQemuVersion -Manifest $qemuManifest) `
                 -Clock $clock -DeadlineSeconds $cleanupDeadline
             $receipt.observedAccelerator = 'whpx'
             $identityMatches = @{

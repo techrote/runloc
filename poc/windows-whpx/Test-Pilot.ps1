@@ -138,6 +138,22 @@ function New-GoodReceipt {
 function Test-Receipt { param([object]$Receipt); return Test-PilotOutcome -Receipt $Receipt -LeaseId ('c' * 32) -CandidateCommit ('a' * 40) -ControllerCommit ('b' * 40) }
 
 try {
+    Test-Case 'effective QEMU version remains exactly bound to pinned provider and overlay source' {
+        $manifest = [pscustomobject]@{qemu=[pscustomobject]@{version='11.1.0';digest=('a'*128)}}
+        Assert-True ((Get-PilotExpectedQemuVersion $manifest) -ceq '11.1.0')
+        $overlay = [pscustomobject]@{version='11.1.2';expectedVersionPrefix='11.1.2';qemuSourceCommit=('b'*40);qemuSourceTree=('c'*40);baseProviderDigest=('a'*128)}
+        $manifest | Add-Member -NotePropertyName whpxResetOverlay -NotePropertyValue $overlay
+        Assert-True ((Get-PilotExpectedQemuVersion $manifest) -ceq '11.1.2')
+        foreach ($field in @('version','expectedVersionPrefix','qemuSourceCommit','qemuSourceTree','baseProviderDigest')) {
+            $original=$overlay.$field;$overlay.$field='invalid'
+            Assert-Throws {Get-PilotExpectedQemuVersion $manifest} 'qemu-overlay-version-manifest-invalid'
+            $overlay.$field=$original
+        }
+        $overlay.version=11
+        Assert-Throws {Get-PilotExpectedQemuVersion $manifest} 'qemu-overlay-version-manifest-invalid'
+        $manifest.whpxResetOverlay=$null
+        Assert-Throws {Get-PilotExpectedQemuVersion $manifest} 'qemu-overlay-version-manifest-invalid'
+    }
     Test-Case 'every script parses and Windows native adapter compiles' {
         foreach ($file in Get-ChildItem -LiteralPath $PSScriptRoot -Filter '*.ps1') {
             $tokens = $null; $errors = $null

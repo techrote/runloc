@@ -34,6 +34,17 @@ require rechecking its bounds before approving a successor. The recorded upstrea
 PR disposition may still be draft;
 approval of this frozen candidate does not merge an upstream PR or call it main.
 
+The current candidate pins a checked QEMU 11.1.2 reset overlay in addition to
+the original provider installer. EzVM verifies the original complete payload,
+the ten-file overlay and the complete final payload before executable probing.
+Its normal managed bootstrap acquires the published immutable asset bytes;
+the full pilot uses no diagnostic tool provider. The controller compares the
+effective overlay version exactly, while keeping the original provider identity
+separate. See the candidate's source/build manifest and the
+[successor path audit](../../docs/fast-track/evidence/windows-path-budget-qemu-overlay.json).
+The overlay's new longest relative path is 152 UTF-16 units, below the existing
+215-unit reserve; the 20-unit WorkParent limit is unchanged.
+
 `-ExpectedControllerCommit` is the independently reviewed public Runloc SHA.
 Supply it explicitly from the review record. The helper verifies both source
 roots before execution and afterward. It rejects a wrong origin, wrong commit or

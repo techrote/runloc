@@ -558,6 +558,25 @@ function Invoke-PilotChild {
     return [pscustomobject]$result
 }
 
+function Get-PilotExpectedQemuVersion {
+    param([object]$Manifest)
+    if ($Manifest -isnot [pscustomobject] -or $null -eq $Manifest.PSObject.Properties['qemu'] -or
+        $Manifest.qemu -isnot [pscustomobject] -or $null -eq $Manifest.qemu.PSObject.Properties['version'] -or
+        $Manifest.qemu.version -isnot [string] -or $Manifest.qemu.version -cnotmatch '^[0-9]+\.[0-9]+\.[0-9]+$') { throw 'qemu-version-manifest-invalid' }
+    $property = $Manifest.PSObject.Properties['whpxResetOverlay']
+    if ($null -eq $property) { return $Manifest.qemu.version }
+    $overlay = $property.Value
+    if ($overlay -isnot [pscustomobject]) { throw 'qemu-overlay-version-manifest-invalid' }
+    foreach ($field in @('version', 'expectedVersionPrefix', 'qemuSourceCommit', 'qemuSourceTree', 'baseProviderDigest')) {
+        if ($null -eq $overlay.PSObject.Properties[$field] -or $overlay.$field -isnot [string]) { throw 'qemu-overlay-version-manifest-invalid' }
+    }
+    if ($overlay.version -cnotmatch '^[0-9]+\.[0-9]+\.[0-9]+$' -or $overlay.expectedVersionPrefix -cne $overlay.version -or
+        $overlay.qemuSourceCommit -cnotmatch '^[a-f0-9]{40}$' -or $overlay.qemuSourceTree -cnotmatch '^[a-f0-9]{40}$' -or
+        $null -eq $Manifest.qemu.PSObject.Properties['digest'] -or $Manifest.qemu.digest -isnot [string] -or
+        $overlay.baseProviderDigest -cnotmatch '^[a-f0-9]{128}$' -or $overlay.baseProviderDigest -cne $Manifest.qemu.digest) { throw 'qemu-overlay-version-manifest-invalid' }
+    return $overlay.version
+}
+
 function Get-PilotFixtureIdentity {
     param([object]$Lease, [object[]]$Events, [string]$ExpectedImageSha256, [string]$ExpectedQemuVersion,
         [Diagnostics.Stopwatch]$Clock, [double]$DeadlineSeconds)

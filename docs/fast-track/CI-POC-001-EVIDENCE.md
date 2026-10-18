@@ -714,3 +714,45 @@ Windows 11 only. A separately reviewed capability-gated shipping build and pinne
 acquisition are being prepared without narrowing EzVM's Windows 10 contract.
 PR #25 remains draft and #21 remains open until the complete original scenario
 passes on the final exact source and tool bytes.
+
+The [capability-policy controls](evidence/physical-whpx-20261018-capability-policy-controls.json)
+retain the subsequent shipping build's complete four-arm result. Source
+`9866111e7605d9776939c26ced6e090cb7d7ec20`, tree
+`94d28970e0ee00333cd763111e8ebaf571ffcc27`, built successfully and passed all
+11 native reset unit groups. Default AUTO and relocated explicit ON passed with
+one S_OK reset each, normal exit zero and no forced cleanup. Relocated TCG passed
+with no WHPX policy/reset trace. Explicit OFF selected the legacy path and
+failed with a VP-exit-4/paused state after host reset; forced native exit 124
+followed its failed running-state assertion and is not a timeout. The whole
+four-arm driver remains failed with outer exit 1. Every child exited and all
+active owned counts reached zero. Independent review rehashed all 3,211 copied
+files and verified portable firmware/ROM lookup without `-L` after relocation.
+
+The integration successor is EzVM
+`61b695470028d029f253b77acffabb81c3c6d2f9`, tree
+`a9ad2424854050aabc6e964ab8e766619172c6ca`. It retains the original full harness,
+provider installer and image, and adds verified acquisition of the
+[reviewed tool prerelease](https://github.com/techrote/ezvm/releases/tag/qemu-whpx-11.1.2-ci-poc-001-r1).
+The asset/source/build provenance is pinned in its manifest. Complete original
+and resulting payload digests are checked before any executable probe and during
+later integrity checks; forged EXE, firmware, extra-DLL and local-receipt controls
+fail closed. Bootstrap cleanup failures propagate. Windows 10 behavior with this
+binary remains physically unmeasured; the unsupported-host legacy implementation
+is preserved rather than declared qualified.
+
+The [successor path audit](evidence/windows-path-budget-qemu-overlay.json) binds
+the actual ten ZIP members and successor source paths. Its longest new relative
+path is 152 units, below the existing 215-unit reserve. Normal controller
+evidence still requires exact version equality, now derived from the source-pinned
+effective overlay version. Clean exact-head software checks and a fresh complete
+cold physical attempt on this successor remain required. No earlier focused or
+full-attempt result qualifies the changed source.
+
+The initial integration `79561672a44d7466713a5e2553766fc732f15e88`
+retained a synthetic four-file security fixture with the new full-overlay
+manifest, causing its initial-validity assertion to fail (401 passed, 1 failed).
+The test-only successor explicitly retains that legacy fixture and adds a
+full-overlay six-mode tampering counterpart. All production, native-tool and
+original full-harness bytes remain unchanged. Independent review and focused
+Windows PowerShell 5.1 checks passed: 49 groups, zero failures or skips.
+Exact successor CI and complete physical acceptance remain pending.

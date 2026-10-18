@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "executionApproved": true,
   "repository": "https://github.com/techrote/ezvm",
-  "commit": "2afcd6a61b16e08cb7e35925e6d2cfc46cac24c0",
-  "tree": "a5f70cc1a7018b77518b83e7c3a393a2c8068cd7",
+  "commit": "61b695470028d029f253b77acffabb81c3c6d2f9",
+  "tree": "a9ad2424854050aabc6e964ab8e766619172c6ca",
   "harness": "scripts/Invoke-EzVm010RealPortability.ps1",
   "pins": [
     {
@@ -28,11 +28,31 @@
     },
     {
       "path": "manifests/qemu-windows.json",
-      "sha256Lf": "d89b6013bcb5e8bc27038e2f5aa2ec39e08b2674d725b62658db3e8592ba002a"
+      "sha256Lf": "51ba4cd3eef4f94d0d6af5b330021455732e71cdac009f8f841c76f991410a1b"
     },
     {
       "path": "manifests/ubuntu-noble-amd64.json",
       "sha256Lf": "f261a3781920fbce1ad1f6811ccb75ec1544754a4ab3f86cc376f2f4513c7f64"
+    },
+    {
+      "path": "src/EzVm/Qemu.ps1",
+      "sha256Lf": "3d791037dc829e712d0cbd2bf2cc184c7bcd2f38f2a881cdf628edec2a952e46"
+    },
+    {
+      "path": "src/EzVm/QemuIntegrity.ps1",
+      "sha256Lf": "c15c5322fc7cb3dfb417c7f0ab4c89c61485cc1cf701860587cca4f1fd970685"
+    },
+    {
+      "path": "src/EzVm/QemuOverlay.ps1",
+      "sha256Lf": "c24450c19a5a2222ae5ac889176d1af643aa9c2e6b1f0f2ffce296dd72658fc4"
+    },
+    {
+      "path": "tools/qemu-whpx/build-manifest.json",
+      "sha256Lf": "dd8aa663b56374134cf094370a13aa518d4a0de7d910cc56a3dd77472a771f5b"
+    },
+    {
+      "path": "tools/qemu-whpx/upstream.patch",
+      "sha256Lf": "8134ba44c351be17fa6262fa973e3528688d467ba89cc6a0a5803bd7a391a2e5"
     }
   ]
 }
