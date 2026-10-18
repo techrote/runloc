@@ -1,0 +1,76 @@
+{
+  "diagnosticOnly": true,
+  "qualificationPassed": false,
+  "events": [
+    {
+      "recordedUtc": "2026-10-18T22:13:02.7653012Z",
+      "event": "authenticated-ready-six-cpu",
+      "instance": "diagnostic-source"
+    },
+    {
+      "recordedUtc": "2026-10-18T22:13:04.4938000Z",
+      "event": "stopped",
+      "instance": "diagnostic-source"
+    },
+    {
+      "recordedUtc": "2026-10-18T22:17:46.0867519Z",
+      "event": "authenticated-ready-six-cpu",
+      "instance": "diagnostic-fresh-1"
+    },
+    {
+      "recordedUtc": "2026-10-18T22:17:47.5056381Z",
+      "event": "stopped",
+      "instance": "diagnostic-fresh-1"
+    },
+    {
+      "recordedUtc": "2026-10-18T22:25:48.1436673Z",
+      "event": "authenticated-ready-six-cpu",
+      "instance": "diagnostic-stateful-1"
+    },
+    {
+      "recordedUtc": "2026-10-18T22:25:49.6116577Z",
+      "event": "stopped",
+      "instance": "diagnostic-stateful-1"
+    },
+    {
+      "recordedUtc": "2026-10-18T22:30:43.2000695Z",
+      "event": "authenticated-ready-six-cpu",
+      "instance": "diagnostic-fresh-2"
+    },
+    {
+      "recordedUtc": "2026-10-18T22:30:44.7926688Z",
+      "event": "stopped",
+      "instance": "diagnostic-fresh-2"
+    },
+    {
+      "recordedUtc": "2026-10-18T22:38:53.1800122Z",
+      "event": "authenticated-ready-six-cpu",
+      "instance": "diagnostic-stateful-2"
+    },
+    {
+      "recordedUtc": "2026-10-18T22:38:54.4767859Z",
+      "event": "stopped",
+      "instance": "diagnostic-stateful-2"
+    },
+    {
+      "recordedUtc": "2026-10-18T22:43:29.7640571Z",
+      "event": "authenticated-ready-six-cpu",
+      "instance": "diagnostic-fresh-3"
+    },
+    {
+      "recordedUtc": "2026-10-18T22:43:31.9545998Z",
+      "event": "stopped",
+      "instance": "diagnostic-fresh-3"
+    },
+    {
+      "recordedUtc": "2026-10-18T22:51:05.3751802Z",
+      "event": "authenticated-ready-six-cpu",
+      "instance": "diagnostic-stateful-3"
+    },
+    {
+      "recordedUtc": "2026-10-18T22:51:07.5663564Z",
+      "event": "stopped",
+      "instance": "diagnostic-stateful-3"
+    }
+  ]
+}

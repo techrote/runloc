@@ -1,5 +1,27 @@
 # CI-POC-003 implementation checkpoint
 
+## Basic cold-clone diagnostic completed — 18 October 2026 UTC
+
+The [unaltered receipt, closed guest events and digest manifest](evidence/ci-poc-003-basic-clones-2dc2e21f/manifest.json)
+record diagnostic lease `2dc2e21fb19546669cf3d71d79b3da89` on controller
+`11fa575d356fe9a774df9ec7147b31edb49cc168`, tree
+`a3685a66759e57f9e61702e86398d6ae9358e4f2`, and unchanged EzVM candidate
+`2268468cb3040b9e1dd6deed60d0f13594f768d6`, tree
+`d5677a166e54583f26e3f08e90e5836c19f99359`.
+The source and three fresh/stateful clone pairs each reached authenticated
+READY with six CPUs and stopped: seven READY proofs and seven stops.
+Elapsed2841.232588seconds (47m21.233s), child exit0, no forced termination,
+active owned processes0, fixture removed, source unchanged and no cleanup errors.
+The receipt SHA256 is
+`87b915058e4a471a385d09d15615a78417a275e8098d450c3a8808cca923b2b3`.
+
+This is explicitly diagnostic-only, with `qualificationPassed=false`. It
+narrows the basic cold-clone path but does not reproduce every original source
+restart/export/import/reset interaction, identify the original guest crash,
+qualify the full release scenario or clear the failed comparison's quarantine.
+The separately reviewed `release-order` diagnostic and independent full hosted
+run39171273724 are still in progress at this checkpoint.
+
 ## First real comparison failed — 18 October 2026
 
 [Private run39159455088](https://github.com/techrote/ezvm/actions/runs/39159455088/job/117769490867)
