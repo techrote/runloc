@@ -63,4 +63,6 @@ jobs:
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           & $executable -NoLogo -NoProfile -NonInteractive -ExecutionPolicy Bypass -File poc/windows-whpx/Test-Runner.ps1
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          & $executable -NoLogo -NoProfile -NonInteractive -ExecutionPolicy Bypass -File poc/windows-whpx/Test-Hosted.ps1
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           Write-Host 'PHYSICAL_WHPX_QUALIFICATION=NOT_RUN: software tests use only synthetic files/processes.'
