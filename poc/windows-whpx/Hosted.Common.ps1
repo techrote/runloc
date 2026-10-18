@@ -4,12 +4,13 @@ function Test-HostedProcessResolved {
     param([bool]$Attempted,[object]$Result)
     if(-not $Attempted){return $true}
     return $null -ne $Result -and $Result.childExited -is [bool] -and $Result.childExited -and
-        ($Result.activeProcesses -is [int] -or $Result.activeProcesses -is [long]) -and $Result.activeProcesses -eq 0
+        ($Result.activeProcesses -is [int] -or $Result.activeProcesses -is [long] -or $Result.activeProcesses -is [uint32]) -and $Result.activeProcesses -eq 0
 }
 function Test-GateHostedOutcome {
     param([object]$Child,[object[]]$Events,[object]$Telemetry,[bool]$SourceUnchanged,[object]$Identities)
     try {
-    foreach($field in @('exitCode','activeProcesses')){if($Child.$field -isnot [int] -and $Child.$field -isnot [long]){return $false}}
+    if($Child.exitCode -isnot [int] -and $Child.exitCode -isnot [long]){return $false}
+    if($Child.activeProcesses -isnot [int] -and $Child.activeProcesses -isnot [long] -and $Child.activeProcesses -isnot [uint32]){return $false}
     foreach($field in @('childExited','forced','outputOverflow','outputFailed')){if($Child.$field -isnot [bool]){return $false}}
     $expected=@($script:PilotMarkers|Where-Object {$_ -cne 'EZVM010_WHPX_EXECUTION'})
     $bad=@($expected|Where-Object {$marker=$_;@($Events|Where-Object {$_.kind -ceq 'marker' -and $_.name -ceq $marker -and $_.value -ceq 'PASS'}).Count -ne 1})
@@ -114,4 +115,3 @@ function Get-HostedFixtureIdentity {
     return [pscustomobject][ordered]@{ expectedImageSha256 = $ExpectedImageSha256; sourceImageSha256 = $sourceEvents[0].value;
         baseImageSha256 = $baseDigest; baseId = $baseEvents[0].value; qemuVersion = $ExpectedQemuVersion; qemuBinaries = $binaries; guests = $guests }
 }
-

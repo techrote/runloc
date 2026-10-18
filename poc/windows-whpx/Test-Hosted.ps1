@@ -2,7 +2,7 @@
 $ErrorActionPreference='Stop'
 . (Join-Path $PSScriptRoot 'Pilot.Common.ps1')
 . (Join-Path $PSScriptRoot 'Hosted.Common.ps1')
-$child=@{exitCode=0;childExited=$true;activeProcesses=0;forced=$false;outputOverflow=$false;outputFailed=$false}
+$child=@{exitCode=0;childExited=$true;activeProcesses=[uint32]0;forced=$false;outputOverflow=$false;outputFailed=$false}
 # Retained physical evidence is a deterministic parser fixture here, never a new TCG PASS.
 $fixtureRoot=Join-Path $PSScriptRoot '../../docs/fast-track/evidence/ci-poc-002-full'
 $fixture=Get-ChildItem $fixtureRoot -Recurse -Filter receipt.json|ForEach-Object {Get-Content $_.FullName -Raw|ConvertFrom-Json}|Where-Object {$_.outcome -ceq 'pass'}
@@ -16,7 +16,7 @@ if(-not (Test-GateHostedOutcome -Child $child -Events $events -Telemetry $teleme
 $count=1
 if(Test-HostedProcessResolved -Attempted $true -Result $null){throw 'unknown-startup-authorized-disposal'};$count++
 if(-not (Test-HostedProcessResolved -Attempted $false -Result $null)){throw 'no-startup-not-empty'};$count++
-if(Test-HostedProcessResolved -Attempted $true -Result @{childExited=$true;activeProcesses=1}){throw 'active-child-authorized-disposal'};$count++
+if(Test-HostedProcessResolved -Attempted $true -Result @{childExited=$true;activeProcesses=[uint32]1}){throw 'active-child-authorized-disposal'};$count++
 if(-not (Test-HostedProcessResolved -Attempted $true -Result $child)){throw 'verified-empty-rejected'};$count++
 foreach($field in @('exitCode','activeProcesses','forced','outputOverflow','outputFailed','childExited')){
     $bad=$child.Clone();$bad[$field]=if($field -eq 'childExited'){$false}elseif($field -in @('exitCode','activeProcesses')){1}else{$true}
