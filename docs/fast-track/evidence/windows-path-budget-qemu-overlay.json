@@ -1,0 +1,65 @@
+{
+  "schemaVersion": 1,
+  "kind": "successor-overlay-path-budget-audit",
+  "sourceCommit": "61b695470028d029f253b77acffabb81c3c6d2f9",
+  "sourceTree": "a9ad2424854050aabc6e964ab8e766619172c6ca",
+  "scope": "Actual ten-entry ZIP listing plus pinned source path templates; no physical qualification claim.",
+  "baseAudit": "windows-path-budget.json",
+  "baseAuditSha256": "7ba1361e4a9f3a96a52257b0290f9bcb26573face86a0c6bdc463a6425838081",
+  "originalProviderArtifactUnchanged": true,
+  "originalProviderSha512": "5bcf9eed634e8575a37b74f445af41a2fe4106da512d0c30c368301d4c105037fdfab40a5287367a28a957624cddebbc8c07e16c88ab6634f554cdf3d16bf543",
+  "longestOriginalPayloadMember": "share/icons/Adwaita/symbolic/legacy/preferences-desktop-keyboard-shortcuts-symbolic.svg",
+  "longestOriginalPayloadMemberUtf16Units": 87,
+  "overlayArchiveSha256": "88b737be44207d379004b7a910cfa319f70733a8409c96b108647cd769e37f97",
+  "overlayMembers": [
+    "libglib-2.0-0.dll",
+    "libiconv-2.dll",
+    "libintl-8.dll",
+    "libpcre2-8-0.dll",
+    "libslirp-0.dll",
+    "libwinpthread-1.dll",
+    "libzstd.dll",
+    "qemu-img.exe",
+    "qemu-system-x86_64.exe",
+    "zlib1.dll"
+  ],
+  "maximumOverlayMemberUtf16Units": 22,
+  "overlayStageRelativePrefixUtf16Units": 129,
+  "maximumNewRelativePathUtf16Units": 152,
+  "maximumNewRelativePathTemplate": "\\ezvm010 qualification 00000000000000000000000000000000\\root A with spaces\\runtime\\.qemu-overlay-00000000000000000000000000000000\\qemu-system-x86_64.exe",
+  "existingFileReserveUtf16Units": 215,
+  "existingDirectoryReserveUtf16Units": 173,
+  "maximumFixtureUtf16Units": 44,
+  "maximumNewAbsolutePathUtf16UnitsAtMaximumFixture": 196,
+  "existingMaximumFileUtf16Units": 259,
+  "existingMaximumDirectoryUtf16Units": 247,
+  "unchangedWorkParentMaximumUtf16Units": 20,
+  "existingReserveStillDominates": true,
+  "sourcePins": [
+    {
+      "path": "scripts/Invoke-EzVm010RealPortability.ps1",
+      "sha256Lf": "471c6938edd54a834a80d0064f3cff604a5b832d171d34ede0baf26bdc52fee6"
+    },
+    {
+      "path": "src/EzVm/Qemu.ps1",
+      "sha256Lf": "3d791037dc829e712d0cbd2bf2cc184c7bcd2f38f2a881cdf628edec2a952e46"
+    },
+    {
+      "path": "src/EzVm/QemuOverlay.ps1",
+      "sha256Lf": "c24450c19a5a2222ae5ac889176d1af643aa9c2e6b1f0f2ffce296dd72658fc4"
+    },
+    {
+      "path": "src/EzVm/Download.ps1",
+      "sha256Lf": "b2fe8282bb575115a86b387d578c36f8056675213a4c1c5d2b968f99e6271194"
+    },
+    {
+      "path": "src/EzVm/Paths.ps1",
+      "sha256Lf": "5d5e4db36ff75dbb1e817edf237ef1b8700fa76916ae9d730321f23078f01eee"
+    },
+    {
+      "path": "manifests/qemu-windows.json",
+      "sha256Lf": "51ba4cd3eef4f94d0d6af5b330021455732e71cdac009f8f841c76f991410a1b"
+    }
+  ],
+  "physicalQualificationPassed": false
+}

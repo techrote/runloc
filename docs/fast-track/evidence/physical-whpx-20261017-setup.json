@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 1,
+  "issue": "CI-POC-001",
+  "kind": "physical-operator-prerequisite-observations",
+  "controllerCommit": "36987dfed17e69efa078d4e7b97f0c78e9992ae8",
+  "controllerTree": "b2b9452b55771d276d78629fc738525d08f722c2",
+  "candidateCommit": "59eee784b8016178c5589dea32cf2c9e72b942bd",
+  "candidateTree": "f609fa6aa429a9b78fa89ef763126d9ef023e8d0",
+  "physicalQualificationPassed": false,
+  "observations": [
+    {
+      "kind": "canonical-source-path-refusal",
+      "supervisorLeaseId": "be5b1d9a19014a4392d4d10d84e38e9f",
+      "actualExitCode": 2,
+      "endedUtc": "2026-10-17T19:54:19.9553257Z",
+      "elapsedSeconds": 2.1685016999999998,
+      "classification": "host-path-prerequisite",
+      "reason": "source-not-checkout-root",
+      "cause": "MSIX LocalApplicationData redirection caused native Git to report its package-cache path rather than the supplied canonical root.",
+      "qualificationFixtureCreated": false,
+      "qualificationStarted": false,
+      "ownedActiveProcesses": 0,
+      "receipt": "physical-whpx-20261017-path-refusal/be5b1d9a19014a4392d4d10d84e38e9f/supervisor-receipt.json",
+      "rawControllerLogSha256": "58de60a637a8afb88d840c5ec157c51cd7899de9cdac25a6d8132dd055de35ab"
+    },
+    {
+      "kind": "private-evidence-acl-refusal",
+      "supervisorLeaseId": null,
+      "actualExitCode": 2,
+      "endedUtc": "2026-10-17T19:55:03.5219681Z",
+      "classification": "host-directory-permission-prerequisite",
+      "publicReason": "supervisor-work-path-prerequisite",
+      "diagnosedFailure": "Applying the private directory owner and DACL returned an unauthorized-operation error during outer lease creation.",
+      "qualificationFixtureCreated": false,
+      "qualificationStarted": false,
+      "controllerLaunched": false,
+      "receiptCreated": false,
+      "stderrSha256": "4ce0801fc9facc4f2ebee12381743c246054b40e0255617d12d1a2df3b6db0cf",
+      "diagnosticSha256": "812b54ad71e30461b142a97b5c1e1eb1cf4b3480a16a4b6e9cadac3dac0214ba"
+    },
+    {
+      "kind": "default-newline-refusal-diagnosis",
+      "actualPreflightFailure": false,
+      "classification": "checkout-configuration",
+      "reason": "source-public-blob-mismatch",
+      "file": "LICENSE",
+      "observation": "A separate read-only source-identity diagnosis refused CRLF bytes for the extensionless LICENSE file. Local core.autocrlf=false did not override the host default core.eol=crlf.",
+      "resolution": "Fresh clone explicitly sets both core.autocrlf=false and core.eol=lf before checkout; repository PowerShell eol=crlf attributes remain effective."
+    }
+  ],
+  "resolution": "Fresh direct user-profile source/evidence hierarchy and explicit per-checkout default newline configuration passed the unchanged exact preflight. No controller, candidate, ACL policy or source validation was weakened.",
+  "publication": "Raw logs, account paths, hostname, ownership descriptors and diagnostic details remain private; digests and fixed failure classifications are retained here."
+}

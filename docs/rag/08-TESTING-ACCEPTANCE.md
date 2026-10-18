@@ -62,4 +62,46 @@ and a cold-controller restart recovery. Performance targets and trials are defin
 before measurement by012; release cannot claim fast/equivalent behavior without it.
 Follow-ons may legitimately end in a reviewed no-go decision when their issue says so.
 
+## CI-POC-001 software and physical evidence
+
+The owner authorized a temporary automatic hosted-TCG scheduling deferral on
+2026-10-17 for the scoped EzVM CI-PoC PRs. See the
+[binding exception](../fast-track/WINDOWS-WHPX-CI-POC.md#owner-authorized-temporary-hosted-tcg-deferral).
+It leaves the software/ACL checks and physical acceptance below required, records
+TCG as SKIP/unmeasured, and expires when CI-POC-003 restores or replaces the policy
+with its reviewed gate and independent hosted fallback. Prior failures remain
+visible. A successful deferral notice is not a successful release qualification.
+
+The standalone Windows helper has a separate credential-free hosted workflow,
+`Windows WHPX PoC software contracts`, on `windows-2022`. It runs the real helper
+contracts under Windows PowerShell 5.1 and hash-pinned official PowerShell 7.6.6.
+Lightweight native process, private ACL, ownership and link fixtures exercise
+the Windows-specific boundary. They perform no QEMU/WHPX boot or runner
+registration. Existing Windows/Ubuntu programme and Python unit checks remain
+required. Linux PowerShell results supplement Windows results and report
+Windows-only capabilities explicitly.
+
+The physical operator must use the published exact controller and EzVM candidate,
+first run the exact synthetic preflight, then run one complete cold original
+release/portability scenario. Evidence needs all 24 original WHPX PASS markers,
+explicit requested/observed accelerator agreement, exit zero, immutable source,
+tool/image/host identities, phase timing and independently observed owned cleanup.
+Negative controls reject missing/conflicting markers, nonzero exit despite PASS,
+stale receipts, wrong source/ownership, failed preflight and redirected paths.
+
+The target is at most 60 minutes for a complete run. The 90-minute hard wall
+includes a bounded cleanup reserve; neither cancellation nor timeout qualifies.
+An otherwise successful run above the target keeps CI-POC-001 open. A preflight
+pass, synthetic containment test or hosted TCG result does not establish physical
+WHPX correctness or performance. Details and actual upstream dispositions are
+recorded in the [checkpoint](../fast-track/CI-POC-001-EVIDENCE.md).
+
+The later owner-authorized replacement attempt may explicitly select
+`-NoOverallTimeout`, as recorded in the [binding exception](../fast-track/WINDOWS-WHPX-CI-POC.md#later-owner-instruction-for-the-replacement-physical-attempt).
+Both the 60-minute whole-invocation target and native 90-minute timer are disabled
+only for that matching operator/controller/receipt policy. Original per-operation
+limits and all non-timing qualification gates remain. Default bounded tests
+continue to enforce the original deadlines; additional controls must reject
+cross-policy receipts and preserve failures in the no-overall-timeout mode.
+
 See [performance](09-METRICS-PERFORMANCE.md), [release](10-RELEASE-OPERATIONS.md).

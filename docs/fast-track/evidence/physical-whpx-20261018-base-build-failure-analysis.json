@@ -1,0 +1,90 @@
+{
+  "schemaVersion": 1,
+  "issue": "CI-POC-001",
+  "failedSupervisorLeaseId": "085483ce040f4e6d8e8d7b110296f8de",
+  "classification": "prepared-base-serial-build-identity-rejected",
+  "actualHarnessExitCode": 1,
+  "actualControllerExitCode": 1,
+  "actualSupervisorExitCode": 2,
+  "receiptElapsedSeconds": 2743.6430265,
+  "postIoSupervisedElapsedSeconds": 2743.6650385,
+  "operatorElapsedSeconds": 2744.7103702,
+  "physicalQualificationPassed": false,
+  "sourceUnchanged": true,
+  "activeOwnedProcesses": 0,
+  "fixtureRemoved": true,
+  "failureMessage": "Guest provisioning READY marker belongs to a different build identity.",
+  "failureEvidenceIndex": "physical-whpx-20261018-base-build-failure/index.json",
+  "failureEvidenceIndexSha256": "d2f6f379c421201f91967b4c4957deee1424745a5cda9d7aa1e6e2c5cfef51a5",
+  "diagnosis": {
+    "proven": "The anchored parser rejects an unframed first build-ID marker after an unterminated serial prompt, with the same exception; later READY/tools/cleanup markers remain readable.",
+    "notProven": "The original disposed serial contents cannot establish whether its build ID was absent or different. The focused original-candidate WHPX base diagnostic succeeded.",
+    "correction": "Emit a newline before the first marker; retain the exact parser and ID equality. Preserve bounded path/link-validated prefixed private base diagnostics before future failure cleanup.",
+    "legacyFocusedTestExit": 1,
+    "correctedFocusedTestExit": 0,
+    "legacyFocusedStderrSha256": "d5132fe93cbaeeeda1ed2bc7c06a9b685284973a2e873e33d49ea4bb18c78ef8",
+    "correctedFocusedLogSha256": "7b817e83e62595f595c48a159c09ebb64ae62daf58e3b67137351d8cd4b14449",
+    "diagnosticSecurityTestExit": 0,
+    "diagnosticSecurityLogSha256": "4728bdeacbb64bef289534a40ab5ee446b781ddce919ecb21790a85993d84593"
+  },
+  "focusedPhysicalDiagnostic": {
+    "id": "03cf0418b48b4644869424bae908fa99",
+    "scope": "Fresh source-only root, original frozen candidate, explicit WHPX base build only. Not the complete release scenario and cannot qualify CI-POC-001.",
+    "candidateCommit": "59eee784b8016178c5589dea32cf2c9e72b942bd",
+    "startedUtc": "2026-10-18T00:13:55.3999892Z",
+    "endedUtc": "2026-10-18T00:19:01.2387656Z",
+    "actualExitCode": 0,
+    "activeOwnedProcesses": 0,
+    "childExited": true,
+    "forced": false,
+    "preparedBaseManifest": {
+      "schemaVersion": 1,
+      "baseId": "base-e40ce5c02f2085b6dbc338944d83a95eb1054abbd86cea2841514370392efe6f",
+      "baseSha256": "e40ce5c02f2085b6dbc338944d83a95eb1054abbd86cea2841514370392efe6f",
+      "virtualSizeBytes": 17179869184,
+      "builtAt": "2026-10-18T00:18:38.6881230Z",
+      "source": {
+        "manifestSha256": "f261a3781920fbce1ad1f6811ccb75ec1544754a4ab3f86cc376f2f4513c7f64",
+        "imageSha256": "6a81c37564db9b1ee84e141922625e1d7c5b389b99bb3c572e0243607d5bb4d2",
+        "publication": "20260926",
+        "filename": "ubuntu-24.04-server-cloudimg-amd64.img"
+      },
+      "provisioning": {
+        "recipeVersion": "2",
+        "digest": "a45cf857944f9bbd9f450a1556ce7db0e3a6a31a9c46d37822189ed3e68e25bd"
+      },
+      "qemu": {
+        "manifestSha256": "d89b6013bcb5e8bc27038e2f5aa2ec39e08b2674d725b62658db3e8592ba002a",
+        "qemuSystemVersion": "QEMU emulator version 11.1.0 (v11.1.0-12130-ge470268ff4)",
+        "qemuImgVersion": "qemu-img version 11.1.0 (v11.1.0-12130-ge470268ff4)",
+        "providerBuild": "20260811"
+      },
+      "guest": {
+        "osId": "ubuntu",
+        "osVersion": "24.04",
+        "cloudInitVersion": "/usr/bin/cloud-init 26.1-0ubuntu1~24.04.1",
+        "baselineToolsValidated": true,
+        "identityCleaned": true
+      },
+      "build": {
+        "accelerator": "whpx",
+        "machine": "q35",
+        "firmwareCode": "edk2-x86_64-code.fd",
+        "firmwareVariablesTemplate": "edk2-i386-vars.fd"
+      }
+    },
+    "privateResultSha256": "8a64c98e696140ecb0b1a70aaf1fa7cc316dd84ce10d5bce0f3eb4bf92f0f909",
+    "privateTelemetrySha256": "9b9841bb85189c81713f7da46a67cf2073957a2ee19ab54af888011a18420934",
+    "physicalQualificationPassed": false
+  },
+  "review": {
+    "implementation": "Primary model agent",
+    "independentSourceReview": "Separate model agent at Extra High reasoning; final source and diagnostic security findings corrected; no remaining material findings.",
+    "physicalAcceptance": "Outstanding for revised exact source."
+  },
+  "replacementCandidate": {
+    "commit": "2afcd6a61b16e08cb7e35925e6d2cfc46cac24c0",
+    "tree": "a5f70cc1a7018b77518b83e7c3a393a2c8068cd7",
+    "requiresFreshFullPhysicalAttempt": true
+  }
+}

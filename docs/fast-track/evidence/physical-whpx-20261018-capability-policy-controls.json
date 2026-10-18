@@ -1,0 +1,273 @@
+{
+  "schemaVersion": 1,
+  "kind": "reviewed-capability-policy-and-portable-resource-controls",
+  "actualDriverExitCode": 1,
+  "wholeDriverPassed": false,
+  "qemuSourceCommit": "9866111e7605d9776939c26ced6e090cb7d7ec20",
+  "qemuSourceTree": "94d28970e0ee00333cd763111e8ebaf571ffcc27",
+  "stageManifestSha256": "affae96361f5c17b65a25dd37dc260ad305d9a1e16aba53a001daac0a4602902",
+  "buildLogSha256": "5a4011b8682a43c3d905102922d9f57df8201d471900c17307fc1d4f01631335",
+  "actualBuildExitCode": 0,
+  "nativeUnitGroupsPassed": 11,
+  "arms": [
+    {
+      "mode": "auto",
+      "requestedAcceleratorArgument": "whpx",
+      "scriptSha256": "bbf9c20922c3d961a79f8509f81bacda512477a8603a42ffd0f05c89f0bc83bc",
+      "executableSha256": "e393972f000c4fe92e137d7b48d7d8bdeae3fe9595dceab611b1f5e21f373eb2",
+      "stageManifestSha256": "affae96361f5c17b65a25dd37dc260ad305d9a1e16aba53a001daac0a4602902",
+      "noExplicitDataDirectoryArgument": true,
+      "relocated": false,
+      "forced": false,
+      "childExited": true,
+      "activeProcesses": 0,
+      "qualificationEligible": false,
+      "ownership": {
+        "method": "CreateProcess-suspended-then-Job-assignment",
+        "pid": 22716,
+        "killOnClose": true,
+        "createdUtc": "2026-10-18T03:53:27.1273550Z",
+        "breakawayAllowed": false
+      },
+      "freshHostResetEventObserved": true,
+      "outputDrained": true,
+      "exitCode": 0,
+      "outputFailed": false,
+      "outputOverflow": false,
+      "resetSuccessCount": 1,
+      "policyTraceMatched": true,
+      "elapsedSeconds": 5.8799177,
+      "succeeded": true
+    },
+    {
+      "mode": "on",
+      "requestedAcceleratorArgument": "whpx,partition-reset=on",
+      "scriptSha256": "bbf9c20922c3d961a79f8509f81bacda512477a8603a42ffd0f05c89f0bc83bc",
+      "executableSha256": "e393972f000c4fe92e137d7b48d7d8bdeae3fe9595dceab611b1f5e21f373eb2",
+      "stageManifestSha256": "affae96361f5c17b65a25dd37dc260ad305d9a1e16aba53a001daac0a4602902",
+      "noExplicitDataDirectoryArgument": true,
+      "relocated": true,
+      "forced": false,
+      "childExited": true,
+      "activeProcesses": 0,
+      "qualificationEligible": false,
+      "ownership": {
+        "method": "CreateProcess-suspended-then-Job-assignment",
+        "pid": 7176,
+        "killOnClose": true,
+        "createdUtc": "2026-10-18T03:53:34.9278702Z",
+        "breakawayAllowed": false
+      },
+      "freshHostResetEventObserved": true,
+      "outputDrained": true,
+      "exitCode": 0,
+      "outputFailed": false,
+      "outputOverflow": false,
+      "resetSuccessCount": 1,
+      "policyTraceMatched": true,
+      "elapsedSeconds": 5.6182808,
+      "succeeded": true
+    },
+    {
+      "mode": "off",
+      "requestedAcceleratorArgument": "whpx,partition-reset=off",
+      "scriptSha256": "bbf9c20922c3d961a79f8509f81bacda512477a8603a42ffd0f05c89f0bc83bc",
+      "executableSha256": "e393972f000c4fe92e137d7b48d7d8bdeae3fe9595dceab611b1f5e21f373eb2",
+      "stageManifestSha256": "affae96361f5c17b65a25dd37dc260ad305d9a1e16aba53a001daac0a4602902",
+      "noExplicitDataDirectoryArgument": true,
+      "relocated": true,
+      "forced": true,
+      "childExited": true,
+      "activeProcesses": 0,
+      "qualificationEligible": false,
+      "ownership": {
+        "method": "CreateProcess-suspended-then-Job-assignment",
+        "pid": 21572,
+        "killOnClose": true,
+        "createdUtc": "2026-10-18T03:53:40.5859139Z",
+        "breakawayAllowed": false
+      },
+      "freshHostResetEventObserved": true,
+      "failure": "Machine is not running",
+      "outputDrained": true,
+      "exitCode": 124,
+      "outputFailed": false,
+      "outputOverflow": false,
+      "resetSuccessCount": 0,
+      "policyTraceMatched": true,
+      "elapsedSeconds": 5.6116364,
+      "succeeded": false
+    },
+    {
+      "mode": "tcg",
+      "requestedAcceleratorArgument": "tcg",
+      "scriptSha256": "bbf9c20922c3d961a79f8509f81bacda512477a8603a42ffd0f05c89f0bc83bc",
+      "executableSha256": "e393972f000c4fe92e137d7b48d7d8bdeae3fe9595dceab611b1f5e21f373eb2",
+      "stageManifestSha256": "affae96361f5c17b65a25dd37dc260ad305d9a1e16aba53a001daac0a4602902",
+      "noExplicitDataDirectoryArgument": true,
+      "relocated": true,
+      "forced": false,
+      "childExited": true,
+      "activeProcesses": 0,
+      "qualificationEligible": false,
+      "ownership": {
+        "method": "CreateProcess-suspended-then-Job-assignment",
+        "pid": 23344,
+        "killOnClose": true,
+        "createdUtc": "2026-10-18T03:53:46.2386753Z",
+        "breakawayAllowed": false
+      },
+      "freshHostResetEventObserved": true,
+      "outputDrained": true,
+      "exitCode": 0,
+      "outputFailed": false,
+      "outputOverflow": false,
+      "resetSuccessCount": 0,
+      "policyTraceMatched": true,
+      "elapsedSeconds": 5.593041899999999,
+      "succeeded": true
+    }
+  ],
+  "sealedIndexSha256": "b8dcc2cf01ee8a9902fcc27731e422dd6a8ed33212b5be61383327ff5a6f4c89",
+  "sealedPrivateArtifacts": [
+    {
+      "label": "auto-qemu.log",
+      "bytes": 652,
+      "sha256": "5561a91ec61ddbae83b9ec787975dbf0d02b19555b0d58ecf242505b9e130ca6"
+    },
+    {
+      "label": "auto-qmp-transcript.json",
+      "bytes": 6175,
+      "sha256": "6131b2fb82b7620673314c04b349c94a56f69fcac7b787853226d1666568a717"
+    },
+    {
+      "label": "auto-result.json",
+      "bytes": 1147,
+      "sha256": "176af3123eca8605484f834f67e996496cca6301fbb4649d5a347bee317cc670"
+    },
+    {
+      "label": "auto-vars.fd",
+      "bytes": 540672,
+      "sha256": "c45254e877f07dc463d012e479552ce903bdc51ef4bb494b4f4e71f325e7b1f8"
+    },
+    {
+      "label": "off-qemu.log",
+      "bytes": 652,
+      "sha256": "d8b26c8a23200a6e4f9ea1dae3cebfca9cd0b9d4b2cb315ee7e663cc90027780"
+    },
+    {
+      "label": "off-qmp-transcript.json",
+      "bytes": 4159,
+      "sha256": "6be2fd023758e5842cc5bb4662be7ec241f4b5db9f1ff7049af5dcad792b9776"
+    },
+    {
+      "label": "off-result.json",
+      "bytes": 1210,
+      "sha256": "e831b288773f7094ac166381daf57fe234d581e0bdd2cd7ef57b9901b2729f3b"
+    },
+    {
+      "label": "off-vars.fd",
+      "bytes": 540672,
+      "sha256": "d2ebf5c01b788214f8e9ea5479bb61933bd953137191c7ca9812c6dc6781df8b"
+    },
+    {
+      "label": "on-qemu.log",
+      "bytes": 672,
+      "sha256": "7f0c080d926a668d0534018f0d47ed411ef23f763934f77bf122c96aa275ec8a"
+    },
+    {
+      "label": "on-qmp-transcript.json",
+      "bytes": 6173,
+      "sha256": "ac96ebfd7cee90764245e7494701df95a8e834f0b1b1f1b7d4b898575668946b"
+    },
+    {
+      "label": "on-result.json",
+      "bytes": 1162,
+      "sha256": "ffcddcec2983a96d9095dee9008f38997303a25eb1961b985270453dc2f93f3b"
+    },
+    {
+      "label": "on-vars.fd",
+      "bytes": 540672,
+      "sha256": "c45254e877f07dc463d012e479552ce903bdc51ef4bb494b4f4e71f325e7b1f8"
+    },
+    {
+      "label": "results.json",
+      "bytes": 5149,
+      "sha256": "aefa4bcf677b21db4faf88a92022c79ec06d0d986085b2bd7af4973a084ea09b"
+    },
+    {
+      "label": "tcg-qemu.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "tcg-qmp-transcript.json",
+      "bytes": 6174,
+      "sha256": "063ee27945bb94625585139363199d4b02f46b8e421a774858511c90fa4f85d3"
+    },
+    {
+      "label": "tcg-result.json",
+      "bytes": 1153,
+      "sha256": "fa8888dac1ba91a3fd0beba10a9064ce9c1312f015846efb936083fbc746ad1e"
+    },
+    {
+      "label": "tcg-vars.fd",
+      "bytes": 540672,
+      "sha256": "9f9f50146a6d028f4e9a484367ac013b6ff7d7a32ef72a5707fc08b57ee07b7d"
+    },
+    {
+      "label": "policy-process-controls-wrapper-exit.txt",
+      "bytes": 1,
+      "sha256": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"
+    },
+    {
+      "label": "ci-poc-001-policy-process-controls.ps1",
+      "bytes": 10114,
+      "sha256": "bbf9c20922c3d961a79f8509f81bacda512477a8603a42ffd0f05c89f0bc83bc"
+    },
+    {
+      "label": "ci-poc-001-comparison-policy-stage.ps1",
+      "bytes": 6762,
+      "sha256": "85e8919ee7b43d15502cae52b7646464125c24c370111af6a51c069cfb9f2ca0"
+    },
+    {
+      "label": "stage-policy-manifest.json",
+      "bytes": 617449,
+      "sha256": "affae96361f5c17b65a25dd37dc260ad305d9a1e16aba53a001daac0a4602902"
+    },
+    {
+      "label": "build-policy-clean.sh",
+      "bytes": 598,
+      "sha256": "5ecedc5b4109173651ff9210eb9dfd3beaa3b9c1f73b1c39fbe107a2d836c715"
+    },
+    {
+      "label": "build-policy-clean.log",
+      "bytes": 159952,
+      "sha256": "5a4011b8682a43c3d905102922d9f57df8201d471900c17307fc1d4f01631335"
+    },
+    {
+      "label": "build-policy-clean-exit.txt",
+      "bytes": 1,
+      "sha256": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9"
+    }
+  ],
+  "interpretation": "AUTO and ON enabled paths passed; OFF disabled legacy path failed with one VP exit4 and post-reset paused state on this Windows11 host; TCG passed with no WHPX policy/reset trace. The whole driver remains failed.",
+  "offExitClassification": "Forced native exit124 after failed running-state assertion; not a timeout or performance result.",
+  "portableResourceEvidence": {
+    "originalLocationAbsent": true,
+    "relocatedPayloadRehashed": true,
+    "executableAndDllFiles": 10,
+    "originalResourceFiles": 3201,
+    "explicitLArgumentUsed": false,
+    "virtioVgaRomResolvedAfterMove": true
+  },
+  "review": "Separate Extra High model audited source, build/stage, all 11 native unit groups, each actual arm result, all 3211 copied files, portable resource lookup, all 24 sealed artifacts and this combined publication/privacy. No material findings remain. The whole driver remains failed.",
+  "limitations": [
+    "Firmware-only controls, not complete original release/portability qualification.",
+    "Windows10 legacy behavior with this binary remains physically unmeasured.",
+    "QOM freeze is tested through native helper tests and direct setter review; the current accelerator has no canonical QOM path for a live qom-set control.",
+    "Owned diagnostic fixture and sealed raw artifacts remain privately retained pending verified disposal."
+  ],
+  "physicalQualificationPassed": false,
+  "qualificationEligible": false
+}

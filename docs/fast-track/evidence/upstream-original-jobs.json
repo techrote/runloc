@@ -1,0 +1,361 @@
+{
+  "schemaVersion": 1,
+  "evidenceKind": "historical-hosted-log-observation",
+  "issue": "CI-POC-001",
+  "recordedDate": "2026-10-17",
+  "note": "Allowlisted observations from actual public GitHub job logs. SHA256 covers connector-decoded UTF-8 text preserving original CRLF, not raw download/archive bytes. UTC-derived intervals are retrospective observations, not monotonic pilot measurements or WHPX acceptance. Guest names, paths, raw stderr and credentials are excluded.",
+  "observations": [
+    {
+      "pullRequest": 43,
+      "candidateCommit": "9f9e4f5762cd6251249b46c093039a4ef0e985fe",
+      "workflowRunId": 38977149122,
+      "jobId": 117229236374,
+      "jobUrl": "https://github.com/techrote/ezvm/actions/runs/38977149122/job/117229236374",
+      "githubConclusion": "success",
+      "accelerator": "tcg",
+      "physicalWhpxQualified": false,
+      "decodedLogSha256": "11eaf5bf97675c498453ff34a76aab73e4709bce6e267b804e89288acb840797",
+      "scenarioStartedUtc": "2026-10-16T22:40:50.0608733Z",
+      "scenarioCompletedUtc": "2026-10-17T01:40:04.7348793Z",
+      "phaseEvents": [
+        {
+          "event": "tiny_real_images",
+          "observedUtc": "2026-10-16T22:42:25.9403336Z",
+          "emittedUtc": null
+        },
+        {
+          "event": "prepare_real_guest",
+          "observedUtc": "2026-10-16T23:20:39.5087493Z",
+          "emittedUtc": null
+        },
+        {
+          "event": "base_build_started",
+          "observedUtc": "2026-10-16T23:20:52.5844967Z",
+          "emittedUtc": "2026-10-16T23:20:52.5761994Z"
+        },
+        {
+          "event": "base_build_completed",
+          "observedUtc": "2026-10-16T23:33:09.1901283Z",
+          "emittedUtc": "2026-10-16T23:33:09.1770231Z"
+        },
+        {
+          "event": "guest_start",
+          "observedUtc": "2026-10-16T23:35:41.6484738Z",
+          "emittedUtc": "2026-10-16T23:35:41.6367225Z"
+        },
+        {
+          "event": "guest_ready",
+          "observedUtc": "2026-10-16T23:43:41.0285419Z",
+          "emittedUtc": "2026-10-16T23:43:41.0260317Z"
+        },
+        {
+          "event": "guest_start",
+          "observedUtc": "2026-10-16T23:45:56.9413905Z",
+          "emittedUtc": "2026-10-16T23:45:56.9401492Z"
+        },
+        {
+          "event": "guest_ready",
+          "observedUtc": "2026-10-16T23:54:34.5895343Z",
+          "emittedUtc": "2026-10-16T23:54:34.5872636Z"
+        },
+        {
+          "event": "guest_start",
+          "observedUtc": "2026-10-16T23:55:38.7955800Z",
+          "emittedUtc": "2026-10-16T23:55:38.7798724Z"
+        },
+        {
+          "event": "guest_ready",
+          "observedUtc": "2026-10-17T00:00:52.1754685Z",
+          "emittedUtc": "2026-10-17T00:00:52.1733282Z"
+        },
+        {
+          "event": "copy_export_import",
+          "observedUtc": "2026-10-17T00:01:14.7188607Z",
+          "emittedUtc": null
+        },
+        {
+          "event": "guest_start",
+          "observedUtc": "2026-10-17T00:23:00.9639970Z",
+          "emittedUtc": "2026-10-17T00:23:00.9525696Z"
+        },
+        {
+          "event": "guest_ready",
+          "observedUtc": "2026-10-17T00:33:39.6492614Z",
+          "emittedUtc": "2026-10-17T00:33:39.6479184Z"
+        },
+        {
+          "event": "reset_source_ready",
+          "observedUtc": "2026-10-17T00:34:01.3634531Z",
+          "emittedUtc": null
+        },
+        {
+          "event": "guest_start",
+          "observedUtc": "2026-10-17T00:37:14.2991855Z",
+          "emittedUtc": "2026-10-17T00:37:14.2969682Z"
+        },
+        {
+          "event": "guest_ready",
+          "observedUtc": "2026-10-17T00:45:22.3906367Z",
+          "emittedUtc": "2026-10-17T00:45:22.3886642Z"
+        },
+        {
+          "event": "stateful_clone_ready",
+          "observedUtc": "2026-10-17T00:45:44.3710144Z",
+          "emittedUtc": null
+        },
+        {
+          "event": "guest_start",
+          "observedUtc": "2026-10-17T00:45:44.3719914Z",
+          "emittedUtc": "2026-10-17T00:45:44.3705335Z"
+        },
+        {
+          "event": "guest_ready",
+          "observedUtc": "2026-10-17T00:53:37.0506063Z",
+          "emittedUtc": "2026-10-17T00:53:37.0487545Z"
+        },
+        {
+          "event": "imported_guest_ready",
+          "observedUtc": "2026-10-17T00:54:01.0086569Z",
+          "emittedUtc": null
+        },
+        {
+          "event": "guest_start",
+          "observedUtc": "2026-10-17T00:54:01.0096871Z",
+          "emittedUtc": "2026-10-17T00:54:01.0071328Z"
+        },
+        {
+          "event": "guest_ready",
+          "observedUtc": "2026-10-17T01:02:45.7837109Z",
+          "emittedUtc": "2026-10-17T01:02:45.7821107Z"
+        },
+        {
+          "event": "complete_cold_relocation",
+          "observedUtc": "2026-10-17T01:03:08.5294594Z",
+          "emittedUtc": null
+        },
+        {
+          "event": "source_root_unavailable",
+          "observedUtc": "2026-10-17T01:12:13.0489067Z",
+          "emittedUtc": "2026-10-17T01:12:13.0355839Z"
+        },
+        {
+          "event": "guest_start",
+          "observedUtc": "2026-10-17T01:24:31.7498164Z",
+          "emittedUtc": "2026-10-17T01:24:31.7328649Z"
+        },
+        {
+          "event": "guest_ready",
+          "observedUtc": "2026-10-17T01:30:08.8546697Z",
+          "emittedUtc": "2026-10-17T01:30:08.8524694Z"
+        },
+        {
+          "event": "source_root_restored",
+          "observedUtc": "2026-10-17T01:40:04.7634264Z",
+          "emittedUtc": "2026-10-17T01:40:04.7505086Z"
+        }
+      ],
+      "passMarkers": [
+        "EZVM012_REAL_FRESH_ROOT_DOCTOR",
+        "EZVM012_REAL_BOOTSTRAP_DOCTOR",
+        "EZVM010_REAL_TINY_RESET_FRESH_STATEFUL_INDEPENDENCE",
+        "EZVM010_REAL_SENSITIVE_BASELINE_RESET_AND_FRESH",
+        "EZVM010_REAL_STANDALONE_EXPORT_IMPORT",
+        "EZVM010_REAL_UNSAFE_IMPORT_REFUSAL",
+        "EZVM010_REAL_FAILED_EXPORT_PRESERVES_DATA",
+        "EZVM012_REAL_TWO_CONCURRENT_READY_GUESTS",
+        "EZVM011_REAL_SCP_ROUNDTRIP_AND_FAILED_DESTINATION_PRESERVATION",
+        "EZVM011_REAL_RUNNING_DIAGNOSIS_AND_RUNTIME_TRANSFER_REFUSAL",
+        "EZVM012_REAL_STOP_RESTART_PERSISTENCE",
+        "EZVM010_REAL_RUNNING_OPERATIONS_REFUSE",
+        "EZVM012_REAL_FRESH_CLONE_PRISTINE_READY",
+        "EZVM010_REAL_RESET_PRISTINE_READY",
+        "EZVM010_REAL_STATEFUL_NEW_IDENTITY_AND_CONTENT",
+        "EZVM010_REAL_IMPORTED_NEW_IDENTITY_AND_CONTENT",
+        "EZVM012_REAL_RELOCATED_DOCTOR",
+        "EZVM010_REAL_COLD_RELOCATION_READY",
+        "EZVM010_REAL_RELATIVE_BACKING_AND_RUNTIME_REGENERATION",
+        "EZVM010_REAL_GRACEFUL_STOP",
+        "EZVM011_REAL_COMPLETE_SECURITY_AND_PORTABILITY",
+        "EZVM012_REAL_RELOCATED_DOCTOR_AND_RESTART",
+        "EZVM012_REAL_COMPLETE_END_TO_END"
+      ],
+      "cleanupFailureObserved": false,
+      "scenarioElapsedSeconds": 10754.674006
+    },
+    {
+      "pullRequest": 45,
+      "candidateCommit": "8d4bacbe74e8c4d83d3cec9845e8a6026c62fd46",
+      "workflowRunId": 38985066027,
+      "jobId": 117254507101,
+      "jobUrl": "https://github.com/techrote/ezvm/actions/runs/38985066027/job/117254507101",
+      "githubConclusion": "failure",
+      "accelerator": "tcg",
+      "physicalWhpxQualified": false,
+      "decodedLogSha256": "6a341699c910211f715c0dfb15c8d5f1e845bc4cf0245708381736421a8582b6",
+      "scenarioStartedUtc": "2026-10-17T00:10:02.9555650Z",
+      "scenarioCompletedUtc": null,
+      "phaseEvents": [
+        {
+          "event": "tiny_real_images",
+          "observedUtc": "2026-10-17T00:11:40.6481985Z",
+          "emittedUtc": null
+        },
+        {
+          "event": "prepare_real_guest",
+          "observedUtc": "2026-10-17T00:50:25.2726561Z",
+          "emittedUtc": null
+        },
+        {
+          "event": "base_build_started",
+          "observedUtc": "2026-10-17T00:50:37.4390696Z",
+          "emittedUtc": "2026-10-17T00:50:37.4271880Z"
+        },
+        {
+          "event": "base_build_completed",
+          "observedUtc": "2026-10-17T01:03:11.2471188Z",
+          "emittedUtc": "2026-10-17T01:03:11.2386194Z"
+        },
+        {
+          "event": "guest_start",
+          "observedUtc": "2026-10-17T01:05:45.1862553Z",
+          "emittedUtc": "2026-10-17T01:05:45.1719518Z"
+        },
+        {
+          "event": "guest_ready",
+          "observedUtc": "2026-10-17T01:14:23.4986248Z",
+          "emittedUtc": "2026-10-17T01:14:23.4963141Z"
+        },
+        {
+          "event": "guest_start",
+          "observedUtc": "2026-10-17T01:16:42.6310810Z",
+          "emittedUtc": "2026-10-17T01:16:42.6295071Z"
+        },
+        {
+          "event": "guest_ready",
+          "observedUtc": "2026-10-17T01:25:38.2039858Z",
+          "emittedUtc": "2026-10-17T01:25:38.2017135Z"
+        },
+        {
+          "event": "guest_start",
+          "observedUtc": "2026-10-17T01:26:44.1692064Z",
+          "emittedUtc": "2026-10-17T01:26:44.1632760Z"
+        },
+        {
+          "event": "guest_ready",
+          "observedUtc": "2026-10-17T01:32:09.6513096Z",
+          "emittedUtc": "2026-10-17T01:32:09.6498011Z"
+        },
+        {
+          "event": "copy_export_import",
+          "observedUtc": "2026-10-17T01:32:33.2023258Z",
+          "emittedUtc": null
+        },
+        {
+          "event": "guest_start",
+          "observedUtc": "2026-10-17T01:55:15.4824700Z",
+          "emittedUtc": "2026-10-17T01:55:15.4522860Z"
+        },
+        {
+          "event": "guest_start_failed",
+          "observedUtc": "2026-10-17T02:10:15.6265522Z",
+          "emittedUtc": "2026-10-17T02:10:15.6123876Z"
+        }
+      ],
+      "passMarkers": [
+        "EZVM012_REAL_FRESH_ROOT_DOCTOR",
+        "EZVM012_REAL_BOOTSTRAP_DOCTOR",
+        "EZVM010_REAL_TINY_RESET_FRESH_STATEFUL_INDEPENDENCE",
+        "EZVM010_REAL_SENSITIVE_BASELINE_RESET_AND_FRESH",
+        "EZVM010_REAL_STANDALONE_EXPORT_IMPORT",
+        "EZVM010_REAL_UNSAFE_IMPORT_REFUSAL",
+        "EZVM010_REAL_FAILED_EXPORT_PRESERVES_DATA",
+        "EZVM012_REAL_TWO_CONCURRENT_READY_GUESTS",
+        "EZVM011_REAL_SCP_ROUNDTRIP_AND_FAILED_DESTINATION_PRESERVATION",
+        "EZVM011_REAL_RUNNING_DIAGNOSIS_AND_RUNTIME_TRANSFER_REFUSAL",
+        "EZVM012_REAL_STOP_RESTART_PERSISTENCE",
+        "EZVM010_REAL_RUNNING_OPERATIONS_REFUSE"
+      ],
+      "cleanupFailureObserved": true,
+      "scenarioElapsedSeconds": null
+    },
+    {
+      "pullRequest": 46,
+      "candidateCommit": "26c61967e91a008082ebc197f16dd94b943ad27c",
+      "workflowRunId": 39042709996,
+      "jobId": 117425241318,
+      "jobUrl": "https://github.com/techrote/ezvm/actions/runs/39042709996/job/117425241318",
+      "githubConclusion": "failure",
+      "accelerator": "tcg",
+      "physicalWhpxQualified": false,
+      "decodedLogSha256": "a2a0bc22130ab25f0901c3b0a45d6b6694bfea9b0c8c5901bfe76039e4ccbb84",
+      "scenarioStartedUtc": "2026-10-17T14:54:30.6213725Z",
+      "scenarioCompletedUtc": null,
+      "phaseEvents": [
+        {
+          "event": "tiny_real_images",
+          "observedUtc": "2026-10-17T14:55:54.3396982Z",
+          "emittedUtc": null
+        },
+        {
+          "event": "prepare_real_guest",
+          "observedUtc": "2026-10-17T15:23:02.7637992Z",
+          "emittedUtc": null
+        },
+        {
+          "event": "base_build_started",
+          "observedUtc": "2026-10-17T15:23:16.4112055Z",
+          "emittedUtc": "2026-10-17T15:23:16.4018417Z"
+        },
+        {
+          "event": "base_build_completed",
+          "observedUtc": "2026-10-17T15:32:13.4321708Z",
+          "emittedUtc": "2026-10-17T15:32:13.4289637Z"
+        },
+        {
+          "event": "guest_start",
+          "observedUtc": "2026-10-17T15:34:04.2412566Z",
+          "emittedUtc": "2026-10-17T15:34:04.2355827Z"
+        },
+        {
+          "event": "guest_ready",
+          "observedUtc": "2026-10-17T15:39:59.9900502Z",
+          "emittedUtc": "2026-10-17T15:39:59.9880145Z"
+        },
+        {
+          "event": "guest_start",
+          "observedUtc": "2026-10-17T15:41:39.3069156Z",
+          "emittedUtc": "2026-10-17T15:41:39.3057004Z"
+        },
+        {
+          "event": "guest_ready",
+          "observedUtc": "2026-10-17T15:47:53.6728829Z",
+          "emittedUtc": "2026-10-17T15:47:53.6713128Z"
+        },
+        {
+          "event": "guest_start",
+          "observedUtc": "2026-10-17T15:48:44.2547864Z",
+          "emittedUtc": "2026-10-17T15:48:44.2391861Z"
+        },
+        {
+          "event": "guest_start_failed",
+          "observedUtc": "2026-10-17T16:03:43.4792819Z",
+          "emittedUtc": "2026-10-17T16:03:43.4660840Z"
+        }
+      ],
+      "passMarkers": [
+        "EZVM012_REAL_FRESH_ROOT_DOCTOR",
+        "EZVM012_REAL_BOOTSTRAP_DOCTOR",
+        "EZVM010_REAL_TINY_RESET_FRESH_STATEFUL_INDEPENDENCE",
+        "EZVM010_REAL_SENSITIVE_BASELINE_RESET_AND_FRESH",
+        "EZVM010_REAL_STANDALONE_EXPORT_IMPORT",
+        "EZVM010_REAL_UNSAFE_IMPORT_REFUSAL",
+        "EZVM010_REAL_FAILED_EXPORT_PRESERVES_DATA",
+        "EZVM012_REAL_TWO_CONCURRENT_READY_GUESTS",
+        "EZVM011_REAL_SCP_ROUNDTRIP_AND_FAILED_DESTINATION_PRESERVATION",
+        "EZVM011_REAL_RUNNING_DIAGNOSIS_AND_RUNTIME_TRANSFER_REFUSAL"
+      ],
+      "cleanupFailureObserved": true,
+      "scenarioElapsedSeconds": null
+    }
+  ]
+}

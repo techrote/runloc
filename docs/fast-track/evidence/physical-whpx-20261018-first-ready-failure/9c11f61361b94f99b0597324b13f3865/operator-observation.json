@@ -1,0 +1,502 @@
+{
+  "schemaVersion": 1,
+  "issue": "CI-POC-001",
+  "mode": "physical",
+  "attemptIdentity": "9c11f61361b94f99b0597324b13f3865",
+  "githubIndependent": true,
+  "controller": {
+    "repository": "https://github.com/techrote/runloc",
+    "commit": "90ed76448f13cbb7048888ae67451de2f9b28819",
+    "tree": "b03b1ead72b195c6ab32e2f791e9906219ff5e2a",
+    "clean": true,
+    "executedTreeSha256": "2cdc1a961ac3ee8c1e5a32489a84e98e6e2a67d7a7e0e2e8d7695ecb050e1810",
+    "trackedFileCount": 113,
+    "files": [
+      {
+        "path": "poc/windows-whpx/Invoke-WhpxPilot.ps1",
+        "sha256Lf": "c75d103ae8598dacb0770fa884a91fd55c3b325722c4024965b5b9b3cc4f6883",
+        "executedBytesSha256": "e0cc7c76f8a3aa54f631066d8ec736d07fde13f835dd2633e7c998cdda39e841"
+      },
+      {
+        "path": "poc/windows-whpx/Pilot.Controller.ps1",
+        "sha256Lf": "0e0dacf6f91dcde058b54198bf96e31a7d27a1671366b6243d0aa9c815728c5d",
+        "executedBytesSha256": "169cb84acd3d431d00162191ce329a0d0f33d531f11cfcbbe3996dec2664ebc0"
+      },
+      {
+        "path": "poc/windows-whpx/Invoke-AclPreflight.ps1",
+        "sha256Lf": "8df722bf0ea4eb6c643cd33dbf621cc02dcf09a98f811d0b5b65c6220f2f50b8",
+        "executedBytesSha256": "6282e14fd9449d21a6f37969572294613da30c32e6e1468737aa1cfe33ed8a1e"
+      },
+      {
+        "path": "poc/windows-whpx/Pilot.Common.ps1",
+        "sha256Lf": "85f45ffd2c8876f207c889a0b87288fa655dee40141c91f2bd78a2ae0fecfe7b",
+        "executedBytesSha256": "f583c5c5654695908cad184ea6f28f2b77cedfe02f26dc39cf805a0675306e9d"
+      },
+      {
+        "path": "poc/windows-whpx/OwnedProcess.cs",
+        "sha256Lf": "eaa258b6f8e36e45c98694901295cc440b71119aaf9bb8f82dfd3a28ad7f2a65",
+        "executedBytesSha256": "eaa258b6f8e36e45c98694901295cc440b71119aaf9bb8f82dfd3a28ad7f2a65"
+      },
+      {
+        "path": "poc/windows-whpx/Pilot.Supervisor.ps1",
+        "sha256Lf": "1e732616e40d73d51f06589da3e6ca6a670bcdc11f57f23dbec1a3bc05f8badf",
+        "executedBytesSha256": "bb14bc096bc1d144e25a6006b859e6df95d86ceb4670df7ae9cf68513aad09a2"
+      },
+      {
+        "path": "poc/windows-whpx/SupervisorDeadline.cs",
+        "sha256Lf": "ed0f07e9973958181c86f8cddf8e53a54fffb7f0ceb2ba5430f13d023598d500",
+        "executedBytesSha256": "ed0f07e9973958181c86f8cddf8e53a54fffb7f0ceb2ba5430f13d023598d500"
+      },
+      {
+        "path": "poc/windows-whpx/Pilot.PowerShellEntry.ps1",
+        "sha256Lf": "9afc5ec981cf254135dd92a2f466db42b6f282ed8a6dca93cd36fafdf5fd00b8",
+        "executedBytesSha256": "48791ef4947ab51827daea3e2d3c981e15462bcbba1d4372aa0ddc0b38bed633"
+      },
+      {
+        "path": "poc/windows-whpx/Pilot.Bootstrap.ps1",
+        "sha256Lf": "a81efa37ddc0b8040ab811fd05c3b76cf5f0f95661ce06eaabf6d366d3d7d587",
+        "executedBytesSha256": "01cc21fae8e5b3e28f99f3685e64b6e24e01fd7b91cc9cbe0da992a18bd96a3a"
+      },
+      {
+        "path": "poc/windows-whpx/candidate.json",
+        "sha256Lf": "cf467b09db6e32f00f6699a167363bbbde3fd3a791aadf2f1e72cdc95a21289d",
+        "executedBytesSha256": "cf467b09db6e32f00f6699a167363bbbde3fd3a791aadf2f1e72cdc95a21289d"
+      }
+    ]
+  },
+  "candidate": {
+    "repository": "https://github.com/techrote/ezvm",
+    "commit": "2afcd6a61b16e08cb7e35925e6d2cfc46cac24c0",
+    "tree": "a5f70cc1a7018b77518b83e7c3a393a2c8068cd7",
+    "clean": true,
+    "executedTreeSha256": "40e9c5d1858d7dda4e408f5b86c74a1378d900644bba7893b45cee38a1f79ad6",
+    "trackedFileCount": 184,
+    "files": [
+      {
+        "path": "scripts/Invoke-EzVm010RealPortability.ps1",
+        "sha256Lf": "471c6938edd54a834a80d0064f3cff604a5b832d171d34ede0baf26bdc52fee6",
+        "executedBytesSha256": "471c6938edd54a834a80d0064f3cff604a5b832d171d34ede0baf26bdc52fee6"
+      },
+      {
+        "path": "guest/base-cloud-init/user-data.yaml",
+        "sha256Lf": "68b19eedf46aba223aa5b4b3760fd6f496e86b3225606fa5b32c0c1d288b8f40",
+        "executedBytesSha256": "68b19eedf46aba223aa5b4b3760fd6f496e86b3225606fa5b32c0c1d288b8f40"
+      },
+      {
+        "path": "scripts/QualificationTelemetry.ps1",
+        "sha256Lf": "f5c91a34be2cf43f25fdba4b0b4ac8491a3654fe24be7f3bb4077af14d4a9651",
+        "executedBytesSha256": "f5c91a34be2cf43f25fdba4b0b4ac8491a3654fe24be7f3bb4077af14d4a9651"
+      },
+      {
+        "path": "src/EzVm/Keys.ps1",
+        "sha256Lf": "89e437ce908695b9d90ddaa5cb590c3aa44c1a7c52d3696ebe9e7ae218f04fe5",
+        "executedBytesSha256": "89e437ce908695b9d90ddaa5cb590c3aa44c1a7c52d3696ebe9e7ae218f04fe5"
+      },
+      {
+        "path": "src/EzVm/Security.ps1",
+        "sha256Lf": "eebfdaac48c8b424dfe4c01b7d50cf50e78941bd67d5a31d5257f7c22a2867ac",
+        "executedBytesSha256": "eebfdaac48c8b424dfe4c01b7d50cf50e78941bd67d5a31d5257f7c22a2867ac"
+      },
+      {
+        "path": "manifests/qemu-windows.json",
+        "sha256Lf": "d89b6013bcb5e8bc27038e2f5aa2ec39e08b2674d725b62658db3e8592ba002a",
+        "executedBytesSha256": "d89b6013bcb5e8bc27038e2f5aa2ec39e08b2674d725b62658db3e8592ba002a"
+      },
+      {
+        "path": "manifests/ubuntu-noble-amd64.json",
+        "sha256Lf": "f261a3781920fbce1ad1f6811ccb75ec1544754a4ab3f86cc376f2f4513c7f64",
+        "executedBytesSha256": "f261a3781920fbce1ad1f6811ccb75ec1544754a4ab3f86cc376f2f4513c7f64"
+      }
+    ]
+  },
+  "actualOperatorObservation": {
+    "mode": "full-physical-whpx",
+    "overallTimeoutDisabled": true,
+    "actualExitCode": 2,
+    "observedStartUtc": "2026-10-18T00:28:10.9923484Z",
+    "observedEndUtc": "2026-10-18T01:29:49.8775371Z",
+    "observedElapsedSeconds": 3698.8844856,
+    "unrelatedSentinelSurvived": true,
+    "preExistingQemuCount": 0,
+    "preExistingQemuSurvivedCount": 0,
+    "preExistingQemuAllSurvived": true,
+    "postObservationFailures": [],
+    "stdoutSha256": "3F0C0327A11577A251A3745F3D03AD5D63D40C6479073ED9BF7A9554F8D29731",
+    "stderrSha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+  },
+  "expectedOverallTimeoutDisabled": true,
+  "timingPolicyMatchesOperator": true,
+  "terminalOutcome": "RUNLOC_WHPX_SUPERVISOR_OUTCOME=failed; elapsedSeconds=3697.9679773999997",
+  "totalSupervisedElapsedSeconds": 3697.9679773999997,
+  "receiptElapsedSeconds": 3697.9171797999998,
+  "receiptSha256": "470039768bc2782793e61f067bd6edc2dfa9db6cb767e44c7d249cb7308a9d3d",
+  "innerReceiptSha256": "1e4228d21c35f44551d4a844ee183461788eae2027f84196f6ba2474ac50be86",
+  "requestedAccelerator": "whpx",
+  "observedAccelerator": "",
+  "host": {
+    "label": "lab-win11-01",
+    "os": "Microsoft Windows 11 Pro",
+    "version": "10.0.26300",
+    "build": "26300",
+    "architecture": "64-bit",
+    "logicalProcessors": 12,
+    "availableMemoryBytes": 50616295424,
+    "cpuModels": [
+      "AMD Ryzen 5 5600X 6-Core Processor             "
+    ],
+    "controllerPowerShell": "5.1.26100.9711",
+    "harnessPowerShell": "10.0.26100.8972",
+    "harnessPowerShellSha256": "60c9b29843624dd8af6b6a7b26147753be6aeef65098b9a503cc50850afe410f",
+    "standardUser": true,
+    "seSecurityPrivilegePresent": false,
+    "availableDiskBytes": 74291150848
+  },
+  "toolImageGuestIdentities": {
+    "expectedImageSha256": "",
+    "sourceImageSha256": "",
+    "qemuBinaries": []
+  },
+  "completionMarkers": [
+    {
+      "name": "EZVM012_REAL_FRESH_ROOT_DOCTOR",
+      "count": 1,
+      "exactlyOnce": true
+    },
+    {
+      "name": "EZVM012_REAL_BOOTSTRAP_DOCTOR",
+      "count": 1,
+      "exactlyOnce": true
+    },
+    {
+      "name": "EZVM010_REAL_TINY_RESET_FRESH_STATEFUL_INDEPENDENCE",
+      "count": 1,
+      "exactlyOnce": true
+    },
+    {
+      "name": "EZVM010_REAL_SENSITIVE_BASELINE_RESET_AND_FRESH",
+      "count": 1,
+      "exactlyOnce": true
+    },
+    {
+      "name": "EZVM010_REAL_STANDALONE_EXPORT_IMPORT",
+      "count": 1,
+      "exactlyOnce": true
+    },
+    {
+      "name": "EZVM010_REAL_UNSAFE_IMPORT_REFUSAL",
+      "count": 1,
+      "exactlyOnce": true
+    },
+    {
+      "name": "EZVM010_REAL_FAILED_EXPORT_PRESERVES_DATA",
+      "count": 1,
+      "exactlyOnce": true
+    },
+    {
+      "name": "EZVM012_REAL_TWO_CONCURRENT_READY_GUESTS",
+      "count": 0,
+      "exactlyOnce": false
+    },
+    {
+      "name": "EZVM011_REAL_SCP_ROUNDTRIP_AND_FAILED_DESTINATION_PRESERVATION",
+      "count": 0,
+      "exactlyOnce": false
+    },
+    {
+      "name": "EZVM011_REAL_RUNNING_DIAGNOSIS_AND_RUNTIME_TRANSFER_REFUSAL",
+      "count": 0,
+      "exactlyOnce": false
+    },
+    {
+      "name": "EZVM012_REAL_STOP_RESTART_PERSISTENCE",
+      "count": 0,
+      "exactlyOnce": false
+    },
+    {
+      "name": "EZVM010_REAL_RUNNING_OPERATIONS_REFUSE",
+      "count": 0,
+      "exactlyOnce": false
+    },
+    {
+      "name": "EZVM012_REAL_FRESH_CLONE_PRISTINE_READY",
+      "count": 0,
+      "exactlyOnce": false
+    },
+    {
+      "name": "EZVM010_REAL_RESET_PRISTINE_READY",
+      "count": 0,
+      "exactlyOnce": false
+    },
+    {
+      "name": "EZVM010_REAL_STATEFUL_NEW_IDENTITY_AND_CONTENT",
+      "count": 0,
+      "exactlyOnce": false
+    },
+    {
+      "name": "EZVM010_REAL_IMPORTED_NEW_IDENTITY_AND_CONTENT",
+      "count": 0,
+      "exactlyOnce": false
+    },
+    {
+      "name": "EZVM012_REAL_RELOCATED_DOCTOR",
+      "count": 0,
+      "exactlyOnce": false
+    },
+    {
+      "name": "EZVM010_REAL_COLD_RELOCATION_READY",
+      "count": 0,
+      "exactlyOnce": false
+    },
+    {
+      "name": "EZVM010_REAL_RELATIVE_BACKING_AND_RUNTIME_REGENERATION",
+      "count": 0,
+      "exactlyOnce": false
+    },
+    {
+      "name": "EZVM010_REAL_GRACEFUL_STOP",
+      "count": 0,
+      "exactlyOnce": false
+    },
+    {
+      "name": "EZVM011_REAL_COMPLETE_SECURITY_AND_PORTABILITY",
+      "count": 0,
+      "exactlyOnce": false
+    },
+    {
+      "name": "EZVM012_REAL_RELOCATED_DOCTOR_AND_RESTART",
+      "count": 0,
+      "exactlyOnce": false
+    },
+    {
+      "name": "EZVM012_REAL_COMPLETE_END_TO_END",
+      "count": 0,
+      "exactlyOnce": false
+    },
+    {
+      "name": "EZVM010_WHPX_EXECUTION",
+      "count": 0,
+      "exactlyOnce": false
+    }
+  ],
+  "numericHarnessExitCode": 1,
+  "numericSupervisorExitCode": 2,
+  "phaseDurations": [
+    {
+      "phase": "fresh-root-and-qemu-bootstrap",
+      "instance": "",
+      "startSeconds": 0,
+      "endSeconds": 95.2973124,
+      "elapsedSeconds": 95
+    },
+    {
+      "phase": "tiny_real_images",
+      "instance": "",
+      "startSeconds": 95.2973124,
+      "endSeconds": 2377.9753689,
+      "elapsedSeconds": 2283
+    },
+    {
+      "phase": "prepare_real_guest",
+      "instance": "",
+      "startSeconds": 2377.9753689,
+      "endSeconds": 2386.1036636999997,
+      "elapsedSeconds": 8
+    },
+    {
+      "phase": "base_build_started",
+      "instance": "",
+      "startSeconds": 2386.1036636999997,
+      "endSeconds": 2609.5326157,
+      "elapsedSeconds": 223
+    },
+    {
+      "phase": "base_build_completed",
+      "instance": "",
+      "startSeconds": 2609.5326157,
+      "endSeconds": 2750.7526052,
+      "elapsedSeconds": 141
+    },
+    {
+      "phase": "guest_start",
+      "instance": "ezvm010-source",
+      "startSeconds": 2750.7526052,
+      "endSeconds": 3650.5803662999997,
+      "elapsedSeconds": 900
+    },
+    {
+      "phase": "guest_start_failed",
+      "instance": "ezvm010-source",
+      "startSeconds": 3650.5803662999997,
+      "endSeconds": 3681.4313107,
+      "elapsedSeconds": 31
+    }
+  ],
+  "cleanup": {
+    "childExited": true,
+    "activeProcesses": 0,
+    "fixtureRemoved": true,
+    "forced": true,
+    "ownershipVerified": true,
+    "startSeconds": 3682.5851029,
+    "endSeconds": 3693.6350657
+  },
+  "outerControllerProcess": {
+    "method": "CreateProcess-suspended-then-Job-assignment",
+    "killOnClose": true,
+    "breakawayAllowed": false,
+    "createdUtc": "2026-10-18T00:28:12.8615570Z",
+    "endedUtc": "2026-10-18T01:29:49.7792608Z",
+    "exitCode": 1,
+    "childExited": true,
+    "activeProcesses": 0,
+    "forced": false,
+    "timedOut": false,
+    "outputOverflow": false,
+    "outputFailed": false,
+    "controllerError": false
+  },
+  "sourceUnchanged": true,
+  "physicalQualificationPassed": false,
+  "qualificationResult": "failed",
+  "reasonCodes": [
+    "supervisor-controller-incomplete"
+  ],
+  "independentSourceAfter": {
+    "schemaVersion": 1,
+    "observedUtc": "2026-10-18T01:29:54.7911476Z",
+    "controller": {
+      "repository": "https://github.com/techrote/runloc",
+      "commit": "90ed76448f13cbb7048888ae67451de2f9b28819",
+      "tree": "b03b1ead72b195c6ab32e2f791e9906219ff5e2a",
+      "clean": true,
+      "executedTreeSha256": "2cdc1a961ac3ee8c1e5a32489a84e98e6e2a67d7a7e0e2e8d7695ecb050e1810",
+      "trackedFileCount": 113,
+      "files": []
+    },
+    "candidate": {
+      "repository": "https://github.com/techrote/ezvm",
+      "commit": "2afcd6a61b16e08cb7e35925e6d2cfc46cac24c0",
+      "tree": "a5f70cc1a7018b77518b83e7c3a393a2c8068cd7",
+      "clean": true,
+      "executedTreeSha256": "40e9c5d1858d7dda4e408f5b86c74a1378d900644bba7893b45cee38a1f79ad6",
+      "trackedFileCount": 184,
+      "files": [
+        {
+          "path": "scripts/Invoke-EzVm010RealPortability.ps1",
+          "sha256Lf": "471c6938edd54a834a80d0064f3cff604a5b832d171d34ede0baf26bdc52fee6",
+          "executedBytesSha256": "471c6938edd54a834a80d0064f3cff604a5b832d171d34ede0baf26bdc52fee6"
+        },
+        {
+          "path": "guest/base-cloud-init/user-data.yaml",
+          "sha256Lf": "68b19eedf46aba223aa5b4b3760fd6f496e86b3225606fa5b32c0c1d288b8f40",
+          "executedBytesSha256": "68b19eedf46aba223aa5b4b3760fd6f496e86b3225606fa5b32c0c1d288b8f40"
+        },
+        {
+          "path": "scripts/QualificationTelemetry.ps1",
+          "sha256Lf": "f5c91a34be2cf43f25fdba4b0b4ac8491a3654fe24be7f3bb4077af14d4a9651",
+          "executedBytesSha256": "f5c91a34be2cf43f25fdba4b0b4ac8491a3654fe24be7f3bb4077af14d4a9651"
+        },
+        {
+          "path": "src/EzVm/Keys.ps1",
+          "sha256Lf": "89e437ce908695b9d90ddaa5cb590c3aa44c1a7c52d3696ebe9e7ae218f04fe5",
+          "executedBytesSha256": "89e437ce908695b9d90ddaa5cb590c3aa44c1a7c52d3696ebe9e7ae218f04fe5"
+        },
+        {
+          "path": "src/EzVm/Security.ps1",
+          "sha256Lf": "eebfdaac48c8b424dfe4c01b7d50cf50e78941bd67d5a31d5257f7c22a2867ac",
+          "executedBytesSha256": "eebfdaac48c8b424dfe4c01b7d50cf50e78941bd67d5a31d5257f7c22a2867ac"
+        },
+        {
+          "path": "manifests/qemu-windows.json",
+          "sha256Lf": "d89b6013bcb5e8bc27038e2f5aa2ec39e08b2674d725b62658db3e8592ba002a",
+          "executedBytesSha256": "d89b6013bcb5e8bc27038e2f5aa2ec39e08b2674d725b62658db3e8592ba002a"
+        },
+        {
+          "path": "manifests/ubuntu-noble-amd64.json",
+          "sha256Lf": "f261a3781920fbce1ad1f6811ccb75ec1544754a4ab3f86cc376f2f4513c7f64",
+          "executedBytesSha256": "f261a3781920fbce1ad1f6811ccb75ec1544754a4ab3f86cc376f2f4513c7f64"
+        }
+      ]
+    },
+    "matchesInnerReceiptSourceBytes": true
+  },
+  "additionalToolObservations": [
+    {
+      "schemaVersion": 1,
+      "supervisorLeaseId": "9c11f61361b94f99b0597324b13f3865",
+      "phase": "before",
+      "observedUtc": "2026-10-18T00:28:28.4105147Z",
+      "source": "Unchanged candidate Get-EzVmOpenSshTools in Windows PowerShell 5.1, plus the Git and Windows ACL tools; process PATH matches the inherited qualification PATH.",
+      "tools": [
+        {
+          "name": "ssh.exe",
+          "sha256": "98d447730047f5df91373e852d057928a921c3d1e89938700ab656ba84b19dc8",
+          "version": "OpenSSH_9.5p2 for Windows"
+        },
+        {
+          "name": "scp.exe",
+          "sha256": "b9cc1ae5fdba1f3833cc1130f6e11a9bed84a7953099dc40789c7d2744a862a1",
+          "version": "OpenSSH_9.5p2 for Windows"
+        },
+        {
+          "name": "ssh-keygen.exe",
+          "sha256": "c9dc170cd161db87e75eb6cf282f1325005b9e35628b9a36cb19883a8be1a34f",
+          "version": "OpenSSH_9.5p2 for Windows"
+        },
+        {
+          "name": "git.exe",
+          "sha256": "78211c7ed73988da93a6d8a33d47ec6187f464d7ea2a9a00c182bbd7a1ecf30f",
+          "version": "2.55.0.windows.5"
+        },
+        {
+          "name": "icacls.exe",
+          "sha256": "cb9e55d4c02f4e55100724d2da9a1267f49e196bd39fcdf36cec6ea6314fad2a",
+          "version": "10.0.26100.1"
+        }
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "supervisorLeaseId": "9c11f61361b94f99b0597324b13f3865",
+      "phase": "after",
+      "observedUtc": "2026-10-18T01:29:52.0018601Z",
+      "source": "Unchanged candidate Get-EzVmOpenSshTools in Windows PowerShell 5.1, plus the Git and Windows ACL tools; process PATH matches the inherited qualification PATH.",
+      "tools": [
+        {
+          "name": "ssh.exe",
+          "sha256": "98d447730047f5df91373e852d057928a921c3d1e89938700ab656ba84b19dc8",
+          "version": "OpenSSH_9.5p2 for Windows"
+        },
+        {
+          "name": "scp.exe",
+          "sha256": "b9cc1ae5fdba1f3833cc1130f6e11a9bed84a7953099dc40789c7d2744a862a1",
+          "version": "OpenSSH_9.5p2 for Windows"
+        },
+        {
+          "name": "ssh-keygen.exe",
+          "sha256": "c9dc170cd161db87e75eb6cf282f1325005b9e35628b9a36cb19883a8be1a34f",
+          "version": "OpenSSH_9.5p2 for Windows"
+        },
+        {
+          "name": "git.exe",
+          "sha256": "78211c7ed73988da93a6d8a33d47ec6187f464d7ea2a9a00c182bbd7a1ecf30f",
+          "version": "2.55.0.windows.5"
+        },
+        {
+          "name": "icacls.exe",
+          "sha256": "cb9e55d4c02f4e55100724d2da9a1267f49e196bd39fcdf36cec6ea6314fad2a",
+          "version": "10.0.26100.1"
+        }
+      ]
+    }
+  ],
+  "additionalToolIdentitiesUnchanged": true,
+  "independentEvidenceChecks": {
+    "postObservationsSucceeded": true,
+    "unrelatedSentinelSurvived": true,
+    "preExistingQemuSurvived": true,
+    "sourceAfterMatches": true,
+    "toolIdentitiesUnchanged": true
+  },
+  "independentEvidencePassed": true
+}

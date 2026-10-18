@@ -53,3 +53,32 @@ reviewable and coupled to regression tests.
 
 See [state](01-ARCHITECTURE-STATE.md), [host](02-HOST-QEMU.md),
 [storage](03-IMAGES-STORAGE.md), [acceptance](08-TESTING-ACCEPTANCE.md).
+
+## CI-POC-001 native Windows boundary
+
+The separate [Windows PoC](../fast-track/WINDOWS-WHPX-CI-POC.md) invokes an
+explicitly reviewed public EzVM commit from a clean checkout. The invocation
+controller is also an exact clean Runloc commit. Repository visibility alone is
+not approval of a different candidate. The candidate manifest and both source
+identities are revalidated; staged/modified source, untracked inputs and reused
+attempts cannot produce qualified evidence.
+
+The standalone helper owns only its unique attempt directory and Windows Job
+Object. Assignment happens before child execution. The child's temporary paths
+are confined to that lease; the original EzVM scenario still creates fresh
+source, images and guest fixtures. Existing VMs, credentials and owner checkouts
+are outside this boundary. Hardware preflight does not install or enable WHPX.
+
+Synthetic private-file ACL preflight must pass through the exact candidate's
+controller-private-key restriction before downloads or qualification fixtures.
+It changes only synthetic fixture permissions. Audit/SACL access, elevation and
+new privileges are not prerequisites. The upstream repair and its independent
+standard-user evidence belong to EzVM; no product source is copied into Runloc.
+
+Raw diagnostics remain private to the attempt. Only a deliberately allowlisted
+receipt may be published. Cleanup must separately prove child/descendant exit,
+verify the exact owned lease and reject redirected/shared file targets before
+disposal. Unknown cleanup stays failed/quarantined. The full release marker is
+emitted before upstream finalization, so it cannot override a cleanup or source
+restoration failure. A forced or timed-out run remains failure even if cleanup
+succeeds. See the [implementation checkpoint](../fast-track/CI-POC-001-EVIDENCE.md).

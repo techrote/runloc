@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "candidateCommit": "2afcd6a61b16e08cb7e35925e6d2cfc46cac24c0",
+  "candidateTree": "a5f70cc1a7018b77518b83e7c3a393a2c8068cd7",
+  "originalAuditFile": "windows-path-budget.json",
+  "originalAuditSha256": "7ba1361e4a9f3a96a52257b0290f9bcb26573face86a0c6bdc463a6425838081",
+  "harnessSha256Lf": "471c6938edd54a834a80d0064f3cff604a5b832d171d34ede0baf26bdc52fee6",
+  "archiveAndPathSourcesUnchanged": true,
+  "rechecked": "All eight non-harness audited path/manifest sources match original byte hashes. Candidate changes only existing file contents. Harness file creation, qualification root A/B/held-root names, copying definitions, QEMU archive/extraction, base/relocation and temp path definitions are unchanged; the added helper only reads existing diagnostic paths. Original 215-file/173-directory suffix bounds and full 128-bit fixture mapping therefore remain applicable.",
+  "maximumFixtureCharacters": 44,
+  "fileSuffixCharacters": 215,
+  "directorySuffixCharacters": 173,
+  "physicalQualificationPassed": false
+}

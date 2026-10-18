@@ -1,0 +1,64 @@
+name: Windows WHPX PoC software contracts
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  helper-contracts:
+    name: PoC helper (${{ matrix.label }})
+    runs-on: windows-2022
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - label: Windows PowerShell 5.1
+            major: 5
+          - label: PowerShell 7.6.6
+            major: 7
+    steps:
+      - name: Checkout exact candidate
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Prepare reviewed PowerShell runtime
+        if: matrix.major == 7
+        shell: powershell
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $ProgressPreference = 'SilentlyContinue'
+          $version = '7.6.6'
+          $digest = '02fe458be20493fbdf43f61ea20610b811ee6c738ab1676c61b9cfcd1a33c860'
+          $destination = Join-Path $env:RUNNER_TEMP ('runloc-powershell-' + [Guid]::NewGuid().ToString('N'))
+          $archive = $destination + '.zip'
+          $uri = 'https://github.com/PowerShell/PowerShell/releases/download/v7.6.6/PowerShell-7.6.6-win-x64.zip'
+          Invoke-WebRequest -UseBasicParsing -Uri $uri -OutFile $archive -TimeoutSec 120
+          if ((Get-Item -LiteralPath $archive).Length -ne 106328873 -or
+              (Get-FileHash -LiteralPath $archive -Algorithm SHA256).Hash -ine $digest) {
+            throw 'Official PowerShell payload differs from the reviewed version/size/SHA256 pin.'
+          }
+          Expand-Archive -LiteralPath $archive -DestinationPath $destination
+          $executable = Join-Path $destination 'pwsh.exe'
+          $observed = @(& $executable -NoLogo -NoProfile -NonInteractive -Command '$PSVersionTable.PSVersion.ToString()') -join ''
+          if ($LASTEXITCODE -ne 0 -or $observed -cne $version) { throw 'Pinned PowerShell version did not execute.' }
+          ('RUNLOC_TEST_POWERSHELL=' + $executable) | Out-File -LiteralPath $env:GITHUB_ENV -Append -Encoding utf8
+      - name: Test source, receipts and owned synthetic processes
+        shell: powershell
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $executable = Join-Path $PSHOME 'powershell.exe'
+          if (${{ matrix.major }} -eq 7) { $executable = $env:RUNLOC_TEST_POWERSHELL }
+          $observedMajor = @(& $executable -NoLogo -NoProfile -NonInteractive -Command '$PSVersionTable.PSVersion.Major') -join ''
+          if ($LASTEXITCODE -ne 0 -or [int]$observedMajor -ne ${{ matrix.major }}) { throw 'Wrong test engine.' }
+          git rev-parse HEAD 'HEAD^{tree}'
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          & $executable -NoLogo -NoProfile -NonInteractive -ExecutionPolicy Bypass -File poc/windows-whpx/Test-Pilot.ps1
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          Write-Host 'PHYSICAL_WHPX_QUALIFICATION=NOT_RUN: software tests use only synthetic files/processes.'

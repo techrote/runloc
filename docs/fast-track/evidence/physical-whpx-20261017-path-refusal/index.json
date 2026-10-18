@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "scope": "Named allowlisted receipts and telemetry only; raw logs, leases, keys and fixture contents remain private.",
+  "attempts": [
+    {
+      "mode": "preflight",
+      "attemptIdentity": "be5b1d9a19014a4392d4d10d84e38e9f",
+      "qualificationResult": "failed",
+      "physicalQualificationPassed": false,
+      "totalSupervisedElapsedSeconds": 2.1685016999999998,
+      "numericSupervisorExitCode": 2
+    }
+  ],
+  "files": [
+    {
+      "path": "be5b1d9a19014a4392d4d10d84e38e9f/operator-observation.json",
+      "sha256": "8f4407e603222eb5cc0ef96cbbb427bd49a5e34cd8a37b2d33a1144da1bc6089",
+      "bytes": 8917
+    },
+    {
+      "path": "be5b1d9a19014a4392d4d10d84e38e9f/supervisor-receipt-digest.json",
+      "sha256": "bcdfbed8017ba378927e86c07fc4674529760fdf47e5e7cee548bc0fd658b54d",
+      "bytes": 155
+    },
+    {
+      "path": "be5b1d9a19014a4392d4d10d84e38e9f/supervisor-receipt.json",
+      "sha256": "3847b349d70367798259fc4a2a85ee7d674c84b65e1212556eb1cfea48c02455",
+      "bytes": 9632
+    },
+    {
+      "path": "be5b1d9a19014a4392d4d10d84e38e9f/supervisor-started.json",
+      "sha256": "c497c40f48027b4e79ed0d78895e5eefb4ea7233d2cc951dc7f7d590b7955f30",
+      "bytes": 709
+    }
+  ]
+}

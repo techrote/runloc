@@ -1,0 +1,6395 @@
+{
+  "schemaVersion": 1,
+  "supervisorLeaseId": "9c45639521084c37a102620ad568d827",
+  "complete": false,
+  "physicalQualificationPassed": false,
+  "rawSourceSha256": "9e59703c0dfdb98fc661576a46e1cc092521b478a3f3ccf5eb093f058facac1c",
+  "events": [
+    {
+      "schemaVersion": 1,
+      "sequence": 1,
+      "utc": "2026-10-17T19:57:16.8963304Z",
+      "elapsedSeconds": 0.0200491,
+      "event": "start",
+      "operationId": 1,
+      "parentOperationId": null,
+      "operation": "full-release",
+      "category": "qualification",
+      "details": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 2,
+      "utc": "2026-10-17T19:57:17.0180968Z",
+      "elapsedSeconds": 0.1369087,
+      "event": "start",
+      "operationId": 2,
+      "parentOperationId": 1,
+      "operation": "Get-EzVmDoctorReport",
+      "category": "validation",
+      "details": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 3,
+      "utc": "2026-10-17T19:57:18.6402034Z",
+      "elapsedSeconds": 1.7590610999999998,
+      "event": "end",
+      "operationId": 2,
+      "parentOperationId": 1,
+      "operation": "Get-EzVmDoctorReport",
+      "category": "validation",
+      "durationSeconds": 1.6177214,
+      "digestTotals": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 4,
+      "utc": "2026-10-17T19:57:18.6765725Z",
+      "elapsedSeconds": 1.7953841,
+      "event": "start",
+      "operationId": 3,
+      "parentOperationId": 1,
+      "operation": "Install-EzVmQemuRuntime",
+      "category": "acquisition",
+      "details": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 5,
+      "utc": "2026-10-17T19:57:23.6027154Z",
+      "elapsedSeconds": 6.7219048,
+      "event": "start",
+      "operationId": 4,
+      "parentOperationId": 3,
+      "operation": "Invoke-EzVmProcess",
+      "category": "process",
+      "details": {
+        "tool": "other"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 6,
+      "utc": "2026-10-17T19:57:23.9071399Z",
+      "elapsedSeconds": 7.026594599999999,
+      "event": "end",
+      "operationId": 4,
+      "parentOperationId": 3,
+      "operation": "Invoke-EzVmProcess",
+      "category": "process",
+      "durationSeconds": 0.3047001,
+      "digestTotals": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 7,
+      "utc": "2026-10-17T19:57:23.9161827Z",
+      "elapsedSeconds": 7.0346834,
+      "event": "start",
+      "operationId": 5,
+      "parentOperationId": 3,
+      "operation": "Invoke-EzVmProcess",
+      "category": "process",
+      "details": {
+        "tool": "other"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 8,
+      "utc": "2026-10-17T19:57:23.9782986Z",
+      "elapsedSeconds": 7.0975294,
+      "event": "end",
+      "operationId": 5,
+      "parentOperationId": 3,
+      "operation": "Invoke-EzVmProcess",
+      "category": "process",
+      "durationSeconds": 0.0628649,
+      "digestTotals": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 9,
+      "utc": "2026-10-17T19:57:23.9970659Z",
+      "elapsedSeconds": 7.1161071,
+      "event": "start",
+      "operationId": 6,
+      "parentOperationId": 3,
+      "operation": "Invoke-EzVmProcess",
+      "category": "process",
+      "details": {
+        "tool": "other"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 10,
+      "utc": "2026-10-17T19:57:34.6212533Z",
+      "elapsedSeconds": 17.740685,
+      "event": "end",
+      "operationId": 6,
+      "parentOperationId": 3,
+      "operation": "Invoke-EzVmProcess",
+      "category": "process",
+      "durationSeconds": 10.6245515,
+      "digestTotals": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 11,
+      "utc": "2026-10-17T19:58:02.8173667Z",
+      "elapsedSeconds": 45.9362928,
+      "event": "start",
+      "operationId": 7,
+      "parentOperationId": 3,
+      "operation": "Invoke-EzVmProcess",
+      "category": "process",
+      "details": {
+        "tool": "qemu-system-x86_64.exe"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 12,
+      "utc": "2026-10-17T19:58:03.2339554Z",
+      "elapsedSeconds": 46.3527943,
+      "event": "end",
+      "operationId": 7,
+      "parentOperationId": 3,
+      "operation": "Invoke-EzVmProcess",
+      "category": "process",
+      "durationSeconds": 0.4165572,
+      "digestTotals": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 13,
+      "utc": "2026-10-17T19:58:03.2374643Z",
+      "elapsedSeconds": 46.3566852,
+      "event": "start",
+      "operationId": 8,
+      "parentOperationId": 3,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "details": {
+        "tool": "qemu-img.exe",
+        "action": "--version"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 14,
+      "utc": "2026-10-17T19:58:03.3558452Z",
+      "elapsedSeconds": 46.474505199999996,
+      "event": "end",
+      "operationId": 8,
+      "parentOperationId": 3,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "durationSeconds": 0.1176808,
+      "digestTotals": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 15,
+      "utc": "2026-10-17T19:58:03.3588504Z",
+      "elapsedSeconds": 46.4776105,
+      "event": "start",
+      "operationId": 9,
+      "parentOperationId": 3,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "details": {
+        "tool": "qemu-img.exe",
+        "action": "create"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 16,
+      "utc": "2026-10-17T19:58:03.4008047Z",
+      "elapsedSeconds": 46.5199277,
+      "event": "end",
+      "operationId": 9,
+      "parentOperationId": 3,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "durationSeconds": 0.0423134,
+      "digestTotals": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 17,
+      "utc": "2026-10-17T19:58:03.4018093Z",
+      "elapsedSeconds": 46.5210362,
+      "event": "start",
+      "operationId": 10,
+      "parentOperationId": 3,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "details": {
+        "tool": "qemu-img.exe",
+        "action": "info"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 18,
+      "utc": "2026-10-17T19:58:03.4405870Z",
+      "elapsedSeconds": 46.559146,
+      "event": "end",
+      "operationId": 10,
+      "parentOperationId": 3,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "durationSeconds": 0.0381296,
+      "digestTotals": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 19,
+      "utc": "2026-10-17T19:58:03.4887751Z",
+      "elapsedSeconds": 46.6081925,
+      "event": "start",
+      "operationId": 11,
+      "parentOperationId": 3,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "details": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 20,
+      "utc": "2026-10-17T19:58:23.8358267Z",
+      "elapsedSeconds": 66.9544621,
+      "event": "end",
+      "operationId": 11,
+      "parentOperationId": 3,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "durationSeconds": 20.3463186,
+      "digestTotals": {
+        "manifest": {
+          "calls": 2,
+          "failedCalls": 0,
+          "bytes": 936336,
+          "elapsedSeconds": 0.004631
+        },
+        "source-image": {
+          "calls": 3,
+          "failedCalls": 0,
+          "bytes": 1404520,
+          "elapsedSeconds": 0.0067304
+        },
+        "other": {
+          "calls": 3381,
+          "failedCalls": 0,
+          "bytes": 0,
+          "elapsedSeconds": 7.384370299999967
+        }
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 21,
+      "utc": "2026-10-17T19:58:24.1211814Z",
+      "elapsedSeconds": 67.23974,
+      "event": "end",
+      "operationId": 3,
+      "parentOperationId": 1,
+      "operation": "Install-EzVmQemuRuntime",
+      "category": "acquisition",
+      "durationSeconds": 65.4444415,
+      "digestTotals": {
+        "manifest": {
+          "calls": 4,
+          "failedCalls": 0,
+          "bytes": 1872672,
+          "elapsedSeconds": 0.0278976
+        },
+        "source-image": {
+          "calls": 6,
+          "failedCalls": 0,
+          "bytes": 2809040,
+          "elapsedSeconds": 0.0145334
+        },
+        "other": {
+          "calls": 6771,
+          "failedCalls": 0,
+          "bytes": 0,
+          "elapsedSeconds": 23.143988399999994
+        }
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 22,
+      "utc": "2026-10-17T19:58:24.1587767Z",
+      "elapsedSeconds": 67.2778597,
+      "event": "identity",
+      "operationId": 1,
+      "parentOperationId": null,
+      "operation": "verified-identity",
+      "category": "identity",
+      "details": {
+        "kind": "qemu-system",
+        "sha256": "47d57a6072e0bb3bd98f87926eb129eb1736dfe818c67b3b81ef7ce4edd0b3cd",
+        "sizeBytes": 25457048,
+        "version": "11.1.0"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 23,
+      "utc": "2026-10-17T19:58:24.1638040Z",
+      "elapsedSeconds": 67.2825331,
+      "event": "identity",
+      "operationId": 1,
+      "parentOperationId": null,
+      "operation": "verified-identity",
+      "category": "identity",
+      "details": {
+        "kind": "qemu-img",
+        "sha256": "9d930582d0d574bb106d89982c547688e10b8f356192d302cc3d0ae4e8674534",
+        "sizeBytes": 1934744,
+        "version": "11.1.0"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 24,
+      "utc": "2026-10-17T19:58:24.1648036Z",
+      "elapsedSeconds": 67.28350209999999,
+      "event": "start",
+      "operationId": 12,
+      "parentOperationId": 1,
+      "operation": "Get-EzVmDoctorReport",
+      "category": "validation",
+      "details": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 25,
+      "utc": "2026-10-17T19:58:25.5995312Z",
+      "elapsedSeconds": 68.7183865,
+      "event": "start",
+      "operationId": 13,
+      "parentOperationId": 12,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "details": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 26,
+      "utc": "2026-10-17T19:58:46.7564126Z",
+      "elapsedSeconds": 89.87507099999999,
+      "event": "end",
+      "operationId": 13,
+      "parentOperationId": 12,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "durationSeconds": 21.156733,
+      "digestTotals": {
+        "manifest": {
+          "calls": 2,
+          "failedCalls": 0,
+          "bytes": 936336,
+          "elapsedSeconds": 0.0038738000000000036
+        },
+        "qemu-payload": {
+          "calls": 3384,
+          "failedCalls": 0,
+          "bytes": 1255872082,
+          "elapsedSeconds": 7.768397499999993
+        }
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 27,
+      "utc": "2026-10-17T19:58:46.7574185Z",
+      "elapsedSeconds": 89.8759116,
+      "event": "start",
+      "operationId": 14,
+      "parentOperationId": 12,
+      "operation": "Invoke-EzVmProcess",
+      "category": "process",
+      "details": {
+        "tool": "qemu-system-x86_64.exe"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 28,
+      "utc": "2026-10-17T19:58:46.8806099Z",
+      "elapsedSeconds": 89.99995009999999,
+      "event": "end",
+      "operationId": 14,
+      "parentOperationId": 12,
+      "operation": "Invoke-EzVmProcess",
+      "category": "process",
+      "durationSeconds": 0.1240674,
+      "digestTotals": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 29,
+      "utc": "2026-10-17T19:58:46.8816924Z",
+      "elapsedSeconds": 90.0008958,
+      "event": "start",
+      "operationId": 15,
+      "parentOperationId": 12,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "details": {
+        "tool": "qemu-img.exe",
+        "action": "--version"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 30,
+      "utc": "2026-10-17T19:58:46.9302025Z",
+      "elapsedSeconds": 90.0487893,
+      "event": "end",
+      "operationId": 15,
+      "parentOperationId": 12,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "durationSeconds": 0.0478558,
+      "digestTotals": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 31,
+      "utc": "2026-10-17T19:58:46.9442341Z",
+      "elapsedSeconds": 90.06341309999999,
+      "event": "end",
+      "operationId": 12,
+      "parentOperationId": 1,
+      "operation": "Get-EzVmDoctorReport",
+      "category": "validation",
+      "durationSeconds": 22.7800213,
+      "digestTotals": {
+        "manifest": {
+          "calls": 2,
+          "failedCalls": 0,
+          "bytes": 936336,
+          "elapsedSeconds": 0.0038738000000000036
+        },
+        "qemu-payload": {
+          "calls": 3384,
+          "failedCalls": 0,
+          "bytes": 1255872082,
+          "elapsedSeconds": 7.768397499999993
+        }
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 32,
+      "utc": "2026-10-17T19:58:46.9582749Z",
+      "elapsedSeconds": 90.077466,
+      "event": "start",
+      "operationId": 16,
+      "parentOperationId": 1,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "details": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 33,
+      "utc": "2026-10-17T19:59:06.0836587Z",
+      "elapsedSeconds": 109.20286229999999,
+      "event": "end",
+      "operationId": 16,
+      "parentOperationId": 1,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "durationSeconds": 19.1253443,
+      "digestTotals": {
+        "manifest": {
+          "calls": 2,
+          "failedCalls": 0,
+          "bytes": 936336,
+          "elapsedSeconds": 0.007347999999999993
+        },
+        "qemu-payload": {
+          "calls": 3384,
+          "failedCalls": 0,
+          "bytes": 1255872082,
+          "elapsedSeconds": 6.793176000000007
+        }
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 34,
+      "utc": "2026-10-17T19:59:06.0871648Z",
+      "elapsedSeconds": 109.206012,
+      "event": "start",
+      "operationId": 17,
+      "parentOperationId": 1,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "details": {
+        "tool": "qemu-img.exe",
+        "action": "create"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 35,
+      "utc": "2026-10-17T19:59:06.1375813Z",
+      "elapsedSeconds": 109.25609519999999,
+      "event": "end",
+      "operationId": 17,
+      "parentOperationId": 1,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "durationSeconds": 0.050064,
+      "digestTotals": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 36,
+      "utc": "2026-10-17T19:59:06.1548174Z",
+      "elapsedSeconds": 109.27393939999999,
+      "event": "start",
+      "operationId": 18,
+      "parentOperationId": 1,
+      "operation": "Import-EzVmManagedInstance",
+      "category": "image",
+      "details": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 37,
+      "utc": "2026-10-17T19:59:06.4385024Z",
+      "elapsedSeconds": 109.55789689999999,
+      "event": "start",
+      "operationId": 19,
+      "parentOperationId": 18,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "details": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 38,
+      "utc": "2026-10-17T19:59:28.6461320Z",
+      "elapsedSeconds": 131.7653211,
+      "event": "end",
+      "operationId": 19,
+      "parentOperationId": 18,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "durationSeconds": 22.2074782,
+      "digestTotals": {
+        "manifest": {
+          "calls": 2,
+          "failedCalls": 0,
+          "bytes": 936336,
+          "elapsedSeconds": 0.0042724999999999985
+        },
+        "qemu-payload": {
+          "calls": 3384,
+          "failedCalls": 0,
+          "bytes": 1255872082,
+          "elapsedSeconds": 7.746091099999958
+        }
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 39,
+      "utc": "2026-10-17T19:59:28.6471324Z",
+      "elapsedSeconds": 131.7660291,
+      "event": "start",
+      "operationId": 20,
+      "parentOperationId": 18,
+      "operation": "Invoke-EzVmProcess",
+      "category": "process",
+      "details": {
+        "tool": "qemu-system-x86_64.exe"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 40,
+      "utc": "2026-10-17T19:59:28.7681405Z",
+      "elapsedSeconds": 131.8871471,
+      "event": "end",
+      "operationId": 20,
+      "parentOperationId": 18,
+      "operation": "Invoke-EzVmProcess",
+      "category": "process",
+      "durationSeconds": 0.1211428,
+      "digestTotals": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 41,
+      "utc": "2026-10-17T19:59:28.7691402Z",
+      "elapsedSeconds": 131.8879093,
+      "event": "start",
+      "operationId": 21,
+      "parentOperationId": 18,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "details": {
+        "tool": "qemu-img.exe",
+        "action": "--version"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 42,
+      "utc": "2026-10-17T19:59:28.8061723Z",
+      "elapsedSeconds": 131.9246881,
+      "event": "end",
+      "operationId": 21,
+      "parentOperationId": 18,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "durationSeconds": 0.0367596,
+      "digestTotals": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 43,
+      "utc": "2026-10-17T19:59:28.8518135Z",
+      "elapsedSeconds": 131.9710809,
+      "event": "start",
+      "operationId": 22,
+      "parentOperationId": 18,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "details": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 44,
+      "utc": "2026-10-17T19:59:51.2317433Z",
+      "elapsedSeconds": 154.3509929,
+      "event": "end",
+      "operationId": 22,
+      "parentOperationId": 18,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "durationSeconds": 22.3798349,
+      "digestTotals": {
+        "manifest": {
+          "calls": 2,
+          "failedCalls": 0,
+          "bytes": 936336,
+          "elapsedSeconds": 0.005303799999999997
+        },
+        "qemu-payload": {
+          "calls": 3384,
+          "failedCalls": 0,
+          "bytes": 1255872082,
+          "elapsedSeconds": 7.7357035000000565
+        }
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 45,
+      "utc": "2026-10-17T19:59:51.2327438Z",
+      "elapsedSeconds": 154.3521318,
+      "event": "start",
+      "operationId": 23,
+      "parentOperationId": 18,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "details": {
+        "tool": "qemu-img.exe",
+        "action": "info"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 46,
+      "utc": "2026-10-17T19:59:51.2724835Z",
+      "elapsedSeconds": 154.3911928,
+      "event": "end",
+      "operationId": 23,
+      "parentOperationId": 18,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "durationSeconds": 0.0390823,
+      "digestTotals": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 47,
+      "utc": "2026-10-17T19:59:51.2911776Z",
+      "elapsedSeconds": 154.41027259999998,
+      "event": "start",
+      "operationId": 24,
+      "parentOperationId": 18,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "details": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 48,
+      "utc": "2026-10-17T20:00:12.5026619Z",
+      "elapsedSeconds": 175.6218486,
+      "event": "end",
+      "operationId": 24,
+      "parentOperationId": 18,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "durationSeconds": 21.2116176,
+      "digestTotals": {
+        "manifest": {
+          "calls": 2,
+          "failedCalls": 0,
+          "bytes": 936336,
+          "elapsedSeconds": 0.004667499999999998
+        },
+        "qemu-payload": {
+          "calls": 3384,
+          "failedCalls": 0,
+          "bytes": 1255872082,
+          "elapsedSeconds": 7.275037099999942
+        }
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 49,
+      "utc": "2026-10-17T20:00:12.5041674Z",
+      "elapsedSeconds": 175.6227726,
+      "event": "start",
+      "operationId": 25,
+      "parentOperationId": 18,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "details": {
+        "tool": "qemu-img.exe",
+        "action": "check"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 50,
+      "utc": "2026-10-17T20:00:12.5442556Z",
+      "elapsedSeconds": 175.6630897,
+      "event": "end",
+      "operationId": 25,
+      "parentOperationId": 18,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "durationSeconds": 0.0403479,
+      "digestTotals": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 51,
+      "utc": "2026-10-17T20:00:12.5598685Z",
+      "elapsedSeconds": 175.6791341,
+      "event": "start",
+      "operationId": 26,
+      "parentOperationId": 18,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "details": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 52,
+      "utc": "2026-10-17T20:00:31.6453316Z",
+      "elapsedSeconds": 194.76450169999998,
+      "event": "end",
+      "operationId": 26,
+      "parentOperationId": 18,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "durationSeconds": 19.0854062,
+      "digestTotals": {
+        "manifest": {
+          "calls": 2,
+          "failedCalls": 0,
+          "bytes": 936336,
+          "elapsedSeconds": 0.003974100000000001
+        },
+        "qemu-payload": {
+          "calls": 3384,
+          "failedCalls": 0,
+          "bytes": 1255872082,
+          "elapsedSeconds": 6.869315800000081
+        }
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 53,
+      "utc": "2026-10-17T20:00:31.6463361Z",
+      "elapsedSeconds": 194.7654206,
+      "event": "start",
+      "operationId": 27,
+      "parentOperationId": 18,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "details": {
+        "tool": "qemu-img.exe",
+        "action": "convert"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 54,
+      "utc": "2026-10-17T20:00:31.6965280Z",
+      "elapsedSeconds": 194.81593959999998,
+      "event": "end",
+      "operationId": 27,
+      "parentOperationId": 18,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "durationSeconds": 0.0505537,
+      "digestTotals": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 55,
+      "utc": "2026-10-17T20:00:31.7070657Z",
+      "elapsedSeconds": 194.8263275,
+      "event": "start",
+      "operationId": 28,
+      "parentOperationId": 18,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "details": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 56,
+      "utc": "2026-10-17T20:00:51.0570927Z",
+      "elapsedSeconds": 214.1758363,
+      "event": "end",
+      "operationId": 28,
+      "parentOperationId": 18,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "durationSeconds": 19.3495418,
+      "digestTotals": {
+        "manifest": {
+          "calls": 2,
+          "failedCalls": 0,
+          "bytes": 936336,
+          "elapsedSeconds": 0.006565200000000007
+        },
+        "qemu-payload": {
+          "calls": 3384,
+          "failedCalls": 0,
+          "bytes": 1255872082,
+          "elapsedSeconds": 6.802181200000049
+        }
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 57,
+      "utc": "2026-10-17T20:00:51.0580986Z",
+      "elapsedSeconds": 214.1767409,
+      "event": "start",
+      "operationId": 29,
+      "parentOperationId": 18,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "details": {
+        "tool": "qemu-img.exe",
+        "action": "info"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 58,
+      "utc": "2026-10-17T20:00:51.0947804Z",
+      "elapsedSeconds": 214.2140667,
+      "event": "end",
+      "operationId": 29,
+      "parentOperationId": 18,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "durationSeconds": 0.03723,
+      "digestTotals": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 59,
+      "utc": "2026-10-17T20:00:51.1038479Z",
+      "elapsedSeconds": 214.22370089999998,
+      "event": "start",
+      "operationId": 30,
+      "parentOperationId": 18,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "details": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 60,
+      "utc": "2026-10-17T20:01:10.2555042Z",
+      "elapsedSeconds": 233.3748894,
+      "event": "end",
+      "operationId": 30,
+      "parentOperationId": 18,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "durationSeconds": 19.1512113,
+      "digestTotals": {
+        "manifest": {
+          "calls": 2,
+          "failedCalls": 0,
+          "bytes": 936336,
+          "elapsedSeconds": 0.0048845
+        },
+        "qemu-payload": {
+          "calls": 3384,
+          "failedCalls": 0,
+          "bytes": 1255872082,
+          "elapsedSeconds": 6.956969999999899
+        }
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 61,
+      "utc": "2026-10-17T20:01:10.2565039Z",
+      "elapsedSeconds": 233.3757561,
+      "event": "start",
+      "operationId": 31,
+      "parentOperationId": 18,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "details": {
+        "tool": "qemu-img.exe",
+        "action": "check"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 62,
+      "utc": "2026-10-17T20:01:10.2961056Z",
+      "elapsedSeconds": 233.4146142,
+      "event": "end",
+      "operationId": 31,
+      "parentOperationId": 18,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "durationSeconds": 0.0388483,
+      "digestTotals": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 63,
+      "utc": "2026-10-17T20:01:10.3735088Z",
+      "elapsedSeconds": 233.4928905,
+      "event": "start",
+      "operationId": 32,
+      "parentOperationId": 18,
+      "operation": "Test-EzVmPreparedBaseDirectory",
+      "category": "validation",
+      "details": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 64,
+      "utc": "2026-10-17T20:01:10.4191903Z",
+      "elapsedSeconds": 233.5376882,
+      "event": "start",
+      "operationId": 33,
+      "parentOperationId": 32,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "details": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 65,
+      "utc": "2026-10-17T20:01:30.9334813Z",
+      "elapsedSeconds": 254.05298159999998,
+      "event": "end",
+      "operationId": 33,
+      "parentOperationId": 32,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "durationSeconds": 20.5153371,
+      "digestTotals": {
+        "manifest": {
+          "calls": 2,
+          "failedCalls": 0,
+          "bytes": 936336,
+          "elapsedSeconds": 0.003759299999999993
+        },
+        "qemu-payload": {
+          "calls": 3384,
+          "failedCalls": 0,
+          "bytes": 1255872082,
+          "elapsedSeconds": 7.444389699999789
+        }
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 66,
+      "utc": "2026-10-17T20:01:30.9349853Z",
+      "elapsedSeconds": 254.0538828,
+      "event": "start",
+      "operationId": 34,
+      "parentOperationId": 32,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "details": {
+        "tool": "qemu-img.exe",
+        "action": "info"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 67,
+      "utc": "2026-10-17T20:01:30.9711478Z",
+      "elapsedSeconds": 254.09012349999998,
+      "event": "end",
+      "operationId": 34,
+      "parentOperationId": 32,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "durationSeconds": 0.0361957,
+      "digestTotals": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 68,
+      "utc": "2026-10-17T20:01:30.9741467Z",
+      "elapsedSeconds": 254.0929459,
+      "event": "end",
+      "operationId": 32,
+      "parentOperationId": 18,
+      "operation": "Test-EzVmPreparedBaseDirectory",
+      "category": "validation",
+      "durationSeconds": 20.6001393,
+      "digestTotals": {
+        "manifest": {
+          "calls": 2,
+          "failedCalls": 0,
+          "bytes": 936336,
+          "elapsedSeconds": 0.003759299999999993
+        },
+        "qemu-payload": {
+          "calls": 3384,
+          "failedCalls": 0,
+          "bytes": 1255872082,
+          "elapsedSeconds": 7.444389699999789
+        },
+        "base-image": {
+          "calls": 1,
+          "failedCalls": 0,
+          "bytes": 197120,
+          "elapsedSeconds": 0.0019545
+        }
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 69,
+      "utc": "2026-10-17T20:01:31.1153406Z",
+      "elapsedSeconds": 254.2352834,
+      "event": "start",
+      "operationId": 35,
+      "parentOperationId": 18,
+      "operation": "Test-EzVmPreparedBaseDirectory",
+      "category": "validation",
+      "details": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 70,
+      "utc": "2026-10-17T20:01:31.1595704Z",
+      "elapsedSeconds": 254.2788953,
+      "event": "start",
+      "operationId": 36,
+      "parentOperationId": 35,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "details": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 71,
+      "utc": "2026-10-17T20:01:52.9930825Z",
+      "elapsedSeconds": 276.1121617,
+      "event": "end",
+      "operationId": 36,
+      "parentOperationId": 35,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "durationSeconds": 21.8332597,
+      "digestTotals": {
+        "manifest": {
+          "calls": 2,
+          "failedCalls": 0,
+          "bytes": 936336,
+          "elapsedSeconds": 0.00585999999999999
+        },
+        "qemu-payload": {
+          "calls": 3384,
+          "failedCalls": 0,
+          "bytes": 1255872082,
+          "elapsedSeconds": 7.623923900000108
+        }
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 72,
+      "utc": "2026-10-17T20:01:52.9940841Z",
+      "elapsedSeconds": 276.113291,
+      "event": "start",
+      "operationId": 37,
+      "parentOperationId": 35,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "details": {
+        "tool": "qemu-img.exe",
+        "action": "info"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 73,
+      "utc": "2026-10-17T20:01:53.0348998Z",
+      "elapsedSeconds": 276.15417709999997,
+      "event": "end",
+      "operationId": 37,
+      "parentOperationId": 35,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "durationSeconds": 0.0408827,
+      "digestTotals": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 74,
+      "utc": "2026-10-17T20:01:53.0384047Z",
+      "elapsedSeconds": 276.1568972,
+      "event": "end",
+      "operationId": 35,
+      "parentOperationId": 18,
+      "operation": "Test-EzVmPreparedBaseDirectory",
+      "category": "validation",
+      "durationSeconds": 21.9216823,
+      "digestTotals": {
+        "manifest": {
+          "calls": 2,
+          "failedCalls": 0,
+          "bytes": 936336,
+          "elapsedSeconds": 0.00585999999999999
+        },
+        "qemu-payload": {
+          "calls": 3384,
+          "failedCalls": 0,
+          "bytes": 1255872082,
+          "elapsedSeconds": 7.623923900000108
+        },
+        "base-image": {
+          "calls": 1,
+          "failedCalls": 0,
+          "bytes": 197120,
+          "elapsedSeconds": 0.0030494000000000003
+        }
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 75,
+      "utc": "2026-10-17T20:01:53.1816173Z",
+      "elapsedSeconds": 276.3004185,
+      "event": "start",
+      "operationId": 38,
+      "parentOperationId": 18,
+      "operation": "Test-EzVmPreparedBaseDirectory",
+      "category": "validation",
+      "details": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 76,
+      "utc": "2026-10-17T20:01:53.2136573Z",
+      "elapsedSeconds": 276.3321569,
+      "event": "start",
+      "operationId": 39,
+      "parentOperationId": 38,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "details": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 77,
+      "utc": "2026-10-17T20:02:13.4020084Z",
+      "elapsedSeconds": 296.5212863,
+      "event": "end",
+      "operationId": 39,
+      "parentOperationId": 38,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "durationSeconds": 20.1891922,
+      "digestTotals": {
+        "manifest": {
+          "calls": 2,
+          "failedCalls": 0,
+          "bytes": 936336,
+          "elapsedSeconds": 0.005870699999999993
+        },
+        "qemu-payload": {
+          "calls": 3384,
+          "failedCalls": 0,
+          "bytes": 1255872082,
+          "elapsedSeconds": 7.01959800000003
+        }
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 78,
+      "utc": "2026-10-17T20:02:13.4035163Z",
+      "elapsedSeconds": 296.5220855,
+      "event": "start",
+      "operationId": 40,
+      "parentOperationId": 38,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "details": {
+        "tool": "qemu-img.exe",
+        "action": "info"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 79,
+      "utc": "2026-10-17T20:02:13.4357143Z",
+      "elapsedSeconds": 296.5552282,
+      "event": "end",
+      "operationId": 40,
+      "parentOperationId": 38,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "durationSeconds": 0.0331632,
+      "digestTotals": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 80,
+      "utc": "2026-10-17T20:02:13.4382267Z",
+      "elapsedSeconds": 296.5571986,
+      "event": "end",
+      "operationId": 38,
+      "parentOperationId": 18,
+      "operation": "Test-EzVmPreparedBaseDirectory",
+      "category": "validation",
+      "durationSeconds": 20.2568119,
+      "digestTotals": {
+        "manifest": {
+          "calls": 2,
+          "failedCalls": 0,
+          "bytes": 936336,
+          "elapsedSeconds": 0.005870699999999993
+        },
+        "qemu-payload": {
+          "calls": 3384,
+          "failedCalls": 0,
+          "bytes": 1255872082,
+          "elapsedSeconds": 7.01959800000003
+        },
+        "base-image": {
+          "calls": 1,
+          "failedCalls": 0,
+          "bytes": 197120,
+          "elapsedSeconds": 0.0018390999999999998
+        }
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 81,
+      "utc": "2026-10-17T20:02:13.4798556Z",
+      "elapsedSeconds": 296.5984279,
+      "event": "start",
+      "operationId": 41,
+      "parentOperationId": 18,
+      "operation": "Test-EzVmPreparedBaseDirectory",
+      "category": "validation",
+      "details": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 82,
+      "utc": "2026-10-17T20:02:13.5089449Z",
+      "elapsedSeconds": 296.6275008,
+      "event": "start",
+      "operationId": 42,
+      "parentOperationId": 41,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "details": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 83,
+      "utc": "2026-10-17T20:02:34.9547627Z",
+      "elapsedSeconds": 318.0744441,
+      "event": "end",
+      "operationId": 42,
+      "parentOperationId": 41,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "durationSeconds": 21.4469449,
+      "digestTotals": {
+        "manifest": {
+          "calls": 2,
+          "failedCalls": 0,
+          "bytes": 936336,
+          "elapsedSeconds": 0.0034806000000000004
+        },
+        "qemu-payload": {
+          "calls": 3384,
+          "failedCalls": 0,
+          "bytes": 1255872082,
+          "elapsedSeconds": 8.250938300000385
+        }
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 84,
+      "utc": "2026-10-17T20:02:34.9562677Z",
+      "elapsedSeconds": 318.0754689,
+      "event": "start",
+      "operationId": 43,
+      "parentOperationId": 41,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "details": {
+        "tool": "qemu-img.exe",
+        "action": "info"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 85,
+      "utc": "2026-10-17T20:02:34.9914626Z",
+      "elapsedSeconds": 318.1104754,
+      "event": "end",
+      "operationId": 43,
+      "parentOperationId": 41,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "durationSeconds": 0.034987,
+      "digestTotals": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 86,
+      "utc": "2026-10-17T20:02:34.9969660Z",
+      "elapsedSeconds": 318.115979,
+      "event": "end",
+      "operationId": 41,
+      "parentOperationId": 18,
+      "operation": "Test-EzVmPreparedBaseDirectory",
+      "category": "validation",
+      "durationSeconds": 21.5175441,
+      "digestTotals": {
+        "manifest": {
+          "calls": 2,
+          "failedCalls": 0,
+          "bytes": 936336,
+          "elapsedSeconds": 0.0034806000000000004
+        },
+        "qemu-payload": {
+          "calls": 3384,
+          "failedCalls": 0,
+          "bytes": 1255872082,
+          "elapsedSeconds": 8.250938300000385
+        },
+        "base-image": {
+          "calls": 1,
+          "failedCalls": 0,
+          "bytes": 197120,
+          "elapsedSeconds": 0.0016488000000000006
+        }
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 87,
+      "utc": "2026-10-17T20:02:35.0115300Z",
+      "elapsedSeconds": 318.130842,
+      "event": "start",
+      "operationId": 44,
+      "parentOperationId": 18,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "details": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 88,
+      "utc": "2026-10-17T20:02:55.6409482Z",
+      "elapsedSeconds": 338.7599515,
+      "event": "end",
+      "operationId": 44,
+      "parentOperationId": 18,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "durationSeconds": 20.6291486,
+      "digestTotals": {
+        "manifest": {
+          "calls": 2,
+          "failedCalls": 0,
+          "bytes": 936336,
+          "elapsedSeconds": 0.004466700000000004
+        },
+        "qemu-payload": {
+          "calls": 3384,
+          "failedCalls": 0,
+          "bytes": 1255872082,
+          "elapsedSeconds": 7.404361900000225
+        }
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 89,
+      "utc": "2026-10-17T20:02:55.6419583Z",
+      "elapsedSeconds": 338.7608154,
+      "event": "start",
+      "operationId": 45,
+      "parentOperationId": 18,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "details": {
+        "tool": "qemu-img.exe",
+        "action": "create"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 90,
+      "utc": "2026-10-17T20:02:55.6841648Z",
+      "elapsedSeconds": 338.8034214,
+      "event": "end",
+      "operationId": 45,
+      "parentOperationId": 18,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "durationSeconds": 0.0426452,
+      "digestTotals": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 91,
+      "utc": "2026-10-17T20:02:55.7203325Z",
+      "elapsedSeconds": 338.83899909999997,
+      "event": "start",
+      "operationId": 46,
+      "parentOperationId": 18,
+      "operation": "Test-EzVmPreparedBaseDirectory",
+      "category": "validation",
+      "details": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 92,
+      "utc": "2026-10-17T20:02:55.7530247Z",
+      "elapsedSeconds": 338.87178769999997,
+      "event": "start",
+      "operationId": 47,
+      "parentOperationId": 46,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "details": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 93,
+      "utc": "2026-10-17T20:03:16.3355419Z",
+      "elapsedSeconds": 359.454074,
+      "event": "end",
+      "operationId": 47,
+      "parentOperationId": 46,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "durationSeconds": 20.5823121,
+      "digestTotals": {
+        "manifest": {
+          "calls": 2,
+          "failedCalls": 0,
+          "bytes": 936336,
+          "elapsedSeconds": 0.0035215999999999997
+        },
+        "qemu-payload": {
+          "calls": 3384,
+          "failedCalls": 0,
+          "bytes": 1255872082,
+          "elapsedSeconds": 7.433103800000055
+        }
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 94,
+      "utc": "2026-10-17T20:03:16.3355419Z",
+      "elapsedSeconds": 359.454989,
+      "event": "start",
+      "operationId": 48,
+      "parentOperationId": 46,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "details": {
+        "tool": "qemu-img.exe",
+        "action": "info"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 95,
+      "utc": "2026-10-17T20:03:16.3793108Z",
+      "elapsedSeconds": 359.49795409999996,
+      "event": "end",
+      "operationId": 48,
+      "parentOperationId": 46,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "durationSeconds": 0.0429139,
+      "digestTotals": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 96,
+      "utc": "2026-10-17T20:03:16.3818201Z",
+      "elapsedSeconds": 359.50095469999997,
+      "event": "end",
+      "operationId": 46,
+      "parentOperationId": 18,
+      "operation": "Test-EzVmPreparedBaseDirectory",
+      "category": "validation",
+      "durationSeconds": 20.6620148,
+      "digestTotals": {
+        "manifest": {
+          "calls": 2,
+          "failedCalls": 0,
+          "bytes": 936336,
+          "elapsedSeconds": 0.0035215999999999997
+        },
+        "qemu-payload": {
+          "calls": 3384,
+          "failedCalls": 0,
+          "bytes": 1255872082,
+          "elapsedSeconds": 7.433103800000055
+        },
+        "base-image": {
+          "calls": 1,
+          "failedCalls": 0,
+          "bytes": 197120,
+          "elapsedSeconds": 0.0019778
+        }
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 97,
+      "utc": "2026-10-17T20:03:16.3963742Z",
+      "elapsedSeconds": 359.514865,
+      "event": "start",
+      "operationId": 49,
+      "parentOperationId": 18,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "details": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 98,
+      "utc": "2026-10-17T20:03:37.2133014Z",
+      "elapsedSeconds": 380.3318847,
+      "event": "end",
+      "operationId": 49,
+      "parentOperationId": 18,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "durationSeconds": 20.8170662,
+      "digestTotals": {
+        "manifest": {
+          "calls": 2,
+          "failedCalls": 0,
+          "bytes": 936336,
+          "elapsedSeconds": 0.0040484000000000075
+        },
+        "qemu-payload": {
+          "calls": 3384,
+          "failedCalls": 0,
+          "bytes": 1255872082,
+          "elapsedSeconds": 6.9693819000003145
+        }
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 99,
+      "utc": "2026-10-17T20:03:37.2133014Z",
+      "elapsedSeconds": 380.332683,
+      "event": "start",
+      "operationId": 50,
+      "parentOperationId": 18,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "details": {
+        "tool": "qemu-img.exe",
+        "action": "info"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 100,
+      "utc": "2026-10-17T20:03:37.2526163Z",
+      "elapsedSeconds": 380.3721182,
+      "event": "end",
+      "operationId": 50,
+      "parentOperationId": 18,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "durationSeconds": 0.0394392,
+      "digestTotals": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 101,
+      "utc": "2026-10-17T20:03:37.2722315Z",
+      "elapsedSeconds": 380.3915365,
+      "event": "end",
+      "operationId": 18,
+      "parentOperationId": 1,
+      "operation": "Import-EzVmManagedInstance",
+      "category": "image",
+      "durationSeconds": 271.1178129,
+      "digestTotals": {
+        "manifest": {
+          "calls": 27,
+          "failedCalls": 0,
+          "bytes": 12173489,
+          "elapsedSeconds": 0.06254159999999999
+        },
+        "qemu-payload": {
+          "calls": 43992,
+          "failedCalls": 0,
+          "bytes": 16326337066,
+          "elapsedSeconds": 95.53099620000089
+        },
+        "base-image": {
+          "calls": 5,
+          "failedCalls": 0,
+          "bytes": 985600,
+          "elapsedSeconds": 0.0104696
+        },
+        "other": {
+          "calls": 3,
+          "failedCalls": 0,
+          "bytes": 0,
+          "elapsedSeconds": 0.0058925999999992484
+        }
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 102,
+      "utc": "2026-10-17T20:03:37.2842768Z",
+      "elapsedSeconds": 380.40325909999996,
+      "event": "start",
+      "operationId": 51,
+      "parentOperationId": 1,
+      "operation": "Test-EzVmPreparedBaseDirectory",
+      "category": "validation",
+      "details": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 103,
+      "utc": "2026-10-17T20:03:37.3204671Z",
+      "elapsedSeconds": 380.43908439999996,
+      "event": "start",
+      "operationId": 52,
+      "parentOperationId": 51,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "details": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 104,
+      "utc": "2026-10-17T20:03:55.8396595Z",
+      "elapsedSeconds": 398.958639,
+      "event": "end",
+      "operationId": 52,
+      "parentOperationId": 51,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "durationSeconds": 18.519568,
+      "digestTotals": {
+        "manifest": {
+          "calls": 2,
+          "failedCalls": 0,
+          "bytes": 936336,
+          "elapsedSeconds": 0.00336489999999999
+        },
+        "qemu-payload": {
+          "calls": 3384,
+          "failedCalls": 0,
+          "bytes": 1255872082,
+          "elapsedSeconds": 6.788923799999893
+        }
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 105,
+      "utc": "2026-10-17T20:03:55.8406621Z",
+      "elapsedSeconds": 398.9594868,
+      "event": "start",
+      "operationId": 53,
+      "parentOperationId": 51,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "details": {
+        "tool": "qemu-img.exe",
+        "action": "info"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 106,
+      "utc": "2026-10-17T20:03:55.8748935Z",
+      "elapsedSeconds": 398.9933775,
+      "event": "end",
+      "operationId": 53,
+      "parentOperationId": 51,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "durationSeconds": 0.0338954,
+      "digestTotals": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 107,
+      "utc": "2026-10-17T20:03:55.8758926Z",
+      "elapsedSeconds": 398.9952171,
+      "event": "end",
+      "operationId": 51,
+      "parentOperationId": 1,
+      "operation": "Test-EzVmPreparedBaseDirectory",
+      "category": "validation",
+      "durationSeconds": 18.591975,
+      "digestTotals": {
+        "manifest": {
+          "calls": 2,
+          "failedCalls": 0,
+          "bytes": 936336,
+          "elapsedSeconds": 0.00336489999999999
+        },
+        "qemu-payload": {
+          "calls": 3384,
+          "failedCalls": 0,
+          "bytes": 1255872082,
+          "elapsedSeconds": 6.788923799999893
+        },
+        "base-image": {
+          "calls": 1,
+          "failedCalls": 0,
+          "bytes": 197120,
+          "elapsedSeconds": 0.0016673
+        }
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 108,
+      "utc": "2026-10-17T20:03:55.8854042Z",
+      "elapsedSeconds": 399.0039867,
+      "event": "start",
+      "operationId": 54,
+      "parentOperationId": 1,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "details": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 109,
+      "utc": "2026-10-17T20:04:14.1651969Z",
+      "elapsedSeconds": 417.2841815,
+      "event": "end",
+      "operationId": 54,
+      "parentOperationId": 1,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "durationSeconds": 18.28019,
+      "digestTotals": {
+        "manifest": {
+          "calls": 2,
+          "failedCalls": 0,
+          "bytes": 936336,
+          "elapsedSeconds": 0.0036355
+        },
+        "qemu-payload": {
+          "calls": 3384,
+          "failedCalls": 0,
+          "bytes": 1255872082,
+          "elapsedSeconds": 6.816349699999947
+        }
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 110,
+      "utc": "2026-10-17T20:04:14.1667010Z",
+      "elapsedSeconds": 417.2861208,
+      "event": "start",
+      "operationId": 55,
+      "parentOperationId": 1,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "details": {
+        "tool": "qemu-img.exe",
+        "action": "compare"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 111,
+      "utc": "2026-10-17T20:04:14.2066620Z",
+      "elapsedSeconds": 417.3252587,
+      "event": "end",
+      "operationId": 55,
+      "parentOperationId": 1,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "durationSeconds": 0.0390573,
+      "digestTotals": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 112,
+      "utc": "2026-10-17T20:04:14.2126748Z",
+      "elapsedSeconds": 417.3313971,
+      "event": "start",
+      "operationId": 56,
+      "parentOperationId": 1,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "details": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 113,
+      "utc": "2026-10-17T20:04:34.5565769Z",
+      "elapsedSeconds": 437.6754833,
+      "event": "end",
+      "operationId": 56,
+      "parentOperationId": 1,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "durationSeconds": 20.3440761,
+      "digestTotals": {
+        "manifest": {
+          "calls": 2,
+          "failedCalls": 0,
+          "bytes": 936336,
+          "elapsedSeconds": 0.004864199999999999
+        },
+        "qemu-payload": {
+          "calls": 3384,
+          "failedCalls": 0,
+          "bytes": 1255872082,
+          "elapsedSeconds": 6.94983319999956
+        }
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 114,
+      "utc": "2026-10-17T20:04:34.5575866Z",
+      "elapsedSeconds": 437.6764298,
+      "event": "start",
+      "operationId": 57,
+      "parentOperationId": 1,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "details": {
+        "tool": "qemu-img.exe",
+        "action": "other"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 115,
+      "utc": "2026-10-17T20:04:34.6003160Z",
+      "elapsedSeconds": 437.71931079999996,
+      "event": "end",
+      "operationId": 57,
+      "parentOperationId": 1,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "durationSeconds": 0.042857,
+      "digestTotals": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 116,
+      "utc": "2026-10-17T20:04:34.6109017Z",
+      "elapsedSeconds": 437.7294374,
+      "event": "start",
+      "operationId": 58,
+      "parentOperationId": 1,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "details": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 117,
+      "utc": "2026-10-17T20:04:54.4462370Z",
+      "elapsedSeconds": 457.5650905,
+      "event": "end",
+      "operationId": 58,
+      "parentOperationId": 1,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "durationSeconds": 19.8357267,
+      "digestTotals": {
+        "manifest": {
+          "calls": 2,
+          "failedCalls": 0,
+          "bytes": 936336,
+          "elapsedSeconds": 0.004936599999999999
+        },
+        "qemu-payload": {
+          "calls": 3384,
+          "failedCalls": 0,
+          "bytes": 1255872082,
+          "elapsedSeconds": 7.171229599999634
+        }
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 118,
+      "utc": "2026-10-17T20:04:54.4472582Z",
+      "elapsedSeconds": 457.5659121,
+      "event": "start",
+      "operationId": 59,
+      "parentOperationId": 1,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "details": {
+        "tool": "qemu-img.exe",
+        "action": "compare"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 119,
+      "utc": "2026-10-17T20:04:54.4833985Z",
+      "elapsedSeconds": 457.6027799,
+      "event": "end",
+      "operationId": 59,
+      "parentOperationId": 1,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "durationSeconds": 0.0368479,
+      "digestTotals": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 120,
+      "utc": "2026-10-17T20:04:54.5026720Z",
+      "elapsedSeconds": 457.6221217,
+      "event": "start",
+      "operationId": 60,
+      "parentOperationId": 1,
+      "operation": "Copy-EzVmManagedInstance",
+      "category": "image",
+      "details": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 121,
+      "utc": "2026-10-17T20:04:55.3013307Z",
+      "elapsedSeconds": 458.4207479,
+      "event": "start",
+      "operationId": 61,
+      "parentOperationId": 60,
+      "operation": "Test-EzVmPreparedBaseDirectory",
+      "category": "validation",
+      "details": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 122,
+      "utc": "2026-10-17T20:04:55.3816081Z",
+      "elapsedSeconds": 458.50098049999997,
+      "event": "start",
+      "operationId": 62,
+      "parentOperationId": 61,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "details": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 123,
+      "utc": "2026-10-17T20:05:14.3914906Z",
+      "elapsedSeconds": 477.51047189999997,
+      "event": "end",
+      "operationId": 62,
+      "parentOperationId": 61,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "durationSeconds": 19.0095095,
+      "digestTotals": {
+        "manifest": {
+          "calls": 2,
+          "failedCalls": 0,
+          "bytes": 936336,
+          "elapsedSeconds": 0.003938899999999995
+        },
+        "qemu-payload": {
+          "calls": 3384,
+          "failedCalls": 0,
+          "bytes": 1255872082,
+          "elapsedSeconds": 6.986707000000081
+        }
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 124,
+      "utc": "2026-10-17T20:05:14.3914906Z",
+      "elapsedSeconds": 477.51126439999996,
+      "event": "start",
+      "operationId": 63,
+      "parentOperationId": 61,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "details": {
+        "tool": "qemu-img.exe",
+        "action": "info"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 125,
+      "utc": "2026-10-17T20:05:14.4279828Z",
+      "elapsedSeconds": 477.5468421,
+      "event": "end",
+      "operationId": 63,
+      "parentOperationId": 61,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "durationSeconds": 0.0355807,
+      "digestTotals": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 126,
+      "utc": "2026-10-17T20:05:14.4299832Z",
+      "elapsedSeconds": 477.548724,
+      "event": "end",
+      "operationId": 61,
+      "parentOperationId": 60,
+      "operation": "Test-EzVmPreparedBaseDirectory",
+      "category": "validation",
+      "durationSeconds": 19.1280143,
+      "digestTotals": {
+        "manifest": {
+          "calls": 2,
+          "failedCalls": 0,
+          "bytes": 936336,
+          "elapsedSeconds": 0.003938899999999995
+        },
+        "qemu-payload": {
+          "calls": 3384,
+          "failedCalls": 0,
+          "bytes": 1255872082,
+          "elapsedSeconds": 6.986707000000081
+        },
+        "base-image": {
+          "calls": 1,
+          "failedCalls": 0,
+          "bytes": 197120,
+          "elapsedSeconds": 0.0017672
+        }
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 127,
+      "utc": "2026-10-17T20:05:14.4445891Z",
+      "elapsedSeconds": 477.56315539999997,
+      "event": "start",
+      "operationId": 64,
+      "parentOperationId": 60,
+      "operation": "Test-EzVmInstanceStorage",
+      "category": "validation",
+      "details": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 128,
+      "utc": "2026-10-17T20:05:14.4711762Z",
+      "elapsedSeconds": 477.5900708,
+      "event": "start",
+      "operationId": 65,
+      "parentOperationId": 64,
+      "operation": "Test-EzVmPreparedBaseDirectory",
+      "category": "validation",
+      "details": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 129,
+      "utc": "2026-10-17T20:05:14.4992761Z",
+      "elapsedSeconds": 477.6182902,
+      "event": "start",
+      "operationId": 66,
+      "parentOperationId": 65,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "details": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 130,
+      "utc": "2026-10-17T20:05:33.3505778Z",
+      "elapsedSeconds": 496.4691276,
+      "event": "end",
+      "operationId": 66,
+      "parentOperationId": 65,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "durationSeconds": 18.8508342,
+      "digestTotals": {
+        "manifest": {
+          "calls": 2,
+          "failedCalls": 0,
+          "bytes": 936336,
+          "elapsedSeconds": 0.0035730000000000067
+        },
+        "qemu-payload": {
+          "calls": 3384,
+          "failedCalls": 0,
+          "bytes": 1255872082,
+          "elapsedSeconds": 6.638384499999091
+        }
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 131,
+      "utc": "2026-10-17T20:05:33.3505778Z",
+      "elapsedSeconds": 496.470011,
+      "event": "start",
+      "operationId": 67,
+      "parentOperationId": 65,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "details": {
+        "tool": "qemu-img.exe",
+        "action": "info"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 132,
+      "utc": "2026-10-17T20:05:33.3838974Z",
+      "elapsedSeconds": 496.5026317,
+      "event": "end",
+      "operationId": 67,
+      "parentOperationId": 65,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "durationSeconds": 0.0326276,
+      "digestTotals": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 133,
+      "utc": "2026-10-17T20:05:33.3859054Z",
+      "elapsedSeconds": 496.5045149,
+      "event": "end",
+      "operationId": 65,
+      "parentOperationId": 64,
+      "operation": "Test-EzVmPreparedBaseDirectory",
+      "category": "validation",
+      "durationSeconds": 18.9144751,
+      "digestTotals": {
+        "manifest": {
+          "calls": 2,
+          "failedCalls": 0,
+          "bytes": 936336,
+          "elapsedSeconds": 0.0035730000000000067
+        },
+        "qemu-payload": {
+          "calls": 3384,
+          "failedCalls": 0,
+          "bytes": 1255872082,
+          "elapsedSeconds": 6.638384499999091
+        },
+        "base-image": {
+          "calls": 1,
+          "failedCalls": 0,
+          "bytes": 197120,
+          "elapsedSeconds": 0.0016663000000000008
+        }
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 134,
+      "utc": "2026-10-17T20:05:33.3919240Z",
+      "elapsedSeconds": 496.5106179,
+      "event": "start",
+      "operationId": 68,
+      "parentOperationId": 64,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "details": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 135,
+      "utc": "2026-10-17T20:05:54.1409530Z",
+      "elapsedSeconds": 517.2597446,
+      "event": "end",
+      "operationId": 68,
+      "parentOperationId": 64,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "durationSeconds": 20.7491406,
+      "digestTotals": {
+        "manifest": {
+          "calls": 2,
+          "failedCalls": 0,
+          "bytes": 936336,
+          "elapsedSeconds": 0.005265400000000003
+        },
+        "qemu-payload": {
+          "calls": 3384,
+          "failedCalls": 0,
+          "bytes": 1255872082,
+          "elapsedSeconds": 7.359875899999594
+        }
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 136,
+      "utc": "2026-10-17T20:05:54.1419535Z",
+      "elapsedSeconds": 517.2605482,
+      "event": "start",
+      "operationId": 69,
+      "parentOperationId": 64,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "details": {
+        "tool": "qemu-img.exe",
+        "action": "info"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 137,
+      "utc": "2026-10-17T20:05:54.1856672Z",
+      "elapsedSeconds": 517.3045913999999,
+      "event": "end",
+      "operationId": 69,
+      "parentOperationId": 64,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "durationSeconds": 0.0440191,
+      "digestTotals": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 138,
+      "utc": "2026-10-17T20:05:54.1921833Z",
+      "elapsedSeconds": 517.3107493,
+      "event": "end",
+      "operationId": 64,
+      "parentOperationId": 60,
+      "operation": "Test-EzVmInstanceStorage",
+      "category": "validation",
+      "durationSeconds": 39.7476487,
+      "digestTotals": {
+        "manifest": {
+          "calls": 4,
+          "failedCalls": 0,
+          "bytes": 1872672,
+          "elapsedSeconds": 0.00883840000000001
+        },
+        "qemu-payload": {
+          "calls": 6768,
+          "failedCalls": 0,
+          "bytes": 2511744164,
+          "elapsedSeconds": 13.998260399998685
+        },
+        "base-image": {
+          "calls": 1,
+          "failedCalls": 0,
+          "bytes": 197120,
+          "elapsedSeconds": 0.0016663000000000008
+        }
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 139,
+      "utc": "2026-10-17T20:05:54.2459464Z",
+      "elapsedSeconds": 517.3645677,
+      "event": "start",
+      "operationId": 70,
+      "parentOperationId": 60,
+      "operation": "Test-EzVmPreparedBaseDirectory",
+      "category": "validation",
+      "details": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 140,
+      "utc": "2026-10-17T20:05:54.2760534Z",
+      "elapsedSeconds": 517.3948326,
+      "event": "start",
+      "operationId": 71,
+      "parentOperationId": 70,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "details": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 141,
+      "utc": "2026-10-17T20:06:13.0078438Z",
+      "elapsedSeconds": 536.1271756,
+      "event": "end",
+      "operationId": 71,
+      "parentOperationId": 70,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "durationSeconds": 18.732427,
+      "digestTotals": {
+        "manifest": {
+          "calls": 2,
+          "failedCalls": 0,
+          "bytes": 936336,
+          "elapsedSeconds": 0.00370899999999999
+        },
+        "qemu-payload": {
+          "calls": 3384,
+          "failedCalls": 0,
+          "bytes": 1255872082,
+          "elapsedSeconds": 6.831804199999993
+        }
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 142,
+      "utc": "2026-10-17T20:06:13.0088420Z",
+      "elapsedSeconds": 536.1280297999999,
+      "event": "start",
+      "operationId": 72,
+      "parentOperationId": 70,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "details": {
+        "tool": "qemu-img.exe",
+        "action": "info"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 143,
+      "utc": "2026-10-17T20:06:13.0419148Z",
+      "elapsedSeconds": 536.1609396,
+      "event": "end",
+      "operationId": 72,
+      "parentOperationId": 70,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "durationSeconds": 0.032917,
+      "digestTotals": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 144,
+      "utc": "2026-10-17T20:06:13.0439149Z",
+      "elapsedSeconds": 536.1630467,
+      "event": "end",
+      "operationId": 70,
+      "parentOperationId": 60,
+      "operation": "Test-EzVmPreparedBaseDirectory",
+      "category": "validation",
+      "durationSeconds": 18.7985096,
+      "digestTotals": {
+        "manifest": {
+          "calls": 2,
+          "failedCalls": 0,
+          "bytes": 936336,
+          "elapsedSeconds": 0.00370899999999999
+        },
+        "qemu-payload": {
+          "calls": 3384,
+          "failedCalls": 0,
+          "bytes": 1255872082,
+          "elapsedSeconds": 6.831804199999993
+        },
+        "base-image": {
+          "calls": 1,
+          "failedCalls": 0,
+          "bytes": 197120,
+          "elapsedSeconds": 0.0016403000000000008
+        }
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 145,
+      "utc": "2026-10-17T20:06:13.2003810Z",
+      "elapsedSeconds": 536.3197,
+      "event": "start",
+      "operationId": 73,
+      "parentOperationId": 60,
+      "operation": "Test-EzVmPreparedBaseDirectory",
+      "category": "validation",
+      "details": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 146,
+      "utc": "2026-10-17T20:06:13.2330133Z",
+      "elapsedSeconds": 536.3520069,
+      "event": "start",
+      "operationId": 74,
+      "parentOperationId": 73,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "details": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 147,
+      "utc": "2026-10-17T20:06:33.6965777Z",
+      "elapsedSeconds": 556.8159224999999,
+      "event": "end",
+      "operationId": 74,
+      "parentOperationId": 73,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "durationSeconds": 20.463943,
+      "digestTotals": {
+        "manifest": {
+          "calls": 2,
+          "failedCalls": 0,
+          "bytes": 936336,
+          "elapsedSeconds": 0.003679700000000008
+        },
+        "qemu-payload": {
+          "calls": 3384,
+          "failedCalls": 0,
+          "bytes": 1255872082,
+          "elapsedSeconds": 7.182979999999105
+        }
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 148,
+      "utc": "2026-10-17T20:06:33.6975782Z",
+      "elapsedSeconds": 556.8168482,
+      "event": "start",
+      "operationId": 75,
+      "parentOperationId": 73,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "details": {
+        "tool": "qemu-img.exe",
+        "action": "info"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 149,
+      "utc": "2026-10-17T20:06:33.7357658Z",
+      "elapsedSeconds": 556.8548776,
+      "event": "end",
+      "operationId": 75,
+      "parentOperationId": 73,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "durationSeconds": 0.0380379,
+      "digestTotals": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 150,
+      "utc": "2026-10-17T20:06:33.7382746Z",
+      "elapsedSeconds": 556.8577134,
+      "event": "end",
+      "operationId": 73,
+      "parentOperationId": 60,
+      "operation": "Test-EzVmPreparedBaseDirectory",
+      "category": "validation",
+      "durationSeconds": 20.5380006,
+      "digestTotals": {
+        "manifest": {
+          "calls": 2,
+          "failedCalls": 0,
+          "bytes": 936336,
+          "elapsedSeconds": 0.003679700000000008
+        },
+        "qemu-payload": {
+          "calls": 3384,
+          "failedCalls": 0,
+          "bytes": 1255872082,
+          "elapsedSeconds": 7.182979999999105
+        },
+        "base-image": {
+          "calls": 1,
+          "failedCalls": 0,
+          "bytes": 197120,
+          "elapsedSeconds": 0.0018480999999999984
+        }
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 151,
+      "utc": "2026-10-17T20:06:33.7735568Z",
+      "elapsedSeconds": 556.8920684,
+      "event": "start",
+      "operationId": 76,
+      "parentOperationId": 60,
+      "operation": "Test-EzVmPreparedBaseDirectory",
+      "category": "validation",
+      "details": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 152,
+      "utc": "2026-10-17T20:06:33.8006573Z",
+      "elapsedSeconds": 556.9195669,
+      "event": "start",
+      "operationId": 77,
+      "parentOperationId": 76,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "details": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 153,
+      "utc": "2026-10-17T20:06:54.0035330Z",
+      "elapsedSeconds": 577.1233305999999,
+      "event": "end",
+      "operationId": 77,
+      "parentOperationId": 76,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "durationSeconds": 20.2037842,
+      "digestTotals": {
+        "manifest": {
+          "calls": 2,
+          "failedCalls": 0,
+          "bytes": 936336,
+          "elapsedSeconds": 0.003630400000000006
+        },
+        "qemu-payload": {
+          "calls": 3384,
+          "failedCalls": 0,
+          "bytes": 1255872082,
+          "elapsedSeconds": 7.163185999999683
+        }
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 154,
+      "utc": "2026-10-17T20:06:54.0050374Z",
+      "elapsedSeconds": 577.1241874,
+      "event": "start",
+      "operationId": 78,
+      "parentOperationId": 76,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "details": {
+        "tool": "qemu-img.exe",
+        "action": "info"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 155,
+      "utc": "2026-10-17T20:06:54.0396017Z",
+      "elapsedSeconds": 577.1582071,
+      "event": "end",
+      "operationId": 78,
+      "parentOperationId": 76,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "durationSeconds": 0.0339898,
+      "digestTotals": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 156,
+      "utc": "2026-10-17T20:06:54.0408079Z",
+      "elapsedSeconds": 577.1602836999999,
+      "event": "end",
+      "operationId": 76,
+      "parentOperationId": 60,
+      "operation": "Test-EzVmPreparedBaseDirectory",
+      "category": "validation",
+      "durationSeconds": 20.2682426,
+      "digestTotals": {
+        "manifest": {
+          "calls": 2,
+          "failedCalls": 0,
+          "bytes": 936336,
+          "elapsedSeconds": 0.003630400000000006
+        },
+        "qemu-payload": {
+          "calls": 3384,
+          "failedCalls": 0,
+          "bytes": 1255872082,
+          "elapsedSeconds": 7.163185999999683
+        },
+        "base-image": {
+          "calls": 1,
+          "failedCalls": 0,
+          "bytes": 197120,
+          "elapsedSeconds": 0.0016117000000000006
+        }
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 157,
+      "utc": "2026-10-17T20:06:54.0524881Z",
+      "elapsedSeconds": 577.1722493999999,
+      "event": "start",
+      "operationId": 79,
+      "parentOperationId": 60,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "details": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 158,
+      "utc": "2026-10-17T20:07:13.3884942Z",
+      "elapsedSeconds": 596.5077299,
+      "event": "end",
+      "operationId": 79,
+      "parentOperationId": 60,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "durationSeconds": 19.3346126,
+      "digestTotals": {
+        "manifest": {
+          "calls": 2,
+          "failedCalls": 0,
+          "bytes": 936336,
+          "elapsedSeconds": 0.003705800000000009
+        },
+        "qemu-payload": {
+          "calls": 3384,
+          "failedCalls": 0,
+          "bytes": 1255872082,
+          "elapsedSeconds": 6.365682099999958
+        }
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 159,
+      "utc": "2026-10-17T20:07:13.3900056Z",
+      "elapsedSeconds": 596.5085258,
+      "event": "start",
+      "operationId": 80,
+      "parentOperationId": 60,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "details": {
+        "tool": "qemu-img.exe",
+        "action": "create"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 160,
+      "utc": "2026-10-17T20:07:13.4289097Z",
+      "elapsedSeconds": 596.5482058,
+      "event": "end",
+      "operationId": 80,
+      "parentOperationId": 60,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "durationSeconds": 0.0396802,
+      "digestTotals": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 161,
+      "utc": "2026-10-17T20:07:13.4485796Z",
+      "elapsedSeconds": 596.5672519,
+      "event": "start",
+      "operationId": 81,
+      "parentOperationId": 60,
+      "operation": "Test-EzVmPreparedBaseDirectory",
+      "category": "validation",
+      "details": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 162,
+      "utc": "2026-10-17T20:07:13.4756904Z",
+      "elapsedSeconds": 596.5948209,
+      "event": "start",
+      "operationId": 82,
+      "parentOperationId": 81,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "details": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 163,
+      "utc": "2026-10-17T20:07:34.2020811Z",
+      "elapsedSeconds": 617.3218479999999,
+      "event": "end",
+      "operationId": 82,
+      "parentOperationId": 81,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "durationSeconds": 20.7270132,
+      "digestTotals": {
+        "manifest": {
+          "calls": 2,
+          "failedCalls": 0,
+          "bytes": 936336,
+          "elapsedSeconds": 0.0036046999999999885
+        },
+        "qemu-payload": {
+          "calls": 3384,
+          "failedCalls": 0,
+          "bytes": 1255872082,
+          "elapsedSeconds": 7.515824900000013
+        }
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 164,
+      "utc": "2026-10-17T20:07:34.2045904Z",
+      "elapsedSeconds": 617.3230854,
+      "event": "start",
+      "operationId": 83,
+      "parentOperationId": 81,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "details": {
+        "tool": "qemu-img.exe",
+        "action": "info"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 165,
+      "utc": "2026-10-17T20:07:34.2419845Z",
+      "elapsedSeconds": 617.3609594,
+      "event": "end",
+      "operationId": 83,
+      "parentOperationId": 81,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "durationSeconds": 0.0379448,
+      "digestTotals": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 166,
+      "utc": "2026-10-17T20:07:34.2429832Z",
+      "elapsedSeconds": 617.3629592,
+      "event": "end",
+      "operationId": 81,
+      "parentOperationId": 60,
+      "operation": "Test-EzVmPreparedBaseDirectory",
+      "category": "validation",
+      "durationSeconds": 20.7957394,
+      "digestTotals": {
+        "manifest": {
+          "calls": 2,
+          "failedCalls": 0,
+          "bytes": 936336,
+          "elapsedSeconds": 0.0036046999999999885
+        },
+        "qemu-payload": {
+          "calls": 3384,
+          "failedCalls": 0,
+          "bytes": 1255872082,
+          "elapsedSeconds": 7.515824900000013
+        },
+        "base-image": {
+          "calls": 1,
+          "failedCalls": 0,
+          "bytes": 197120,
+          "elapsedSeconds": 0.0015006000000000012
+        }
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 167,
+      "utc": "2026-10-17T20:07:34.2520293Z",
+      "elapsedSeconds": 617.3708674,
+      "event": "start",
+      "operationId": 84,
+      "parentOperationId": 60,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "details": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 168,
+      "utc": "2026-10-17T20:07:55.0594898Z",
+      "elapsedSeconds": 638.1780987,
+      "event": "end",
+      "operationId": 84,
+      "parentOperationId": 60,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "durationSeconds": 20.8072296,
+      "digestTotals": {
+        "manifest": {
+          "calls": 2,
+          "failedCalls": 0,
+          "bytes": 936336,
+          "elapsedSeconds": 0.004343099999999989
+        },
+        "qemu-payload": {
+          "calls": 3384,
+          "failedCalls": 0,
+          "bytes": 1255872082,
+          "elapsedSeconds": 7.245908899999904
+        }
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 169,
+      "utc": "2026-10-17T20:07:55.0594898Z",
+      "elapsedSeconds": 638.1789511,
+      "event": "start",
+      "operationId": 85,
+      "parentOperationId": 60,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "details": {
+        "tool": "qemu-img.exe",
+        "action": "info"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 170,
+      "utc": "2026-10-17T20:07:55.1014275Z",
+      "elapsedSeconds": 638.2204276,
+      "event": "end",
+      "operationId": 85,
+      "parentOperationId": 60,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "durationSeconds": 0.0414721,
+      "digestTotals": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 171,
+      "utc": "2026-10-17T20:07:55.1119552Z",
+      "elapsedSeconds": 638.2313889,
+      "event": "end",
+      "operationId": 60,
+      "parentOperationId": 1,
+      "operation": "Copy-EzVmManagedInstance",
+      "category": "image",
+      "durationSeconds": 180.6093304,
+      "digestTotals": {
+        "manifest": {
+          "calls": 18,
+          "failedCalls": 0,
+          "bytes": 8427024,
+          "elapsedSeconds": 0.035449999999999995
+        },
+        "qemu-payload": {
+          "calls": 30456,
+          "failedCalls": 0,
+          "bytes": 11302848738,
+          "elapsedSeconds": 63.29035349999742
+        },
+        "base-image": {
+          "calls": 6,
+          "failedCalls": 0,
+          "bytes": 1182720,
+          "elapsedSeconds": 0.010034200000000002
+        }
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 172,
+      "utc": "2026-10-17T20:07:55.1134602Z",
+      "elapsedSeconds": 638.2320704,
+      "event": "start",
+      "operationId": 86,
+      "parentOperationId": 1,
+      "operation": "Copy-EzVmManagedInstance",
+      "category": "image",
+      "details": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 173,
+      "utc": "2026-10-17T20:07:55.3855236Z",
+      "elapsedSeconds": 638.5049716999999,
+      "event": "start",
+      "operationId": 87,
+      "parentOperationId": 86,
+      "operation": "Test-EzVmPreparedBaseDirectory",
+      "category": "validation",
+      "details": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 174,
+      "utc": "2026-10-17T20:07:55.4175878Z",
+      "elapsedSeconds": 638.5367769999999,
+      "event": "start",
+      "operationId": 88,
+      "parentOperationId": 87,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "details": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 175,
+      "utc": "2026-10-17T20:08:16.8628521Z",
+      "elapsedSeconds": 659.9818255,
+      "event": "end",
+      "operationId": 88,
+      "parentOperationId": 87,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "durationSeconds": 21.4450245,
+      "digestTotals": {
+        "manifest": {
+          "calls": 2,
+          "failedCalls": 0,
+          "bytes": 936336,
+          "elapsedSeconds": 0.0038777000000000117
+        },
+        "qemu-payload": {
+          "calls": 3384,
+          "failedCalls": 0,
+          "bytes": 1255872082,
+          "elapsedSeconds": 7.3824252999995394
+        }
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 176,
+      "utc": "2026-10-17T20:08:16.8643578Z",
+      "elapsedSeconds": 659.9829904999999,
+      "event": "start",
+      "operationId": 89,
+      "parentOperationId": 87,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "details": {
+        "tool": "qemu-img.exe",
+        "action": "info"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 177,
+      "utc": "2026-10-17T20:08:16.9085303Z",
+      "elapsedSeconds": 660.027831,
+      "event": "end",
+      "operationId": 89,
+      "parentOperationId": 87,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "durationSeconds": 0.0448647,
+      "digestTotals": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 178,
+      "utc": "2026-10-17T20:08:16.9120366Z",
+      "elapsedSeconds": 660.0305304999999,
+      "event": "end",
+      "operationId": 87,
+      "parentOperationId": 86,
+      "operation": "Test-EzVmPreparedBaseDirectory",
+      "category": "validation",
+      "durationSeconds": 21.5255674,
+      "digestTotals": {
+        "manifest": {
+          "calls": 2,
+          "failedCalls": 0,
+          "bytes": 936336,
+          "elapsedSeconds": 0.0038777000000000117
+        },
+        "qemu-payload": {
+          "calls": 3384,
+          "failedCalls": 0,
+          "bytes": 1255872082,
+          "elapsedSeconds": 7.3824252999995394
+        },
+        "base-image": {
+          "calls": 1,
+          "failedCalls": 0,
+          "bytes": 197120,
+          "elapsedSeconds": 0.0016439000000000002
+        }
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 179,
+      "utc": "2026-10-17T20:08:16.9120366Z",
+      "elapsedSeconds": 660.0311644,
+      "event": "start",
+      "operationId": 90,
+      "parentOperationId": 86,
+      "operation": "Test-EzVmInstanceStorage",
+      "category": "validation",
+      "details": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 180,
+      "utc": "2026-10-17T20:08:16.9440813Z",
+      "elapsedSeconds": 660.0636589999999,
+      "event": "start",
+      "operationId": 91,
+      "parentOperationId": 90,
+      "operation": "Test-EzVmPreparedBaseDirectory",
+      "category": "validation",
+      "details": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 181,
+      "utc": "2026-10-17T20:08:16.9820454Z",
+      "elapsedSeconds": 660.10096,
+      "event": "start",
+      "operationId": 92,
+      "parentOperationId": 91,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "details": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 182,
+      "utc": "2026-10-17T20:08:38.4539551Z",
+      "elapsedSeconds": 681.5728061,
+      "event": "end",
+      "operationId": 92,
+      "parentOperationId": 91,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "durationSeconds": 21.4719156,
+      "digestTotals": {
+        "manifest": {
+          "calls": 2,
+          "failedCalls": 0,
+          "bytes": 936336,
+          "elapsedSeconds": 0.007928500000000005
+        },
+        "qemu-payload": {
+          "calls": 3384,
+          "failedCalls": 0,
+          "bytes": 1255872082,
+          "elapsedSeconds": 7.427397800000762
+        }
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 183,
+      "utc": "2026-10-17T20:08:38.4544762Z",
+      "elapsedSeconds": 681.5736211,
+      "event": "start",
+      "operationId": 93,
+      "parentOperationId": 91,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "details": {
+        "tool": "qemu-img.exe",
+        "action": "info"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 184,
+      "utc": "2026-10-17T20:08:38.4874996Z",
+      "elapsedSeconds": 681.6065239999999,
+      "event": "end",
+      "operationId": 93,
+      "parentOperationId": 91,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "durationSeconds": 0.0329031,
+      "digestTotals": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 185,
+      "utc": "2026-10-17T20:08:38.4895552Z",
+      "elapsedSeconds": 681.6084794,
+      "event": "end",
+      "operationId": 91,
+      "parentOperationId": 90,
+      "operation": "Test-EzVmPreparedBaseDirectory",
+      "category": "validation",
+      "durationSeconds": 21.5448625,
+      "digestTotals": {
+        "manifest": {
+          "calls": 2,
+          "failedCalls": 0,
+          "bytes": 936336,
+          "elapsedSeconds": 0.007928500000000005
+        },
+        "qemu-payload": {
+          "calls": 3384,
+          "failedCalls": 0,
+          "bytes": 1255872082,
+          "elapsedSeconds": 7.427397800000762
+        },
+        "base-image": {
+          "calls": 1,
+          "failedCalls": 0,
+          "bytes": 197120,
+          "elapsedSeconds": 0.0018256999999999995
+        }
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 186,
+      "utc": "2026-10-17T20:08:38.4950731Z",
+      "elapsedSeconds": 681.6150519,
+      "event": "start",
+      "operationId": 94,
+      "parentOperationId": 90,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "details": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 187,
+      "utc": "2026-10-17T20:08:57.5006509Z",
+      "elapsedSeconds": 700.6193842,
+      "event": "end",
+      "operationId": 94,
+      "parentOperationId": 90,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "durationSeconds": 19.0042972,
+      "digestTotals": {
+        "manifest": {
+          "calls": 2,
+          "failedCalls": 0,
+          "bytes": 936336,
+          "elapsedSeconds": 0.006180699999999983
+        },
+        "qemu-payload": {
+          "calls": 3384,
+          "failedCalls": 0,
+          "bytes": 1255872082,
+          "elapsedSeconds": 7.152947999999668
+        }
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 188,
+      "utc": "2026-10-17T20:08:57.5016519Z",
+      "elapsedSeconds": 700.6206209999999,
+      "event": "start",
+      "operationId": 95,
+      "parentOperationId": 90,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "details": {
+        "tool": "qemu-img.exe",
+        "action": "info"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 189,
+      "utc": "2026-10-17T20:08:57.5393418Z",
+      "elapsedSeconds": 700.6587423999999,
+      "event": "end",
+      "operationId": 95,
+      "parentOperationId": 90,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "durationSeconds": 0.0381028,
+      "digestTotals": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 190,
+      "utc": "2026-10-17T20:08:57.5458533Z",
+      "elapsedSeconds": 700.664816,
+      "event": "end",
+      "operationId": 90,
+      "parentOperationId": 86,
+      "operation": "Test-EzVmInstanceStorage",
+      "category": "validation",
+      "durationSeconds": 40.6336314,
+      "digestTotals": {
+        "manifest": {
+          "calls": 4,
+          "failedCalls": 0,
+          "bytes": 1872672,
+          "elapsedSeconds": 0.014109199999999988
+        },
+        "qemu-payload": {
+          "calls": 6768,
+          "failedCalls": 0,
+          "bytes": 2511744164,
+          "elapsedSeconds": 14.58034580000043
+        },
+        "base-image": {
+          "calls": 1,
+          "failedCalls": 0,
+          "bytes": 197120,
+          "elapsedSeconds": 0.0018256999999999995
+        }
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 191,
+      "utc": "2026-10-17T20:08:57.5803930Z",
+      "elapsedSeconds": 700.6998388,
+      "event": "start",
+      "operationId": 96,
+      "parentOperationId": 86,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "details": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 192,
+      "utc": "2026-10-17T20:09:18.4772499Z",
+      "elapsedSeconds": 721.5966027,
+      "event": "end",
+      "operationId": 96,
+      "parentOperationId": 86,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "durationSeconds": 20.8968453,
+      "digestTotals": {
+        "manifest": {
+          "calls": 2,
+          "failedCalls": 0,
+          "bytes": 936336,
+          "elapsedSeconds": 0.0058782
+        },
+        "qemu-payload": {
+          "calls": 3384,
+          "failedCalls": 0,
+          "bytes": 1255872082,
+          "elapsedSeconds": 7.2940267999995
+        }
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 193,
+      "utc": "2026-10-17T20:09:18.4782500Z",
+      "elapsedSeconds": 721.5972475,
+      "event": "start",
+      "operationId": 97,
+      "parentOperationId": 86,
+      "operation": "Invoke-EzVmProcess",
+      "category": "process",
+      "details": {
+        "tool": "qemu-system-x86_64.exe"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 194,
+      "utc": "2026-10-17T20:09:18.5995591Z",
+      "elapsedSeconds": 721.7185064,
+      "event": "end",
+      "operationId": 97,
+      "parentOperationId": 86,
+      "operation": "Invoke-EzVmProcess",
+      "category": "process",
+      "durationSeconds": 0.1212651,
+      "digestTotals": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 195,
+      "utc": "2026-10-17T20:09:18.6005635Z",
+      "elapsedSeconds": 721.7191763999999,
+      "event": "start",
+      "operationId": 98,
+      "parentOperationId": 86,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "details": {
+        "tool": "qemu-img.exe",
+        "action": "--version"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 196,
+      "utc": "2026-10-17T20:09:18.6315053Z",
+      "elapsedSeconds": 721.7509931,
+      "event": "end",
+      "operationId": 98,
+      "parentOperationId": 86,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "durationSeconds": 0.0318143,
+      "digestTotals": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 197,
+      "utc": "2026-10-17T20:09:18.6712534Z",
+      "elapsedSeconds": 721.790591,
+      "event": "start",
+      "operationId": 99,
+      "parentOperationId": 86,
+      "operation": "Test-EzVmInstanceStorage",
+      "category": "validation",
+      "details": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 198,
+      "utc": "2026-10-17T20:09:18.6978974Z",
+      "elapsedSeconds": 721.8166755,
+      "event": "start",
+      "operationId": 100,
+      "parentOperationId": 99,
+      "operation": "Test-EzVmPreparedBaseDirectory",
+      "category": "validation",
+      "details": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 199,
+      "utc": "2026-10-17T20:09:18.7288359Z",
+      "elapsedSeconds": 721.8476107,
+      "event": "start",
+      "operationId": 101,
+      "parentOperationId": 100,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "details": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 200,
+      "utc": "2026-10-17T20:09:37.9622440Z",
+      "elapsedSeconds": 741.0813044,
+      "event": "end",
+      "operationId": 101,
+      "parentOperationId": 100,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "durationSeconds": 19.2337203,
+      "digestTotals": {
+        "manifest": {
+          "calls": 2,
+          "failedCalls": 0,
+          "bytes": 936336,
+          "elapsedSeconds": 0.0038495000000000057
+        },
+        "qemu-payload": {
+          "calls": 3384,
+          "failedCalls": 0,
+          "bytes": 1255872082,
+          "elapsedSeconds": 6.649321800001104
+        }
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 201,
+      "utc": "2026-10-17T20:09:37.9632441Z",
+      "elapsedSeconds": 741.0820961,
+      "event": "start",
+      "operationId": 102,
+      "parentOperationId": 100,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "details": {
+        "tool": "qemu-img.exe",
+        "action": "info"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 202,
+      "utc": "2026-10-17T20:09:37.9987028Z",
+      "elapsedSeconds": 741.1175843,
+      "event": "end",
+      "operationId": 102,
+      "parentOperationId": 100,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "durationSeconds": 0.0354884,
+      "digestTotals": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 203,
+      "utc": "2026-10-17T20:09:37.9997035Z",
+      "elapsedSeconds": 741.1195167,
+      "event": "end",
+      "operationId": 100,
+      "parentOperationId": 99,
+      "operation": "Test-EzVmPreparedBaseDirectory",
+      "category": "validation",
+      "durationSeconds": 19.3028731,
+      "digestTotals": {
+        "manifest": {
+          "calls": 2,
+          "failedCalls": 0,
+          "bytes": 936336,
+          "elapsedSeconds": 0.0038495000000000057
+        },
+        "qemu-payload": {
+          "calls": 3384,
+          "failedCalls": 0,
+          "bytes": 1255872082,
+          "elapsedSeconds": 6.649321800001104
+        },
+        "base-image": {
+          "calls": 1,
+          "failedCalls": 0,
+          "bytes": 197120,
+          "elapsedSeconds": 0.0019045999999999993
+        }
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 204,
+      "utc": "2026-10-17T20:09:38.0082425Z",
+      "elapsedSeconds": 741.1276383999999,
+      "event": "start",
+      "operationId": 103,
+      "parentOperationId": 99,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "details": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 205,
+      "utc": "2026-10-17T20:09:56.4279110Z",
+      "elapsedSeconds": 759.5468956,
+      "event": "end",
+      "operationId": 103,
+      "parentOperationId": 99,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "durationSeconds": 18.4192754,
+      "digestTotals": {
+        "manifest": {
+          "calls": 2,
+          "failedCalls": 0,
+          "bytes": 936336,
+          "elapsedSeconds": 0.003523499999999985
+        },
+        "qemu-payload": {
+          "calls": 3384,
+          "failedCalls": 0,
+          "bytes": 1255872082,
+          "elapsedSeconds": 6.529419600000153
+        }
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 206,
+      "utc": "2026-10-17T20:09:56.4289111Z",
+      "elapsedSeconds": 759.5476757,
+      "event": "start",
+      "operationId": 104,
+      "parentOperationId": 99,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "details": {
+        "tool": "qemu-img.exe",
+        "action": "info"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 207,
+      "utc": "2026-10-17T20:09:56.4614799Z",
+      "elapsedSeconds": 759.5806602,
+      "event": "end",
+      "operationId": 104,
+      "parentOperationId": 99,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "durationSeconds": 0.032987,
+      "digestTotals": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 208,
+      "utc": "2026-10-17T20:09:56.4664953Z",
+      "elapsedSeconds": 759.5855032999999,
+      "event": "end",
+      "operationId": 99,
+      "parentOperationId": 86,
+      "operation": "Test-EzVmInstanceStorage",
+      "category": "validation",
+      "durationSeconds": 37.7949502,
+      "digestTotals": {
+        "manifest": {
+          "calls": 4,
+          "failedCalls": 0,
+          "bytes": 1872672,
+          "elapsedSeconds": 0.007372999999999991
+        },
+        "qemu-payload": {
+          "calls": 6768,
+          "failedCalls": 0,
+          "bytes": 2511744164,
+          "elapsedSeconds": 13.178741400001257
+        },
+        "base-image": {
+          "calls": 1,
+          "failedCalls": 0,
+          "bytes": 197120,
+          "elapsedSeconds": 0.0019045999999999993
+        }
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 209,
+      "utc": "2026-10-17T20:09:56.4715194Z",
+      "elapsedSeconds": 759.5908538,
+      "event": "start",
+      "operationId": 105,
+      "parentOperationId": 86,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "details": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 210,
+      "utc": "2026-10-17T20:10:14.6820877Z",
+      "elapsedSeconds": 777.8011759999999,
+      "event": "end",
+      "operationId": 105,
+      "parentOperationId": 86,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "durationSeconds": 18.2103386,
+      "digestTotals": {
+        "manifest": {
+          "calls": 2,
+          "failedCalls": 0,
+          "bytes": 936336,
+          "elapsedSeconds": 0.003517399999999976
+        },
+        "qemu-payload": {
+          "calls": 3384,
+          "failedCalls": 0,
+          "bytes": 1255872082,
+          "elapsedSeconds": 6.4799243999995895
+        }
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 211,
+      "utc": "2026-10-17T20:10:14.6830913Z",
+      "elapsedSeconds": 777.8019396,
+      "event": "start",
+      "operationId": 106,
+      "parentOperationId": 86,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "details": {
+        "tool": "qemu-img.exe",
+        "action": "check"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 212,
+      "utc": "2026-10-17T20:10:14.7182720Z",
+      "elapsedSeconds": 777.8371486,
+      "event": "end",
+      "operationId": 106,
+      "parentOperationId": 86,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "durationSeconds": 0.0352061,
+      "digestTotals": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 213,
+      "utc": "2026-10-17T20:10:14.7253045Z",
+      "elapsedSeconds": 777.8438705,
+      "event": "start",
+      "operationId": 107,
+      "parentOperationId": 86,
+      "operation": "Test-EzVmPreparedBaseDirectory",
+      "category": "validation",
+      "details": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 214,
+      "utc": "2026-10-17T20:10:14.7529493Z",
+      "elapsedSeconds": 777.871709,
+      "event": "start",
+      "operationId": 108,
+      "parentOperationId": 107,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "details": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 215,
+      "utc": "2026-10-17T20:10:33.5680875Z",
+      "elapsedSeconds": 796.6869428,
+      "event": "end",
+      "operationId": 108,
+      "parentOperationId": 107,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "durationSeconds": 18.8152583,
+      "digestTotals": {
+        "manifest": {
+          "calls": 2,
+          "failedCalls": 0,
+          "bytes": 936336,
+          "elapsedSeconds": 0.005724000000000007
+        },
+        "qemu-payload": {
+          "calls": 3384,
+          "failedCalls": 0,
+          "bytes": 1255872082,
+          "elapsedSeconds": 6.596170199999904
+        }
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 216,
+      "utc": "2026-10-17T20:10:33.5690877Z",
+      "elapsedSeconds": 796.6877498,
+      "event": "start",
+      "operationId": 109,
+      "parentOperationId": 107,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "details": {
+        "tool": "qemu-img.exe",
+        "action": "info"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 217,
+      "utc": "2026-10-17T20:10:33.6018415Z",
+      "elapsedSeconds": 796.7208499,
+      "event": "end",
+      "operationId": 109,
+      "parentOperationId": 107,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "durationSeconds": 0.0331093,
+      "digestTotals": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 218,
+      "utc": "2026-10-17T20:10:33.6038520Z",
+      "elapsedSeconds": 796.7228494,
+      "event": "end",
+      "operationId": 107,
+      "parentOperationId": 86,
+      "operation": "Test-EzVmPreparedBaseDirectory",
+      "category": "validation",
+      "durationSeconds": 18.8790115,
+      "digestTotals": {
+        "manifest": {
+          "calls": 2,
+          "failedCalls": 0,
+          "bytes": 936336,
+          "elapsedSeconds": 0.005724000000000007
+        },
+        "qemu-payload": {
+          "calls": 3384,
+          "failedCalls": 0,
+          "bytes": 1255872082,
+          "elapsedSeconds": 6.596170199999904
+        },
+        "base-image": {
+          "calls": 1,
+          "failedCalls": 0,
+          "bytes": 197120,
+          "elapsedSeconds": 0.001632100000000001
+        }
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 219,
+      "utc": "2026-10-17T20:10:33.6289014Z",
+      "elapsedSeconds": 796.7477841,
+      "event": "start",
+      "operationId": 110,
+      "parentOperationId": 86,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "details": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 220,
+      "utc": "2026-10-17T20:10:51.6381392Z",
+      "elapsedSeconds": 814.7572851,
+      "event": "end",
+      "operationId": 110,
+      "parentOperationId": 86,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "durationSeconds": 18.0095218,
+      "digestTotals": {
+        "manifest": {
+          "calls": 2,
+          "failedCalls": 0,
+          "bytes": 936336,
+          "elapsedSeconds": 0.0034937000000000162
+        },
+        "qemu-payload": {
+          "calls": 3384,
+          "failedCalls": 0,
+          "bytes": 1255872082,
+          "elapsedSeconds": 6.44055069999979
+        }
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 221,
+      "utc": "2026-10-17T20:10:51.6391379Z",
+      "elapsedSeconds": 814.7580451,
+      "event": "start",
+      "operationId": 111,
+      "parentOperationId": 86,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "details": {
+        "tool": "qemu-img.exe",
+        "action": "convert"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 222,
+      "utc": "2026-10-17T20:10:51.6863606Z",
+      "elapsedSeconds": 814.8049454,
+      "event": "end",
+      "operationId": 111,
+      "parentOperationId": 86,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "durationSeconds": 0.0469015,
+      "digestTotals": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 223,
+      "utc": "2026-10-17T20:10:51.6945799Z",
+      "elapsedSeconds": 814.813799,
+      "event": "start",
+      "operationId": 112,
+      "parentOperationId": 86,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "details": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 224,
+      "utc": "2026-10-17T20:11:10.5343429Z",
+      "elapsedSeconds": 833.6538671999999,
+      "event": "end",
+      "operationId": 112,
+      "parentOperationId": 86,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "durationSeconds": 18.8400996,
+      "digestTotals": {
+        "manifest": {
+          "calls": 2,
+          "failedCalls": 0,
+          "bytes": 936336,
+          "elapsedSeconds": 0.003537300000000021
+        },
+        "qemu-payload": {
+          "calls": 3384,
+          "failedCalls": 0,
+          "bytes": 1255872082,
+          "elapsedSeconds": 6.381102999999598
+        }
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 225,
+      "utc": "2026-10-17T20:11:10.5368526Z",
+      "elapsedSeconds": 833.6559133,
+      "event": "start",
+      "operationId": 113,
+      "parentOperationId": 86,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "details": {
+        "tool": "qemu-img.exe",
+        "action": "info"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 226,
+      "utc": "2026-10-17T20:11:10.5714997Z",
+      "elapsedSeconds": 833.6901237,
+      "event": "end",
+      "operationId": 113,
+      "parentOperationId": 86,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "durationSeconds": 0.0342171,
+      "digestTotals": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 227,
+      "utc": "2026-10-17T20:11:10.5770150Z",
+      "elapsedSeconds": 833.6962261,
+      "event": "start",
+      "operationId": 114,
+      "parentOperationId": 86,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "details": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 228,
+      "utc": "2026-10-17T20:11:29.7932307Z",
+      "elapsedSeconds": 852.9125666,
+      "event": "end",
+      "operationId": 114,
+      "parentOperationId": 86,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "durationSeconds": 19.2162478,
+      "digestTotals": {
+        "manifest": {
+          "calls": 2,
+          "failedCalls": 0,
+          "bytes": 936336,
+          "elapsedSeconds": 0.003445799999999999
+        },
+        "qemu-payload": {
+          "calls": 3384,
+          "failedCalls": 0,
+          "bytes": 1255872082,
+          "elapsedSeconds": 7.129618400000027
+        }
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 229,
+      "utc": "2026-10-17T20:11:29.7942315Z",
+      "elapsedSeconds": 852.9139584999999,
+      "event": "start",
+      "operationId": 115,
+      "parentOperationId": 86,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "details": {
+        "tool": "qemu-img.exe",
+        "action": "check"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 230,
+      "utc": "2026-10-17T20:11:29.8500530Z",
+      "elapsedSeconds": 852.9691028999999,
+      "event": "end",
+      "operationId": 115,
+      "parentOperationId": 86,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "durationSeconds": 0.0551991,
+      "digestTotals": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 231,
+      "utc": "2026-10-17T20:11:29.8954519Z",
+      "elapsedSeconds": 853.0139939999999,
+      "event": "start",
+      "operationId": 116,
+      "parentOperationId": 86,
+      "operation": "Test-EzVmPreparedBaseDirectory",
+      "category": "validation",
+      "details": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 232,
+      "utc": "2026-10-17T20:11:29.9332422Z",
+      "elapsedSeconds": 853.0524123,
+      "event": "start",
+      "operationId": 117,
+      "parentOperationId": 116,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "details": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 233,
+      "utc": "2026-10-17T20:11:51.2778261Z",
+      "elapsedSeconds": 874.3963635,
+      "event": "end",
+      "operationId": 117,
+      "parentOperationId": 116,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "durationSeconds": 21.3439856,
+      "digestTotals": {
+        "manifest": {
+          "calls": 2,
+          "failedCalls": 0,
+          "bytes": 936336,
+          "elapsedSeconds": 0.004159899999999994
+        },
+        "qemu-payload": {
+          "calls": 3384,
+          "failedCalls": 0,
+          "bytes": 1255872082,
+          "elapsedSeconds": 7.256038199999011
+        }
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 234,
+      "utc": "2026-10-17T20:11:51.2778261Z",
+      "elapsedSeconds": 874.3972057,
+      "event": "start",
+      "operationId": 118,
+      "parentOperationId": 116,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "details": {
+        "tool": "qemu-img.exe",
+        "action": "info"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 235,
+      "utc": "2026-10-17T20:11:51.3225134Z",
+      "elapsedSeconds": 874.4410376,
+      "event": "end",
+      "operationId": 118,
+      "parentOperationId": 116,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "durationSeconds": 0.043753,
+      "digestTotals": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 236,
+      "utc": "2026-10-17T20:11:51.3250276Z",
+      "elapsedSeconds": 874.4438973,
+      "event": "end",
+      "operationId": 116,
+      "parentOperationId": 86,
+      "operation": "Test-EzVmPreparedBaseDirectory",
+      "category": "validation",
+      "durationSeconds": 21.4299423,
+      "digestTotals": {
+        "manifest": {
+          "calls": 2,
+          "failedCalls": 0,
+          "bytes": 936336,
+          "elapsedSeconds": 0.004159899999999994
+        },
+        "qemu-payload": {
+          "calls": 3384,
+          "failedCalls": 0,
+          "bytes": 1255872082,
+          "elapsedSeconds": 7.256038199999011
+        },
+        "base-image": {
+          "calls": 1,
+          "failedCalls": 0,
+          "bytes": 393216,
+          "elapsedSeconds": 0.002123200000000002
+        }
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 237,
+      "utc": "2026-10-17T20:11:51.4167164Z",
+      "elapsedSeconds": 874.5360584,
+      "event": "start",
+      "operationId": 119,
+      "parentOperationId": 86,
+      "operation": "Test-EzVmPreparedBaseDirectory",
+      "category": "validation",
+      "details": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 238,
+      "utc": "2026-10-17T20:11:51.4648664Z",
+      "elapsedSeconds": 874.5841604999999,
+      "event": "start",
+      "operationId": 120,
+      "parentOperationId": 119,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "details": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 239,
+      "utc": "2026-10-17T20:12:11.8242376Z",
+      "elapsedSeconds": 894.9428842,
+      "event": "end",
+      "operationId": 120,
+      "parentOperationId": 119,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "durationSeconds": 20.3587809,
+      "digestTotals": {
+        "manifest": {
+          "calls": 2,
+          "failedCalls": 0,
+          "bytes": 936336,
+          "elapsedSeconds": 0.0038728000000000096
+        },
+        "qemu-payload": {
+          "calls": 3384,
+          "failedCalls": 0,
+          "bytes": 1255872082,
+          "elapsedSeconds": 6.946316700000239
+        }
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 240,
+      "utc": "2026-10-17T20:12:11.8252379Z",
+      "elapsedSeconds": 894.9439500999999,
+      "event": "start",
+      "operationId": 121,
+      "parentOperationId": 119,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "details": {
+        "tool": "qemu-img.exe",
+        "action": "info"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 241,
+      "utc": "2026-10-17T20:12:11.8655959Z",
+      "elapsedSeconds": 894.9848419,
+      "event": "end",
+      "operationId": 121,
+      "parentOperationId": 119,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "durationSeconds": 0.0408805,
+      "digestTotals": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 242,
+      "utc": "2026-10-17T20:12:11.8691035Z",
+      "elapsedSeconds": 894.9876806,
+      "event": "end",
+      "operationId": 119,
+      "parentOperationId": 86,
+      "operation": "Test-EzVmPreparedBaseDirectory",
+      "category": "validation",
+      "durationSeconds": 20.451659,
+      "digestTotals": {
+        "manifest": {
+          "calls": 2,
+          "failedCalls": 0,
+          "bytes": 936336,
+          "elapsedSeconds": 0.0038728000000000096
+        },
+        "qemu-payload": {
+          "calls": 3384,
+          "failedCalls": 0,
+          "bytes": 1255872082,
+          "elapsedSeconds": 6.946316700000239
+        },
+        "base-image": {
+          "calls": 1,
+          "failedCalls": 0,
+          "bytes": 393216,
+          "elapsedSeconds": 0.0032516000000000003
+        }
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 243,
+      "utc": "2026-10-17T20:12:12.0600513Z",
+      "elapsedSeconds": 895.1791263,
+      "event": "start",
+      "operationId": 122,
+      "parentOperationId": 86,
+      "operation": "Test-EzVmPreparedBaseDirectory",
+      "category": "validation",
+      "details": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 244,
+      "utc": "2026-10-17T20:12:12.0981599Z",
+      "elapsedSeconds": 895.2176086999999,
+      "event": "start",
+      "operationId": 123,
+      "parentOperationId": 122,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "details": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 245,
+      "utc": "2026-10-17T20:12:33.3076313Z",
+      "elapsedSeconds": 916.4268803,
+      "event": "end",
+      "operationId": 123,
+      "parentOperationId": 122,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "durationSeconds": 21.2093055,
+      "digestTotals": {
+        "manifest": {
+          "calls": 2,
+          "failedCalls": 0,
+          "bytes": 936336,
+          "elapsedSeconds": 0.005808900000000006
+        },
+        "qemu-payload": {
+          "calls": 3384,
+          "failedCalls": 0,
+          "bytes": 1255872082,
+          "elapsedSeconds": 7.215878299999815
+        }
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 246,
+      "utc": "2026-10-17T20:12:33.3086346Z",
+      "elapsedSeconds": 916.4277419,
+      "event": "start",
+      "operationId": 124,
+      "parentOperationId": 122,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "details": {
+        "tool": "qemu-img.exe",
+        "action": "info"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 247,
+      "utc": "2026-10-17T20:12:33.3427381Z",
+      "elapsedSeconds": 916.4622455,
+      "event": "end",
+      "operationId": 124,
+      "parentOperationId": 122,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "durationSeconds": 0.0345093,
+      "digestTotals": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 248,
+      "utc": "2026-10-17T20:12:33.3457651Z",
+      "elapsedSeconds": 916.4647417,
+      "event": "end",
+      "operationId": 122,
+      "parentOperationId": 86,
+      "operation": "Test-EzVmPreparedBaseDirectory",
+      "category": "validation",
+      "durationSeconds": 21.285672,
+      "digestTotals": {
+        "manifest": {
+          "calls": 2,
+          "failedCalls": 0,
+          "bytes": 936336,
+          "elapsedSeconds": 0.005808900000000006
+        },
+        "qemu-payload": {
+          "calls": 3384,
+          "failedCalls": 0,
+          "bytes": 1255872082,
+          "elapsedSeconds": 7.215878299999815
+        },
+        "base-image": {
+          "calls": 1,
+          "failedCalls": 0,
+          "bytes": 393216,
+          "elapsedSeconds": 0.002104500000000002
+        }
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 249,
+      "utc": "2026-10-17T20:12:33.3751048Z",
+      "elapsedSeconds": 916.4940312,
+      "event": "start",
+      "operationId": 125,
+      "parentOperationId": 86,
+      "operation": "Test-EzVmPreparedBaseDirectory",
+      "category": "validation",
+      "details": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 250,
+      "utc": "2026-10-17T20:12:33.4073232Z",
+      "elapsedSeconds": 916.5262093,
+      "event": "start",
+      "operationId": 126,
+      "parentOperationId": 125,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "details": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 251,
+      "utc": "2026-10-17T20:12:54.1526209Z",
+      "elapsedSeconds": 937.2717359,
+      "event": "end",
+      "operationId": 126,
+      "parentOperationId": 125,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "durationSeconds": 20.7455528,
+      "digestTotals": {
+        "manifest": {
+          "calls": 2,
+          "failedCalls": 0,
+          "bytes": 936336,
+          "elapsedSeconds": 0.00346479999999999
+        },
+        "qemu-payload": {
+          "calls": 3384,
+          "failedCalls": 0,
+          "bytes": 1255872082,
+          "elapsedSeconds": 7.303257699998937
+        }
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 252,
+      "utc": "2026-10-17T20:12:54.1536196Z",
+      "elapsedSeconds": 937.2725551999999,
+      "event": "start",
+      "operationId": 127,
+      "parentOperationId": 125,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "details": {
+        "tool": "qemu-img.exe",
+        "action": "info"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 253,
+      "utc": "2026-10-17T20:12:54.1847748Z",
+      "elapsedSeconds": 937.3050559,
+      "event": "end",
+      "operationId": 127,
+      "parentOperationId": 125,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "durationSeconds": 0.0324959,
+      "digestTotals": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 254,
+      "utc": "2026-10-17T20:12:54.1885827Z",
+      "elapsedSeconds": 937.3071051,
+      "event": "end",
+      "operationId": 125,
+      "parentOperationId": 86,
+      "operation": "Test-EzVmPreparedBaseDirectory",
+      "category": "validation",
+      "durationSeconds": 20.8131241,
+      "digestTotals": {
+        "manifest": {
+          "calls": 2,
+          "failedCalls": 0,
+          "bytes": 936336,
+          "elapsedSeconds": 0.00346479999999999
+        },
+        "qemu-payload": {
+          "calls": 3384,
+          "failedCalls": 0,
+          "bytes": 1255872082,
+          "elapsedSeconds": 7.303257699998937
+        },
+        "base-image": {
+          "calls": 1,
+          "failedCalls": 0,
+          "bytes": 393216,
+          "elapsedSeconds": 0.0018996000000000013
+        }
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 255,
+      "utc": "2026-10-17T20:12:54.1976073Z",
+      "elapsedSeconds": 937.3169124,
+      "event": "start",
+      "operationId": 128,
+      "parentOperationId": 86,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "details": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 256,
+      "utc": "2026-10-17T20:13:14.1348994Z",
+      "elapsedSeconds": 957.2537464999999,
+      "event": "end",
+      "operationId": 128,
+      "parentOperationId": 86,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "durationSeconds": 19.9368582,
+      "digestTotals": {
+        "manifest": {
+          "calls": 2,
+          "failedCalls": 0,
+          "bytes": 936336,
+          "elapsedSeconds": 0.004149099999999989
+        },
+        "qemu-payload": {
+          "calls": 3384,
+          "failedCalls": 0,
+          "bytes": 1255872082,
+          "elapsedSeconds": 6.978851899997721
+        }
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 257,
+      "utc": "2026-10-17T20:13:14.1348994Z",
+      "elapsedSeconds": 957.2545448,
+      "event": "start",
+      "operationId": 129,
+      "parentOperationId": 86,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "details": {
+        "tool": "qemu-img.exe",
+        "action": "create"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 258,
+      "utc": "2026-10-17T20:13:14.1780315Z",
+      "elapsedSeconds": 957.2972579999999,
+      "event": "end",
+      "operationId": 129,
+      "parentOperationId": 86,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "durationSeconds": 0.0427011,
+      "digestTotals": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 259,
+      "utc": "2026-10-17T20:13:14.2021808Z",
+      "elapsedSeconds": 957.3213429,
+      "event": "start",
+      "operationId": 130,
+      "parentOperationId": 86,
+      "operation": "Test-EzVmPreparedBaseDirectory",
+      "category": "validation",
+      "details": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 260,
+      "utc": "2026-10-17T20:13:14.2357880Z",
+      "elapsedSeconds": 957.3547507,
+      "event": "start",
+      "operationId": 131,
+      "parentOperationId": 130,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "details": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 261,
+      "utc": "2026-10-17T20:13:35.5046741Z",
+      "elapsedSeconds": 978.6241034999999,
+      "event": "end",
+      "operationId": 131,
+      "parentOperationId": 130,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "durationSeconds": 21.2693842,
+      "digestTotals": {
+        "manifest": {
+          "calls": 2,
+          "failedCalls": 0,
+          "bytes": 936336,
+          "elapsedSeconds": 0.003625299999999998
+        },
+        "qemu-payload": {
+          "calls": 3384,
+          "failedCalls": 0,
+          "bytes": 1255872082,
+          "elapsedSeconds": 7.6174955999990175
+        }
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 262,
+      "utc": "2026-10-17T20:13:35.5061793Z",
+      "elapsedSeconds": 978.6249333999999,
+      "event": "start",
+      "operationId": 132,
+      "parentOperationId": 130,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "details": {
+        "tool": "qemu-img.exe",
+        "action": "info"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 263,
+      "utc": "2026-10-17T20:13:35.5394758Z",
+      "elapsedSeconds": 978.6593885,
+      "event": "end",
+      "operationId": 132,
+      "parentOperationId": 130,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "durationSeconds": 0.0344256,
+      "digestTotals": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 264,
+      "utc": "2026-10-17T20:13:35.5434987Z",
+      "elapsedSeconds": 978.6621283,
+      "event": "end",
+      "operationId": 130,
+      "parentOperationId": 86,
+      "operation": "Test-EzVmPreparedBaseDirectory",
+      "category": "validation",
+      "durationSeconds": 21.3408111,
+      "digestTotals": {
+        "manifest": {
+          "calls": 2,
+          "failedCalls": 0,
+          "bytes": 936336,
+          "elapsedSeconds": 0.003625299999999998
+        },
+        "qemu-payload": {
+          "calls": 3384,
+          "failedCalls": 0,
+          "bytes": 1255872082,
+          "elapsedSeconds": 7.6174955999990175
+        },
+        "base-image": {
+          "calls": 1,
+          "failedCalls": 0,
+          "bytes": 393216,
+          "elapsedSeconds": 0.002036200000000002
+        }
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 265,
+      "utc": "2026-10-17T20:13:35.5500092Z",
+      "elapsedSeconds": 978.6693704999999,
+      "event": "start",
+      "operationId": 133,
+      "parentOperationId": 86,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "details": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 266,
+      "utc": "2026-10-17T20:13:56.3167707Z",
+      "elapsedSeconds": 999.4357109,
+      "event": "end",
+      "operationId": 133,
+      "parentOperationId": 86,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "durationSeconds": 20.7663366,
+      "digestTotals": {
+        "manifest": {
+          "calls": 2,
+          "failedCalls": 0,
+          "bytes": 936336,
+          "elapsedSeconds": 0.00482260000000001
+        },
+        "qemu-payload": {
+          "calls": 3384,
+          "failedCalls": 0,
+          "bytes": 1255872082,
+          "elapsedSeconds": 7.008789699999113
+        }
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 267,
+      "utc": "2026-10-17T20:13:56.3207704Z",
+      "elapsedSeconds": 999.4394913,
+      "event": "start",
+      "operationId": 134,
+      "parentOperationId": 86,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "details": {
+        "tool": "qemu-img.exe",
+        "action": "info"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 268,
+      "utc": "2026-10-17T20:13:56.3629452Z",
+      "elapsedSeconds": 999.4818382,
+      "event": "end",
+      "operationId": 134,
+      "parentOperationId": 86,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "durationSeconds": 0.042373,
+      "digestTotals": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 269,
+      "utc": "2026-10-17T20:13:56.3755341Z",
+      "elapsedSeconds": 999.4951848999999,
+      "event": "end",
+      "operationId": 86,
+      "parentOperationId": 1,
+      "operation": "Copy-EzVmManagedInstance",
+      "category": "image",
+      "durationSeconds": 361.263117,
+      "digestTotals": {
+        "manifest": {
+          "calls": 38,
+          "failedCalls": 0,
+          "bytes": 16856227,
+          "elapsedSeconds": 0.08354950000000003
+        },
+        "qemu-payload": {
+          "calls": 60912,
+          "failedCalls": 0,
+          "bytes": 22605697476,
+          "elapsedSeconds": 125.78953409999349
+        },
+        "base-image": {
+          "calls": 9,
+          "failedCalls": 0,
+          "bytes": 2754560,
+          "elapsedSeconds": 0.018421400000000008
+        },
+        "other": {
+          "calls": 3,
+          "failedCalls": 0,
+          "bytes": 0,
+          "elapsedSeconds": 0.006602000000000885
+        }
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 270,
+      "utc": "2026-10-17T20:13:56.3882162Z",
+      "elapsedSeconds": 999.5071379999999,
+      "event": "start",
+      "operationId": 135,
+      "parentOperationId": 1,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "details": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 271,
+      "utc": "2026-10-17T20:14:15.0187983Z",
+      "elapsedSeconds": 1018.1378404999999,
+      "event": "end",
+      "operationId": 135,
+      "parentOperationId": 1,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "durationSeconds": 18.6307703,
+      "digestTotals": {
+        "manifest": {
+          "calls": 2,
+          "failedCalls": 0,
+          "bytes": 936336,
+          "elapsedSeconds": 0.004967599999999989
+        },
+        "qemu-payload": {
+          "calls": 3384,
+          "failedCalls": 0,
+          "bytes": 1255872082,
+          "elapsedSeconds": 6.753303100001347
+        }
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 272,
+      "utc": "2026-10-17T20:14:15.0197985Z",
+      "elapsedSeconds": 1018.1386603999999,
+      "event": "start",
+      "operationId": 136,
+      "parentOperationId": 1,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "details": {
+        "tool": "qemu-img.exe",
+        "action": "compare"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 273,
+      "utc": "2026-10-17T20:14:15.0585217Z",
+      "elapsedSeconds": 1018.1771789999999,
+      "event": "end",
+      "operationId": 136,
+      "parentOperationId": 1,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "durationSeconds": 0.0385022,
+      "digestTotals": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 274,
+      "utc": "2026-10-17T20:14:15.0680372Z",
+      "elapsedSeconds": 1018.1871285999999,
+      "event": "start",
+      "operationId": 137,
+      "parentOperationId": 1,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "details": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 275,
+      "utc": "2026-10-17T20:14:35.2925020Z",
+      "elapsedSeconds": 1038.411817,
+      "event": "end",
+      "operationId": 137,
+      "parentOperationId": 1,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "durationSeconds": 20.2247185,
+      "digestTotals": {
+        "manifest": {
+          "calls": 2,
+          "failedCalls": 0,
+          "bytes": 936336,
+          "elapsedSeconds": 0.005356899999999998
+        },
+        "qemu-payload": {
+          "calls": 3384,
+          "failedCalls": 0,
+          "bytes": 1255872082,
+          "elapsedSeconds": 7.0622392999999875
+        }
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 276,
+      "utc": "2026-10-17T20:14:35.2940081Z",
+      "elapsedSeconds": 1038.4127257999999,
+      "event": "start",
+      "operationId": 138,
+      "parentOperationId": 1,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "details": {
+        "tool": "qemu-img.exe",
+        "action": "compare"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 277,
+      "utc": "2026-10-17T20:14:35.3360684Z",
+      "elapsedSeconds": 1038.4547163,
+      "event": "end",
+      "operationId": 138,
+      "parentOperationId": 1,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "durationSeconds": 0.0420107,
+      "digestTotals": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 278,
+      "utc": "2026-10-17T20:14:35.3546301Z",
+      "elapsedSeconds": 1038.4735488,
+      "event": "start",
+      "operationId": 139,
+      "parentOperationId": 1,
+      "operation": "Export-EzVmManagedInstance",
+      "category": "image",
+      "details": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 279,
+      "utc": "2026-10-17T20:14:35.5576604Z",
+      "elapsedSeconds": 1038.6770477999999,
+      "event": "start",
+      "operationId": 140,
+      "parentOperationId": 139,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "details": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 280,
+      "utc": "2026-10-17T20:14:55.1467797Z",
+      "elapsedSeconds": 1058.2658294999999,
+      "event": "end",
+      "operationId": 140,
+      "parentOperationId": 139,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "durationSeconds": 19.5888059,
+      "digestTotals": {
+        "manifest": {
+          "calls": 2,
+          "failedCalls": 0,
+          "bytes": 936336,
+          "elapsedSeconds": 0.003997500000000015
+        },
+        "qemu-payload": {
+          "calls": 3384,
+          "failedCalls": 0,
+          "bytes": 1255872082,
+          "elapsedSeconds": 6.800046299999167
+        }
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 281,
+      "utc": "2026-10-17T20:14:55.1477845Z",
+      "elapsedSeconds": 1058.2664286,
+      "event": "start",
+      "operationId": 141,
+      "parentOperationId": 139,
+      "operation": "Invoke-EzVmProcess",
+      "category": "process",
+      "details": {
+        "tool": "qemu-system-x86_64.exe"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 282,
+      "utc": "2026-10-17T20:14:55.2598553Z",
+      "elapsedSeconds": 1058.3787211,
+      "event": "end",
+      "operationId": 141,
+      "parentOperationId": 139,
+      "operation": "Invoke-EzVmProcess",
+      "category": "process",
+      "durationSeconds": 0.1122999,
+      "digestTotals": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 283,
+      "utc": "2026-10-17T20:14:55.2608620Z",
+      "elapsedSeconds": 1058.3793934,
+      "event": "start",
+      "operationId": 142,
+      "parentOperationId": 139,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "details": {
+        "tool": "qemu-img.exe",
+        "action": "--version"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 284,
+      "utc": "2026-10-17T20:14:55.2945961Z",
+      "elapsedSeconds": 1058.4134619,
+      "event": "end",
+      "operationId": 142,
+      "parentOperationId": 139,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "durationSeconds": 0.0340855,
+      "digestTotals": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 285,
+      "utc": "2026-10-17T20:14:55.3284133Z",
+      "elapsedSeconds": 1058.4483217,
+      "event": "start",
+      "operationId": 143,
+      "parentOperationId": 139,
+      "operation": "Test-EzVmInstanceStorage",
+      "category": "validation",
+      "details": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 286,
+      "utc": "2026-10-17T20:14:55.3539025Z",
+      "elapsedSeconds": 1058.4730181999998,
+      "event": "start",
+      "operationId": 144,
+      "parentOperationId": 143,
+      "operation": "Test-EzVmPreparedBaseDirectory",
+      "category": "validation",
+      "details": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 287,
+      "utc": "2026-10-17T20:14:55.3861801Z",
+      "elapsedSeconds": 1058.5049179,
+      "event": "start",
+      "operationId": 145,
+      "parentOperationId": 144,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "details": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 288,
+      "utc": "2026-10-17T20:15:14.4927215Z",
+      "elapsedSeconds": 1077.611635,
+      "event": "end",
+      "operationId": 145,
+      "parentOperationId": 144,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "durationSeconds": 19.1067515,
+      "digestTotals": {
+        "manifest": {
+          "calls": 2,
+          "failedCalls": 0,
+          "bytes": 936336,
+          "elapsedSeconds": 0.0037853999999999943
+        },
+        "qemu-payload": {
+          "calls": 3384,
+          "failedCalls": 0,
+          "bytes": 1255872082,
+          "elapsedSeconds": 6.779670599999463
+        }
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 289,
+      "utc": "2026-10-17T20:15:14.4937220Z",
+      "elapsedSeconds": 1077.6124404,
+      "event": "start",
+      "operationId": 146,
+      "parentOperationId": 144,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "details": {
+        "tool": "qemu-img.exe",
+        "action": "info"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 290,
+      "utc": "2026-10-17T20:15:14.5257490Z",
+      "elapsedSeconds": 1077.6444512,
+      "event": "end",
+      "operationId": 146,
+      "parentOperationId": 144,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "durationSeconds": 0.031978,
+      "digestTotals": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 291,
+      "utc": "2026-10-17T20:15:14.5277457Z",
+      "elapsedSeconds": 1077.6464484,
+      "event": "end",
+      "operationId": 144,
+      "parentOperationId": 143,
+      "operation": "Test-EzVmPreparedBaseDirectory",
+      "category": "validation",
+      "durationSeconds": 19.173524,
+      "digestTotals": {
+        "manifest": {
+          "calls": 2,
+          "failedCalls": 0,
+          "bytes": 936336,
+          "elapsedSeconds": 0.0037853999999999943
+        },
+        "qemu-payload": {
+          "calls": 3384,
+          "failedCalls": 0,
+          "bytes": 1255872082,
+          "elapsedSeconds": 6.779670599999463
+        },
+        "base-image": {
+          "calls": 1,
+          "failedCalls": 0,
+          "bytes": 197120,
+          "elapsedSeconds": 0.0018263999999999989
+        }
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 292,
+      "utc": "2026-10-17T20:15:14.5352675Z",
+      "elapsedSeconds": 1077.6545423999999,
+      "event": "start",
+      "operationId": 147,
+      "parentOperationId": 143,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "details": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 293,
+      "utc": "2026-10-17T20:15:36.4868425Z",
+      "elapsedSeconds": 1099.6061992999998,
+      "event": "end",
+      "operationId": 147,
+      "parentOperationId": 143,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "durationSeconds": 21.9516729,
+      "digestTotals": {
+        "manifest": {
+          "calls": 2,
+          "failedCalls": 0,
+          "bytes": 936336,
+          "elapsedSeconds": 0.0035631999999999886
+        },
+        "qemu-payload": {
+          "calls": 3384,
+          "failedCalls": 0,
+          "bytes": 1255872082,
+          "elapsedSeconds": 7.928432400001043
+        }
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 294,
+      "utc": "2026-10-17T20:15:36.4878486Z",
+      "elapsedSeconds": 1099.6069822,
+      "event": "start",
+      "operationId": 148,
+      "parentOperationId": 143,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "details": {
+        "tool": "qemu-img.exe",
+        "action": "info"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 295,
+      "utc": "2026-10-17T20:15:36.5196239Z",
+      "elapsedSeconds": 1099.6384471,
+      "event": "end",
+      "operationId": 148,
+      "parentOperationId": 143,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "durationSeconds": 0.0314714,
+      "digestTotals": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 296,
+      "utc": "2026-10-17T20:15:36.5241415Z",
+      "elapsedSeconds": 1099.6435599,
+      "event": "end",
+      "operationId": 143,
+      "parentOperationId": 139,
+      "operation": "Test-EzVmInstanceStorage",
+      "category": "validation",
+      "durationSeconds": 41.1952676,
+      "digestTotals": {
+        "manifest": {
+          "calls": 4,
+          "failedCalls": 0,
+          "bytes": 1872672,
+          "elapsedSeconds": 0.007348599999999983
+        },
+        "qemu-payload": {
+          "calls": 6768,
+          "failedCalls": 0,
+          "bytes": 2511744164,
+          "elapsedSeconds": 14.708103000000506
+        },
+        "base-image": {
+          "calls": 1,
+          "failedCalls": 0,
+          "bytes": 197120,
+          "elapsedSeconds": 0.0018263999999999989
+        }
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 297,
+      "utc": "2026-10-17T20:15:36.5281904Z",
+      "elapsedSeconds": 1099.6480953,
+      "event": "start",
+      "operationId": 149,
+      "parentOperationId": 139,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "details": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 298,
+      "utc": "2026-10-17T20:15:56.8015585Z",
+      "elapsedSeconds": 1119.9205735,
+      "event": "end",
+      "operationId": 149,
+      "parentOperationId": 139,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "durationSeconds": 20.2724708,
+      "digestTotals": {
+        "manifest": {
+          "calls": 2,
+          "failedCalls": 0,
+          "bytes": 936336,
+          "elapsedSeconds": 0.003549400000000036
+        },
+        "qemu-payload": {
+          "calls": 3384,
+          "failedCalls": 0,
+          "bytes": 1255872082,
+          "elapsedSeconds": 7.754147799998805
+        }
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 299,
+      "utc": "2026-10-17T20:15:56.8025591Z",
+      "elapsedSeconds": 1119.921527,
+      "event": "start",
+      "operationId": 150,
+      "parentOperationId": 139,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "details": {
+        "tool": "qemu-img.exe",
+        "action": "check"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 300,
+      "utc": "2026-10-17T20:15:56.8380411Z",
+      "elapsedSeconds": 1119.9570793,
+      "event": "end",
+      "operationId": 150,
+      "parentOperationId": 139,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "durationSeconds": 0.0355145,
+      "digestTotals": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 301,
+      "utc": "2026-10-17T20:15:56.8446539Z",
+      "elapsedSeconds": 1119.9635899999998,
+      "event": "start",
+      "operationId": 151,
+      "parentOperationId": 139,
+      "operation": "Test-EzVmPreparedBaseDirectory",
+      "category": "validation",
+      "details": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 302,
+      "utc": "2026-10-17T20:15:56.8736023Z",
+      "elapsedSeconds": 1119.9922401,
+      "event": "start",
+      "operationId": 152,
+      "parentOperationId": 151,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "details": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 303,
+      "utc": "2026-10-17T20:16:17.2737373Z",
+      "elapsedSeconds": 1140.3924616,
+      "event": "end",
+      "operationId": 152,
+      "parentOperationId": 151,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "durationSeconds": 20.4002395,
+      "digestTotals": {
+        "manifest": {
+          "calls": 2,
+          "failedCalls": 0,
+          "bytes": 936336,
+          "elapsedSeconds": 0.005841600000000002
+        },
+        "qemu-payload": {
+          "calls": 3384,
+          "failedCalls": 0,
+          "bytes": 1255872082,
+          "elapsedSeconds": 7.460563199998603
+        }
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 304,
+      "utc": "2026-10-17T20:16:17.2737373Z",
+      "elapsedSeconds": 1140.3933642,
+      "event": "start",
+      "operationId": 153,
+      "parentOperationId": 151,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "details": {
+        "tool": "qemu-img.exe",
+        "action": "info"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 305,
+      "utc": "2026-10-17T20:16:17.3130518Z",
+      "elapsedSeconds": 1140.4316165999999,
+      "event": "end",
+      "operationId": 153,
+      "parentOperationId": 151,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "durationSeconds": 0.0382179,
+      "digestTotals": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 306,
+      "utc": "2026-10-17T20:16:17.3150528Z",
+      "elapsedSeconds": 1140.4339188,
+      "event": "end",
+      "operationId": 151,
+      "parentOperationId": 139,
+      "operation": "Test-EzVmPreparedBaseDirectory",
+      "category": "validation",
+      "durationSeconds": 20.4703494,
+      "digestTotals": {
+        "manifest": {
+          "calls": 2,
+          "failedCalls": 0,
+          "bytes": 936336,
+          "elapsedSeconds": 0.005841600000000002
+        },
+        "qemu-payload": {
+          "calls": 3384,
+          "failedCalls": 0,
+          "bytes": 1255872082,
+          "elapsedSeconds": 7.460563199998603
+        },
+        "base-image": {
+          "calls": 1,
+          "failedCalls": 0,
+          "bytes": 197120,
+          "elapsedSeconds": 0.0016591999999999996
+        }
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 307,
+      "utc": "2026-10-17T20:16:17.3321216Z",
+      "elapsedSeconds": 1140.4517429999999,
+      "event": "start",
+      "operationId": 154,
+      "parentOperationId": 139,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "details": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 308,
+      "utc": "2026-10-17T20:16:39.6193506Z",
+      "elapsedSeconds": 1162.7387899,
+      "event": "end",
+      "operationId": 154,
+      "parentOperationId": 139,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "durationSeconds": 22.2870308,
+      "digestTotals": {
+        "manifest": {
+          "calls": 2,
+          "failedCalls": 0,
+          "bytes": 936336,
+          "elapsedSeconds": 0.0038603000000000387
+        },
+        "qemu-payload": {
+          "calls": 3384,
+          "failedCalls": 0,
+          "bytes": 1255872082,
+          "elapsedSeconds": 7.1449560000006045
+        }
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 309,
+      "utc": "2026-10-17T20:16:39.6203577Z",
+      "elapsedSeconds": 1162.7397991,
+      "event": "start",
+      "operationId": 155,
+      "parentOperationId": 139,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "details": {
+        "tool": "qemu-img.exe",
+        "action": "convert"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 310,
+      "utc": "2026-10-17T20:16:39.6772102Z",
+      "elapsedSeconds": 1162.7971851,
+      "event": "end",
+      "operationId": 155,
+      "parentOperationId": 139,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "durationSeconds": 0.0573931,
+      "digestTotals": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 311,
+      "utc": "2026-10-17T20:16:39.6887910Z",
+      "elapsedSeconds": 1162.8077904,
+      "event": "start",
+      "operationId": 156,
+      "parentOperationId": 139,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "details": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 312,
+      "utc": "2026-10-17T20:16:59.8317496Z",
+      "elapsedSeconds": 1182.9509252,
+      "event": "end",
+      "operationId": 156,
+      "parentOperationId": 139,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "durationSeconds": 20.1431692,
+      "digestTotals": {
+        "manifest": {
+          "calls": 2,
+          "failedCalls": 0,
+          "bytes": 936336,
+          "elapsedSeconds": 0.004875000000000018
+        },
+        "qemu-payload": {
+          "calls": 3384,
+          "failedCalls": 0,
+          "bytes": 1255872082,
+          "elapsedSeconds": 7.32888959999957
+        }
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 313,
+      "utc": "2026-10-17T20:16:59.8327486Z",
+      "elapsedSeconds": 1182.9517012,
+      "event": "start",
+      "operationId": 157,
+      "parentOperationId": 139,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "details": {
+        "tool": "qemu-img.exe",
+        "action": "info"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 314,
+      "utc": "2026-10-17T20:16:59.8711054Z",
+      "elapsedSeconds": 1182.9899733,
+      "event": "end",
+      "operationId": 157,
+      "parentOperationId": 139,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "durationSeconds": 0.0382799,
+      "digestTotals": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 315,
+      "utc": "2026-10-17T20:16:59.8784214Z",
+      "elapsedSeconds": 1182.9970435999999,
+      "event": "start",
+      "operationId": 158,
+      "parentOperationId": 139,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "details": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 316,
+      "utc": "2026-10-17T20:17:28.8899202Z",
+      "elapsedSeconds": 1212.009382,
+      "event": "end",
+      "operationId": 158,
+      "parentOperationId": 139,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "durationSeconds": 29.0123125,
+      "digestTotals": {
+        "manifest": {
+          "calls": 2,
+          "failedCalls": 0,
+          "bytes": 936336,
+          "elapsedSeconds": 0.005277399999999988
+        },
+        "qemu-payload": {
+          "calls": 3384,
+          "failedCalls": 0,
+          "bytes": 1255872082,
+          "elapsedSeconds": 6.851811199999759
+        }
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 317,
+      "utc": "2026-10-17T20:17:28.8919188Z",
+      "elapsedSeconds": 1212.0104956999999,
+      "event": "start",
+      "operationId": 159,
+      "parentOperationId": 139,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "details": {
+        "tool": "qemu-img.exe",
+        "action": "check"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 318,
+      "utc": "2026-10-17T20:17:28.9365433Z",
+      "elapsedSeconds": 1212.0555761,
+      "event": "end",
+      "operationId": 159,
+      "parentOperationId": 139,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "durationSeconds": 0.0450888,
+      "digestTotals": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 319,
+      "utc": "2026-10-17T20:17:28.9902915Z",
+      "elapsedSeconds": 1212.1093916,
+      "event": "end",
+      "operationId": 139,
+      "parentOperationId": 1,
+      "operation": "Export-EzVmManagedInstance",
+      "category": "image",
+      "durationSeconds": 173.6359266,
+      "digestTotals": {
+        "manifest": {
+          "calls": 18,
+          "failedCalls": 0,
+          "bytes": 7492867,
+          "elapsedSeconds": 0.03762510000000005
+        },
+        "qemu-payload": {
+          "calls": 27072,
+          "failedCalls": 0,
+          "bytes": 10046976656,
+          "elapsedSeconds": 58.048517099997014
+        },
+        "base-image": {
+          "calls": 2,
+          "failedCalls": 0,
+          "bytes": 394240,
+          "elapsedSeconds": 0.0034855999999999984
+        },
+        "other": {
+          "calls": 4,
+          "failedCalls": 0,
+          "bytes": 0,
+          "elapsedSeconds": 0.008375099999998525
+        }
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 320,
+      "utc": "2026-10-17T20:17:28.9952905Z",
+      "elapsedSeconds": 1212.113911,
+      "event": "start",
+      "operationId": 160,
+      "parentOperationId": 1,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "details": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 321,
+      "utc": "2026-10-17T20:17:49.7070827Z",
+      "elapsedSeconds": 1232.8264536,
+      "event": "end",
+      "operationId": 160,
+      "parentOperationId": 1,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "durationSeconds": 20.712549,
+      "digestTotals": {
+        "manifest": {
+          "calls": 2,
+          "failedCalls": 0,
+          "bytes": 936336,
+          "elapsedSeconds": 0.0038182999999999967
+        },
+        "qemu-payload": {
+          "calls": 3384,
+          "failedCalls": 0,
+          "bytes": 1255872082,
+          "elapsedSeconds": 7.336208500000964
+        }
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 322,
+      "utc": "2026-10-17T20:17:49.7085964Z",
+      "elapsedSeconds": 1232.8275268,
+      "event": "start",
+      "operationId": 161,
+      "parentOperationId": 1,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "details": {
+        "tool": "qemu-img.exe",
+        "action": "info"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 323,
+      "utc": "2026-10-17T20:17:49.7486708Z",
+      "elapsedSeconds": 1232.8679453,
+      "event": "end",
+      "operationId": 161,
+      "parentOperationId": 1,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "durationSeconds": 0.0404666,
+      "digestTotals": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 324,
+      "utc": "2026-10-17T20:17:49.7546762Z",
+      "elapsedSeconds": 1232.8734018999999,
+      "event": "start",
+      "operationId": 162,
+      "parentOperationId": 1,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "details": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 325,
+      "utc": "2026-10-17T20:18:15.5481407Z",
+      "elapsedSeconds": 1258.6670946,
+      "event": "end",
+      "operationId": 162,
+      "parentOperationId": 1,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "durationSeconds": 25.7936523,
+      "digestTotals": {
+        "manifest": {
+          "calls": 2,
+          "failedCalls": 0,
+          "bytes": 936336,
+          "elapsedSeconds": 0.00413659999999999
+        },
+        "qemu-payload": {
+          "calls": 3384,
+          "failedCalls": 0,
+          "bytes": 1255872082,
+          "elapsedSeconds": 10.490275300000405
+        }
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 326,
+      "utc": "2026-10-17T20:18:15.5486481Z",
+      "elapsedSeconds": 1258.6682432999999,
+      "event": "start",
+      "operationId": 163,
+      "parentOperationId": 1,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "details": {
+        "tool": "qemu-img.exe",
+        "action": "compare"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 327,
+      "utc": "2026-10-17T20:18:15.6464272Z",
+      "elapsedSeconds": 1258.7653939,
+      "event": "end",
+      "operationId": 163,
+      "parentOperationId": 1,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "durationSeconds": 0.0969938,
+      "digestTotals": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 328,
+      "utc": "2026-10-17T20:18:15.6479383Z",
+      "elapsedSeconds": 1258.7665103,
+      "event": "start",
+      "operationId": 164,
+      "parentOperationId": 1,
+      "operation": "Import-EzVmManagedInstance",
+      "category": "image",
+      "details": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 329,
+      "utc": "2026-10-17T20:18:15.9825600Z",
+      "elapsedSeconds": 1259.1016048,
+      "event": "start",
+      "operationId": 165,
+      "parentOperationId": 164,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "details": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 330,
+      "utc": "2026-10-17T20:18:42.3457855Z",
+      "elapsedSeconds": 1285.4649901,
+      "event": "end",
+      "operationId": 165,
+      "parentOperationId": 164,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "durationSeconds": 26.3633874,
+      "digestTotals": {
+        "manifest": {
+          "calls": 2,
+          "failedCalls": 0,
+          "bytes": 936336,
+          "elapsedSeconds": 0.005674300000000021
+        },
+        "qemu-payload": {
+          "calls": 3384,
+          "failedCalls": 0,
+          "bytes": 1255872082,
+          "elapsedSeconds": 10.481256899998641
+        }
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 331,
+      "utc": "2026-10-17T20:18:42.3472901Z",
+      "elapsedSeconds": 1285.4660291,
+      "event": "start",
+      "operationId": 166,
+      "parentOperationId": 164,
+      "operation": "Invoke-EzVmProcess",
+      "category": "process",
+      "details": {
+        "tool": "qemu-system-x86_64.exe"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 332,
+      "utc": "2026-10-17T20:18:42.5225631Z",
+      "elapsedSeconds": 1285.6416566,
+      "event": "end",
+      "operationId": 166,
+      "parentOperationId": 164,
+      "operation": "Invoke-EzVmProcess",
+      "category": "process",
+      "durationSeconds": 0.1756383,
+      "digestTotals": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 333,
+      "utc": "2026-10-17T20:18:42.5255819Z",
+      "elapsedSeconds": 1285.6449334,
+      "event": "start",
+      "operationId": 167,
+      "parentOperationId": 164,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "details": {
+        "tool": "qemu-img.exe",
+        "action": "--version"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 334,
+      "utc": "2026-10-17T20:18:42.6174517Z",
+      "elapsedSeconds": 1285.7362555,
+      "event": "end",
+      "operationId": 167,
+      "parentOperationId": 164,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "durationSeconds": 0.0914074,
+      "digestTotals": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 335,
+      "utc": "2026-10-17T20:18:42.6420449Z",
+      "elapsedSeconds": 1285.7608140999998,
+      "event": "start",
+      "operationId": 168,
+      "parentOperationId": 164,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "details": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 336,
+      "utc": "2026-10-17T20:19:11.2592921Z",
+      "elapsedSeconds": 1314.3783251,
+      "event": "end",
+      "operationId": 168,
+      "parentOperationId": 164,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "durationSeconds": 28.6175997,
+      "digestTotals": {
+        "manifest": {
+          "calls": 2,
+          "failedCalls": 0,
+          "bytes": 936336,
+          "elapsedSeconds": 0.013731300000000002
+        },
+        "qemu-payload": {
+          "calls": 3384,
+          "failedCalls": 0,
+          "bytes": 1255872082,
+          "elapsedSeconds": 8.262494100001447
+        }
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 337,
+      "utc": "2026-10-17T20:19:11.2602913Z",
+      "elapsedSeconds": 1314.3792237999999,
+      "event": "start",
+      "operationId": 169,
+      "parentOperationId": 164,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "details": {
+        "tool": "qemu-img.exe",
+        "action": "info"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 338,
+      "utc": "2026-10-17T20:19:11.3042855Z",
+      "elapsedSeconds": 1314.4233322999999,
+      "event": "end",
+      "operationId": 169,
+      "parentOperationId": 164,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "durationSeconds": 0.0440952,
+      "digestTotals": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 339,
+      "utc": "2026-10-17T20:19:11.3141228Z",
+      "elapsedSeconds": 1314.4328876,
+      "event": "start",
+      "operationId": 170,
+      "parentOperationId": 164,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "details": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 340,
+      "utc": "2026-10-17T20:19:36.4084096Z",
+      "elapsedSeconds": 1339.527212,
+      "event": "end",
+      "operationId": 170,
+      "parentOperationId": 164,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "durationSeconds": 25.0943658,
+      "digestTotals": {
+        "manifest": {
+          "calls": 2,
+          "failedCalls": 0,
+          "bytes": 936336,
+          "elapsedSeconds": 0.004178599999999977
+        },
+        "qemu-payload": {
+          "calls": 3384,
+          "failedCalls": 0,
+          "bytes": 1255872082,
+          "elapsedSeconds": 8.737877099999935
+        }
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 341,
+      "utc": "2026-10-17T20:19:36.4084096Z",
+      "elapsedSeconds": 1339.5282989,
+      "event": "start",
+      "operationId": 171,
+      "parentOperationId": 164,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "details": {
+        "tool": "qemu-img.exe",
+        "action": "check"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 342,
+      "utc": "2026-10-17T20:19:36.4507157Z",
+      "elapsedSeconds": 1339.5703806,
+      "event": "end",
+      "operationId": 171,
+      "parentOperationId": 164,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "durationSeconds": 0.0420786,
+      "digestTotals": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 343,
+      "utc": "2026-10-17T20:19:36.4627786Z",
+      "elapsedSeconds": 1339.58168,
+      "event": "start",
+      "operationId": 172,
+      "parentOperationId": 164,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "details": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 344,
+      "utc": "2026-10-17T20:20:01.9145854Z",
+      "elapsedSeconds": 1365.0339427,
+      "event": "end",
+      "operationId": 172,
+      "parentOperationId": 164,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "durationSeconds": 25.4523251,
+      "digestTotals": {
+        "manifest": {
+          "calls": 2,
+          "failedCalls": 0,
+          "bytes": 936336,
+          "elapsedSeconds": 0.005352699999999988
+        },
+        "qemu-payload": {
+          "calls": 3384,
+          "failedCalls": 0,
+          "bytes": 1255872082,
+          "elapsedSeconds": 9.072176999999044
+        }
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 345,
+      "utc": "2026-10-17T20:20:01.9170906Z",
+      "elapsedSeconds": 1365.0359151999999,
+      "event": "start",
+      "operationId": 173,
+      "parentOperationId": 164,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "details": {
+        "tool": "qemu-img.exe",
+        "action": "convert"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 346,
+      "utc": "2026-10-17T20:20:02.0326757Z",
+      "elapsedSeconds": 1365.1520773,
+      "event": "end",
+      "operationId": 173,
+      "parentOperationId": 164,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "durationSeconds": 0.1161139,
+      "digestTotals": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 347,
+      "utc": "2026-10-17T20:20:02.0492342Z",
+      "elapsedSeconds": 1365.1680864999998,
+      "event": "start",
+      "operationId": 174,
+      "parentOperationId": 164,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "details": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 348,
+      "utc": "2026-10-17T20:20:23.2940865Z",
+      "elapsedSeconds": 1386.4133901,
+      "event": "end",
+      "operationId": 174,
+      "parentOperationId": 164,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "durationSeconds": 21.2453814,
+      "digestTotals": {
+        "manifest": {
+          "calls": 2,
+          "failedCalls": 0,
+          "bytes": 936336,
+          "elapsedSeconds": 0.005533999999999983
+        },
+        "qemu-payload": {
+          "calls": 3384,
+          "failedCalls": 0,
+          "bytes": 1255872082,
+          "elapsedSeconds": 7.048483200001101
+        }
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 349,
+      "utc": "2026-10-17T20:20:23.2950870Z",
+      "elapsedSeconds": 1386.4141642,
+      "event": "start",
+      "operationId": 175,
+      "parentOperationId": 164,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "details": {
+        "tool": "qemu-img.exe",
+        "action": "info"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 350,
+      "utc": "2026-10-17T20:20:23.3353355Z",
+      "elapsedSeconds": 1386.4541433,
+      "event": "end",
+      "operationId": 175,
+      "parentOperationId": 164,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "durationSeconds": 0.0399516,
+      "digestTotals": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 351,
+      "utc": "2026-10-17T20:20:23.3418913Z",
+      "elapsedSeconds": 1386.4606307,
+      "event": "start",
+      "operationId": 176,
+      "parentOperationId": 164,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "details": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 352,
+      "utc": "2026-10-17T20:20:48.0485610Z",
+      "elapsedSeconds": 1411.1672291999998,
+      "event": "end",
+      "operationId": 176,
+      "parentOperationId": 164,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "durationSeconds": 24.7065784,
+      "digestTotals": {
+        "manifest": {
+          "calls": 2,
+          "failedCalls": 0,
+          "bytes": 936336,
+          "elapsedSeconds": 0.003948000000000007
+        },
+        "qemu-payload": {
+          "calls": 3384,
+          "failedCalls": 0,
+          "bytes": 1255872082,
+          "elapsedSeconds": 9.313139700000363
+        }
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 353,
+      "utc": "2026-10-17T20:20:48.0495610Z",
+      "elapsedSeconds": 1411.1684992,
+      "event": "start",
+      "operationId": 177,
+      "parentOperationId": 164,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "details": {
+        "tool": "qemu-img.exe",
+        "action": "check"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 354,
+      "utc": "2026-10-17T20:20:48.1002335Z",
+      "elapsedSeconds": 1411.2189438999999,
+      "event": "end",
+      "operationId": 177,
+      "parentOperationId": 164,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "durationSeconds": 0.0504547,
+      "digestTotals": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 355,
+      "utc": "2026-10-17T20:20:48.1616764Z",
+      "elapsedSeconds": 1411.2802104999998,
+      "event": "start",
+      "operationId": 178,
+      "parentOperationId": 164,
+      "operation": "Test-EzVmPreparedBaseDirectory",
+      "category": "validation",
+      "details": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 356,
+      "utc": "2026-10-17T20:20:48.2188135Z",
+      "elapsedSeconds": 1411.3380942,
+      "event": "start",
+      "operationId": 179,
+      "parentOperationId": 178,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "details": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 357,
+      "utc": "2026-10-17T20:21:16.8500666Z",
+      "elapsedSeconds": 1439.9694113,
+      "event": "end",
+      "operationId": 179,
+      "parentOperationId": 178,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "durationSeconds": 28.6313738,
+      "digestTotals": {
+        "manifest": {
+          "calls": 2,
+          "failedCalls": 0,
+          "bytes": 936336,
+          "elapsedSeconds": 0.004996599999999962
+        },
+        "qemu-payload": {
+          "calls": 3384,
+          "failedCalls": 0,
+          "bytes": 1255872082,
+          "elapsedSeconds": 10.06103450000029
+        }
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 358,
+      "utc": "2026-10-17T20:21:16.8511668Z",
+      "elapsedSeconds": 1439.970554,
+      "event": "start",
+      "operationId": 180,
+      "parentOperationId": 178,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "details": {
+        "tool": "qemu-img.exe",
+        "action": "info"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 359,
+      "utc": "2026-10-17T20:21:16.9036088Z",
+      "elapsedSeconds": 1440.0227602999998,
+      "event": "end",
+      "operationId": 180,
+      "parentOperationId": 178,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "durationSeconds": 0.0522216,
+      "digestTotals": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 360,
+      "utc": "2026-10-17T20:21:16.9069692Z",
+      "elapsedSeconds": 1440.0256617999999,
+      "event": "end",
+      "operationId": 178,
+      "parentOperationId": 164,
+      "operation": "Test-EzVmPreparedBaseDirectory",
+      "category": "validation",
+      "durationSeconds": 28.7454381,
+      "digestTotals": {
+        "manifest": {
+          "calls": 2,
+          "failedCalls": 0,
+          "bytes": 936336,
+          "elapsedSeconds": 0.004996599999999962
+        },
+        "qemu-payload": {
+          "calls": 3384,
+          "failedCalls": 0,
+          "bytes": 1255872082,
+          "elapsedSeconds": 10.06103450000029
+        },
+        "base-image": {
+          "calls": 1,
+          "failedCalls": 0,
+          "bytes": 393216,
+          "elapsedSeconds": 0.0028730000000000006
+        }
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 361,
+      "utc": "2026-10-17T20:21:16.9140403Z",
+      "elapsedSeconds": 1440.0325817,
+      "event": "start",
+      "operationId": 181,
+      "parentOperationId": 164,
+      "operation": "Test-EzVmPreparedBaseDirectory",
+      "category": "validation",
+      "details": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 362,
+      "utc": "2026-10-17T20:21:16.9591297Z",
+      "elapsedSeconds": 1440.0782170999998,
+      "event": "start",
+      "operationId": 182,
+      "parentOperationId": 181,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "details": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 363,
+      "utc": "2026-10-17T20:21:42.5588138Z",
+      "elapsedSeconds": 1465.6776046999998,
+      "event": "end",
+      "operationId": 182,
+      "parentOperationId": 181,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "durationSeconds": 25.5994004,
+      "digestTotals": {
+        "manifest": {
+          "calls": 2,
+          "failedCalls": 0,
+          "bytes": 936336,
+          "elapsedSeconds": 0.0066497999999999835
+        },
+        "qemu-payload": {
+          "calls": 3384,
+          "failedCalls": 0,
+          "bytes": 1255872082,
+          "elapsedSeconds": 9.08300099999991
+        }
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 364,
+      "utc": "2026-10-17T20:21:42.5593241Z",
+      "elapsedSeconds": 1465.6785281999998,
+      "event": "start",
+      "operationId": 183,
+      "parentOperationId": 181,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "details": {
+        "tool": "qemu-img.exe",
+        "action": "info"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 365,
+      "utc": "2026-10-17T20:21:42.6000327Z",
+      "elapsedSeconds": 1465.7190679999999,
+      "event": "end",
+      "operationId": 183,
+      "parentOperationId": 181,
+      "operation": "Invoke-EzVmProcess",
+      "category": "image",
+      "durationSeconds": 0.0405848,
+      "digestTotals": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 366,
+      "utc": "2026-10-17T20:21:42.6025408Z",
+      "elapsedSeconds": 1465.721143,
+      "event": "end",
+      "operationId": 181,
+      "parentOperationId": 164,
+      "operation": "Test-EzVmPreparedBaseDirectory",
+      "category": "validation",
+      "durationSeconds": 25.6886259,
+      "digestTotals": {
+        "manifest": {
+          "calls": 2,
+          "failedCalls": 0,
+          "bytes": 936336,
+          "elapsedSeconds": 0.0066497999999999835
+        },
+        "qemu-payload": {
+          "calls": 3384,
+          "failedCalls": 0,
+          "bytes": 1255872082,
+          "elapsedSeconds": 9.08300099999991
+        },
+        "base-image": {
+          "calls": 1,
+          "failedCalls": 0,
+          "bytes": 393216,
+          "elapsedSeconds": 0.002381000000000001
+        }
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 367,
+      "utc": "2026-10-17T20:21:43.2372443Z",
+      "elapsedSeconds": 1466.3565294999999,
+      "event": "start",
+      "operationId": 184,
+      "parentOperationId": 164,
+      "operation": "Test-EzVmPreparedBaseDirectory",
+      "category": "validation",
+      "details": {}
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 368,
+      "utc": "2026-10-17T20:21:43.2803875Z",
+      "elapsedSeconds": 1466.3995978,
+      "event": "start",
+      "operationId": 185,
+      "parentOperationId": 184,
+      "operation": "Assert-EzVmQemuPayloadIntegrity",
+      "category": "validation",
+      "details": {}
+    }
+  ]
+}

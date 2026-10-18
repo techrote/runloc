@@ -1,0 +1,85 @@
+{
+  "schemaVersion": 1,
+  "kind": "ezvm-integration-windows-test-failure",
+  "candidateCommit": "ef713d831bca1de02935f411f4e22b49102970e1",
+  "candidateTree": "4819b99a101eaefcf424429af6dc38c195bf76eb",
+  "jobs": [
+    {
+      "jobUrl": "https://github.com/techrote/ezvm/actions/runs/39054107045/job/117458439680",
+      "powerShellLane": "5.1",
+      "decodedLogSha256": "94195dcd9358ae3a538c5a027f109ebfc3e0fe584db86f7d9b95f42e3ce7fec6",
+      "decodedLogBytes": 60719,
+      "logRepresentation": "connector-decoded text saved as UTF-8; CRLF preserved",
+      "suiteResult": "RESULT: 375 passed, 1 failed, 0 skipped, 376 total."
+    },
+    {
+      "jobUrl": "https://github.com/techrote/ezvm/actions/runs/39054107045/job/117458439484",
+      "powerShellLane": "7.6.6",
+      "decodedLogSha256": "db9f8c669b84ca68f669c0df4503be3c1ffba1832fd165254967adad6cf91fa8",
+      "decodedLogBytes": 60917,
+      "logRepresentation": "connector-decoded text saved as UTF-8; CRLF preserved",
+      "suiteResult": "RESULT: 375 passed, 1 failed, 0 skipped, 376 total."
+    },
+    {
+      "jobUrl": "https://github.com/techrote/ezvm/actions/runs/39054106992/job/117458439230",
+      "powerShellLane": "5.1",
+      "decodedLogSha256": "916b5ea9e766c19b99fa4f1f1e630d4c18f9dfd21e5df3695d243cbda5eaec2a",
+      "decodedLogBytes": 17975,
+      "logRepresentation": "connector-decoded text saved as UTF-8; CRLF preserved",
+      "suiteResult": null
+    }
+  ],
+  "standardUserArtifact": {
+    "url": "https://api.github.com/repos/techrote/ezvm/actions/artifacts/12109055987/zip",
+    "sha256": "b23a3564270f82f471e658c8a9e484eb3f1dac5de01719970ec90d02e81f62b7",
+    "bytes": 22308,
+    "engine": "5.1.20348.5622",
+    "token": {
+      "administratorMember": false,
+      "specialPrivilegesPresent": [],
+      "observedPrivileges": [
+        "SeChangeNotifyPrivilege",
+        "SeIncreaseWorkingSetPrivilege"
+      ]
+    },
+    "baselineCommit": "d5265c804d0d8494d8171482a85aca563b181e05",
+    "baselineExpectedFailureCount": 4,
+    "suiteResult": "375 passed, 1 failed, 0 skipped, 376 total.",
+    "outcome": "failed",
+    "childExitCode": 1,
+    "childExited": true,
+    "fixtureRemoved": false,
+    "temporaryAccountRemoved": true
+  },
+  "observedFailure": {
+    "test": "Qualification telemetry: original terminating error and preceding output are preserved without logging payloads",
+    "file": "tests/QualificationTelemetry.Tests.ps1",
+    "line": 102,
+    "signature": "ReadAllText sharing violation while telemetry writer remains open"
+  },
+  "scope": "Observed test-reader sharing failure only; no original full-release/WHPX acceptance claim.",
+  "diagnosis": "The writer opens with FileAccess.Write and FileShare.Read. File.ReadAllText opens a reader that does not share existing write access on Windows, so the test fails while the writer is still open. The neighboring Get-Content live-read test passes. Finalizing and disposing the failed session before reading retained evidence avoids this reader/writer conflict without changing production sharing policy.",
+  "repair": {
+    "localCommit": "6bd04276be43b602c47627164a553d31f7b8a350",
+    "localTree": "f609fa6aa429a9b78fa89ef763126d9ef023e8d0",
+    "changedFiles": [
+      "tests/QualificationTelemetry.Tests.ps1"
+    ],
+    "assertionsPreserved": [
+      "original terminating error",
+      "preceding output",
+      "private diagnostic excluded",
+      "original output excluded",
+      "original operation failure event"
+    ],
+    "assertionsAdded": [
+      "stream disposed",
+      "writer did not fault",
+      "span stack empty",
+      "four expected records",
+      "final full-release failure"
+    ],
+    "localVerification": "PowerShell 7.6.6 on Linux: 7 passed, 0 failed, 0 skipped; repository contract 184 tracked files, 14 JSON files, 81 PowerShell files passed. No Windows acceptance claimed.",
+    "publicCommit": "59eee784b8016178c5589dea32cf2c9e72b942bd"
+  }
+}

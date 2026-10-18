@@ -1,0 +1,215 @@
+{
+  "schemaVersion": 1,
+  "kind": "ezvm-final-candidate-windows-qualification",
+  "candidate": {
+    "commit": "59eee784b8016178c5589dea32cf2c9e72b942bd",
+    "tree": "f609fa6aa429a9b78fa89ef763126d9ef023e8d0",
+    "keysSha256": "89e437ce908695b9d90ddaa5cb590c3aa44c1a7c52d3696ebe9e7ae218f04fe5"
+  },
+  "baseline": {
+    "commit": "d5265c804d0d8494d8171482a85aca563b181e05",
+    "tree": "9416befc914dafcdefbc5c9bcc605b1ddd53e082",
+    "keysSha256": "7a76dd9b47b2c9665535e856f567faf309c489e9683738cf42b9e67c3d62ee1f"
+  },
+  "scope": "Exact-head ordinary-user ACL regression plus full control-plane suite on both supported Windows PowerShell lanes. Full hosted TCG remains explicitly deferred; physical WHPX full-release acceptance is not established by these tests.",
+  "commitMetadata": [
+    {
+      "commit": "2f25017e7b7a2a60c6817a3a225b247450a98840",
+      "tree": "f609fa6aa429a9b78fa89ef763126d9ef023e8d0",
+      "url": "https://api.github.com/repos/techrote/ezvm/git/commits/2f25017e7b7a2a60c6817a3a225b247450a98840",
+      "parents": [
+        "7b829f8352a9fa30c965e57386965767c5969e0d",
+        "59eee784b8016178c5589dea32cf2c9e72b942bd"
+      ]
+    },
+    {
+      "commit": "59eee784b8016178c5589dea32cf2c9e72b942bd",
+      "tree": "f609fa6aa429a9b78fa89ef763126d9ef023e8d0",
+      "url": "https://api.github.com/repos/techrote/ezvm/git/commits/59eee784b8016178c5589dea32cf2c9e72b942bd",
+      "parents": [
+        "ef713d831bca1de02935f411f4e22b49102970e1"
+      ]
+    }
+  ],
+  "decodedLogRepresentation": "Connector-decoded job text retained as UTF-8 with original CRLF; these hashes are not workflow-log ZIP hashes.",
+  "requiredAclCases": [
+    "Security: actual Windows key generation and staged copy-from preserve destination on failure",
+    "Security: Windows private ACL removes pre-existing broad explicit ACEs",
+    "Private ACL: inherited broad file access is removed and repeated protection preserves bytes",
+    "Private ACL: directory broad ACEs are removed and protected reapplication remains private"
+  ],
+  "ordinaryUser": [
+    {
+      "jobUrl": "https://github.com/techrote/ezvm/actions/runs/39055025533/job/117461142355",
+      "decodedLogSha256": "4c4b6412200bbffcd3dfe05b95be01343389caaca694fa42ee85c5b3ae5789ba",
+      "decodedLogBytes": 16989,
+      "powerShellVersion": "5.1.20348.5622",
+      "sourceCheckout": "59eee784b8016178c5589dea32cf2c9e72b942bd",
+      "sourceUnchanged": true,
+      "outcome": "pass",
+      "literalTestCounts": {
+        "pass": 376,
+        "fail": 0,
+        "skip": 0
+      },
+      "suiteResult": "RESULT: 376 passed, 0 failed, 0 skipped, 376 total.",
+      "token": {
+        "administratorMember": false,
+        "specialPrivilegesPresent": [],
+        "observedPrivileges": [
+          "SeChangeNotifyPrivilege",
+          "SeIncreaseWorkingSetPrivilege"
+        ]
+      },
+      "baselineExpectedSeSecurityPrivilegeFailures": 4,
+      "correctedRequiredCasesPassed": 4,
+      "telemetryCasesPassed": 7,
+      "hostedLaunchCasesPassed": 6,
+      "receiptExitCode": 0,
+      "hostReceipt": {
+        "schemaVersion": 1,
+        "sourceCommit": "59eee784b8016178c5589dea32cf2c9e72b942bd",
+        "childExitCode": 0,
+        "childExited": true,
+        "temporaryAccountRemoved": true,
+        "fixtureRemoved": true,
+        "reason": ""
+      },
+      "startedAt": "2026-10-17T17:44:25.5473032Z",
+      "endedAt": "2026-10-17T17:48:51.6472952Z",
+      "elapsedSeconds": 266.0943863,
+      "artifact": {
+        "id": 12108869278,
+        "url": "https://api.github.com/repos/techrote/ezvm/actions/artifacts/12108869278/zip",
+        "bytes": 21495,
+        "sha256": "545a381494ca8d1db686710fb2b6e2d45692cfb182d5293340275477381226ce",
+        "advertisedDigestVerified": true,
+        "members": {
+          "receipt.json": {
+            "bytes": 4391,
+            "sha256": "09e8fffd761b43fb57ce3061ecca9ee6ba1878ea2224da2c52fc603e12321890"
+          },
+          "host-fixture.json": {
+            "bytes": 237,
+            "sha256": "c91441ed88e12342ced23090983b3fb32ffa4b6e98442c914aa465bdc52ada6e"
+          },
+          "fixed-suite.log": {
+            "bytes": 31567,
+            "sha256": "037b0cd2d54cf1e933c4651edf2cc4c18a4626670fb0c96f9485e458046e73c7"
+          },
+          "process.stdout.log": {
+            "bytes": 31819,
+            "sha256": "71cfbce8780e80c2bd3b65b34cbd4700aadb227613d4a76c54fe83b1882fec5d"
+          },
+          "process.stderr.log": {
+            "bytes": 920,
+            "sha256": "801830926f6fa27b1dbba392db535c0ddd40fca8a6b7e540aeb04fc55ac3bade"
+          }
+        }
+      }
+    },
+    {
+      "jobUrl": "https://github.com/techrote/ezvm/actions/runs/39055025533/job/117461142549",
+      "decodedLogSha256": "39146a3f0a1a8148b954ed91fdb9c276a3a1816083355fdf4a825287d265ccdc",
+      "decodedLogBytes": 17136,
+      "powerShellVersion": "7.6.6",
+      "sourceCheckout": "59eee784b8016178c5589dea32cf2c9e72b942bd",
+      "sourceUnchanged": true,
+      "outcome": "pass",
+      "literalTestCounts": {
+        "pass": 376,
+        "fail": 0,
+        "skip": 0
+      },
+      "suiteResult": "RESULT: 376 passed, 0 failed, 0 skipped, 376 total.",
+      "token": {
+        "administratorMember": false,
+        "specialPrivilegesPresent": [],
+        "observedPrivileges": [
+          "SeChangeNotifyPrivilege",
+          "SeIncreaseWorkingSetPrivilege"
+        ]
+      },
+      "baselineExpectedSeSecurityPrivilegeFailures": 4,
+      "correctedRequiredCasesPassed": 4,
+      "telemetryCasesPassed": 7,
+      "hostedLaunchCasesPassed": 6,
+      "receiptExitCode": 0,
+      "hostReceipt": {
+        "schemaVersion": 1,
+        "sourceCommit": "59eee784b8016178c5589dea32cf2c9e72b942bd",
+        "childExitCode": 0,
+        "childExited": true,
+        "temporaryAccountRemoved": true,
+        "fixtureRemoved": true,
+        "reason": ""
+      },
+      "startedAt": "2026-10-17T17:44:44.4410785Z",
+      "endedAt": "2026-10-17T17:47:57.9917771Z",
+      "elapsedSeconds": 193.5499222,
+      "artifact": {
+        "id": 12109580809,
+        "url": "https://api.github.com/repos/techrote/ezvm/actions/artifacts/12109580809/zip",
+        "bytes": 21461,
+        "sha256": "a097d1cfd1750889918abca842894ed4485b20df7ea67c336f53e2b6de9a72c6",
+        "advertisedDigestVerified": true,
+        "members": {
+          "receipt.json": {
+            "bytes": 3080,
+            "sha256": "5d84dbb30c4e8dc8671458f034cec8d32f840c204517f89af78f6480df45b1e0"
+          },
+          "host-fixture.json": {
+            "bytes": 237,
+            "sha256": "c91441ed88e12342ced23090983b3fb32ffa4b6e98442c914aa465bdc52ada6e"
+          },
+          "fixed-suite.log": {
+            "bytes": 31558,
+            "sha256": "58414c01848a1c668625f6d313abd186651c5853ec404d5f42adc353cceb48d5"
+          },
+          "process.stdout.log": {
+            "bytes": 32188,
+            "sha256": "2d9eca1543567a743aee2ad07a1577ca58f8ab175bdc5b8688ed52ef514c83af"
+          },
+          "process.stderr.log": {
+            "bytes": 920,
+            "sha256": "8baeb452f16e7d3f4741175dffd231e47eda9fe548623e524e2758bc105a89b8"
+          }
+        }
+      }
+    }
+  ],
+  "controlPlane": [
+    {
+      "jobUrl": "https://github.com/techrote/ezvm/actions/runs/39055025578/job/117461142616",
+      "decodedLogSha256": "b5677539b8cc5c1863c8fba27b60f7f36a31acf329db3b196dca139a2a94bab7",
+      "decodedLogBytes": 59181,
+      "powerShellMajor": 5,
+      "actualCheckout": "2f25017e7b7a2a60c6817a3a225b247450a98840",
+      "checkoutTree": "f609fa6aa429a9b78fa89ef763126d9ef023e8d0",
+      "checkoutKind": "GitHub pull-request merge commit",
+      "treeMatchesFrozenCandidate": true,
+      "literalTestCounts": {
+        "pass": 376,
+        "fail": 0,
+        "skip": 0
+      },
+      "suiteResult": "RESULT: 376 passed, 0 failed, 0 skipped, 376 total."
+    },
+    {
+      "jobUrl": "https://github.com/techrote/ezvm/actions/runs/39055025578/job/117461142583",
+      "decodedLogSha256": "2de58c7adb9aa4dbe4976395044abf5e76f7dcf248f4aebfaf5470c98083ea0b",
+      "decodedLogBytes": 59344,
+      "powerShellMajor": 7,
+      "actualCheckout": "2f25017e7b7a2a60c6817a3a225b247450a98840",
+      "checkoutTree": "f609fa6aa429a9b78fa89ef763126d9ef023e8d0",
+      "checkoutKind": "GitHub pull-request merge commit",
+      "treeMatchesFrozenCandidate": true,
+      "literalTestCounts": {
+        "pass": 376,
+        "fail": 0,
+        "skip": 0
+      },
+      "suiteResult": "RESULT: 376 passed, 0 failed, 0 skipped, 376 total."
+    }
+  ]
+}

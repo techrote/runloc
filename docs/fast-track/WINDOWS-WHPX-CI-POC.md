@@ -55,7 +55,48 @@ real acceptance.002/003 consume that frozen candidate, avoiding a circular wait 
 the old TCG gate. This is not permission to merge red upstream PRs or call their
 unmerged commits main. Record every upstream PR's real disposition.
 
+### Owner-authorized temporary hosted TCG deferral
+
+On **17 October 2026**, the owner explicitly asked to skip the approximately
+three-hour automatic hosted TCG qualification until the end of this CI PoC.
+EzVM's full hosted TCG job is temporarily deferred for same-repository PR heads
+beginning `ci-poc-` and the existing `ezvm-ci-whpx-pilot` branch. A visible notice
+records SKIP and unmeasured TCG coverage. Manual dispatch remains available;
+other PRs retain their existing qualification policy.
+
+This explicit scheduling exception supersedes waiting for that automatic job on
+the scoped CI-PoC PRs. Preserve repository/control-plane checks, both Windows
+PowerShell lanes, standard-user ACL regressions and actual physical WHPX acceptance.
+Do not turn a deferred check into qualification evidence or discard any previous
+failure. No branch-protection change is part of this temporary exception.
+
+**CI-POC-003 must remove this exception and the corresponding EzVM workflow
+condition/notice and AGENTS/RAG text, or replace them with its reviewed qualified
+WHPX/independent-hosted-fallback policy, before completion.** Exercise hosted-only
+rollback and retain TCG coverage as unmeasured until a complete actual run passes.
+The deferral does not implement the final gate or satisfy CI-POC-001 acceptance.
+
 ## Full qualification and time bounds
+
+### Later owner instruction for the replacement physical attempt
+
+After Windows force-restarted the first connected physical attempt on
+17 October 2026, the owner requested removing the target/time limit/cutoff so
+the replacement can run to completion, with rudimentary QEMU performance checks
+before launch. This supersedes the 60-minute target and 90-minute whole-invocation
+wall **only for an explicitly selected `-NoOverallTimeout` invocation**. Default
+bounded invocations retain their original policy. Record the selected policy in
+the start record and both receipts, and validate it against the operator's
+selection rather than trusting a receipt's claim. No native overall timer is
+armed in that mode; zero timing-policy fields mean disabled. Keep measuring and
+publishing elapsed time without claiming that a long success met the former target.
+
+The frozen EzVM candidate, cold full scenario, every assertion, original
+per-operation limits, source/accelerator evidence, native Job containment,
+normal owned cleanup and actual numeric exit-zero requirements remain binding.
+Interrupted/rebooted attempts remain failed/incomplete, with no invented exit
+or clean-shutdown receipt. Fresh diagnostics cannot substitute for full physical
+acceptance, and mutable fixtures from the interrupted attempt cannot be reused.
 
 Preserve original assertions: real image operations, prepared base, authenticated
 READY, concurrent guests, restart, clone/export/import/reset, identities, cold
@@ -83,6 +124,17 @@ definitions execute; no arbitrary fork PR or candidate workflow with private aut
 Single-use registration does not erase/isolate the host account. Clean only owned
 registration, runner files and qualification fixtures; prove process exit, API
 deregistration and fixture QEMU shutdown separately.
+
+As clarified in [CI-POC-002 / #22](https://github.com/techrote/runloc/issues/22),
+the qualified Windows/WHPX backing host/image/artifact is reusable. Each trusted
+qualification execution creates a fresh ephemeral registration that accepts at
+most one job, exits and deregisters afterward, and removes its owned mutable and
+sensitive job material. A later execution can create a new registration against
+the same qualified backing environment. Completing one job does not authorize
+destroying or invalidating that reusable environment. The current full EzVM
+qualification is one Actions job; a workflow-scoped multi-job runner would need
+an actual reviewed requirement to share live mutable state between separate
+jobs. This lifecycle clarification does not implement runner registration here.
 
 ## Effective CI gate and fallback
 

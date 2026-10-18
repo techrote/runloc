@@ -1,0 +1,202 @@
+{
+  "schemaVersion": 1,
+  "kind": "same-source-unpatched-upstream-whpx-reboot-failure-control",
+  "issue": "CI-POC-001",
+  "controllerCommit": "90ed76448f13cbb7048888ae67451de2f9b28819",
+  "candidateCommit": "2afcd6a61b16e08cb7e35925e6d2cfc46cac24c0",
+  "candidateTree": "a5f70cc1a7018b77518b83e7c3a393a2c8068cd7",
+  "qemuUpstreamCommit": "4fc49f46dc95d4a27de2509e7fceb2931e91faeb",
+  "qemuUpstreamTree": "0e6dfe70f3ae7b3ffc985c183e9df1b7ae3df4de",
+  "qemuBuildAdaptationCommit": "ec9bc1d33b90e8c294b1357d4daf83dc1c85b5c5",
+  "qemuBuildAdaptationTree": "a8146e97e317072f554fa39fae1a481562230e2d",
+  "qemuBuildAdaptationDiffSha256": "23fa043e6994ffcc5661701003cb63740df6c0be4b2e6e2433c4962d793f5e6c",
+  "qemuVersion": "QEMU emulator version 11.1.2 (v11.1.2-dirty)\nCopyright (c) 2003-2026 Fabrice Bellard and the QEMU Project developers\n",
+  "qemuSourceIdentityNote": "Configuration began at upstream HEAD plus the recorded six-line build adaptation. That identical tracked content was checkpointed locally while compilation ran; no C/firmware or adaptation bytes changed during compilation.",
+  "whpxResetPatchApplied": false,
+  "stagedTools": [
+    {
+      "name": "libglib-2.0-0.dll",
+      "bytes": 1568604,
+      "sha256": "3a1abec0184b238db54399cb9243393d9436d96b8fdb9bd9f2875da207c5b458"
+    },
+    {
+      "name": "libiconv-2.dll",
+      "bytes": 1141951,
+      "sha256": "94ec68fb8d342b6c91b6b48a8d95092819cdcd006a7166e0b68062f946afd08a"
+    },
+    {
+      "name": "libintl-8.dll",
+      "bytes": 298164,
+      "sha256": "0e5a178731e6be6d115442a6ade3df7f03265cd1fc4338f8b6f86a8001cbf582"
+    },
+    {
+      "name": "libpcre2-8-0.dll",
+      "bytes": 706022,
+      "sha256": "1f609cde2ce432efb7d2b0c7b84a14a6dbfc9622d1ac1a3cbadf51c5b0b4dada"
+    },
+    {
+      "name": "libslirp-0.dll",
+      "bytes": 214158,
+      "sha256": "4b547f2324ddba5bf5222ea31530b621e8ca7baf4884c5c52059aa88b64af782"
+    },
+    {
+      "name": "libwinpthread-1.dll",
+      "bytes": 68731,
+      "sha256": "a5df05bf091bc2ba0a89f83a60d2049e9d434bb9631fec82faf20ff64a53456a"
+    },
+    {
+      "name": "libzstd.dll",
+      "bytes": 1217412,
+      "sha256": "48368ab0ca622d0ec12f41ce85d91f22866bf5da92c77a69a06483564c93816c"
+    },
+    {
+      "name": "qemu-img.exe",
+      "bytes": 10999003,
+      "sha256": "5f392844cf2317dc11dd2aa8d1b2d765cdb1be94158677319d7568cd32c936c7"
+    },
+    {
+      "name": "qemu-system-x86_64.exe",
+      "bytes": 77257417,
+      "sha256": "4166a8f4e873660077596fe529a37b1cbb9a486fa03ce12a2652b1d65e1a548a"
+    },
+    {
+      "name": "zlib1.dll",
+      "bytes": 127291,
+      "sha256": "11cd91171765cd65f1c3362e3df67e5f5a618a6b88c8cdec899b802eaf1c7b0d"
+    }
+  ],
+  "stageManifestSha256": "f9bb92ba0effe009925828e87695adc49fe530f3605232af46357fe52dd636e4",
+  "originalResourceFileCount": 3201,
+  "originalResourceBytes": 362928236,
+  "loadedModuleAuditVerified": true,
+  "loadedModuleCount": 42,
+  "requestedAccelerator": "whpx",
+  "actualAcceleratorArgument": "whpx",
+  "cpus": 4,
+  "memoryMiB": 8192,
+  "startedUtc": "2026-10-18T03:01:08.2648071Z",
+  "endedUtc": "2026-10-18T03:08:51.7894881Z",
+  "actualChildExitCode": 1,
+  "elapsedSeconds": 466.44859799999995,
+  "telemetryRecordCount": 140,
+  "activeProcesses": 0,
+  "childExited": true,
+  "forcedContainment": true,
+  "nativeTimedOut": false,
+  "sourceBefore": "40e9c5d1858d7dda4e408f5b86c74a1378d900644bba7893b45cee38a1f79ad6",
+  "sourceAfter": "40e9c5d1858d7dda4e408f5b86c74a1378d900644bba7893b45cee38a1f79ad6",
+  "sourceUnchanged": true,
+  "toolsAndResourcesUnchanged": true,
+  "unexpectedVpExit4LinesObserved": 3,
+  "authenticatedReadyEstablished": false,
+  "postInitializationBootProofEstablished": false,
+  "normalGuestShutdownEstablished": false,
+  "failureClassification": "first-identity-reboot-whpx-unrecoverable-vp-exit",
+  "sealedFinalIndexSha256": "79cfbcc0043a8a7a8d4f5562f30a36ad68c2b83850c19687d1f7ab6c50506697",
+  "sealedPrivateArtifacts": [
+    {
+      "label": "capture-upstream-baseline-launch-environment.json",
+      "bytes": 159,
+      "sha256": "3e1e9aef4e9ef1d63f3a672d4596e535618d69d01b92f31f7e957e293e447dae"
+    },
+    {
+      "label": "capture-upstream-baseline-loaded-modules.json",
+      "bytes": 9812,
+      "sha256": "55bdc4e0c367fb65a9cc6fb122d368431345a512f3312d6011e25ee6f7fda310"
+    },
+    {
+      "label": "capture-upstream-baseline-observation.json",
+      "bytes": 2752,
+      "sha256": "0d37503e25d918d7209b2d88d8e8c442e9654dd912ec003e344b91109732b4d8"
+    },
+    {
+      "label": "capture-upstream-baseline-private-argv.json",
+      "bytes": 1816,
+      "sha256": "85c4ff398756eac34b9bcf1db2da49f64ccdf44de7b4b271e02fa3bd2f364c5f"
+    },
+    {
+      "label": "capture-upstream-baseline-process.json",
+      "bytes": 1981,
+      "sha256": "7d8bef13989d8d30c3b4f21b33bf8a7b375bebc7ee5da2704ec0fdffcccee9fc"
+    },
+    {
+      "label": "capture-upstream-baseline-qemu.stderr.txt",
+      "bytes": 429,
+      "sha256": "f7451a6beebe560c5eca93ff8b030e98f780c28ca51b92d9c8ddc8c2e8aafd3a"
+    },
+    {
+      "label": "capture-upstream-baseline-qemu.stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "capture-upstream-baseline-readonly-4269a2aa720846439c662731dae50713.json",
+      "bytes": 11945,
+      "sha256": "450eb8213a4e6eabff37cb209a8b86643cf005d955987622e058d37efceabef4"
+    },
+    {
+      "label": "capture-upstream-baseline-readonly-first.txt",
+      "bytes": 11947,
+      "sha256": "c3d2d09476e76866478829205c19f78d6381e6d9d7200d27b0defbd588df9d96"
+    },
+    {
+      "label": "capture-upstream-baseline-ready-window-closed.json",
+      "bytes": 92,
+      "sha256": "d9f7da9d04e0270562f14f6d8c1d78ca1deea6fb2fc92aae02497987cc875075"
+    },
+    {
+      "label": "capture-upstream-baseline-ready-window.json",
+      "bytes": 443,
+      "sha256": "c77da86a6bc236a0cadb43ea9d263a732601e88016bdf1303644a823a2d91eb2"
+    },
+    {
+      "label": "capture-upstream-baseline-source-proof.json",
+      "bytes": 536,
+      "sha256": "7810111cbd2a76a7f3c3fbbebe72e378ee64a4902896659ad8834c9750855ba3"
+    },
+    {
+      "label": "capture-upstream-baseline-telemetry.jsonl",
+      "bytes": 38851,
+      "sha256": "a262793532ad948281d7eec250b4c0f9fb589355791fb847db1225b0f1529f87"
+    },
+    {
+      "label": "capture-upstream-baseline-tool-after.json",
+      "bytes": 203,
+      "sha256": "87cff84969c24d12dde040214f713d874dcd11fa937e4759e5168c3938165201"
+    },
+    {
+      "label": "capture-upstream-baseline.log",
+      "bytes": 746,
+      "sha256": "78bb0983dd0d780934210c9b4343e5c13ad9643acb3856aefb8719f80fa7790b"
+    },
+    {
+      "label": "serial-c36fa1d4a6c348a293df51b4495dd0c5.log",
+      "bytes": 84746,
+      "sha256": "702a7437afe8b83756349e22d8bc621caa5df66e44d777d8c017d66a6732eb2c"
+    },
+    {
+      "label": "qemu-c36fa1d4a6c348a293df51b4495dd0c5.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "stage-baseline-manifest.json",
+      "bytes": 617256,
+      "sha256": "f9bb92ba0effe009925828e87695adc49fe530f3605232af46357fe52dd636e4"
+    },
+    {
+      "label": "comparison-build-summary.json",
+      "bytes": 821,
+      "sha256": "4cfd78d5bed3e76c63a3031a5ad3eca84606125e56580928dac41c9a14c76f2e"
+    }
+  ],
+  "review": "Separate Extra High model review verified source/build/resource/import closure and launch guards before execution. Post-execution independent model review verified the sealed artifacts, actual exits and containment, loaded modules, source/tool/resource evidence and privacy. The primary model authored and executed the diagnostic; no independent human approval is claimed.",
+  "limitations": [
+    "Diagnostic uses the existing immutable prepared base and original firmware, not a complete cold release/portability attempt.",
+    "No manual reset or resume was performed.",
+    "Fixture remains privately owned and quarantines failed instances pending further controls and verified disposal.",
+    "Early redirected fault evidence is retained; complete reader drain after forced containment is not certified."
+  ],
+  "physicalQualificationPassed": false,
+  "qualificationEligible": false
+}

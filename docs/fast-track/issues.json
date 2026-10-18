@@ -10,7 +10,7 @@
       "title": "Unblock clean-source ACLs and complete the timed EzVM WHPX pilot",
       "depends_on": [],
       "issue_number": 21,
-      "status": "planned",
+      "status": "qualified",
       "scope": [
         "Inspect current EzVM main and PRs43/45/46 plus their actual failing logs. Reuse the reviewed explicit-accelerator harness from PR46 in a clean pinned checkout. Do not resume the dirty owner checkout or old incomplete fixtures.",
         "Implement a narrow independently reviewed upstream EzVM private-DACL fix and retained standard-user regressions: preserve confidentiality while avoiding the SeSecurityPrivilege failure. Do not copy owner patches, elevate or grant privileges. Keep the exact synthetic preflight before expensive work.",
@@ -20,7 +20,7 @@
       "acceptance": [
         "Both existing failing ACL tests and new broad/inherited-ACE regressions prove old failure then fixed standard-user behavior under PowerShell5.1; applicable PS7 and repository checks also pass. Wrong-path/ACL failure still refuses work.",
         "A fresh clean immutable public candidate completes the full WHPX scenario with exit0, complete original release markers, actual accelerator agreement, unchanged tested source/tree and clean owned fixture shutdown. No unqualified PASS from detection, a single READY or a skipped clause.",
-        "Record all phase times and tool/image/host/source identities. Target <=60minutes with90minute hard wall and owned bounded cleanup; a cancelled or timed-out run is failure, not a speed benchmark. Keep this issue open while any full-run clause or target is unresolved.",
+        "Record all phase times and tool/image/host/source identities. Target <=60minutes with90minute hard wall and owned bounded cleanup; a cancelled or timed-out run is failure, not a speed benchmark. Keep this issue open while any full-run clause or target is unresolved. The later explicit owner instruction documented in WINDOWS-WHPX-CI-POC.md permits -NoOverallTimeout for the replacement attempt: both whole-invocation timing bounds are disabled only for matching operator/controller/receipt policy; all original operation limits and non-timing acceptance remain. Record actual elapsed time and never claim a long success met the former target.",
         "Publish a reusable redacted receipt/evidence set and exact candidate/controller SHA plus upstream PR links/disposition. Its Runloc helper/docs PR is merged after its own checks and actual physical acceptance; upstream EzVM PRs remain subject to their own gates. A frozen reviewed candidate may be used before upstream merge without claiming it is main."
       ],
       "tests": [
@@ -28,7 +28,7 @@
         "PoC helper tests reject dirty/staged/wrong-SHA source, mismatched accelerator, missing completion markers, failed exit despite PASS text, wrong fixture ownership and stale reused receipts. Use synthetic files/processes; unrelated sentinels must survive cleanup.",
         "Run one complete cold physical Windows/WHPX qualification with phase/exit/cleanup evidence. Failed attempts remain immutable; source changes require retesting the changed tree. Run Runloc's existing repository/unit checks without credentials in PR CI."
       ],
-      "excludes": "No runner registration, host privilege/configuration change, branch-rule bypass, full Runloc implementation, Windows guest/nested-WHPX work or disabled original test. Do not merge the currently red EzVM PR46 merely to unblock the chain."
+      "excludes": "No runner registration, host privilege/configuration change, branch-rule bypass, full Runloc implementation, Windows guest/nested-WHPX work or removal of original qualification assertions. The owner-authorized temporary hosted-TCG scheduling deferral is documented in the dedicated contract and expires at CI-POC-003 completion; physical WHPX acceptance remains required. Do not merge unqualified EzVM PR46 merely to unblock the chain."
     },
     {
       "id": "CI-POC-002",
@@ -69,14 +69,16 @@
         "Integrate the accepted001/002 helpers as a narrowly scoped EzVM CI PoC. Start hosted TCG independently and use private WHPX only through explicit approved-source opt-in and bounded available capacity; do not depend on RUNLOC-019 or the full product.",
         "Implement a stable source-bound qualification coordinator/result which can finish on a complete valid private run without waiting for the slow diagnostic lane. Bind candidate, approved definition/harness and real run/job/runner/receipt identities; no raw PASS-artifact acceptance or check-name spoofing.",
         "Handle offline/busy/unknown host, disappearance after dispatch, private queue TTL, lost POST responses and cancellation with independent hosted fallback. Cancel only an exact owned private attempt; never cancel hosted merely because a private run starts or finishes.",
-        "Make the exact required-versus-diagnostic check policy explicit in EzVM workflows and AGENTS/RAG, including any reviewed settings migration and hosted-only rollback. Inspect current branch rules; do not silently weaken them or use an admin override. Test the concrete migration before activation."
+        "Make the exact required-versus-diagnostic check policy explicit in EzVM workflows and AGENTS/RAG, including any reviewed settings migration and hosted-only rollback. Inspect current branch rules; do not silently weaken them or use an admin override. Test the concrete migration before activation.",
+        "Remove the owner-authorized 2026-10-17 temporary hosted-TCG deferral for ci-poc-* and ezvm-ci-whpx-pilot PRs, or replace it with this reviewed qualified-WHPX/independent-hosted-fallback policy. Remove the temporary workflow notice/condition and reconcile EzVM/Runloc AGENTS and RAG; the exception cannot survive completion as an undocumented permanent skip."
       ],
       "acceptance": [
         "A second successful automated full-WHPX run on a clean approved candidate produces an accepted exact-source qualification result before hosted completion; record timestamps and actual accepted completion versus the old wait. Optional parallel execution alone is insufficient.",
         "With the private host absent before dispatch, hosted execution proceeds and supplies the result; with private capacity lost afterwards, queue handling is bounded and cannot strand the gate. A fully offline controller cannot promise immediate cancellation; restart reconciliation is explicit.",
         "Wrong SHA/definition/harness/profile/runner, replayed receipt, partial logs, failed exit or forged PASS cannot satisfy the gate. Genuine functional assertion failure is surfaced, not hidden by selecting a different green lane. Infrastructure failure can fall back under the documented policy.",
         "WHPX acceptance is labelled Windows/WHPX, not TCG coverage. Keep hosted TCG logs/failures visible and classified. If policy/permissions do not permit the concrete gate migration, preserve a reviewable PR and keep the issue open rather than claiming the bottleneck is fixed.",
-        "The exact workflow/policy changes are reviewed, merged only with their actual required checks/acceptance satisfied, and verified on main/post-merge. Hosted-only rollback is exercised. No owner VM/patch or other19-issue programme scope is changed."
+        "The exact workflow/policy changes are reviewed, merged only with their actual required checks/acceptance satisfied, and verified on main/post-merge. Hosted-only rollback is exercised. No owner VM/patch or other19-issue programme scope is changed.",
+        "The temporary hosted-TCG deferral is removed or replaced by the accepted gate policy before this issue closes. A complete actual hosted comparison/fallback and the exercised hosted-only rollback establish their own evidence; the prior deferral remains recorded as SKIP/unmeasured, never PASS."
       ],
       "tests": [
         "Truth-table/state tests cover hosted/private success, assertion failure, infrastructure failure, offline/busy, vanished runner, queue timeout, cancelled run, permissions/rate limits and ambiguous dispatch. Assert call order/count and exact cancellation IDs.",

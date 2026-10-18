@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "kind": "no-overall-timeout-native-overload-regression",
+  "baseCommit": "92d95a13c49786bac7477dec4331a71d53a6a521",
+  "reproducedFailure": "Windows PowerShell integer-first Math.Min binds Int32 and rejects positive infinity before clamp",
+  "fix": "Explicit double operands before finite clamp and Int32 conversion",
+  "localWindowsPowerShell51": {
+    "actualExitCode": 0,
+    "pilotGroupsPass": 57,
+    "supervisorGroupsPass": 21,
+    "platformGroupsSkipped": 0,
+    "logSha256": "dfff0130ee0f557c4375a14fd373d1094b7d3457a128747ebe178daa724d9a68",
+    "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "newControls": [
+    "real Git source identity with an unbounded overall deadline",
+    "actual owned inner and outer child with unbounded overall deadlines and finite output drain"
+  ],
+  "retainedLimits": {
+    "gitOperationMilliseconds": 15000,
+    "outputDrainMilliseconds": 3000,
+    "aclPreflightExecutionSeconds": 120,
+    "aclPreflightCleanupSeconds": 150
+  },
+  "physicalQualificationPassed": false,
+  "review": "Separate model agent independently reproduced the corrected overloads and reviewed source and failure evidence; no material findings. Fresh exact-head CI and new preflight still required."
+}

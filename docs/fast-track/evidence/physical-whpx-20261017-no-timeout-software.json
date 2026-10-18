@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "kind": "owner-no-overall-timeout-windows-software-checks",
+  "engine": "Windows PowerShell 5.1",
+  "finalLocal": {
+    "actualExitCode": 0,
+    "pilotGroupsPass": 56,
+    "supervisorGroupsPass": 20,
+    "platformGroupsSkipped": 0,
+    "logSha256": "6192e69683d0e56b5211a28370e49f9309610ab213c890be4a9387d2abdd0fae",
+    "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "observation": "Local working implementation with no-overall-timeout controls. Exact public-head CI is separate and required."
+  },
+  "retainedFirstFailure": {
+    "actualExitCode": 1,
+    "classification": "new-test-fixture-noncanonical-utc",
+    "guard": "supervisor-utc-not-canonical",
+    "logSha256": "5f9f55f28684f4340a5c8cbdba96d8184a86ab594d5c0ab10d38401037652f12",
+    "stderrSha256": "813b85cf256186e2bd8aacac05f911cbb92747663ef4525b068d04a05eea995b",
+    "correction": "Fixture uses UTC DateTime with canonical Z; production UTC validation unchanged."
+  },
+  "repositoryChecks": {
+    "contract": "pass",
+    "pythonTestsPass": 21
+  },
+  "physicalQualificationPassed": false,
+  "review": "Separate model agent at Extra High reasoning; source, ownership, policy binding and negative controls reviewed. No external human approval claimed."
+}

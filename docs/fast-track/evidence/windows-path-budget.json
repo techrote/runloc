@@ -1,0 +1,172 @@
+{
+  "schemaVersion": 1,
+  "scope": "Read-only pinned archive listing and source path audit; no QEMU/Windows installer execution and no physical qualification.",
+  "harnessSha256": "a201ec5494ed6a128bf7f3f628011119b09d0e399de472b20eef214b356aabbb",
+  "qemuManifestSha256": "d89b6013bcb5e8bc27038e2f5aa2ec39e08b2674d725b62658db3e8592ba002a",
+  "windowsLegacyLimits": {
+    "filePathMaximumUtf16UnitsExcludingNul": 259,
+    "directoryConservativeMaximumUtf16Units": 247,
+    "reference": "https://learn.microsoft.com/en-us/windows/win32/fileio/maximum-file-path-limitation"
+  },
+  "qemuArtifact": {
+    "version": "11.1.0",
+    "providerBuild": "20260811",
+    "url": "https://qemu.weilnetz.de/w64/qemu-w64-setup-20260811.exe",
+    "filename": "qemu-w64-setup-20260811.exe",
+    "digestAlgorithm": "SHA512",
+    "digest": "5bcf9eed634e8575a37b74f445af41a2fe4106da512d0c30c368301d4c105037fdfab40a5287367a28a957624cddebbc8c07e16c88ab6634f554cdf3d16bf543",
+    "sizeBytes": 206615928,
+    "expectedVersionPrefix": "11.1.0",
+    "providerPageUrl": "https://qemu.weilnetz.de/w64/"
+  },
+  "qemuObservedBytes": 206615928,
+  "qemuObservedSha512": "5bcf9eed634e8575a37b74f445af41a2fe4106da512d0c30c368301d4c105037fdfab40a5287367a28a957624cddebbc8c07e16c88ab6634f554cdf3d16bf543",
+  "archiveListing": {
+    "tool": "Official Linux 7-Zip 26.04, archive data inspected only",
+    "toolPackageSha256": "fc0327ba27e89bd086cf426dff17d77de582953cdbbc10a6576540a06853ffcd",
+    "sha256": "17378ff484d4f330ecdbd1d3128d66d9a499569367812d3d2839e29ebf4a4c10",
+    "memberCount": 3391,
+    "longestMember": "share/icons/Adwaita/symbolic/legacy/preferences-desktop-keyboard-shortcuts-symbolic.svg",
+    "longestMemberLength": 87,
+    "longestDirectoryMemberLength": 42,
+    "toolPackageUrl": "https://github.com/ip7z/7zip/releases/download/26.04/7z2604-linux-x64.tar.xz",
+    "toolReleaseMetadataUrl": "https://api.github.com/repos/ip7z/7zip/releases/tags/26.04",
+    "toolPackageBytes": 1576336,
+    "longestDirectoryMember": "share/icons/AdwaitaLegacy/16x16/categories"
+  },
+  "suffixBoundsIncludingLeadingSeparator": {
+    "qemuRootAExtractionStagePrefix": 127,
+    "qemuExtractedFile": 215,
+    "qemuExtractedDirectory": 170,
+    "heldImmutableBaseDirectory": 173,
+    "heldImmutableBaseManifest": 187,
+    "heldConservativeSshCandidateAtomicTemp": 214,
+    "heldConservativeSnapshotJsonTemp": 199,
+    "heldLongestCopiedTrackedFile": 163,
+    "sevenZipExtractedFile": 148,
+    "sevenZipExtractedDirectory": 136
+  },
+  "recommendedFixtureMaximumLength": 44,
+  "compactFixtureMapping": {
+    "leaf": "q plus unpadded base64url encoding of all 16 GUID bytes",
+    "leafLength": 23,
+    "fullLeaseIdRetained": true,
+    "maximumWorkParentLength": 20,
+    "existingTargetMustRefuse": true,
+    "windowsCaseInsensitiveCollisionHandling": "Refuse any pre-existing target, including case-equivalent names. Preserve full lease identity and exact canonical owner mapping; never infer ownership from a filename alone."
+  },
+  "examples": [
+    {
+      "workParent": "C:\\Users\\alice",
+      "length": 14,
+      "fixtureLength": 38,
+      "worstFileLength": 253,
+      "fitsFileBudget": true
+    },
+    {
+      "workParent": "C:\\Users\\techrote",
+      "length": 17,
+      "fixtureLength": 41,
+      "worstFileLength": 256,
+      "fitsFileBudget": true
+    },
+    {
+      "workParent": "C:\\Users\\runneradmin",
+      "length": 20,
+      "fixtureLength": 44,
+      "worstFileLength": 259,
+      "fitsFileBudget": true
+    },
+    {
+      "workParent": "C:\\Users\\alice\\AppData\\Local\\Temp",
+      "length": 33,
+      "fixtureLength": 57,
+      "worstFileLength": 272,
+      "fitsFileBudget": false
+    },
+    {
+      "workParent": "C:\\src",
+      "length": 6,
+      "fixtureLength": 30,
+      "worstFileLength": 245,
+      "fitsFileBudget": true
+    }
+  ],
+  "longestCopiedTrackedFile": "docs/programme/dashboard/issues/DASH-02-scoped-adapters-and-identities.md",
+  "sourceCommit": "ef713d831bca1de02935f411f4e22b49102970e1",
+  "sourceQualificationStatus": "Path definitions match inspected public integration candidate; no Windows or physical full-release acceptance claim.",
+  "qualificationScope": "Pinned archive-member and source-path audit only. The QEMU and Windows extractor installers were never executed. The hash-verified official Linux 7-Zip binary listed the archive data.",
+  "sourceFiles": [
+    {
+      "path": "scripts/Invoke-EzVm010RealPortability.ps1",
+      "url": "https://github.com/techrote/ezvm/blob/ef713d831bca1de02935f411f4e22b49102970e1/scripts/Invoke-EzVm010RealPortability.ps1",
+      "sha256": "a201ec5494ed6a128bf7f3f628011119b09d0e399de472b20eef214b356aabbb"
+    },
+    {
+      "path": "manifests/qemu-windows.json",
+      "url": "https://github.com/techrote/ezvm/blob/ef713d831bca1de02935f411f4e22b49102970e1/manifests/qemu-windows.json",
+      "sha256": "d89b6013bcb5e8bc27038e2f5aa2ec39e08b2674d725b62658db3e8592ba002a"
+    },
+    {
+      "path": "src/EzVm/Qemu.ps1",
+      "url": "https://github.com/techrote/ezvm/blob/ef713d831bca1de02935f411f4e22b49102970e1/src/EzVm/Qemu.ps1",
+      "sha256": "55435ff3dcc6d43b40a00d5ce0345c22142c6827d7db3d3db56512839a3edb5f"
+    },
+    {
+      "path": "src/EzVm/Paths.ps1",
+      "url": "https://github.com/techrote/ezvm/blob/ef713d831bca1de02935f411f4e22b49102970e1/src/EzVm/Paths.ps1",
+      "sha256": "5d5e4db36ff75dbb1e817edf237ef1b8700fa76916ae9d730321f23078f01eee"
+    },
+    {
+      "path": "src/EzVm/Ssh.ps1",
+      "url": "https://github.com/techrote/ezvm/blob/ef713d831bca1de02935f411f4e22b49102970e1/src/EzVm/Ssh.ps1",
+      "sha256": "c1b06a315c2cd4f7c2b874c0c95fa404d14f0533669883fbafde734fc469d72f"
+    },
+    {
+      "path": "src/EzVm/BaseBuilder.ps1",
+      "url": "https://github.com/techrote/ezvm/blob/ef713d831bca1de02935f411f4e22b49102970e1/src/EzVm/BaseBuilder.ps1",
+      "sha256": "1417e65dd96bc0377548911cad2be7b8efae33ef8cca169d81a85bc229f307c6"
+    },
+    {
+      "path": "src/EzVm/Snapshots.ps1",
+      "url": "https://github.com/techrote/ezvm/blob/ef713d831bca1de02935f411f4e22b49102970e1/src/EzVm/Snapshots.ps1",
+      "sha256": "0533c4cf19c275006d01e98c574e1b344ae60ac64cb6edb3acb00795ac7ca1b5"
+    },
+    {
+      "path": "src/EzVm/Json.ps1",
+      "url": "https://github.com/techrote/ezvm/blob/ef713d831bca1de02935f411f4e22b49102970e1/src/EzVm/Json.ps1",
+      "sha256": "2b17edd2aa66248e05a9fe461d6e2b0dca3b976372c025959ca99779dbe1f5ef"
+    },
+    {
+      "path": "src/EzVm/Portability.ps1",
+      "url": "https://github.com/techrote/ezvm/blob/ef713d831bca1de02935f411f4e22b49102970e1/src/EzVm/Portability.ps1",
+      "sha256": "b1621b7c47c69535f184276093b7e09d729e2789683424afaf1c1d8ec473368a"
+    }
+  ],
+  "windowsExtractorArtifact": {
+    "url": "https://github.com/ip7z/7zip/releases/download/26.04/7z2604-x64.exe",
+    "bytes": 1664082,
+    "sha256": "d54bf805f9f3704d1e8db2fa3498ae7ef2df0312b40b558e7c71c734430a665d",
+    "digestMatchesPinnedManifest": true,
+    "listingSha256": "748683b843a33bbc65cb9725f2d5173c4cc1aa3e83e8a42b5043e613db158fc6",
+    "memberCount": 107
+  },
+  "boundaryRules": {
+    "units": "UTF-16 code units; full path excludes terminating NUL; suffixes include leading separator",
+    "fileSuffix": 215,
+    "directorySuffix": 173,
+    "fileRule": "fixtureLength + 215 <= 259",
+    "directoryRule": "fixtureLength + 173 <= 247",
+    "fixtureLength44": {
+      "file": 259,
+      "directory": 217,
+      "acceptedByPathBudget": true
+    },
+    "fixtureLength45": {
+      "file": 260,
+      "directory": 218,
+      "acceptedByPathBudget": false
+    }
+  },
+  "unchangedSourceSuccessor": "59eee784b8016178c5589dea32cf2c9e72b942bd"
+}
