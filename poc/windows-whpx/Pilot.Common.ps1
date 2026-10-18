@@ -612,8 +612,11 @@ function Get-PilotFixtureIdentity {
             $runtime = [IO.File]::ReadAllText($runtimePath) | ConvertFrom-Json
             if ($runtime.instanceName -cne $name -or $runtime.state -cne 'STOPPED' -or $runtime.accelerator -cne 'whpx' -or
                 $runtime.launchId -cnotmatch '^[a-f0-9]{32}$') { throw 'fixture-guest-not-stopped-or-accelerator-mismatch' }
+            $intentPath = Assert-PilotPath -Path (Join-Path $root ('runtime/instances/' + $name + '/instance.json')) -File
+            $intent = [IO.File]::ReadAllText($intentPath) | ConvertFrom-Json
+            if ($intent.cpus -ne 8) { throw 'fixture-guest-cpu-mismatch' }
             $guests += [ordered]@{ root = $(if ($rootName -ceq $roots[0]) { 'A' } else { 'B' }); name = $name;
-                state = 'STOPPED'; accelerator = 'whpx'; launchId = $runtime.launchId }
+                state = 'STOPPED'; accelerator = 'whpx'; launchId = $runtime.launchId; cpus = [int]$intent.cpus; memoryMiB = [int]$intent.memoryMiB }
         }
     }
     return [pscustomobject][ordered]@{ expectedImageSha256 = $ExpectedImageSha256; sourceImageSha256 = $sourceEvents[0].value;
@@ -623,6 +626,9 @@ function Get-PilotFixtureIdentity {
 function ConvertTo-PilotEvidenceEvent {
     param([string]$Line, [string]$Utc, [double]$Seconds)
     # Raw guest prose, exception text, paths, usernames and serial logs are never exported.
+    if ($Line -cmatch '^EZVM010_GUEST_CPUS=([1-9][0-9]?); instance=(ezvm010-source|ezvm010-stateful|ezvm010-imported|ezvm012-secondary|ezvm012-fresh)$') {
+        return [pscustomobject]@{ kind = 'guest-cpus'; name = $Matches[2]; value = $Matches[1]; utc = $Utc; seconds = $Seconds }
+    }
     if ($Line -cmatch '^(EZVM0(?:10|11|12)_[A-Z0-9_]+)=PASS$' -and $script:PilotMarkers -ccontains $Matches[1]) {
         return [pscustomobject]@{ kind = 'marker'; name = $Matches[1]; value = 'PASS'; utc = $Utc; seconds = $Seconds }
     }
@@ -862,6 +868,17 @@ function Test-PilotOutcome {
         foreach ($marker in $script:PilotMarkers) { if (@($seen | Where-Object { $_ -ceq $marker }).Count -ne 1) { $reasons.Add('marker-missing-or-duplicate:' + $marker) } }
         $accelerators = @($events | Where-Object { $_.kind -ceq 'accelerator' })
         if ($accelerators.Count -ne 1 -or $accelerators[0].value -cne 'whpx') { $reasons.Add('accelerator-evidence-invalid') }
+        if (($Receipt.requestedGuestCpus -isnot [int] -and $Receipt.requestedGuestCpus -isnot [long]) -or $Receipt.requestedGuestCpus -ne 8) { $reasons.Add('guest-cpu-request-invalid') }
+        $cpuEvents = @($events | Where-Object { $_.kind -ceq 'guest-cpus' })
+        $readyEvents = @($events | Where-Object { $_.kind -ceq 'phase' -and $_.name -ceq 'guest_ready' })
+        if ($cpuEvents.Count -ne 8 -or $readyEvents.Count -ne 8) { $reasons.Add('guest-cpu-evidence-incomplete') }
+        else {
+            for ($cpuIndex = 0; $cpuIndex -lt 8; $cpuIndex++) {
+                if ($cpuEvents[$cpuIndex].value -cne '8' -or $cpuEvents[$cpuIndex].name -cne $readyEvents[$cpuIndex].value -or
+                    $cpuEvents[$cpuIndex].seconds -gt $readyEvents[$cpuIndex].seconds -or
+                    ($cpuIndex -gt 0 -and $cpuEvents[$cpuIndex].seconds -le $readyEvents[$cpuIndex - 1].seconds)) { $reasons.Add('guest-cpu-evidence-mismatch') }
+            }
+        }
         $begin = @($events | Where-Object { $_.kind -ceq 'boundary' -and $_.name -ceq 'STARTED_AT' })
         $end = @($events | Where-Object { $_.kind -ceq 'boundary' -and $_.name -ceq 'COMPLETED_AT' })
         if ($begin.Count -ne 1 -or $end.Count -ne 1 -or $end[0].seconds -le $begin[0].seconds) { $reasons.Add('boundary-evidence-invalid') }
@@ -886,6 +903,7 @@ function Test-PilotOutcome {
                 $found = @($guests | Where-Object { $_.root -ceq $root -and $_.name -ceq $name })
                 if ($found.Count -ne 1 -or $found[0].state -cne 'STOPPED' -or $found[0].accelerator -cne 'whpx' -or
                     $found[0].launchId -cnotmatch '^[a-f0-9]{32}$') { $reasons.Add('guest-identity-invalid') }
+                if ($found.Count -eq 1 -and $found[0].cpus -ne 8) { $reasons.Add('guest-cpu-identity-invalid') }
             }
         }
     }

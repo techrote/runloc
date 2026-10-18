@@ -200,6 +200,12 @@ namespace RunlocPoc
 
         public OwnedProcess(string executable, string[] arguments, string directory, string temporary,
             string rawLogPath, long maxBytes)
+            : this(executable, arguments, directory, temporary, rawLogPath, maxBytes, null) { }
+
+        // Only the official runner's consumed startup capability may supplement
+        // the closed child environment. No arbitrary host variables are copied.
+        public OwnedProcess(string executable, string[] arguments, string directory, string temporary,
+            string rawLogPath, long maxBytes, string runnerJitConfig)
         {
             if (Environment.OSVersion.Platform != PlatformID.Win32NT) throw new PlatformNotSupportedException();
             if (maxBytes < 1024 || maxBytes > 64 * 1024 * 1024) throw new ArgumentOutOfRangeException("maxBytes");
@@ -241,6 +247,12 @@ namespace RunlocPoc
                 startup.Start.Input = input.DangerousGetHandle(); startup.Start.Output = stdout.ClientSafePipeHandle.DangerousGetHandle();
                 startup.Start.Error = stderr.ClientSafePipeHandle.DangerousGetHandle(); startup.Attributes = attributes;
                 SortedDictionary<string, string> childEnvironment = CreateChildEnvironment(temporary);
+                if (!String.IsNullOrEmpty(runnerJitConfig))
+                {
+                    if (runnerJitConfig.Length > 262144 || Path.GetFileName(Executable) != "Runner.Listener.exe")
+                        throw new ArgumentException("Invalid runner capability target.");
+                    childEnvironment["ACTIONS_RUNNER_INPUT_JITCONFIG"] = runnerJitConfig;
+                }
                 StringBuilder block = new StringBuilder();
                 foreach (KeyValuePair<string, string> entry in childEnvironment) block.Append(entry.Key).Append('=').Append(entry.Value).Append('\0');
                 block.Append('\0'); environment = Marshal.StringToHGlobalUni(block.ToString());

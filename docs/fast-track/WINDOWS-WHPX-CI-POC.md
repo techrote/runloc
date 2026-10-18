@@ -113,6 +113,22 @@ not reused mutable guests. Do not compute a completed-workload speedup from a ca
 
 ## Temporary native Windows runner
 
+### CI-POC-002 execution policy (18 October 2026)
+
+The owner confirmed CI-POC-001 is complete and merged, and requested eight CPUs
+and removal of the overall time limit for CI-POC-002. Its successor candidate
+changes only the disposable qualification copy's CPU configuration, retaining
+all original memory, profile, release assertions and per-operation limits.
+Every READY guest must prove eight online CPUs through authenticated execution.
+Both separate preflight and full supervisor select `-NoOverallTimeout`; no
+earlier physical result qualifies the changed source. GitHub's own job service
+limits still apply independently and must be recorded truthfully.
+
+See the [runner implementation and evidence boundary](../../poc/windows-whpx/RUNNER.md).
+Live qualification, fresh registration reuse, second-job prohibition and real
+failed/no-job cleanup remain required before issue22 can close. Issue21's
+accepted historical source and evidence remain unchanged.
+
 Use existing authorized host GitHub CLI/App access for short-lived repository
 JIT/ephemeral registration. Verify binary version/hash; foreground, one job,
 unique name/lease label and isolated job directory. No service, account/privilege,

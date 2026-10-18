@@ -1,5 +1,13 @@
 # 07 — Trust, credential boundaries and recovery
 
+CI-POC-002's native host runner follows the separate
+[one-job registration boundary](../../poc/windows-whpx/RUNNER.md). The reusable
+backing environment persists; runner credentials and mutable job workspaces do
+not. JIT startup input is consumed from a closed child environment, never argv.
+Cleanup of externally allocated qualification fixtures requires their exact
+nested lease/creation proof plus proven emptiness of the containing native Job.
+Independent cleanup stages must still deregister when diagnostic writing fails.
+
 ## Supported trust model
 
 The owner approves repository, workflow definition, exact candidate SHA and resource

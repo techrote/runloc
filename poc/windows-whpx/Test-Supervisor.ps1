@@ -42,15 +42,16 @@ function New-SupervisorFixture {
         workParent = $workPlan.Parent; fixture = $workPlan.Fixture;
         supervisorLeaseId = ('c' * 32); supervisorStartedUtc = $started; createdUtc = $utc.AddSeconds(5).ToString('o') }
     $events = @(); $seconds = 1.0
+    $cpuLines = @('ezvm010-source', 'ezvm012-secondary', 'ezvm010-source', 'ezvm012-fresh', 'ezvm010-source', 'ezvm010-stateful', 'ezvm010-imported', 'ezvm010-stateful') | ForEach-Object { 'EZVM010_GUEST_CPUS=8; instance=' + $_; 'EZVM010_STEP=guest_ready; instance=' + $_ }
     foreach ($line in (@(('EZVM010_STARTED_AT=' + $innerStart.ToString('o')), 'EZVM010_ACCELERATOR=whpx') +
-        @($script:PilotMarkers | ForEach-Object { $_ + '=PASS' }) + @('EZVM010_COMPLETED_AT=' + $innerStart.AddSeconds(90).ToString('o')))) {
+        @($cpuLines) + @($script:PilotMarkers | ForEach-Object { $_ + '=PASS' }) + @('EZVM010_COMPLETED_AT=' + $innerStart.AddSeconds(90).ToString('o')))) {
         $events += ConvertTo-PilotEvidenceEvent -Line $line -Utc $innerStart.AddSeconds($seconds).ToString('o') -Seconds $seconds
         $seconds++
     }
     $guests = @()
     foreach ($guestRoot in @('A', 'B')) {
         foreach ($guestName in @('ezvm010-source', 'ezvm010-stateful', 'ezvm010-imported', 'ezvm012-secondary', 'ezvm012-fresh')) {
-            $guests += @{ root = $guestRoot; name = $guestName; state = 'STOPPED'; accelerator = 'whpx'; launchId = [Guid]::NewGuid().ToString('N') }
+            $guests += @{ root = $guestRoot; name = $guestName; state = 'STOPPED'; accelerator = 'whpx'; launchId = [Guid]::NewGuid().ToString('N'); cpus = 8 }
         }
     }
     $receipt = [ordered]@{ schemaVersion = 1; issue = 'CI-POC-001'; leaseId = $id; supervisorLeaseId = ('c' * 32); supervisorStartedUtc = $started;
@@ -60,7 +61,7 @@ function New-SupervisorFixture {
         candidate = @{ repository = 'https://github.com/techrote/ezvm'; commit = ('a' * 40); tree = ('d' * 40); executedTreeSha256 = ('1' * 64); clean = $true; files = $candidatePins };
         controller = @{ repository = 'https://github.com/techrote/runloc'; commit = ('b' * 40); tree = ('e' * 40); executedTreeSha256 = ('2' * 64); clean = $true; files = $controllerPins };
         preflightOnly = [bool]$PreflightOnly; vmQualificationStarted = -not [bool]$PreflightOnly; childExitCode = 0; sourceUnchanged = $true;
-        requestedAccelerator = 'whpx'; observedAccelerator = 'whpx'; timedOut = $false; cancelled = $false; outputOverflow = $false;
+        requestedAccelerator = 'whpx'; observedAccelerator = 'whpx'; requestedGuestCpus = 8; timedOut = $false; cancelled = $false; outputOverflow = $false;
         outputFailed = $false; harnessFailure = $false; controllerFailure = $false;
         telemetry = @{ complete = $true; recordCount = 6; publicSha256 = ('3' * 64); publicFile = 'telemetry-events.json' };
         host = @{ standardUser = $true; seSecurityPrivilegePresent = $false };
