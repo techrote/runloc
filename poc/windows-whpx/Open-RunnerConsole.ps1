@@ -2,6 +2,7 @@
 [CmdletBinding()]param(
     [Parameter(Mandatory=$true)][string]$BackingRoot,
     [ValidateSet('Monitor','Start','Probe')][string]$Mode='Monitor',
+    [ValidatePattern('^[a-f0-9]{32}$')][string]$MonitorLeaseId,
     [ValidatePattern('^[a-f0-9]{40}$')][string]$ExpectedControllerCommit,
     [ValidatePattern('^ci-poc-002-[a-f0-9]{40}$')][string]$WorkflowRef,
     [ValidateSet('qualification','probe','no-job')][string]$QualificationMode='qualification'
@@ -12,6 +13,8 @@ $env:PSModulePath=[IO.Path]::Combine($PSHOME,'Modules')
 Import-PilotNative
 $backing=Assert-PilotPath -Path $BackingRoot
 $controllerRoot=[IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../..'))
+if($MonitorLeaseId -and $Mode -cne 'Monitor'){throw 'lease-selection-is-read-only'}
+if($MonitorLeaseId){$null=Assert-PilotPath -Path (Join-Path $backing ('runloc-whpx-'+$MonitorLeaseId))}
 if ($Mode -ceq 'Start') {
     if (-not $ExpectedControllerCommit -or -not $WorkflowRef) { throw 'reviewed-source-and-workflow-required' }
     $null=Get-PilotSourceIdentity -Root $controllerRoot -Repository 'https://github.com/techrote/runloc' -ExpectedCommit $ExpectedControllerCommit
@@ -21,7 +24,7 @@ $state=Join-Path $backing ('console-'+[Guid]::NewGuid().ToString('N'))
 Set-PilotPrivateDirectory -Path $state
 $planPath=Join-Path $state 'plan.json'
 Write-PilotNewJson -Path $planPath -Value @{schemaVersion=1;mode=$Mode;stateRoot=$state;backingRoot=$backing;controllerRoot=$controllerRoot;
-    controllerCommit=$ExpectedControllerCommit;workflowRef=$WorkflowRef;qualificationMode=$QualificationMode}
+    controllerCommit=$ExpectedControllerCommit;workflowRef=$WorkflowRef;qualificationMode=$QualificationMode;monitorLeaseId=$MonitorLeaseId}
 $digest=Get-PilotDigest -Path $planPath
 $powershell=Join-Path $env:SystemRoot 'System32/WindowsPowerShell/v1.0/powershell.exe'
 $arguments=@('-NoLogo','-NoProfile','-ExecutionPolicy','Bypass')

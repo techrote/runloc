@@ -65,6 +65,10 @@ do {
             if($controllerAlive){$tree=@(Select-ConsoleProcessTree -Processes $processes -RootId $child.Id -RootCreatedUtc $child.StartTime.ToUniversalTime())}
         }
         $leases=@(Get-ChildItem -LiteralPath $plan.backingRoot -Directory -Filter 'runloc-whpx-*'|Sort-Object LastWriteTimeUtc -Descending)
+        if($plan.mode -ceq 'Monitor' -and $plan.monitorLeaseId){
+            if($plan.monitorLeaseId -cnotmatch '^[a-f0-9]{32}$'){throw 'monitor-lease-invalid'}
+            $leases=@($leases|Where-Object {$_.Name -ceq ('runloc-whpx-'+$plan.monitorLeaseId)})
+        }
         if($null -ne $child){
             $stdout=Join-Path $state 'controller.stdout.log';$matchesLease=@()
             if([IO.File]::Exists($stdout) -and (Get-Item -LiteralPath $stdout).Length -le 1MB){$matchesLease=@(Get-Content -LiteralPath $stdout|Where-Object {$_ -cmatch '^RUNLOC_RUNNER_LEASE='})}

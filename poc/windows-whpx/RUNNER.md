@@ -32,6 +32,9 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File poc/windows-whpx/Open-Ru
 ```
 
 Monitor is read-only and starts no runner, guest or job. For an approved new
+monitor of a specific historical attempt, add `-MonitorLeaseId <32-hex-UUID>`;
+otherwise the latest lease is selected. This cannot select a lease for Start.
+For an approved new
 attempt use Mode Start, ExpectedControllerCommit, WorkflowRef and optional
 QualificationMode. Start requires clean reviewed immutable source and an
 execution-approved workflow pin. Publish and repin the updated job controller
