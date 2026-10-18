@@ -105,6 +105,29 @@ its workflow LF SHA256 is
 `dab5a3bc97b439ecdc6b98f11eedda4e7083d1616c27ea9a20882a1122c864dc`.
 The frozen job controller and eight-CPU candidate are unchanged.
 
+The next fresh registration41 executed [run39126788794/job117673494204](https://github.com/techrote/ezvm/actions/runs/39126788794).
+Validation and checkout passed, but exact source verification stopped before
+preflight with `source-public-blob-mismatch`. The [original failed receipt](evidence/ci-poc-002-actions-checkout-failure.json)
+retains host exit1, listener normal exit0, process0, exact registration absent,
+fixture removed and preserved backing/source/sentinel; no physical result is
+claimed. [Focused clone controls](evidence/ci-poc-002-checkout-probe.json)
+identify extensionless LICENSE conversion under native Windows text=auto.
+Both `core.autocrlf=false` and `core.eol=lf` are required for the reviewed bytes;
+autocrlf=false alone still allowed native CRLF. Narrow
+[EzVM PR51](https://github.com/techrote/ezvm/pull/51) supplies both settings only
+to checkout's process environment. The [exact environment-method probe](evidence/ci-poc-002-checkout-env-probe.json)
+passes complete165-file source verification after restoring that environment,
+with an unchanged local Git config digest. Blob checks, source, candidate,
+host Git settings and original qualification assertions remain unchanged.
+
+PR51 passed both core and ordinary-user engine lanes plus the repository check,
+with full hosted TCG still skipped by the owner deferral. It merged normally at
+`e1b36aac861000503764bee53d7cd1a09b984103`, tree
+`6d890c552219512abfb316c85e6a0bcbac27b5c4`, matching its reviewed PR head.
+The successor tag is `ci-poc-002-e1b36aac861000503764bee53d7cd1a09b984103`;
+the pinned workflow LF SHA256 is
+`9d13479ea3fa286b4ba6e770f952cda19d1c71306144bd9f42124484f5598fb3`.
+
 Completion still requires a real full eight-CPU WHPX Actions job and exact
 run/job/runner/receipt evidence, actual process exit and deregistration404,
 owned workspace and external fixture cleanup, a used-registration second-job

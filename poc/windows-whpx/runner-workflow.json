@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "repository": "techrote/ezvm",
   "path": ".github/workflows/ezvm-ci-poc-002.yml",
-  "workflowCommit": "e516c92569247abd5c8282ed5cbda3a00cf241b6",
-  "sha256Lf": "dab5a3bc97b439ecdc6b98f11eedda4e7083d1616c27ea9a20882a1122c864dc",
+  "workflowCommit": "e1b36aac861000503764bee53d7cd1a09b984103",
+  "sha256Lf": "9d13479ea3fa286b4ba6e770f952cda19d1c71306144bd9f42124484f5598fb3",
   "jobControllerCommit": "14c39e467f170e48f33af4e50b2c0e8e095b4f6e"
 }
