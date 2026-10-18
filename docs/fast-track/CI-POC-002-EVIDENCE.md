@@ -75,6 +75,36 @@ successful no-job-timeout or qualification result. The narrow repair accepts
 only explicit true boolean/string literals and normalizes them to a boolean;
 false, numeric, missing and truthy arbitrary strings remain negative controls.
 
+The [real no-job deadline case](evidence/ci-poc-002-no-job.json) then started
+registration39 and observed it online with only its unique label. At the
+45-second no-job deadline the owned listener was terminated with exit124;
+supervisor exit1 and `passed=false` remained mandatory. Total supervised time
+was49.4962335seconds. Independent API confirmation showed registration absent,
+active processes0, fixture removed, controller unchanged, and backing archive
+and unrelated sentinel preserved. This proves truthful timeout cleanup, not
+physical qualification.
+
+Fresh registration40 accepted [actual Actions job117671387479 in
+run39126080753](https://github.com/techrote/ezvm/actions/runs/39126080753).
+Its [failed evidence](evidence/ci-poc-002-actions-shell-failure.json) records
+supervisor exit1 despite listener exit0 and normal cleanup. The generated first
+PowerShell script was blocked by host execution policy, before checkout or
+preflight; no harness ran. Narrow [EzVM PR50](https://github.com/techrote/ezvm/pull/50)
+uses a dedicated process-local Bypass shell with a quoted script path. A local
+space-path negative control observed Restricted exit1 without script execution,
+Bypass exit7 with exactly one marker, and unchanged host policy. Independent
+review verified the pinned runner's script-extension/failure handling and both
+retained lifecycle records. A fresh complete attempt is still required.
+
+PR50 passed both core engines, both ordinary-user engines and the repository
+contract, with hosted full TCG still explicitly skipped. It merged normally
+at `e516c92569247abd5c8282ed5cbda3a00cf241b6`, tree
+`14a237f3873484a91e99ebf2c67e37f255a425e5`, identical to its reviewed PR tree.
+The successor immutable tag is `ci-poc-002-e516c92569247abd5c8282ed5cbda3a00cf241b6`;
+its workflow LF SHA256 is
+`dab5a3bc97b439ecdc6b98f11eedda4e7083d1616c27ea9a20882a1122c864dc`.
+The frozen job controller and eight-CPU candidate are unchanged.
+
 Completion still requires a real full eight-CPU WHPX Actions job and exact
 run/job/runner/receipt evidence, actual process exit and deregistration404,
 owned workspace and external fixture cleanup, a used-registration second-job

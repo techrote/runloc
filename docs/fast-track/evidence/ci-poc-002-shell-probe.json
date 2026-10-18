@@ -1,0 +1,9 @@
+{
+    "schemaVersion":  1,
+    "spacePath":  true,
+    "restrictedExitCode":  1,
+    "restrictedScriptExecuted":  false,
+    "bypassExitCode":  7,
+    "bypassMarkerCount":  1,
+    "hostPolicyUnchanged":  true
+}
