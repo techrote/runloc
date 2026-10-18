@@ -13,7 +13,7 @@ Import-PilotNative
 $root=[IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../..'))
 $identity=Get-PilotSourceIdentity -Root $root -Repository 'https://github.com/techrote/runloc' -ExpectedCommit $ExpectedControllerCommit
 $backing=Assert-PilotPath -Path $BackingRoot
-$python=(Get-Command python.exe -CommandType Application -ErrorAction Stop).Source
+$python=(Get-Command python.exe -CommandType Application -ErrorAction Stop|Select-Object -First 1).Source
 if($ResumeState){
     $statePath=Assert-PilotPath -Path $ResumeState -File
     $folder=[IO.Path]::GetDirectoryName($statePath)
