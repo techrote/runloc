@@ -28,7 +28,7 @@ if ($plan.mode -ceq 'Probe') {
     Write-PilotNewJson -Path (Join-Path $state 'probe-ended.json') -Value @{exitCode=0;processId=$PID}
     exit 0
 }
-$Host.UI.RawUI.WindowTitle='Runloc CI-PoC002 independent runner console'
+$Host.UI.RawUI.WindowTitle='Runloc CI-PoC002 independent console - '+$plan.mode+' '+$plan.qualificationMode
 Write-Host 'This console is owned by Windows Explorer, independently of Codex.'
 Write-Host 'GitHub runner: native Windows host. EzVM guest allocation: 6 vCPUs.'
 Write-Host 'Keep this console and the PC running. Closing Codex is safe; closing this console can interrupt the job.'
@@ -45,59 +45,88 @@ if ($plan.mode -ceq 'Start') {
     $child=Start-Process -FilePath (Join-Path $env:SystemRoot 'System32/WindowsPowerShell/v1.0/powershell.exe') -ArgumentList $command -NoNewWindow -PassThru -WorkingDirectory $plan.controllerRoot -RedirectStandardOutput (Join-Path $state 'controller.stdout.log') -RedirectStandardError (Join-Path $state 'controller.stderr.log')
     Write-PilotNewJson -Path (Join-Path $state 'controller-started.json') -Value @{processId=$child.Id;createdUtc=$child.StartTime.ToUniversalTime().ToString('o')}
 }
-$last=''
+# The console remains observational; failures here never qualify or cancel work.
+. (Join-Path $PSScriptRoot 'Console.Monitor.ps1')
+$lastSequence='';$lastStatus='';$lastIdlePrint=[DateTime]::MinValue
+$previous=@{};$sampleClock=[Diagnostics.Stopwatch]::StartNew();$lastSample=0.0
+$memoryMiB=$null;$lastMemory=[DateTime]::MinValue
+$metricsPath=Join-Path $state 'monitor.jsonl'
+$metricsLimitNotified=$false
+Write-Host ('Private structured metrics: '+$metricsPath)
+Write-Host 'CPU is sampled percentage of total host capacity for the controller process tree; exited processes between samples can be missed.'
+Write-Host 'No new phase event means quiet telemetry, not fresh progress. Final qualification comes only from its receipt.'
 do {
-    $leases=@(Get-ChildItem -LiteralPath $plan.backingRoot -Directory -Filter 'runloc-whpx-*'|Sort-Object LastWriteTimeUtc -Descending)
-    if ($null -ne $child) {
-        $stdout=Join-Path $state 'controller.stdout.log'
-        $match=@(Get-Content -LiteralPath $stdout -ErrorAction SilentlyContinue|Where-Object {$_ -cmatch '^RUNLOC_RUNNER_LEASE='})
-        $leases=@($leases|Where-Object {$match -ccontains ('RUNLOC_RUNNER_LEASE='+$_.FullName)})
-    }
-    if ($leases.Count) {
-        $lease=$leases[0]
+    try {
+        $now=[DateTime]::UtcNow
+        $processes=@(Get-CimInstance Win32_Process -Property ProcessId,ParentProcessId,Name,CreationDate,KernelModeTime,UserModeTime,WorkingSetSize,ReadTransferCount,WriteTransferCount)
+        $tree=@();$controllerAlive=$false
+        if($null -ne $child){
+            $child.Refresh();$controllerAlive=-not $child.HasExited
+            if($controllerAlive){$tree=@(Select-ConsoleProcessTree -Processes $processes -RootId $child.Id -RootCreatedUtc $child.StartTime.ToUniversalTime())}
+        }
+        $leases=@(Get-ChildItem -LiteralPath $plan.backingRoot -Directory -Filter 'runloc-whpx-*'|Sort-Object LastWriteTimeUtc -Descending)
+        if($null -ne $child){
+            $stdout=Join-Path $state 'controller.stdout.log';$matchesLease=@()
+            if([IO.File]::Exists($stdout) -and (Get-Item -LiteralPath $stdout).Length -le 1MB){$matchesLease=@(Get-Content -LiteralPath $stdout|Where-Object {$_ -cmatch '^RUNLOC_RUNNER_LEASE='})}
+            $leases=@($leases|Where-Object {$matchesLease -ccontains ('RUNLOC_RUNNER_LEASE='+$_.FullName)})
+        }
+        $snapshot=$null;$activity='STARTING_NO_LEASE_YET'
+        if($leases.Count){
+            $snapshot=Read-ConsoleLeaseSnapshot -LeaseRoot $leases[0].FullName -Processes $processes -NowUtc $now
+            $activity=Get-ConsoleActivityState -ControllerKnown ($null -ne $child) -ControllerAlive $controllerAlive -ListenerAlive $snapshot.listenerAlive -HasFinal $snapshot.hasFinal -TelemetryAgeSeconds $snapshot.phaseAgeSeconds
+            if($null -eq $child -and $snapshot.listenerAlive){$tree=@(Select-ConsoleProcessTree -Processes $processes -RootId $snapshot.listenerProcessId -RootCreatedUtc ([DateTime]::Parse($snapshot.listenerCreatedUtc)))}
+        }
+        elseif($null -eq $child){$activity='NO_ACTIVE_RUN_NO_EVIDENCE'}
+        if(($now-$lastMemory).TotalSeconds -ge 60){
+            $os=Get-CimInstance Win32_OperatingSystem -Property FreePhysicalMemory
+            $memoryMiB=[Math]::Round([double]$os.FreePhysicalMemory/1024,0);$lastMemory=$now
+        }
+        $elapsed=$sampleClock.Elapsed.TotalSeconds
+        $interval=if($lastSample -eq 0){0}else{$elapsed-$lastSample}
+        $resource=Measure-ConsoleProcesses -Processes $tree -Previous $previous -IntervalSeconds $interval -LogicalProcessors ([Environment]::ProcessorCount)
+        $previous=$resource.previous;$lastSample=$elapsed
+        $metric=[ordered]@{schemaVersion=1;observedUtc=$now.ToString('o');activity=$activity;consoleMode=$plan.mode;
+            controllerAlive=$controllerAlive;consoleElapsedSeconds=[Math]::Round($elapsed,1);hostFreeMemoryMiB=$memoryMiB;
+            sampledTreeProcessCount=$resource.processCount;sampledTreeListenerCount=$resource.listenerCount;sampledTreeQemuCount=$resource.qemuCount;
+            sampledTreeCpuHostPercent=$resource.cpuHostPercent;sampledTreeWorkingSetMiB=$resource.workingSetMiB;
+            sampledTreeReadMiBPerSecond=$resource.readMiBPerSecond;sampledTreeWriteMiBPerSecond=$resource.writeMiBPerSecond;
+            hostQemuProcessCount=@($processes|Where-Object {$_.Name -ceq 'qemu-system-x86_64.exe'}).Count;snapshot=$snapshot}
         try {
-        $eventFile=@(Get-ChildItem -LiteralPath $lease.FullName -File -Filter 'event-*.json'|Sort-Object Name|Select-Object -Last 1)
-        if ($eventFile.Count) {
-            $event=[IO.File]::ReadAllText($eventFile[0].FullName)|ConvertFrom-Json
-            if ($event.kind -cmatch '^[a-z-]+$') {
-                $line=$lease.Name+' : '+$event.kind
-                if ($line -cne $last) { Write-Host ([DateTime]::Now.ToString('HH:mm:ss')+' '+$line+'; recordedUTC='+$event.utc);$last=$line }
-                if ($event.kind -ceq 'final') { Write-Host ($event.data|ConvertTo-Json -Compress) }
+            $serialized=($metric|ConvertTo-Json -Depth 10 -Compress)+[Environment]::NewLine
+            $size=if([IO.File]::Exists($metricsPath)){(Get-Item -LiteralPath $metricsPath).Length}else{0}
+            if($size+[Text.Encoding]::UTF8.GetByteCount($serialized) -le 4MB){[IO.File]::AppendAllText($metricsPath,$serialized,(New-Object Text.UTF8Encoding($false)))}
+            elseif(-not $metricsLimitNotified){Write-Host 'PRIVATE_METRICS_LOG_LIMIT_REACHED; live display and qualification continue.';$metricsLimitNotified=$true}
+        } catch { Write-Host 'METRICS_LOG_WRITE_FAILED: observation only; controller continues.' }
+        $statusKey=$activity+'/'+$(if($null -ne $snapshot){$snapshot.leaseId}else{''})
+        if($statusKey -cne $lastStatus){
+            Write-Host ('STATE '+$activity+' at '+[DateTime]::Now.ToString('HH:mm:ss'))
+            if($null -ne $snapshot){Write-Host ('Lease='+$snapshot.leaseId+' runner='+$snapshot.runnerId+' run='+$snapshot.runId+' lastEvent='+$snapshot.lastEvent+' eventUTC='+$snapshot.lastEventUtc)}
+            $lastStatus=$statusKey
+        }
+        $live=$controllerAlive -or ($null -ne $snapshot -and $snapshot.listenerAlive)
+        if($null -ne $snapshot){
+            $sequenceKey=$snapshot.leaseId+'/'+$snapshot.phaseSequence
+            if($sequenceKey -cne $lastSequence -and $null -ne $snapshot.phaseSequence){
+                $label=if($live){'PHASE EVENT'}else{'RETAINED EVENT - NOT LIVE'}
+                Write-Host ($label+' seq='+$snapshot.phaseSequence+' '+$snapshot.phaseEvent+' '+$snapshot.phaseOperation+' recordedUTC='+$snapshot.phaseRecordedUtc)
+                $lastSequence=$sequenceKey
             }
         }
-            $owner=[IO.File]::ReadAllText((Join-Path $lease.FullName 'lease.json'))|ConvertFrom-Json
-            $work=Join-Path $owner.fixture 'runner/_work'
-            $telemetry=@()
-            if ([IO.Directory]::Exists($work)) {
-                foreach($jobRoot in @(Get-ChildItem -LiteralPath $work -Directory -Filter 'j????????'|Select-Object -First 4)) {
-                    $evidence=Join-Path $jobRoot.FullName 'Evidence'
-                    if (-not [IO.Directory]::Exists($evidence)) { continue }
-                    foreach($outer in @(Get-ChildItem -LiteralPath $evidence -Directory|Select-Object -First 4)) {
-                        $attempts=Join-Path $outer.FullName 'private/attempts'
-                        if (-not [IO.Directory]::Exists($attempts)) { continue }
-                        foreach($inner in @(Get-ChildItem -LiteralPath $attempts -Directory|Select-Object -First 4)) {
-                            $path=Join-Path $inner.FullName 'private/telemetry.jsonl'
-                            if ([IO.File]::Exists($path)) { $telemetry+=Get-Item -LiteralPath $path }
-                        }
-                    }
-                }
-            }
-            if ($telemetry.Count) {
-                $latest=$telemetry|Sort-Object LastWriteTimeUtc -Descending|Select-Object -First 1
-                $phase=Get-Content -LiteralPath $latest.FullName -Tail 1|ConvertFrom-Json
-                if ($phase.operation -cmatch '^[A-Za-z0-9-]+$' -and $phase.event -cmatch '^[a-z-]+$') {
-                    Write-Host ('Telemetry '+$phase.sequence+': '+$phase.event+' '+$phase.operation+'; elapsed='+[Math]::Round($phase.elapsedSeconds,1)+'s; recordedUTC='+$phase.utc)
-                }
-            }
+        if($live -or ($now-$lastIdlePrint).TotalSeconds -ge 60){
+            $phaseText=if($null -ne $snapshot){' phaseAge='+$snapshot.phaseAgeSeconds+'s open='+$snapshot.openOperation+' openAge='+$snapshot.openOperationAgeSeconds+'s guest='+$snapshot.guestStage+' markers='+$snapshot.markersObserved+'/24 READY='+$snapshot.guestReadyObserved+'/8 CPU6='+$snapshot.guestCpuProofsObserved+'/8 integrityChecks='+$snapshot.completedIntegrityChecks+' integritySeconds='+$snapshot.integrityCheckSeconds+' phaseFailures='+$snapshot.telemetryFailures}else{''}
+            Write-Host ([DateTime]::Now.ToString('HH:mm:ss')+' HEARTBEAT '+$activity+' elapsed='+[Math]::Round($elapsed,1)+'s treeProcesses='+$resource.processCount+' listener='+$resource.listenerCount+' QEMU='+$resource.qemuCount+' hostCPU%='+$resource.cpuHostPercent+' RSSMiB='+$resource.workingSetMiB+' readMiB/s='+$resource.readMiBPerSecond+' writeMiB/s='+$resource.writeMiBPerSecond+' freeRAMMiB='+$memoryMiB+$phaseText)
+            $lastIdlePrint=$now
         }
-        catch { Write-Host 'Phase snapshot unavailable during write/cleanup; qualification outcome still comes from its receipt.' }
     }
-    if ($null -eq $child) { Write-Host ('Host QEMU processes now: '+@(Get-Process -Name 'qemu-system-x86_64' -ErrorAction SilentlyContinue).Count+' (observation only). No new job started. Ctrl+C stops monitoring.') }
-    else { $child.Refresh(); if($child.HasExited){break} }
+    catch {
+        Write-Host ('MONITOR_SNAPSHOT_UNAVAILABLE at '+[DateTime]::Now.ToString('HH:mm:ss')+' type='+$_.Exception.GetType().Name+' line='+$_.InvocationInfo.ScriptLineNumber+'; controller continues. No progress is inferred.')
+    }
+    if($null -ne $child){$child.Refresh();if($child.HasExited){break}}
     Start-Sleep -Seconds 10
-} while ($true)
-if ($null -ne $child) {
+} while($true)
+if($null -ne $child){
     $child.WaitForExit()
     Write-PilotNewJson -Path (Join-Path $state 'controller-ended.json') -Value @{exitCode=$child.ExitCode;endedUtc=[DateTime]::UtcNow.ToString('o')}
-    Write-Host ('Controller exit code: '+$child.ExitCode+'. Inspect the final receipt; a zero runner exit alone is not qualification.')
+    Write-Host ('STOPPED. Actual controller exit='+$child.ExitCode+'. No further live progress. Final qualification requires the complete receipt and cleanup.')
+    Write-Host ('Private diagnostics: '+$state)
 }

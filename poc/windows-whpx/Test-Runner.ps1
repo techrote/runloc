@@ -2,6 +2,7 @@
 [CmdletBinding()]param()
 $ErrorActionPreference = 'Stop'
 . (Join-Path $PSScriptRoot 'Runner.Common.ps1')
+. (Join-Path $PSScriptRoot 'Test-ConsoleMonitor.ps1')
 $passed = 0
 function Assert-RunnerTest { param([bool]$Condition) if (-not $Condition) { throw 'runner-test-assertion' } }
 function Assert-RunnerThrows { param([scriptblock]$Action) try { & $Action | Out-Null } catch { return }; throw 'expected-runner-refusal' }

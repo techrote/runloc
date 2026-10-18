@@ -53,6 +53,20 @@ the PC. Console closure can interrupt the job and is never a success receipt.
 The console shows exact host event state and bounded phase telemetry; recorded
 timestamps distinguish retained evidence from live progress.
 
+The console prints a phase event only when its sequence changes. Separate
+timestamped heartbeats report current controller/listener/QEMU process counts,
+sampled process-tree CPU as a percentage of total host capacity, working set,
+read/write rates and free host RAM. Process generations are checked before
+sampling; exited processes between samples may be missed. These are diagnostic
+observations, never process-ownership or performance qualification proof.
+Phase age/open-operation age, completed integrity-check counts/durations,
+observed24-marker/eight-READY/eight-CPU-proof counts and explicit guest-start
+stage distinguish file validation from actual guest startup. Quiet telemetry
+is labelled; stopped historical evidence is explicitly NOT LIVE and is not
+reprinted as new progress. Private structured metrics are retained under the
+console state directory with a4MiB bound; they are not uploaded with public
+receipts. A partial write/read failure cannot cancel or qualify the controller.
+
 The opt-in interactive desktop test is separate from ordinary headless CI:
 
 ```powershell
