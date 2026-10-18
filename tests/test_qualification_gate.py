@@ -27,7 +27,8 @@ class GatePolicyTests(unittest.TestCase):
         cls.expected = dict(candidate=cls.receipt["candidate"]["commit"], tree=cls.receipt["candidate"]["tree"],
                             controller=cls.receipt["controller"]["commit"], host_controller=cls.host["hostController"]["commit"],
                             comparison=cls.host["comparisonId"], run_id=cls.host["runId"], job_id=cls.host["jobId"],
-                            runner_id=cls.host["runnerId"], created_utc="2026-10-18T15:49:00Z")
+                            runner_id=cls.host["runnerId"], created_utc="2026-10-18T15:49:00Z",
+                            receipt_sha256=cls.supervisor["inner"]["receiptSha256"])
 
     def test_known_complete_parser_fixture(self):
         self.assertEqual("pass", gate.validate_private(self.host, self.actions, self.receipt, self.supervisor, **self.expected))
@@ -71,6 +72,17 @@ class GatePolicyTests(unittest.TestCase):
             with self.subTest(variant=index), self.assertRaises(gate.InvalidEvidence):
                 gate.validate_events(events, "whpx")
 
+    def test_preflight_schema_and_digest_chain_fail_closed(self):
+        for target, field, value in (("cleanup", "activeProcesses", False), ("preflight", "exitCode", 123),
+                                     ("preflight", "forced", 0)):
+            bad = copy.deepcopy(self.receipt); bad[target][field] = value
+            with self.subTest(field=field), self.assertRaises(gate.InvalidEvidence):
+                gate.validate_private(self.host, self.actions, bad, self.supervisor, **self.expected)
+        bad = copy.deepcopy(self.receipt); bad['requestedGuestCpus'] = 6.0
+        with self.assertRaises(gate.InvalidEvidence): gate.validate_private(self.host, self.actions, bad, self.supervisor, **self.expected)
+        bad = copy.deepcopy(self.supervisor); bad['inner']['receiptSha256'] = 'f'*64
+        with self.assertRaises(gate.InvalidEvidence): gate.validate_private(self.host, self.actions, self.receipt, bad, **self.expected)
+
     def test_failure_dominates_all_green_and_infrastructure_states(self):
         private_states = gate.INFRASTRUCTURE | gate.FAILURES | {"pending", "pass", "hosted-only"}
         for private in private_states:
@@ -80,7 +92,7 @@ class GatePolicyTests(unittest.TestCase):
                     if private in gate.FAILURES or hosted in gate.FAILURES:
                         self.assertEqual("failure", result)
                     elif private == "pass": self.assertEqual("accepted-whpx", result)
-                    elif hosted == "pass": self.assertEqual("accepted-tcg", result)
+                    elif hosted == "pass" and private != "pending": self.assertEqual("accepted-tcg", result)
                     else: self.assertEqual("pending", result)
         self.assertEqual("failure", gate.decide("pass", "pass", quarantined=True))
         with self.assertRaises(gate.InvalidEvidence): gate.decide("retry-and-ignore", "pass")

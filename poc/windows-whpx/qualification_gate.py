@@ -146,7 +146,9 @@ def validate_events(events, accelerator):
 
 
 def validate_private(host, actions, receipt, supervisor, *, candidate, tree, controller, host_controller,
-                     comparison, run_id, job_id, runner_id, created_utc):
+                     comparison, run_id, job_id, runner_id, created_utc, receipt_sha256):
+    def zero(value):
+        return type(value) is int and value == 0
     require(host["hostController"]["commit"] == host_controller, "host-controller-pin")
     require(host["comparisonId"] == comparison and host["runId"] == run_id
             and host["jobId"] == job_id and host["runnerId"] == runner_id, "host-association")
@@ -154,7 +156,7 @@ def validate_private(host, actions, receipt, supervisor, *, candidate, tree, con
     require(len(final) == 1 and final[0]["leaseId"] == comparison, "host-final-binding")
     end = final[0]["data"]
     require(end["runId"] == run_id and end["runnerId"] == runner_id and end["passed"] is True
-            and end["activeProcesses"] == 0 and all(end[k] is True for k in (
+            and zero(end["activeProcesses"]) and all(end[k] is True for k in (
                 "fixtureRemoved", "registrationAbsent", "reusableBackingPreserved", "unrelatedSentinelSurvived",
                 "controllerUnchanged", "workflowCleanupConfirmed")), "host-disposal")
     require(host["controllerExit"]["exitObserved"] is True and type(host["controllerExit"]["exitCode"]) is int
@@ -164,7 +166,7 @@ def validate_private(host, actions, receipt, supervisor, *, candidate, tree, con
             and actions["runnerName"] == "runloc-" + comparison and actions["mode"] == "qualification"
             and actions["physicalQualificationPassed"] is True and actions["passed"] is True, "actions-binding")
     require(len(actions["phases"]) == 2 and [p["phase"] for p in actions["phases"]] == ["preflight", "qualification"]
-            and all(p["exitCode"] == 0 and p["passed"] is True and p["activeProcesses"] == 0 for p in actions["phases"]), "phase-exits")
+            and all(zero(p["exitCode"]) and p["passed"] is True and zero(p["activeProcesses"]) for p in actions["phases"]), "phase-exits")
     require(receipt["candidate"]["commit"] == candidate and receipt["candidate"]["tree"] == tree
             and receipt["candidate"]["clean"] is True and receipt["controller"]["commit"] == controller
             and receipt["controller"]["clean"] is True, "receipt-source")
@@ -172,15 +174,28 @@ def validate_private(host, actions, receipt, supervisor, *, candidate, tree, con
             and type(receipt["exitCode"]) is int and type(receipt["childExitCode"]) is int
             and receipt["exitCode"] == receipt["childExitCode"] == 0 and receipt["sourceUnchanged"] is True,
             "full-receipt-outcome")
-    require(not any(receipt[k] for k in ("timedOut", "cancelled", "outputOverflow", "outputFailed", "harnessFailure", "controllerFailure")), "receipt-failure")
+    require(all(receipt[k] is False for k in ("timedOut", "cancelled", "outputOverflow", "outputFailed", "harnessFailure", "controllerFailure")), "receipt-failure")
     require(receipt["requestedAccelerator"] == receipt["observedAccelerator"] == "whpx"
-            and receipt["requestedGuestCpus"] == 6 and receipt["overallTimeoutDisabled"] is True, "private-profile")
+            and type(receipt["requestedGuestCpus"]) is int and receipt["requestedGuestCpus"] == 6 and receipt["overallTimeoutDisabled"] is True, "private-profile")
     require(utc(receipt["startedUtc"]) >= utc(created_utc), "replayed-receipt")
     cleanup = receipt["cleanup"]
-    require(cleanup["childExited"] is True and cleanup["activeProcesses"] == 0 and not cleanup["forced"]
+    require(cleanup["childExited"] is True and zero(cleanup["activeProcesses"]) and cleanup["forced"] is False
             and cleanup["fixtureRemoved"] is True and cleanup["ownershipVerified"] is True, "receipt-cleanup")
     require(supervisor["supervisorLeaseId"] == receipt["supervisorLeaseId"] and supervisor["outcome"] == "pass"
-            and supervisor["exitCode"] == 0 and supervisor["physicalQualificationPassed"] is True, "supervisor-binding")
+            and zero(supervisor["exitCode"]) and supervisor["physicalQualificationPassed"] is True, "supervisor-binding")
+    preflight = receipt["preflight"]
+    require(zero(preflight["exitCode"]) and zero(preflight["activeProcesses"]) and preflight["childExited"] is True
+            and preflight["forced"] is False and preflight["fixtureCreated"] is True and preflight["qualificationStarted"] is True, "original-preflight-failed")
+    process = supervisor["controllerProcess"]
+    require(zero(process["exitCode"]) and zero(process["activeProcesses"]) and process["childExited"] is True
+            and process["method"] == "CreateProcess-suspended-then-Job-assignment" and process["killOnClose"] is True
+            and all(process[k] is False for k in ("breakawayAllowed", "forced", "timedOut", "outputOverflow", "outputFailed", "controllerError")), "supervisor-process-failed")
+    inner = supervisor["inner"]
+    require(inner["validated"] is True and inner["outcome"] == "pass" and inner["leaseId"] == receipt["leaseId"]
+            and inner["label"] == f"private/attempts/runloc-whpx-{receipt['leaseId']}/receipt.json"
+            and inner["receiptSha256"] == receipt_sha256, "supervisor-receipt-digest-chain")
+    require(supervisor["candidate"]["commit"] == candidate and supervisor["candidate"]["tree"] == tree
+            and supervisor["controller"]["commit"] == controller and supervisor["controller"]["tree"] == receipt["controller"]["tree"], "supervisor-source-binding")
     require(receipt["telemetry"]["complete"] is True and receipt["telemetry"]["recordCount"] > 0, "incomplete-telemetry")
     validate_events(receipt["events"], "whpx")
     validate_identity_bindings(receipt["identities"], receipt["telemetry"], "whpx")
@@ -243,6 +258,6 @@ def decide(private: str, hosted: str, *, quarantined=False):
         return "failure"
     if private == "pass":
         return "accepted-whpx"
-    if hosted == "pass":
+    if hosted == "pass" and private in INFRASTRUCTURE | {"hosted-only"}:
         return "accepted-tcg"
     return "pending"
