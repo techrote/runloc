@@ -10,6 +10,7 @@ $ErrorActionPreference='Stop'
 $env:PSModulePath=[IO.Path]::Combine($PSHOME,'Modules')
 . (Join-Path $PSScriptRoot 'Pilot.Common.ps1')
 . (Join-Path $PSScriptRoot 'Hosted.Common.ps1')
+. (Join-Path $PSScriptRoot 'Hosted.Diagnostics.ps1')
 if($env:GITHUB_REPOSITORY -cne 'techrote/ezvm' -or $env:GITHUB_EVENT_NAME -cne 'workflow_dispatch' -or
     $env:GITHUB_RUN_ATTEMPT -cne '1' -or $env:GITHUB_RUN_ID -cnotmatch '^[1-9][0-9]*$' -or $env:RUNNER_ENVIRONMENT -cne 'github-hosted'){
     throw 'trusted-hosted-first-attempt-required'
@@ -76,6 +77,10 @@ try {
     $lease.Lock.Dispose()
 }
 $passed=$reason -ceq 'complete-functional-scenario' -and $fixtureRemoved
+$diagnostics=@{signals=@();rawLogSha256='';rawLogBytes=0}
+if($null -ne $child){$diagnostics.signals=Get-HostedDiagnosticSignals -Records $child.records}
+$rawLog=Join-Path $lease.Private 'harness.log'
+if([IO.File]::Exists($rawLog)){$diagnostics.rawLogSha256=Get-PilotDigest -Path $rawLog;$diagnostics.rawLogBytes=(Get-Item -LiteralPath $rawLog).Length}
 $receipt=[ordered]@{schemaVersion=1;issue='CI-POC-003';lane='hosted-tcg';comparisonId=$ComparisonId;
     candidate=$candidate;controller=$controller;repository=$env:GITHUB_REPOSITORY;runId=[long]$env:GITHUB_RUN_ID;
     runAttempt=1;workflowCommit=$env:GITHUB_SHA;runnerEnvironment=$env:RUNNER_ENVIRONMENT;runnerName=$env:RUNNER_NAME;
@@ -87,7 +92,7 @@ $receipt=[ordered]@{schemaVersion=1;issue='CI-POC-003';lane='hosted-tcg';compari
     phaseDurations=(Get-PilotPhaseDurations -Events $events -TotalSeconds $clock.Elapsed.TotalSeconds);
     cleanup=@{childExited=$(if($null -ne $child){$child.childExited}else{$false});activeProcesses=$(if($null -ne $child){$child.activeProcesses}else{$null});
         forced=$(if($null -ne $child){$child.forced}else{$false});fixtureRemoved=$fixtureRemoved};
-    host=$hostFacts}
+    diagnostics=$diagnostics;host=$hostFacts}
 $path=Join-Path $parent 'hosted-receipt.json'
 Write-PilotNewJson -Path $path -Value $receipt
 Write-PilotNewJson -Path (Join-Path $parent 'hosted-receipt-digest.json') -Value @{schemaVersion=1;file='hosted-receipt.json';sha256=(Get-PilotDigest $path)}

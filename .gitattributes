@@ -10,3 +10,4 @@
 docs/fast-track/evidence/physical-whpx-*/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 docs/fast-track/evidence/ci-poc-002-full/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 docs/fast-track/evidence/ci-poc-002-reuse/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+docs/fast-track/evidence/ci-poc-003-*/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol

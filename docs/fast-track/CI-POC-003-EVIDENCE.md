@@ -1,5 +1,34 @@
 # CI-POC-003 implementation checkpoint
 
+## First real comparison failed — 18 October 2026
+
+[Private run39159455088](https://github.com/techrote/ezvm/actions/runs/39159455088/job/117769490867)
+and [independent hosted run39159422984](https://github.com/techrote/ezvm/actions/runs/39159422984/job/117769400541)
+both failed. The source-bound coordinator published failure and retained its
+persistent quarantine. The [byte-preserved receipts and manifest](evidence/ci-poc-003-416568-failed/manifest.json)
+are the original failed attempt, not a successful qualification.
+
+The private run passed exact preflight, reached14/24 completion markers and5/8
+authenticated READY/CPU proofs, then its stateful guest's current serial log
+reported a kernel panic after PID1 (`systemd`) died with `0x0000008b` on
+kernel6.8.0-142-generic. The guest did not become READY or stop gracefully.
+Supervised host elapsed6037.8225399seconds, actual controller exit1, final owned
+process count0 and fixture removed after forced cleanup. The cause of the guest
+crash remains unresolved; no stdio or ACL cause is inferred.
+
+The hosted run passed exact preflight, reached3 READY proofs, then fresh-guest
+READY failed. Child exit1, elapsed7484.8456143seconds, forced cleanup, process0,
+fixture removed and source unchanged. Its original raw guest diagnostics were
+not uploaded, so its underlying cause remains unknown. New hosted evidence must
+retain closed-vocabulary diagnostic signals without publishing raw guest/tool
+text, paths or credentials.
+
+The restored legacy TCG run39159210774 on EzVM PR54 head8644087 also failed
+disposable venv/pip validation. Its generic message does not distinguish an
+actual command error from the original90-second deadline. It remains a separate
+red result, not evidence that all three failures share a cause. No PR is merged
+and issue23 remains open while diagnosis, repair and fresh qualification proceed.
+
 Started 18 October 2026 from live Runloc main
 `f29e4facb310f1a0d2da208f50a2416708f8db7f` and EzVM main
 `a3c6d3ec4c7506d8f8d1c553eb7a4560ddc61d4d`. Issue22 is completed and closed.

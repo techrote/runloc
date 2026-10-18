@@ -1,0 +1,615 @@
+{
+    "schemaVersion":  1,
+    "issue":  "CI-POC-003",
+    "lane":  "hosted-tcg",
+    "comparisonId":  "416568b3805d4cdc86d8e2092a312252",
+    "candidate":  {
+                      "repository":  "https://github.com/techrote/ezvm",
+                      "commit":  "2268468cb3040b9e1dd6deed60d0f13594f768d6",
+                      "tree":  "d5677a166e54583f26e3f08e90e5836c19f99359",
+                      "clean":  true,
+                      "executedTreeSha256":  "aa1f4254bcbe517f9838742d297779cba11b91a939b1d428f9a4de81a6dd7e00",
+                      "trackedFileCount":  194,
+                      "files":  [
+
+                                ]
+                  },
+    "controller":  {
+                       "repository":  "https://github.com/techrote/runloc",
+                       "commit":  "c1a2bb727da5c1099c0ac693c92c2f07fcf84d1d",
+                       "tree":  "6d76059172a52285c75b7bd227d9cbb54b7c3807",
+                       "clean":  true,
+                       "executedTreeSha256":  "1eac2aeac6f598c2c95f39122323bbf0f0d42a26b68e9f786b61588e2f1ef96e",
+                       "trackedFileCount":  209,
+                       "files":  [
+
+                                 ]
+                   },
+    "repository":  "techrote/ezvm",
+    "runId":  39159422984,
+    "runAttempt":  1,
+    "workflowCommit":  "aa98d6cbe6df6b7ca27fa4050620ba776e37038d",
+    "runnerEnvironment":  "github-hosted",
+    "runnerName":  "GitHub Actions 1000036897",
+    "requestedAccelerator":  "tcg",
+    "observedAccelerator":  "",
+    "whpxExecution":  "SKIP",
+    "qualificationCpus":  6,
+    "startedUtc":  "2026-10-18T19:35:19.9886236Z",
+    "endedUtc":  "2026-10-18T21:40:04.7828589Z",
+    "elapsedSeconds":  7484.8456142999994,
+    "sourceUnchanged":  true,
+    "passed":  false,
+    "classification":  "assertion-or-unknown",
+    "reason":  "functional-or-controller-failure",
+    "preflightExitCode":  0,
+    "exitCode":  1,
+    "events":  [
+                   {
+                       "kind":  "boundary",
+                       "name":  "STARTED_AT",
+                       "value":  "",
+                       "utc":  "2026-10-18T19:35:28.6321396Z",
+                       "seconds":  8.6446842
+                   },
+                   {
+                       "kind":  "accelerator",
+                       "name":  "requested",
+                       "value":  "tcg",
+                       "utc":  "2026-10-18T19:35:28.6321396Z",
+                       "seconds":  8.6475868
+                   },
+                   {
+                       "seconds":  8.648459299999999,
+                       "utc":  "2026-10-18T19:35:28.6321396Z",
+                       "name":  "whpx",
+                       "value":  "SKIP",
+                       "kind":  "capability"
+                   },
+                   {
+                       "kind":  "marker",
+                       "name":  "EZVM012_REAL_FRESH_ROOT_DOCTOR",
+                       "value":  "PASS",
+                       "utc":  "2026-10-18T19:35:34.2139210Z",
+                       "seconds":  14.231945199999998
+                   },
+                   {
+                       "kind":  "identity",
+                       "name":  "qemu-version",
+                       "value":  "11.1.2",
+                       "utc":  "2026-10-18T19:37:15.5094763Z",
+                       "seconds":  115.5251387
+                   },
+                   {
+                       "kind":  "marker",
+                       "name":  "EZVM012_REAL_BOOTSTRAP_DOCTOR",
+                       "value":  "PASS",
+                       "utc":  "2026-10-18T19:37:37.7975952Z",
+                       "seconds":  137.81368849999998
+                   },
+                   {
+                       "kind":  "phase",
+                       "name":  "tiny_real_images",
+                       "value":  "",
+                       "utc":  "2026-10-18T19:37:37.7975952Z",
+                       "seconds":  137.81455449999999
+                   },
+                   {
+                       "kind":  "marker",
+                       "name":  "EZVM010_REAL_TINY_RESET_FRESH_STATEFUL_INDEPENDENCE",
+                       "value":  "PASS",
+                       "utc":  "2026-10-18T20:18:51.6433227Z",
+                       "seconds":  2611.6764565999997
+                   },
+                   {
+                       "kind":  "marker",
+                       "name":  "EZVM010_REAL_SENSITIVE_BASELINE_RESET_AND_FRESH",
+                       "value":  "PASS",
+                       "utc":  "2026-10-18T20:18:51.6433227Z",
+                       "seconds":  2611.6773820999997
+                   },
+                   {
+                       "kind":  "marker",
+                       "name":  "EZVM010_REAL_STANDALONE_EXPORT_IMPORT",
+                       "value":  "PASS",
+                       "utc":  "2026-10-18T20:18:51.6433227Z",
+                       "seconds":  2611.6782506
+                   },
+                   {
+                       "kind":  "marker",
+                       "name":  "EZVM010_REAL_UNSAFE_IMPORT_REFUSAL",
+                       "value":  "PASS",
+                       "utc":  "2026-10-18T20:18:51.6433227Z",
+                       "seconds":  2611.679139
+                   },
+                   {
+                       "kind":  "marker",
+                       "name":  "EZVM010_REAL_FAILED_EXPORT_PRESERVES_DATA",
+                       "value":  "PASS",
+                       "utc":  "2026-10-18T20:18:51.6433227Z",
+                       "seconds":  2611.6799542
+                   },
+                   {
+                       "kind":  "phase",
+                       "name":  "prepare_real_guest",
+                       "value":  "",
+                       "utc":  "2026-10-18T20:18:51.6433227Z",
+                       "seconds":  2611.6808077
+                   },
+                   {
+                       "kind":  "identity",
+                       "name":  "SOURCE_SHA256",
+                       "value":  "6a81c37564db9b1ee84e141922625e1d7c5b389b99bb3c572e0243607d5bb4d2",
+                       "utc":  "2026-10-18T20:19:05.6450948Z",
+                       "seconds":  2625.6814685
+                   },
+                   {
+                       "kind":  "phase",
+                       "name":  "base_build_started",
+                       "value":  "",
+                       "utc":  "2026-10-18T20:19:05.6450948Z",
+                       "seconds":  2625.6835247999998
+                   },
+                   {
+                       "kind":  "phase",
+                       "name":  "base_build_completed",
+                       "value":  "",
+                       "utc":  "2026-10-18T20:30:22.6886910Z",
+                       "seconds":  3302.7255772999997
+                   },
+                   {
+                       "kind":  "phase",
+                       "name":  "guest_start",
+                       "value":  "ezvm010-source",
+                       "utc":  "2026-10-18T20:33:10.1379965Z",
+                       "seconds":  3470.1830588999997
+                   },
+                   {
+                       "kind":  "guest-cpus",
+                       "name":  "ezvm010-source",
+                       "value":  "6",
+                       "utc":  "2026-10-18T20:41:08.2693951Z",
+                       "seconds":  3948.3039093999996
+                   },
+                   {
+                       "kind":  "phase",
+                       "name":  "guest_ready",
+                       "value":  "ezvm010-source",
+                       "utc":  "2026-10-18T20:41:08.2704015Z",
+                       "seconds":  3948.3052021999997
+                   },
+                   {
+                       "kind":  "phase",
+                       "name":  "guest_start",
+                       "value":  "ezvm012-secondary",
+                       "utc":  "2026-10-18T20:43:36.3284314Z",
+                       "seconds":  4096.3644947
+                   },
+                   {
+                       "kind":  "guest-cpus",
+                       "name":  "ezvm012-secondary",
+                       "value":  "6",
+                       "utc":  "2026-10-18T20:51:34.0226553Z",
+                       "seconds":  4574.0610394000005
+                   },
+                   {
+                       "kind":  "phase",
+                       "name":  "guest_ready",
+                       "value":  "ezvm012-secondary",
+                       "utc":  "2026-10-18T20:51:34.0236679Z",
+                       "seconds":  4574.0621321
+                   },
+                   {
+                       "kind":  "marker",
+                       "name":  "EZVM012_REAL_TWO_CONCURRENT_READY_GUESTS",
+                       "value":  "PASS",
+                       "utc":  "2026-10-18T20:51:59.5504465Z",
+                       "seconds":  4599.5891678
+                   },
+                   {
+                       "kind":  "phase",
+                       "name":  "real_host_transfer_and_diagnosis",
+                       "value":  "",
+                       "utc":  "2026-10-18T20:51:59.5514447Z",
+                       "seconds":  4599.5902116000007
+                   },
+                   {
+                       "kind":  "marker",
+                       "name":  "EZVM011_REAL_SCP_ROUNDTRIP_AND_FAILED_DESTINATION_PRESERVATION",
+                       "value":  "PASS",
+                       "utc":  "2026-10-18T20:52:06.5204131Z",
+                       "seconds":  4606.5594402000006
+                   },
+                   {
+                       "kind":  "marker",
+                       "name":  "EZVM011_REAL_RUNNING_DIAGNOSIS_AND_RUNTIME_TRANSFER_REFUSAL",
+                       "value":  "PASS",
+                       "utc":  "2026-10-18T20:52:06.5214130Z",
+                       "seconds":  4606.5604571
+                   },
+                   {
+                       "kind":  "phase",
+                       "name":  "guest_start",
+                       "value":  "ezvm010-source",
+                       "utc":  "2026-10-18T20:52:26.6749143Z",
+                       "seconds":  4626.7171058
+                   },
+                   {
+                       "kind":  "guest-cpus",
+                       "name":  "ezvm010-source",
+                       "value":  "6",
+                       "utc":  "2026-10-18T20:57:43.8625319Z",
+                       "seconds":  4943.9036562
+                   },
+                   {
+                       "kind":  "phase",
+                       "name":  "guest_ready",
+                       "value":  "ezvm010-source",
+                       "utc":  "2026-10-18T20:57:43.8635298Z",
+                       "seconds":  4943.9044156
+                   },
+                   {
+                       "kind":  "marker",
+                       "name":  "EZVM012_REAL_STOP_RESTART_PERSISTENCE",
+                       "value":  "PASS",
+                       "utc":  "2026-10-18T20:57:47.2311294Z",
+                       "seconds":  4947.2723718
+                   },
+                   {
+                       "kind":  "marker",
+                       "name":  "EZVM010_REAL_RUNNING_OPERATIONS_REFUSE",
+                       "value":  "PASS",
+                       "utc":  "2026-10-18T20:57:48.3397267Z",
+                       "seconds":  4948.3809452000005
+                   },
+                   {
+                       "kind":  "phase",
+                       "name":  "copy_export_import",
+                       "value":  "",
+                       "utc":  "2026-10-18T20:58:03.3849962Z",
+                       "seconds":  4963.4350623
+                   },
+                   {
+                       "kind":  "phase",
+                       "name":  "guest_start",
+                       "value":  "ezvm012-fresh",
+                       "utc":  "2026-10-18T21:21:38.7536035Z",
+                       "seconds":  6378.8107423
+                   },
+                   {
+                       "kind":  "phase",
+                       "name":  "guest_start_failed",
+                       "value":  "ezvm012-fresh",
+                       "utc":  "2026-10-18T21:36:40.6395813Z",
+                       "seconds":  7280.6949257
+                   },
+                   {
+                       "kind":  "failure",
+                       "name":  "harness-failure",
+                       "value":  "",
+                       "utc":  "2026-10-18T21:36:40.7015831Z",
+                       "seconds":  7280.7569239
+                   },
+                   {
+                       "kind":  "failure",
+                       "name":  "harness-failure",
+                       "value":  "",
+                       "utc":  "2026-10-18T21:39:38.1385682Z",
+                       "seconds":  7458.1951963
+                   }
+               ],
+    "telemetry":  {
+                      "schemaVersion":  1,
+                      "complete":  false,
+                      "recordCount":  2426,
+                      "privateSourceSha256":  "3cfcbf935cb186377ba64dd976ae99717c38e326c84e6bc012e985e502bba346",
+                      "publicFile":  "telemetry-events.json",
+                      "publicSha256":  "f0c85c29d9669a9b4039177be0c9c695f90631378e67c10782b7a893bd3d401d",
+                      "elapsedSeconds":  7449.983199,
+                      "digestTotals":  {
+                                           "manifest":  {
+                                                            "calls":  428,
+                                                            "failedCalls":  0,
+                                                            "bytes":  194420721,
+                                                            "elapsedSeconds":  1.0148966999999989
+                                                        },
+                                           "qemu-payload":  {
+                                                                "calls":  693722,
+                                                                "failedCalls":  0,
+                                                                "bytes":  257984245380,
+                                                                "elapsedSeconds":  1480.8253259000082
+                                                            },
+                                           "base-image":  {
+                                                              "calls":  89,
+                                                              "failedCalls":  0,
+                                                              "bytes":  113633210880,
+                                                              "elapsedSeconds":  431.20854050000008
+                                                          },
+                                           "source-image":  {
+                                                                "calls":  13,
+                                                                "failedCalls":  0,
+                                                                "bytes":  2506662712,
+                                                                "elapsedSeconds":  3.2705605999999996
+                                                            },
+                                           "other":  {
+                                                         "calls":  10208,
+                                                         "failedCalls":  0,
+                                                         "bytes":  0,
+                                                         "elapsedSeconds":  51.050626100000017
+                                                     }
+                                       },
+                      "operations":  [
+                                         {
+                                             "operation":  "Assert-EzVmQemuPayloadIntegrity",
+                                             "category":  "validation",
+                                             "calls":  206,
+                                             "failedCalls":  0,
+                                             "inclusiveSeconds":  4343.1323168
+                                         },
+                                         {
+                                             "operation":  "Copy-EzVmManagedInstance",
+                                             "category":  "image",
+                                             "calls":  6,
+                                             "failedCalls":  1,
+                                             "inclusiveSeconds":  1406.4263138
+                                         },
+                                         {
+                                             "operation":  "Export-EzVmManagedInstance",
+                                             "category":  "image",
+                                             "calls":  4,
+                                             "failedCalls":  2,
+                                             "inclusiveSeconds":  357.6287988
+                                         },
+                                         {
+                                             "operation":  "full-release",
+                                             "category":  "qualification",
+                                             "calls":  1,
+                                             "failedCalls":  1,
+                                             "inclusiveSeconds":  7449.9680071
+                                         },
+                                         {
+                                             "operation":  "Get-EzVmDoctorReport",
+                                             "category":  "validation",
+                                             "calls":  2,
+                                             "failedCalls":  0,
+                                             "inclusiveSeconds":  27.7920412
+                                         },
+                                         {
+                                             "operation":  "Import-EzVmManagedInstance",
+                                             "category":  "image",
+                                             "calls":  5,
+                                             "failedCalls":  2,
+                                             "inclusiveSeconds":  1072.7700912999999
+                                         },
+                                         {
+                                             "operation":  "Install-EzVmQemuRuntime",
+                                             "category":  "acquisition",
+                                             "calls":  1,
+                                             "failedCalls":  0,
+                                             "inclusiveSeconds":  101.2892245
+                                         },
+                                         {
+                                             "operation":  "Invoke-EzVmBaseBuild",
+                                             "category":  "base-build",
+                                             "calls":  1,
+                                             "failedCalls":  0,
+                                             "inclusiveSeconds":  677.0371442
+                                         },
+                                         {
+                                             "operation":  "Invoke-EzVmProcess",
+                                             "category":  "image",
+                                             "calls":  208,
+                                             "failedCalls":  0,
+                                             "inclusiveSeconds":  14.998482799999993
+                                         },
+                                         {
+                                             "operation":  "Invoke-EzVmProcess",
+                                             "category":  "process",
+                                             "calls":  651,
+                                             "failedCalls":  1,
+                                             "inclusiveSeconds":  1676.4203833999991
+                                         },
+                                         {
+                                             "operation":  "Invoke-EzVmSourceImageAcquire",
+                                             "category":  "acquisition",
+                                             "calls":  1,
+                                             "failedCalls":  0,
+                                             "inclusiveSeconds":  13.9955848
+                                         },
+                                         {
+                                             "operation":  "Reset-EzVmManagedInstance",
+                                             "category":  "image",
+                                             "calls":  3,
+                                             "failedCalls":  1,
+                                             "inclusiveSeconds":  382.27450580000004
+                                         },
+                                         {
+                                             "operation":  "Start-EzVmReadyInstance",
+                                             "category":  "ready",
+                                             "calls":  4,
+                                             "failedCalls":  1,
+                                             "inclusiveSeconds":  2157.1836061
+                                         },
+                                         {
+                                             "operation":  "Stop-EzVmInstance",
+                                             "category":  "shutdown",
+                                             "calls":  4,
+                                             "failedCalls":  1,
+                                             "inclusiveSeconds":  78.868224099999992
+                                         },
+                                         {
+                                             "operation":  "Test-EzVmInstanceStorage",
+                                             "category":  "validation",
+                                             "calls":  24,
+                                             "failedCalls":  0,
+                                             "inclusiveSeconds":  1207.4126807
+                                         },
+                                         {
+                                             "operation":  "Test-EzVmPortableBundle",
+                                             "category":  "validation",
+                                             "calls":  1,
+                                             "failedCalls":  1,
+                                             "inclusiveSeconds":  0.392371
+                                         },
+                                         {
+                                             "operation":  "Test-EzVmPreparedBaseDirectory",
+                                             "category":  "validation",
+                                             "calls":  89,
+                                             "failedCalls":  0,
+                                             "inclusiveSeconds":  2338.6031098999993
+                                         }
+                                     ],
+                      "identities":  [
+                                         {
+                                             "kind":  "qemu-system",
+                                             "sha256":  "e393972f000c4fe92e137d7b48d7d8bdeae3fe9595dceab611b1f5e21f373eb2",
+                                             "sizeBytes":  27596564,
+                                             "version":  "11.1.2"
+                                         },
+                                         {
+                                             "kind":  "qemu-img",
+                                             "sha256":  "7f99b290e71ca667ab42537b807ed33249d0e942b61cf43db842332ac27f9c68",
+                                             "sizeBytes":  2249911,
+                                             "version":  "11.1.2"
+                                         },
+                                         {
+                                             "kind":  "source-image",
+                                             "sha256":  "6a81c37564db9b1ee84e141922625e1d7c5b389b99bb3c572e0243607d5bb4d2",
+                                             "sizeBytes":  625612288
+                                         },
+                                         {
+                                             "kind":  "prepared-base",
+                                             "sha256":  "e4fe89d57ef711d3570011568ac2a48d22632dc9f2760c43f7015c282d24bcb3",
+                                             "sizeBytes":  2903506944
+                                         }
+                                     ],
+                      "interpretation":  "Inclusive nested durations overlap. Root digest counters count each hash once. Nested failures include required negative controls."
+                  },
+    "identities":  null,
+    "phaseDurations":  [
+                           {
+                               "phase":  "fresh-root-and-qemu-bootstrap",
+                               "instance":  "",
+                               "startSeconds":  0,
+                               "endSeconds":  137.81455449999999,
+                               "elapsedSeconds":  138
+                           },
+                           {
+                               "phase":  "tiny_real_images",
+                               "instance":  "",
+                               "startSeconds":  137.81455449999999,
+                               "endSeconds":  2611.6808077,
+                               "elapsedSeconds":  2474
+                           },
+                           {
+                               "phase":  "prepare_real_guest",
+                               "instance":  "",
+                               "startSeconds":  2611.6808077,
+                               "endSeconds":  2625.6835247999998,
+                               "elapsedSeconds":  14
+                           },
+                           {
+                               "phase":  "base_build_started",
+                               "instance":  "",
+                               "startSeconds":  2625.6835247999998,
+                               "endSeconds":  3302.7255772999997,
+                               "elapsedSeconds":  677
+                           },
+                           {
+                               "phase":  "base_build_completed",
+                               "instance":  "",
+                               "startSeconds":  3302.7255772999997,
+                               "endSeconds":  3470.1830588999997,
+                               "elapsedSeconds":  167
+                           },
+                           {
+                               "phase":  "guest_start",
+                               "instance":  "ezvm010-source",
+                               "startSeconds":  3470.1830588999997,
+                               "endSeconds":  3948.3052021999997,
+                               "elapsedSeconds":  478
+                           },
+                           {
+                               "phase":  "guest_ready",
+                               "instance":  "ezvm010-source",
+                               "startSeconds":  3948.3052021999997,
+                               "endSeconds":  4096.3644947,
+                               "elapsedSeconds":  148
+                           },
+                           {
+                               "phase":  "guest_start",
+                               "instance":  "ezvm012-secondary",
+                               "startSeconds":  4096.3644947,
+                               "endSeconds":  4574.0621321,
+                               "elapsedSeconds":  478
+                           },
+                           {
+                               "phase":  "guest_ready",
+                               "instance":  "ezvm012-secondary",
+                               "startSeconds":  4574.0621321,
+                               "endSeconds":  4599.5902116000007,
+                               "elapsedSeconds":  26
+                           },
+                           {
+                               "phase":  "real_host_transfer_and_diagnosis",
+                               "instance":  "",
+                               "startSeconds":  4599.5902116000007,
+                               "endSeconds":  4626.7171058,
+                               "elapsedSeconds":  27
+                           },
+                           {
+                               "phase":  "guest_start",
+                               "instance":  "ezvm010-source",
+                               "startSeconds":  4626.7171058,
+                               "endSeconds":  4943.9044156,
+                               "elapsedSeconds":  317
+                           },
+                           {
+                               "phase":  "guest_ready",
+                               "instance":  "ezvm010-source",
+                               "startSeconds":  4943.9044156,
+                               "endSeconds":  4963.4350623,
+                               "elapsedSeconds":  20
+                           },
+                           {
+                               "phase":  "copy_export_import",
+                               "instance":  "",
+                               "startSeconds":  4963.4350623,
+                               "endSeconds":  6378.8107423,
+                               "elapsedSeconds":  1415
+                           },
+                           {
+                               "phase":  "guest_start",
+                               "instance":  "ezvm012-fresh",
+                               "startSeconds":  6378.8107423,
+                               "endSeconds":  7280.6949257,
+                               "elapsedSeconds":  902
+                           },
+                           {
+                               "phase":  "guest_start_failed",
+                               "instance":  "ezvm012-fresh",
+                               "startSeconds":  7280.6949257,
+                               "endSeconds":  7484.8456645,
+                               "elapsedSeconds":  204
+                           }
+                       ],
+    "cleanup":  {
+                    "forced":  true,
+                    "childExited":  true,
+                    "fixtureRemoved":  true,
+                    "activeProcesses":  0
+                },
+    "host":  {
+                 "build":  "20348",
+                 "seSecurityPrivilegePresent":  true,
+                 "version":  "10.0.20348",
+                 "os":  "Microsoft Windows Server 2022 Datacenter",
+                 "availableMemoryBytes":  14463696896,
+                 "powerShell":  "5.1.20348.5622",
+                 "logicalProcessors":  4,
+                 "administrator":  true,
+                 "cpuModels":  [
+                                   "Intel(R) Xeon(R) Platinum 8370C CPU @ 2.80GHz"
+                               ]
+             }
+}
