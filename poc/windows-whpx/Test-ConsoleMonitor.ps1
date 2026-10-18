@@ -80,4 +80,24 @@ Test-Monitor 'file-backed snapshot handles UK JSON timestamps identity events an
         if([IO.Directory]::Exists($resolved)){Remove-Item -LiteralPath $resolved -Recurse -Force}
     }
 }
+Test-Monitor 'actual controller exit survives delayed observation' {
+    $temp=[IO.Path]::GetFullPath([IO.Path]::GetTempPath())
+    $root=Join-Path $temp ('runloc-monitor-'+[Guid]::NewGuid().ToString('N'))
+    $child=$null
+    try {
+        [void][IO.Directory]::CreateDirectory($root)
+        $script=Join-Path $root 'exit.ps1'
+        [IO.File]::WriteAllText($script,'Start-Sleep -Milliseconds 300; exit 7')
+        $exe=Join-Path $env:SystemRoot 'System32/WindowsPowerShell/v1.0/powershell.exe'
+        $child=Start-ConsoleControllerProcess -Executable $exe -Arguments ('-NoLogo -NoProfile -NonInteractive -ExecutionPolicy Bypass -File "'+$script+'"') -WorkingDirectory $root -Stdout (Join-Path $root 'stdout.txt') -Stderr (Join-Path $root 'stderr.txt')
+        Start-Sleep -Seconds 2
+        $result=Complete-ConsoleControllerProcess -Process $child
+        Assert-Monitor ($result.exitObserved -and $result.exitCode -eq 7)
+    } finally {
+        if($null -ne $child){$child.Dispose()}
+        $resolved=[IO.Path]::GetFullPath($root)
+        if(-not $resolved.StartsWith($temp,[StringComparison]::OrdinalIgnoreCase) -or (Split-Path $resolved -Leaf) -cnotmatch '^runloc-monitor-[a-f0-9]{32}$'){throw 'monitor-test-cleanup-path-invalid'}
+        if([IO.Directory]::Exists($resolved)){Remove-Item -LiteralPath $resolved -Recurse -Force}
+    }
+}
 Write-Host ('Monitor groups passed: '+$count)

@@ -34,6 +34,7 @@ Write-Host 'GitHub runner: native Windows host. EzVM guest allocation: 6 vCPUs.'
 Write-Host 'Keep this console and the PC running. Closing Codex is safe; closing this console can interrupt the job.'
 if($plan.mode -ceq 'Monitor'){Write-Host 'READ-ONLY MONITOR: this window starts no runner, guest or GitHub job. Recorded timestamps may be from an interrupted attempt.'}
 $child=$null
+. (Join-Path $PSScriptRoot 'Console.Monitor.ps1')
 if ($plan.mode -ceq 'Start') {
     if ($plan.controllerRoot -cne [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../..')) -or
         $plan.controllerCommit -cnotmatch '^[a-f0-9]{40}$' -or $plan.workflowRef -cnotmatch '^ci-poc-002-[a-f0-9]{40}$') { throw 'console-start-source-invalid' }
@@ -42,11 +43,10 @@ if ($plan.mode -ceq 'Start') {
         '-Action','Start','-BackingRoot',$plan.backingRoot,'-ExpectedControllerCommit',$plan.controllerCommit,'-WorkflowRef',$plan.workflowRef,
         '-Mode',$plan.qualificationMode)
     $command=(@($arguments|ForEach-Object {[RunlocPoc.OwnedProcess]::QuoteArgument([string]$_)}) -join ' ')
-    $child=Start-Process -FilePath (Join-Path $env:SystemRoot 'System32/WindowsPowerShell/v1.0/powershell.exe') -ArgumentList $command -NoNewWindow -PassThru -WorkingDirectory $plan.controllerRoot -RedirectStandardOutput (Join-Path $state 'controller.stdout.log') -RedirectStandardError (Join-Path $state 'controller.stderr.log')
+    $child=Start-ConsoleControllerProcess -Executable (Join-Path $env:SystemRoot 'System32/WindowsPowerShell/v1.0/powershell.exe') -Arguments $command -WorkingDirectory $plan.controllerRoot -Stdout (Join-Path $state 'controller.stdout.log') -Stderr (Join-Path $state 'controller.stderr.log')
     Write-PilotNewJson -Path (Join-Path $state 'controller-started.json') -Value @{processId=$child.Id;createdUtc=$child.StartTime.ToUniversalTime().ToString('o')}
 }
 # The console remains observational; failures here never qualify or cancel work.
-. (Join-Path $PSScriptRoot 'Console.Monitor.ps1')
 $lastSequence='';$lastStatus='';$lastIdlePrint=[DateTime]::MinValue
 $previous=@{};$sampleClock=[Diagnostics.Stopwatch]::StartNew();$lastSample=0.0
 $memoryMiB=$null;$lastMemory=[DateTime]::MinValue
@@ -125,8 +125,9 @@ do {
     Start-Sleep -Seconds 10
 } while($true)
 if($null -ne $child){
-    $child.WaitForExit()
-    Write-PilotNewJson -Path (Join-Path $state 'controller-ended.json') -Value @{exitCode=$child.ExitCode;endedUtc=[DateTime]::UtcNow.ToString('o')}
-    Write-Host ('STOPPED. Actual controller exit='+$child.ExitCode+'. No further live progress. Final qualification requires the complete receipt and cleanup.')
+    $ended=Complete-ConsoleControllerProcess -Process $child
+    Write-PilotNewJson -Path (Join-Path $state 'controller-ended.json') -Value @{exitCode=$ended.exitCode;exitObserved=$ended.exitObserved;endedUtc=[DateTime]::UtcNow.ToString('o')}
+    $exitText=if($ended.exitObserved){[string]$ended.exitCode}else{'UNKNOWN - actual exit unavailable'}
+    Write-Host ('STOPPED. Actual controller exit='+$exitText+'. No further live progress. Final qualification requires the complete receipt and cleanup.')
     Write-Host ('Private diagnostics: '+$state)
 }

@@ -1,5 +1,17 @@
 #requires -Version 5.1
 # Observational metrics only: none of these values can qualify a run.
+function Start-ConsoleControllerProcess {
+    param([string]$Executable,[string]$Arguments,[string]$WorkingDirectory,[string]$Stdout,[string]$Stderr)
+    $process=Start-Process -FilePath $Executable -ArgumentList $Arguments -NoNewWindow -PassThru -WorkingDirectory $WorkingDirectory -RedirectStandardOutput $Stdout -RedirectStandardError $Stderr
+    $null=$process.Handle # Retain the kernel handle before the process can exit.
+    return $process
+}
+function Complete-ConsoleControllerProcess {
+    param([Diagnostics.Process]$Process)
+    $Process.WaitForExit();$Process.Refresh()
+    $code=$Process.ExitCode
+    return @{exitCode=$code;exitObserved=($null -ne $code -and $code -is [int])}
+}
 function ConvertTo-ConsoleUtc {
     param([object]$Value)
     if($Value -is [DateTimeOffset]){return $Value.UtcDateTime}

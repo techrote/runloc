@@ -198,3 +198,23 @@ owned workspace and external fixture cleanup, a used-registration second-job
 refusal, a different fresh-registration reuse probe on the preserved backing
 environment, and a real failed/no-job cleanup case. These are acceptance gates,
 not inferred from an online runner or the ephemeral/once flags.
+
+### Six-vCPU attempt: disk preflight failure (2026-10-18)
+
+[Actions run 39141501369](https://github.com/techrote/ezvm/actions/runs/39141501369)
+accepted the fresh native Windows runner registration 43, but did not reach the
+full release harness or boot a guest. The ACL preflight passed; available disk
+space was 56.3 GiB against the unchanged 60 GiB requirement. The
+[redacted failure record](evidence/ci-poc-002-disk-preflight-failure.json)
+retains exact source identities, receipt digests, observed numeric inner,
+supervisor and listener exits, and confirmed cleanup. The host controller's
+numeric exit was not captured by the console and remains unknown for this
+attempt. This is a failed attempt, with zero guest READY responses and no
+physical qualification result. Original private receipts remain retained.
+
+The console now retains its controller process handle before exit and explicitly
+reports whether the numeric exit was observed. A real child exiting 7, observed
+after termination, covers this correction in both PowerShell engines. The owner
+freed disk space; the subsequent read-only check found 80.49 GiB free. A fresh
+attempt is required. The workload remains the complete six-vCPU qualification;
+no disk guard, completion assertion or receipt oracle was relaxed.
