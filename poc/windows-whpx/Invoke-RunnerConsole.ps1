@@ -104,6 +104,11 @@ do {
             $lastStatus=$statusKey
         }
         $live=$controllerAlive -or ($null -ne $snapshot -and $snapshot.listenerAlive)
+        if($null -ne $snapshot -and $snapshot.hasFinal -and $lastSequence -cne 'final-summary'){
+            $receiptExit=if($null -eq $snapshot.finalExitCode){'UNAVAILABLE'}else{[string]$snapshot.finalExitCode}
+            Write-Host ('FINAL RETAINED HOST RESULT hostPassed='+$snapshot.finalPassed+' receiptExit='+$receiptExit+' supervisedSeconds='+$snapshot.finalElapsedSeconds+' markers='+$snapshot.markersObserved+'/24 READY='+$snapshot.guestReadyObserved+'/8 CPU6='+$snapshot.guestCpuProofsObserved+'/8 source='+$snapshot.observationSource+'. Retained host result; current process state is shown separately.')
+            $lastSequence='final-summary'
+        }
         if($null -ne $snapshot){
             $sequenceKey=$snapshot.leaseId+'/'+$snapshot.phaseSequence
             if($sequenceKey -cne $lastSequence -and $null -ne $snapshot.phaseSequence){

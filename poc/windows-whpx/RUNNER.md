@@ -1,9 +1,8 @@
 # CI-POC-002 one-job Windows runner
 
-Implementation is in progress. No registration or real Actions qualification is
-claimed by these files or their offline tests. Issue21 remains qualified on its
-historical exact sources. Issue22 consumes that work and requires new real
-run/job/runner and cleanup evidence before completion.
+The full physical six-vCPU Actions qualification and registration lifecycle
+proofs passed on 18 October 2026. See the [retained evidence](../../docs/fast-track/CI-POC-002-EVIDENCE.md#successful-full-qualification-and-lifecycle-closeout--18-october-2026)
+for exact executed commits, all receipts, failed attempts and timing limitations.
 
 The backing Windows/WHPX host and the verified official runner archive remain
 available for reuse. Each Start allocates a new random128-bit lease, runner
@@ -65,7 +64,10 @@ stage distinguish file validation from actual guest startup. Quiet telemetry
 is labelled; stopped historical evidence is explicitly NOT LIVE and is not
 reprinted as new progress. Private structured metrics are retained under the
 console state directory with a4MiB bound; they are not uploaded with public
-receipts. A partial write/read failure cannot cancel or qualify the controller.
+receipts. After final cleanup, counts come from the digest-checked retained receipt, with
+its actual exit and host elapsed time. Missing receipt details are unavailable,
+not zero progress. A final event alone does not prove process cleanup.
+A partial write/read failure cannot cancel or qualify the controller.
 
 The opt-in interactive desktop test is separate from ordinary headless CI:
 

@@ -95,12 +95,50 @@ function Read-ConsoleLeaseSnapshot {
         hasFinal=($final.Count -gt 0);listenerAlive=$listenerAlive;listenerProcessId=$null;listenerCreatedUtc=$null;phaseSequence=$null;phaseEvent=$null;phaseOperation=$null;
         phaseRecordedUtc=$null;phaseAgeSeconds=-1;phaseElapsedSeconds=$null;openOperation=$null;openOperationAgeSeconds=$null;
         completedIntegrityChecks=0;integrityCheckSeconds=0;telemetryFailures=0;markersObserved=0;guestReadyObserved=0;guestCpuProofsObserved=0;
-        guestStartsObserved=0;baseBuildStartedObserved=$false;guestStage='GUEST_STAGE_UNOBSERVED'}
+        guestStartsObserved=0;baseBuildStartedObserved=$false;guestStage='GUEST_STAGE_UNOBSERVED';
+        observationSource='live-workspace';finalPassed=$null;finalExitCode=$null;finalElapsedSeconds=$null}
     if($null -ne $last){$snapshot.lastEvent=$last.kind;$snapshot.lastEventUtc=(ConvertTo-ConsoleUtc $last.utc).ToString('o')}
     if($null -ne $registered){$snapshot.runnerId=$registered.data.runnerId}
     if($null -ne $dispatched){$snapshot.runId=$dispatched.data.runId}
     if($listenerAlive){$snapshot.listenerProcessId=$listenerProcess[0].ProcessId;$snapshot.listenerCreatedUtc=$listenerProcess[0].CreationDate.ToUniversalTime().ToString('o')}
     $owner=[IO.File]::ReadAllText((Join-Path $LeaseRoot 'lease.json'))|ConvertFrom-Json
+    if($final.Count){
+        $snapshot.observationSource='retained-final-receipt'
+        $snapshot.finalPassed=$final[-1].data.passed
+        $snapshot.finalElapsedSeconds=$final[-1].data.elapsedSeconds
+        $snapshot.guestStage='FINAL_RECEIPT_DETAILS_UNAVAILABLE'
+        $snapshot.markersObserved=$null;$snapshot.guestReadyObserved=$null;$snapshot.guestCpuProofsObserved=$null
+        $retained=Join-Path $LeaseRoot 'private/qualification-evidence'
+        $receipts=@()
+        if([IO.Directory]::Exists($retained)){
+            foreach($outer in @(Get-ChildItem -LiteralPath $retained -Directory|Select-Object -First 4)){
+                foreach($inner in @(Get-ChildItem -LiteralPath $outer.FullName -Directory|Select-Object -First 4)){
+                    $path=Join-Path $inner.FullName 'receipt.json'
+                    if(-not [IO.File]::Exists($path)){continue}
+                    if((Get-Item -LiteralPath $path).Length -gt 2MB){throw 'monitor-receipt-size-bound'}
+                    $digest=[IO.File]::ReadAllText((Join-Path $inner.FullName 'receipt-digest.json'))|ConvertFrom-Json
+                    if($digest.file -cne 'receipt.json' -or $digest.sha256 -cne (Get-FileHash -LiteralPath $path -Algorithm SHA256).Hash.ToLowerInvariant()){throw 'monitor-receipt-digest-mismatch'}
+                    $receipt=[IO.File]::ReadAllText($path)|ConvertFrom-Json
+                    if($receipt.leaseId -cne $inner.Name -or $receipt.supervisorLeaseId -cne $outer.Name -or $receipt.candidate.commit -cne $owner.candidateCommit){throw 'monitor-receipt-identity-mismatch'}
+                    if(-not $receipt.preflightOnly){$receipts+=,$receipt}
+                }
+            }
+        }
+        if($receipts.Count -gt 1){throw 'monitor-final-receipt-ambiguous'}
+        if($receipts.Count -eq 1){
+            $receipt=$receipts[0];$snapshot.finalExitCode=$receipt.exitCode
+            $snapshot.markersObserved=@($receipt.events|Where-Object {$_.kind -ceq 'marker' -and $_.value -ceq 'PASS'}).Count
+            $snapshot.guestReadyObserved=@($receipt.events|Where-Object {$_.kind -ceq 'phase' -and $_.name -ceq 'guest_ready'}).Count
+            $snapshot.guestCpuProofsObserved=@($receipt.events|Where-Object {$_.kind -ceq 'guest-cpus' -and $_.value -ceq '6'}).Count
+            $snapshot.guestStartsObserved=@($receipt.events|Where-Object {$_.kind -ceq 'phase' -and $_.name -ceq 'guest_start'}).Count
+            $snapshot.baseBuildStartedObserved=@($receipt.events|Where-Object {$_.kind -ceq 'phase' -and $_.name -ceq 'base_build_started'}).Count -gt 0
+            $integrity=@($receipt.telemetry.operations|Where-Object {$_.operation -ceq 'Assert-EzVmQemuPayloadIntegrity'})
+            if($integrity.Count -eq 1){$snapshot.completedIntegrityChecks=$integrity[0].calls;$snapshot.integrityCheckSeconds=[Math]::Round($integrity[0].inclusiveSeconds,1)}
+            $snapshot.telemetryFailures=($receipt.telemetry.operations|Measure-Object failedCalls -Sum).Sum
+            $snapshot.guestStage='FINAL_RECEIPT_RETAINED'
+        }
+        return $snapshot
+    }
     $work=Join-Path $owner.fixture 'runner/_work';$paths=@()
     if([IO.Directory]::Exists($work)){
         foreach($jobRoot in @(Get-ChildItem -LiteralPath $work -Directory -Filter 'j????????'|Select-Object -First 4)){

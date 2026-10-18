@@ -109,4 +109,36 @@ Test-Monitor 'large IO deltas retain floating point overload and fractional CPU'
     $next=Measure-ConsoleProcesses -Processes @($process) -Previous $first.previous -IntervalSeconds 10 -LogicalProcessors 12
     Assert-Monitor ($next.readMiBPerSecond -eq 409.6 -and $next.writeMiBPerSecond -eq 307.2 -and $next.cpuHostPercent -eq 0.42)
 }
+Test-Monitor 'retained final receipt survives workspace disposal and rejects tampering' {
+    $temp=[IO.Path]::GetFullPath([IO.Path]::GetTempPath())
+    $root=Join-Path $temp ('runloc-monitor-'+[Guid]::NewGuid().ToString('N'))
+    try {
+        $inner=Join-Path $root 'private/qualification-evidence/outer/inner'
+        [void][IO.Directory]::CreateDirectory($inner)
+        [IO.File]::WriteAllText((Join-Path $root 'lease.json'),(@{fixture=(Join-Path $root 'disposed');candidateCommit='candidate'}|ConvertTo-Json))
+        [IO.File]::WriteAllText((Join-Path $root 'event-000001.json'),(@{kind='final';utc='2026-10-18T15:00:00Z';data=@{passed=$true;elapsedSeconds=100}}|ConvertTo-Json))
+        $events=@();1..24|ForEach-Object {$events+=@{kind='marker';name=('marker'+$_);value='PASS'}}
+        1..8|ForEach-Object {$events+=@{kind='phase';name='guest_ready'};$events+=@{kind='guest-cpus';value='6'}}
+        $receipt=@{leaseId='inner';supervisorLeaseId='outer';candidate=@{commit='candidate'};preflightOnly=$false;exitCode=0;events=$events;telemetry=@{operations=@(@{operation='Assert-EzVmQemuPayloadIntegrity';calls=292;inclusiveSeconds=6671.4;failedCalls=0})}}
+        $path=Join-Path $inner 'receipt.json'
+        [IO.File]::WriteAllText($path,($receipt|ConvertTo-Json -Depth 6))
+        [IO.File]::WriteAllText((Join-Path $inner 'receipt-digest.json'),(@{file='receipt.json';sha256=(Get-FileHash $path -Algorithm SHA256).Hash.ToLowerInvariant()}|ConvertTo-Json))
+        $snapshot=Read-ConsoleLeaseSnapshot -LeaseRoot $root -Processes @() -NowUtc $created
+        Assert-Monitor ($snapshot.hasFinal -and -not $snapshot.listenerAlive -and $snapshot.observationSource -ceq 'retained-final-receipt')
+        Assert-Monitor ($snapshot.markersObserved -eq 24 -and $snapshot.guestReadyObserved -eq 8 -and $snapshot.guestCpuProofsObserved -eq 8 -and $snapshot.finalExitCode -eq 0)
+        Assert-Monitor ($snapshot.completedIntegrityChecks -eq 292 -and $snapshot.finalElapsedSeconds -eq 100)
+        [IO.File]::AppendAllText($path,' ')
+        $rejected=$false;try {$null=Read-ConsoleLeaseSnapshot -LeaseRoot $root -Processes @() -NowUtc $created}catch {$rejected=$_.Exception.Message -ceq 'monitor-receipt-digest-mismatch'}
+        Assert-Monitor $rejected
+        $receipt.candidate.commit='wrong-candidate'
+        [IO.File]::WriteAllText($path,($receipt|ConvertTo-Json -Depth 6))
+        [IO.File]::WriteAllText((Join-Path $inner 'receipt-digest.json'),(@{file='receipt.json';sha256=(Get-FileHash $path -Algorithm SHA256).Hash.ToLowerInvariant()}|ConvertTo-Json))
+        $rejected=$false;try {$null=Read-ConsoleLeaseSnapshot -LeaseRoot $root -Processes @() -NowUtc $created}catch {$rejected=$_.Exception.Message -ceq 'monitor-receipt-identity-mismatch'}
+        Assert-Monitor $rejected
+    } finally {
+        $resolved=[IO.Path]::GetFullPath($root)
+        if(-not $resolved.StartsWith($temp,[StringComparison]::OrdinalIgnoreCase) -or (Split-Path $resolved -Leaf) -cnotmatch '^runloc-monitor-[a-f0-9]{32}$'){throw 'monitor-test-cleanup-path-invalid'}
+        if([IO.Directory]::Exists($resolved)){Remove-Item -LiteralPath $resolved -Recurse -Force}
+    }
+}
 Write-Host ('Monitor groups passed: '+$count)

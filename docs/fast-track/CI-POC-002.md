@@ -1,6 +1,6 @@
 # CI-POC-002 — Reuse the Windows/WHPX CI artifact with one-job ephemeral runners
 
-**Urgent Windows CI proof of concept. Status: active.** Creating this issue is not implementation or qualification.
+**Urgent Windows CI proof of concept. Status: qualified.** Creating this issue is not implementation or qualification.
 
 ## Dependencies and autonomous prompt
 

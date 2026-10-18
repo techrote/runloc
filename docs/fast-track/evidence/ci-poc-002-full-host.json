@@ -1,0 +1,168 @@
+{
+  "schemaVersion": 1,
+  "issue": "CI-POC-002",
+  "qualificationPassed": true,
+  "comparisonId": "62161502eccf49efb3f7fc90890ac639",
+  "runId": 39142236233,
+  "jobId": 117718844700,
+  "runnerId": 44,
+  "hostController": {
+    "repository": "https://github.com/techrote/runloc",
+    "commit": "e66b32c66b3926427f379f716d0a352f63fa8500",
+    "tree": "7e105d4a5e47e8c39f08756fc32c474c415454bd",
+    "clean": true,
+    "executedTreeSha256": "3b3aa3ce4103e019ceba071a8c28178818231d34c54b7464f9f2601ae7406c93",
+    "trackedFileCount": 183,
+    "files": []
+  },
+  "workflowCommit": "a3c6d3ec4c7506d8f8d1c553eb7a4560ddc61d4d",
+  "workflowSha256Lf": "72f38d9e740b21743bb73805b043d32c0e292945b26fdea11291c45bd85f8b23",
+  "backingArchiveSha256": "1150692afa94e71f872017e254ea55b6eece1eece3fe7e3a6d4c93d0a1b85cfc",
+  "controllerExit": {
+    "exitCode": 0,
+    "exitObserved": true,
+    "endedUtc": "2026-10-18T17:54:59.7699178Z"
+  },
+  "events": [
+    {
+      "leaseId": "62161502eccf49efb3f7fc90890ac639",
+      "schemaVersion": 1,
+      "kind": "registration-intent",
+      "data": {
+        "name": "runloc-62161502eccf49efb3f7fc90890ac639"
+      },
+      "utc": "2026-10-18T15:49:38.2596611Z"
+    },
+    {
+      "leaseId": "62161502eccf49efb3f7fc90890ac639",
+      "schemaVersion": 1,
+      "kind": "registered",
+      "data": {
+        "name": "runloc-62161502eccf49efb3f7fc90890ac639",
+        "runnerId": 44
+      },
+      "utc": "2026-10-18T15:49:39.7933092Z"
+    },
+    {
+      "leaseId": "62161502eccf49efb3f7fc90890ac639",
+      "schemaVersion": 1,
+      "kind": "listener-started",
+      "data": {
+        "processId": 15620,
+        "executableSha256": "72c36cc15e21605dc4adc7c280e7ad9ea524fc8f1fb7b6905d3e0ae7df7a5de3",
+        "createdUtc": "2026-10-18T15:49:39.8432262Z"
+      },
+      "utc": "2026-10-18T15:49:39.8529417Z"
+    },
+    {
+      "leaseId": "62161502eccf49efb3f7fc90890ac639",
+      "schemaVersion": 1,
+      "kind": "online",
+      "data": {
+        "runnerId": 44
+      },
+      "utc": "2026-10-18T15:49:45.7514084Z"
+    },
+    {
+      "leaseId": "62161502eccf49efb3f7fc90890ac639",
+      "schemaVersion": 1,
+      "kind": "dispatch-intent",
+      "data": {
+        "workflowCommit": "a3c6d3ec4c7506d8f8d1c553eb7a4560ddc61d4d",
+        "comparisonId": "62161502eccf49efb3f7fc90890ac639"
+      },
+      "utc": "2026-10-18T15:49:45.7539215Z"
+    },
+    {
+      "leaseId": "62161502eccf49efb3f7fc90890ac639",
+      "schemaVersion": 1,
+      "kind": "dispatched",
+      "data": {
+        "runId": 39142236233,
+        "comparisonId": "62161502eccf49efb3f7fc90890ac639"
+      },
+      "utc": "2026-10-18T15:49:46.8382145Z"
+    },
+    {
+      "leaseId": "62161502eccf49efb3f7fc90890ac639",
+      "schemaVersion": 1,
+      "kind": "job-completed",
+      "data": {
+        "jobId": 117718844700,
+        "conclusion": "success",
+        "runnerId": 44,
+        "runId": 39142236233
+      },
+      "utc": "2026-10-18T17:54:45.5150508Z"
+    },
+    {
+      "leaseId": "62161502eccf49efb3f7fc90890ac639",
+      "schemaVersion": 1,
+      "kind": "listener-ended",
+      "data": {
+        "forced": false,
+        "exited": true,
+        "outputComplete": true,
+        "exitCode": 0,
+        "activeProcesses": 0
+      },
+      "utc": "2026-10-18T17:54:50.5376786Z"
+    },
+    {
+      "leaseId": "62161502eccf49efb3f7fc90890ac639",
+      "schemaVersion": 1,
+      "kind": "registration-absent",
+      "data": {
+        "runnerId": 44,
+        "absent": true
+      },
+      "utc": "2026-10-18T17:54:51.2526092Z"
+    },
+    {
+      "leaseId": "62161502eccf49efb3f7fc90890ac639",
+      "schemaVersion": 1,
+      "kind": "final",
+      "data": {
+        "runId": 39142236233,
+        "workflowCleanupConfirmed": true,
+        "controllerUnchanged": true,
+        "activeProcesses": 0,
+        "passed": true,
+        "fixtureRemoved": true,
+        "registrationAbsent": true,
+        "reusableBackingPreserved": true,
+        "elapsedSeconds": 7522.7706465,
+        "reason": "job-completed",
+        "unrelatedSentinelSurvived": true,
+        "runnerId": 44
+      },
+      "utc": "2026-10-18T17:54:56.1421757Z"
+    }
+  ],
+  "nestedCleanup": {
+    "attempts": [
+      {
+        "containmentProof": "empty-outer-native-job-with-no-breakaway",
+        "leaseId": "12a13478f62c4fb1b2cc7427b69afb4c",
+        "fixtureRemoved": true,
+        "activeProcesses": 0
+      },
+      {
+        "containmentProof": "empty-outer-native-job-with-no-breakaway",
+        "leaseId": "b9df529ffbf44885811996180ae71b4a",
+        "fixtureRemoved": true,
+        "activeProcesses": 0
+      }
+    ],
+    "schemaVersion": 1
+  },
+  "artifact": {
+    "id": 12144329970,
+    "name": "ci-poc-002-62161502eccf49efb3f7fc90890ac639",
+    "size_in_bytes": 125848,
+    "digest": "sha256:1ce794226b297113cf6cc5186ea3d79f2849b3498e790e3302d66b62574cb698",
+    "expired": false
+  },
+  "fixtureIdentitySha256": "ea2fae5fdbcd98c061f7650b230ef026b2669dfce7818caf97db4e73b597c464",
+  "backingEnvironmentLabel": "Runloc-CIPoC002-42e62fec"
+}

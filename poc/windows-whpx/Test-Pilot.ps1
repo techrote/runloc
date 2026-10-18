@@ -970,7 +970,7 @@ exit 9
             $escapedExe = $powershell.Replace("'", "''")
             $descendantArguments = (@(Get-PilotPowerShellArguments -TargetScript $childScript) | ForEach-Object { [RunlocPoc.OwnedProcess]::QuoteArgument($_) }) -join ' '
             $escapedArguments = $descendantArguments.Replace("'", "''")
-            [IO.File]::WriteAllText($parentScript, "`$p = Start-Process -FilePath '$escapedExe' -ArgumentList '$escapedArguments' -PassThru`nWrite-Output ('DESCENDANT_PID=' + `$p.Id)`nStart-Sleep -Seconds 60")
+            [IO.File]::WriteAllText($parentScript, "`$p = Start-Process -FilePath '$escapedExe' -ArgumentList '$escapedArguments' -WindowStyle Hidden -PassThru`nWrite-Output ('DESCENDANT_PID=' + `$p.Id)`nStart-Sleep -Seconds 60")
             $sentinelInfo = New-Object Diagnostics.ProcessStartInfo
             $sentinelInfo.FileName = $powershell; $sentinelInfo.Arguments = '-NoProfile -NonInteractive -Command "[Threading.Thread]::Sleep(60000)"'
             $sentinelInfo.UseShellExecute = $false; $sentinelInfo.CreateNoWindow = $true

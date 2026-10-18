@@ -1,7 +1,8 @@
 # CI-POC-002 implementation checkpoint
 
-Status: implementation and software review; real Actions qualification and
-lifecycle acceptance remain pending. CI-POC-001 is already qualified and merged
+Status: full physical Actions qualification and runner lifecycle acceptance passed
+with retained evidence on 18 October 2026. Final review and normal merge are the
+remaining closeout gates. CI-POC-001 is already qualified and merged
 at Runloc `6c38e30af38993cc193d4c46ec5db55910a2b353`. Its original physical
 receipt remains unchanged and does not qualify this successor.
 
@@ -218,3 +219,117 @@ after termination, covers this correction in both PowerShell engines. The owner
 freed disk space; the subsequent read-only check found 80.49 GiB free. A fresh
 attempt is required. The workload remains the complete six-vCPU qualification;
 no disk guard, completion assertion or receipt oracle was relaxed.
+
+## Successful full qualification and lifecycle closeout — 18 October 2026
+
+The earlier pending-gate lists above describe historical checkpoints. The
+following retained evidence supersedes those lists without overwriting red runs.
+
+[Full run39142236233/job117718844700](https://github.com/techrote/ezvm/actions/runs/39142236233/job/117718844700)
+completed successfully using runner44, independent attempt/lease
+`62161502eccf49efb3f7fc90890ac639`. The
+[original allowlisted artifact](evidence/ci-poc-002-full/actions-job.json),
+[host lifecycle receipt](evidence/ci-poc-002-full-host.json) and
+[byte manifest](evidence/ci-poc-002-full-manifest.json) retain the complete proof.
+All published receipt/digest/telemetry files preserve their observed bytes;
+`.gitattributes` disables newline conversion for these two evidence directories.
+Raw runner/guest logs, credentials, private keys and machine secrets are excluded.
+The private originals remain available locally. The public artifact is125848bytes,
+GitHub artifact12144329970, archive SHA256
+`1ce794226b297113cf6cc5186ea3d79f2849b3498e790e3302d66b62574cb698`.
+
+Exact executed identities:
+
+| Component | Commit | Tree |
+|---|---|---|
+| Host controller | `e66b32c66b3926427f379f716d0a352f63fa8500` | `7e105d4a5e47e8c39f08756fc32c474c415454bd` |
+| Frozen job controller | `d3be2aa7677c338fab86508da6f390fcae1bc541` | `e98d68fce03bc39fcb779efc5bd26e60d600b57c` |
+| EzVM candidate, draft PR46 | `2268468cb3040b9e1dd6deed60d0f13594f768d6` | `d5677a166e54583f26e3f08e90e5836c19f99359` |
+| Trusted workflow, merged PR52 | `a3c6d3ec4c7506d8f8d1c553eb7a4560ddc61d4d` | `0a2d286f0bb7a97dccb2f07e82005f195c93ce91` |
+
+The workflow's LF SHA256 is
+`72f38d9e740b21743bb73805b043d32c0e292945b26fdea11291c45bd85f8b23`.
+The native official runner is2.337.0, archive SHA256
+`1150692afa94e71f872017e254ea55b6eece1eece3fe7e3a6d4c93d0a1b85cfc`.
+Host label `lab-win11-01` identifies Windows11Pro26300, Ryzen5600X,
+12logical processors, ordinary-user execution with no SeSecurityPrivilege.
+The guest resource request is six vCPUs per guest; original concurrent-guest and
+memory assertions remain. Full tool, image, base, guest and source identities
+are in the inner receipt; QEMU version is11.1.2.
+
+The complete original scenario passed all24 markers, all8authenticated READY
+responses, and all8six-vCPU proofs. Requested accelerator, prepared base and
+all guest identities agree on WHPX. Actual harness and inner controller exits
+are0, both outer supervisor exits are0, listener exit is0, and the Explorer
+console observed the actual host-controller exit0. Immutable source remained
+unchanged. Host cleanup confirmed zero owned processes, disposal of both nested
+qualification fixtures and the runner workspace, exact deregistration, preserved
+backing archive/environment and unrelated sentinel. No forced cleanup, timeout,
+cancellation or missing assertion qualified this run.
+
+Timing scopes are distinct: inner qualification7452.3461127seconds; outer full
+supervisor7460.6199699seconds; complete Actions helper including separate
+preflight7471.910846seconds; whole host registration/job/cleanup7522.7706465seconds
+(**2h5m22.771s**), finishing17:54:56Z /18:54:56UK. The owner explicitly selected
+NoOverallTimeout, so the former60/90minute overall gates were disabled for this
+matching receipt policy. Original per-operation limits remain. This establishes
+correctness and lifecycle acceptance, not a CI speed improvement.
+
+All2514telemetry records and phase durations are retained in the full artifact.
+There were292complete payload-integrity checks,6671.4507383inclusive seconds.
+These overlapping operation durations must not be summed as wall time. Recorded
+operation exceptions include deliberately asserted negative controls; final
+exit/marker/source/cleanup oracles passed. No validation was removed to improve
+performance.
+
+### Independent registration lifecycle proofs
+
+[Lifecycle evidence](evidence/ci-poc-002-lifecycle.json) records three exact
+registrations and direct404observations:
+
+- After full registration44 exited and disappeared, an approved probe workflow
+  targeting its old UUID label was dispatched as
+  [run39152771978/job117749632366](https://github.com/techrote/ezvm/actions/runs/39152771978).
+  It remained unassigned (`runner_id=0`, no steps) and was cancelled by exact runID.
+  No replacement runner was registered under that label. This independently
+  exercises the used-registration second-job prohibition; the cancellation is
+  the expected negative-test outcome and is not a qualification PASS.
+- The same preserved backing environment then created fresh registration45,
+  lease `73f4c1ce39fa43e9ab55472ba175971c`, with a distinct mutable workspace.
+  [Run39152894611/job117749999473](https://github.com/techrote/ezvm/actions/runs/39152894611/job/117749999473)
+  accepted and passed the authorized bounded preflight-only reuse probe.
+  [Original reuse receipts](evidence/ci-poc-002-reuse/actions-job.json) explicitly
+  report `physicalQualificationPassed=false`; a second full run was unnecessary.
+  Actual controller exit0, listener exit0, host elapsed60.1220586seconds;
+  registration absent, owned processes0, fixture disposed, source/backing/sentinel
+  preserved.
+- Fresh registration46, lease `3ae304f735c240eb8fe48b6273e2c501`, exercised a
+ 30second no-job deadline on the same host controller/workflow. It truthfully
+  failed `no-job-deadline`: controller exit1, listener terminated124,
+  host elapsed36.4147128seconds. Owned processes reached0; exact registration
+  disappeared and fixture was removed; backing/source/sentinel survived.
+  This supplements the earlier retained runner39 no-job failure, not a green run.
+
+The final observer reads the digest-checked retained non-preflight receipt after
+workspace disposal and prints24/24,8/8,8/8 with actual exit and supervised time.
+It distinguishes retained results from live process state and rejects modified
+receipt bytes. Missing retained details remain explicitly unavailable. An earlier
+monitor-only PS5.1 Int32-overload failure is fixed with explicit floating-point
+Math.Max arguments and a4GiBread/3GiBwrite regression. These observational changes
+and the hidden synthetic test child do not change any executed qualification,
+job-controller, candidate, runner registration, receipt oracle or cleanup code.
+The original executed checkpoints above remain the physical evidence identity;
+the final PR is not falsely labelled as the historical executed whole tree.
+
+The independent model reviewed the complete diff, source pins, credential and
+process boundaries, receipt oracle, cleanup, and real API/physical evidence.
+Its finding about assuming inactivity from any final event was corrected with
+neutral retained-result wording. The primary model authored/integrated the
+changes; independent model review is not claimed as external human approval.
+Final exact-head checks and review disposition are recorded on PR26.
+
+CI-POC-003/#23 retains CI gating/fallback and restoration or replacement of the
+owner-deferred hosted TCG policy. This run makes no TCG coverage, speed-resolution,
+RAM-disk performance, host-account isolation, service or fleet claim. Earlier
+interrupted runner42 material remains explicitly quarantined; it was not reused
+or reclassified as clean success. CI-POC-001/#21 stays completed and closed.

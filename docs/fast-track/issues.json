@@ -37,7 +37,7 @@
         "CI-POC-001"
       ],
       "issue_number": 22,
-      "status": "active",
+      "status": "qualified",
       "scope": [
         "Use001's accepted frozen candidate/helper/evidence and its Runloc main merge; do not wait for RUNLOC-001–019 or upstream source PRs still correctly awaiting their gates.",
         "Retain the reusable qualified Windows/WHPX backing environment and verified artifacts. Create a fresh single-job ephemeral registration and isolated workspace for each trusted execution; completing a job must not destroy the backing environment.",
