@@ -1,0 +1,10 @@
+{
+  "schemaVersion": 1,
+  "executionApproved": true,
+  "qualificationCpus": 6,
+  "repository": "techrote/ezvm",
+  "path": ".github/workflows/ezvm-ci-poc-002.yml",
+  "workflowCommit": "a3c6d3ec4c7506d8f8d1c553eb7a4560ddc61d4d",
+  "sha256Lf": "72f38d9e740b21743bb73805b043d32c0e292945b26fdea11291c45bd85f8b23",
+  "jobControllerCommit": "d3be2aa7677c338fab86508da6f390fcae1bc541"
+}

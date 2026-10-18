@@ -2,13 +2,13 @@
   "schemaVersion": 1,
   "executionApproved": true,
   "repository": "https://github.com/techrote/ezvm",
-  "commit": "61b695470028d029f253b77acffabb81c3c6d2f9",
-  "tree": "a9ad2424854050aabc6e964ab8e766619172c6ca",
+  "commit": "2268468cb3040b9e1dd6deed60d0f13594f768d6",
+  "tree": "d5677a166e54583f26e3f08e90e5836c19f99359",
   "harness": "scripts/Invoke-EzVm010RealPortability.ps1",
   "pins": [
     {
       "path": "scripts/Invoke-EzVm010RealPortability.ps1",
-      "sha256Lf": "471c6938edd54a834a80d0064f3cff604a5b832d171d34ede0baf26bdc52fee6"
+      "sha256Lf": "be06c466b6d5f1e4d5ba30c78da5d533f276fe98b3240926f41d616f155c5197"
     },
     {
       "path": "guest/base-cloud-init/user-data.yaml",
@@ -53,6 +53,18 @@
     {
       "path": "tools/qemu-whpx/upstream.patch",
       "sha256Lf": "8134ba44c351be17fa6262fa973e3528688d467ba89cc6a0a5803bd7a391a2e5"
+    },
+    {
+      "path": "scripts/QualificationResources.ps1",
+      "sha256Lf": "d039645f3c29b8cc3fa88b5f33ba85d486170bb37847146969045964812c8323"
+    },
+    {
+      "path": "config/defaults.json",
+      "sha256Lf": "ae92374c3b4d1aaa008851cc332e47d961c1a908a05fab2f2aec65ff05583739"
+    },
+    {
+      "path": "guest/base-cloud-init/baseline.json",
+      "sha256Lf": "924a93a1c121332e9720c246ab8594eda934ec487c823768e47db79ad1d6850e"
     }
   ]
 }

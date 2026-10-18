@@ -9,7 +9,7 @@ Read the [PoC contract](WINDOWS-WHPX-CI-POC.md) and [AGENTS](../../AGENTS.md).
 | Issue | Deliverable | Depends on |
 |---|---|---|
 | [CI-POC-001](https://github.com/techrote/runloc/issues/21) | Unblock clean-source ACLs and complete the timed EzVM WHPX pilot | None |
-| [CI-POC-002](https://github.com/techrote/runloc/issues/22) | Run full EzVM qualification on an on-demand one-job Windows runner | CI-POC-001 |
+| [CI-POC-002](https://github.com/techrote/runloc/issues/22) | Reuse the Windows/WHPX CI artifact with one-job ephemeral runners | CI-POC-001 |
 | [CI-POC-003](https://github.com/techrote/runloc/issues/23) | Make qualified WHPX results unblock CI with hosted fallback | CI-POC-002 |
 
 The bridge uses an on-demand one-job **native Windows runner**. Its qualification

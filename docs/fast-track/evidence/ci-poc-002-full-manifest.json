@@ -1,0 +1,62 @@
+[
+  {
+    "sha256": "775c54e1096ba2089309cf5c27c3bbca99f6e1cb722a246ecea11f3268b09f95",
+    "file": "actions-job.json",
+    "sizeBytes": 8677
+  },
+  {
+    "sha256": "86a53f2173d406cdb0c3d0bcf664f96f5e52f68ca762117cc1d15c037c49cf6b",
+    "file": "runloc-whpx-0986718261234f44b3e90345d48ea348/supervisor-receipt-digest.json",
+    "sizeBytes": 155
+  },
+  {
+    "sha256": "d27c782275c17e1a23af47501709982ba89c35e4f5af0ca9676f532f63e362f5",
+    "file": "runloc-whpx-0986718261234f44b3e90345d48ea348/supervisor-receipt.json",
+    "sizeBytes": 13925
+  },
+  {
+    "sha256": "fb37138e899883dbf92d9ec29f625c9267815e1548a4eaee79326da87ee3e79f",
+    "file": "runloc-whpx-0986718261234f44b3e90345d48ea348/supervisor-started.json",
+    "sizeBytes": 735
+  },
+  {
+    "sha256": "4bfa9b0c4f8dc44a0d2be3033f141d450ffb06e2a943e99b2d21289b2d23d005",
+    "file": "runloc-whpx-0986718261234f44b3e90345d48ea348/runloc-whpx-12a13478f62c4fb1b2cc7427b69afb4c/receipt-digest.json",
+    "sizeBytes": 144
+  },
+  {
+    "sha256": "58a41b364cf9bca42f90a82ef8fa438b03c65966176504d8a64e1f9a9e83e1cb",
+    "file": "runloc-whpx-0986718261234f44b3e90345d48ea348/runloc-whpx-12a13478f62c4fb1b2cc7427b69afb4c/receipt.json",
+    "sizeBytes": 15836
+  },
+  {
+    "sha256": "9c8c18663e62ce1bc3f8d9a384142eb79b5edbd930f64770168813a6608cba26",
+    "file": "runloc-whpx-2c5f6ab0baae412fb6077d3ab9d6a4dc/supervisor-receipt-digest.json",
+    "sizeBytes": 155
+  },
+  {
+    "sha256": "2e1a7a90a590bcb3937998f2a54f085c0a6e4b8ad09a9cb3791f7c27430129f6",
+    "file": "runloc-whpx-2c5f6ab0baae412fb6077d3ab9d6a4dc/supervisor-receipt.json",
+    "sizeBytes": 13909
+  },
+  {
+    "sha256": "dc0b758534bc5c742b2e623af989da5923b5b1145941ad95775a263677cce285",
+    "file": "runloc-whpx-2c5f6ab0baae412fb6077d3ab9d6a4dc/supervisor-started.json",
+    "sizeBytes": 736
+  },
+  {
+    "sha256": "686b3a2addc698a10ba62bf62fca1c3a98824bc8c29af34b6e9768b1fde34e1a",
+    "file": "runloc-whpx-2c5f6ab0baae412fb6077d3ab9d6a4dc/runloc-whpx-b9df529ffbf44885811996180ae71b4a/receipt-digest.json",
+    "sizeBytes": 144
+  },
+  {
+    "sha256": "aafd7caa062e056bf0b9be3d70227bc7ee3de76bc4317beb2d9573c9e5fc4ffa",
+    "file": "runloc-whpx-2c5f6ab0baae412fb6077d3ab9d6a4dc/runloc-whpx-b9df529ffbf44885811996180ae71b4a/receipt.json",
+    "sizeBytes": 66895
+  },
+  {
+    "sha256": "20d4d217535724855aebd5d5f2196bf6baadcfd81ad2c505659e6d2f47387701",
+    "file": "runloc-whpx-2c5f6ab0baae412fb6077d3ab9d6a4dc/runloc-whpx-b9df529ffbf44885811996180ae71b4a/telemetry-events.json",
+    "sizeBytes": 2218451
+  }
+]

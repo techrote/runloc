@@ -1,0 +1,178 @@
+{
+  "schemaVersion": 1,
+  "issue": "CI-POC-002",
+  "qualificationPassed": false,
+  "failureClass": "runner-communication-lost-abrupt-host-process-interruption",
+  "causeCertainty": "consistent-with-Codex-launcher-termination-not-proven",
+  "controller": {
+    "repository": "https://github.com/techrote/runloc",
+    "commit": "1f66d26a08c4baf4eb2f49172a6efeb006b9e155",
+    "tree": "95312295c017161d969421c233ff58e3e0153b24",
+    "clean": true,
+    "executedTreeSha256": "65a44ed2aa288675a5e32cb43ca6c2f3d925e99b77b7c13b3a9db177bfecd242",
+    "trackedFileCount": 173,
+    "files": []
+  },
+  "workflowCommit": "e1b36aac861000503764bee53d7cd1a09b984103",
+  "qualificationCpus": 8,
+  "supervisorExitCode": null,
+  "finalReceiptPresent": false,
+  "events": [
+    {
+      "leaseId": "4a128a90638649a3ab07fd670a61a03b",
+      "schemaVersion": 1,
+      "kind": "registration-intent",
+      "data": {
+        "name": "runloc-4a128a90638649a3ab07fd670a61a03b"
+      },
+      "utc": "2026-10-18T12:29:55.7003689Z"
+    },
+    {
+      "leaseId": "4a128a90638649a3ab07fd670a61a03b",
+      "schemaVersion": 1,
+      "kind": "registered",
+      "data": {
+        "name": "runloc-4a128a90638649a3ab07fd670a61a03b",
+        "runnerId": 42
+      },
+      "utc": "2026-10-18T12:29:56.8692121Z"
+    },
+    {
+      "leaseId": "4a128a90638649a3ab07fd670a61a03b",
+      "schemaVersion": 1,
+      "kind": "listener-started",
+      "data": {
+        "processId": 5868,
+        "executableSha256": "72c36cc15e21605dc4adc7c280e7ad9ea524fc8f1fb7b6905d3e0ae7df7a5de3",
+        "createdUtc": "2026-10-18T12:29:56.9117417Z"
+      },
+      "utc": "2026-10-18T12:29:56.9167979Z"
+    },
+    {
+      "leaseId": "4a128a90638649a3ab07fd670a61a03b",
+      "schemaVersion": 1,
+      "kind": "online",
+      "data": {
+        "runnerId": 42
+      },
+      "utc": "2026-10-18T12:30:02.8711989Z"
+    },
+    {
+      "leaseId": "4a128a90638649a3ab07fd670a61a03b",
+      "schemaVersion": 1,
+      "kind": "dispatch-intent",
+      "data": {
+        "workflowCommit": "e1b36aac861000503764bee53d7cd1a09b984103",
+        "comparisonId": "4a128a90638649a3ab07fd670a61a03b"
+      },
+      "utc": "2026-10-18T12:30:02.8793858Z"
+    },
+    {
+      "leaseId": "4a128a90638649a3ab07fd670a61a03b",
+      "schemaVersion": 1,
+      "kind": "dispatched",
+      "data": {
+        "runId": 39127529716,
+        "comparisonId": "4a128a90638649a3ab07fd670a61a03b"
+      },
+      "utc": "2026-10-18T12:30:04.2243905Z"
+    }
+  ],
+  "githubJobs": {
+    "total_count": 1,
+    "jobs": [
+      {
+        "id": 117675712339,
+        "run_id": 39127529716,
+        "workflow_name": "CI-PoC002 4a128a90638649a3ab07fd670a61a03b",
+        "head_branch": "ci-poc-002-e1b36aac861000503764bee53d7cd1a09b984103",
+        "run_url": "https://api.github.com/repos/techrote/ezvm/actions/runs/39127529716",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOVEygbM8AAAAbZgTfUw",
+        "head_sha": "e1b36aac861000503764bee53d7cd1a09b984103",
+        "url": "https://api.github.com/repos/techrote/ezvm/actions/jobs/117675712339",
+        "html_url": "https://github.com/techrote/ezvm/actions/runs/39127529716/job/117675712339",
+        "status": "completed",
+        "conclusion": "failure",
+        "created_at": "2026-10-18T12:30:05Z",
+        "started_at": "2026-10-18T12:30:07Z",
+        "completed_at": "2026-10-18T12:57:10Z",
+        "name": "Trusted Windows WHPX PoC",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-10-18T12:30:08Z",
+            "completed_at": "2026-10-18T12:30:09Z"
+          },
+          {
+            "name": "Validate owner dispatch and exact single-use runner identity",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-10-18T12:30:09Z",
+            "completed_at": "2026-10-18T12:30:10Z"
+          },
+          {
+            "name": "Checkout reviewed immutable Runloc controller",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-10-18T12:30:10Z",
+            "completed_at": "2026-10-18T12:30:14Z"
+          },
+          {
+            "name": "Exact preflight and full original eight-CPU WHPX qualification",
+            "status": "in_progress",
+            "conclusion": null,
+            "number": 4,
+            "started_at": "2026-10-18T12:30:14Z",
+            "completed_at": null
+          },
+          {
+            "name": "Retain only allowlisted receipt digest telemetry and Actions association",
+            "status": "pending",
+            "conclusion": null,
+            "number": 5,
+            "started_at": null,
+            "completed_at": null
+          },
+          {
+            "name": "Post Checkout reviewed immutable Runloc controller",
+            "status": "pending",
+            "conclusion": null,
+            "number": 10,
+            "started_at": null,
+            "completed_at": null
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/techrote/ezvm/check-runs/117675712339",
+        "labels": [
+          "runloc-4a128a90638649a3ab07fd670a61a03b"
+        ],
+        "runner_id": 42,
+        "runner_name": "runloc-4a128a90638649a3ab07fd670a61a03b",
+        "runner_group_id": 1,
+        "runner_group_name": "Default"
+      }
+    ]
+  },
+  "lastTelemetry": {
+    "event": "start",
+    "operationId": 135,
+    "parentOperationId": 1,
+    "operation": "Assert-EzVmQemuPayloadIntegrity",
+    "category": "validation",
+    "details": {},
+    "schemaVersion": 1,
+    "sequence": 270,
+    "utc": "2026-10-18T12:47:18.259047Z",
+    "elapsedSeconds": 992.5246148
+  },
+  "observedRunnerAndQemuProcesses": 0,
+  "registrationAbsent": true,
+  "fixtureDisposal": "unconfirmed-retained-quarantine",
+  "replayAllowed": false
+}

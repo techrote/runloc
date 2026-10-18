@@ -1,5 +1,14 @@
 # 08 — Tests, CI and issue acceptance
 
+CI-POC-002 adds [offline runner controls](../../poc/windows-whpx/Test-Runner.ps1)
+to both pinned Windows helper lanes. They do not register a runner or qualify a
+physical run. Acceptance separately requires the exact approved Actions
+run/job/runner association, full supervised six-CPU WHPX evidence, old-runner
+second-job refusal, fresh-registration reuse of the same backing environment,
+and real failed/no-job deregistration and owned material cleanup. The owner's
+current `-NoOverallTimeout` policy removes Runloc's overall target/wall for this
+execution; original operation limits and truthful GitHub service limits remain.
+
 ## Test layers
 
 1. Fast deterministic unit and process-adapter tests on hosted Windows and Ubuntu:
@@ -105,3 +114,21 @@ continue to enforce the original deadlines; additional controls must reject
 cross-policy receipts and preserve failures in the no-overall-timeout mode.
 
 See [performance](09-METRICS-PERFORMANCE.md), [release](10-RELEASE-OPERATIONS.md).
+
+## CI-POC-002 retained acceptance
+
+The [physical and lifecycle receipt](../fast-track/CI-POC-002-EVIDENCE.md#successful-full-qualification-and-lifecycle-closeout--18-october-2026)
+binds the full six-vCPU WHPX Actions job to its exact host/job controller,
+candidate and workflow commits. All24markers,8authenticated READY responses,
+8CPU proofs, numeric zero exits, source preservation, nested fixture cleanup,
+process emptiness and exact registration absence passed. A second job targeting
+the used label remained unassigned; a fresh registration then passed a bounded
+reuse probe on the same backing environment. A fresh no-job attempt truthfully
+failed and cleaned up. The complete run took7522.7706465seconds under the owner's
+explicit NoOverallTimeout policy; no former60minute performance gate is claimed.
+
+Public receipt bytes and their digests are preserved without Git newline
+conversion. Final monitoring uses retained receipt counts after disposal;
+observations and final host cleanup remain separate facts. Monitor-only and
+synthetic-test visibility repairs do not alter the physically executed payload.
+CI-POC-003 retains gate/fallback/TCG-policy migration and performance work.

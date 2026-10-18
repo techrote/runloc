@@ -1,0 +1,11 @@
+{
+    "schemaVersion":  1,
+    "controllerCommit":  "14c39e467f170e48f33af4e50b2c0e8e095b4f6e",
+    "method":  "checkout-process-GIT_CONFIG_COUNT-2",
+    "coreAutocrlf":  "false",
+    "coreEol":  "lf",
+    "completeSourceAccepted":  true,
+    "sourceTree":  "62de7a1f6b77cd07e2228fc81a4873cce61be835",
+    "trackedFileCount":  165,
+    "localGitConfigUnchanged":  true
+}

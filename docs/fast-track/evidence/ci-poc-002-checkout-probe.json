@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "controllerCommit": "14c39e467f170e48f33af4e50b2c0e8e095b4f6e",
+  "cases": [
+    {
+      "autocrlf": "true",
+      "accepted": false,
+      "reason": "source-public-blob-mismatch",
+      "differingExtensionlessFiles": [
+        "LICENSE"
+      ],
+      "coreEol": "native"
+    },
+    {
+      "autocrlf": "false",
+      "accepted": true,
+      "reason": "",
+      "differingExtensionlessFiles": [],
+      "coreEol": "lf"
+    }
+  ]
+}

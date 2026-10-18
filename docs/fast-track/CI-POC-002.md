@@ -1,6 +1,6 @@
-# CI-POC-002 — Run full EzVM qualification on an on-demand one-job Windows runner
+# CI-POC-002 — Reuse the Windows/WHPX CI artifact with one-job ephemeral runners
 
-**Urgent Windows CI proof of concept. Status: planned.** Creating this issue is not implementation or qualification.
+**Urgent Windows CI proof of concept. Status: qualified.** Creating this issue is not implementation or qualification.
 
 ## Dependencies and autonomous prompt
 
@@ -27,6 +27,7 @@ Do not wait for or implement RUNLOC-001–019. This is an interim native Windows
 ## Implementation scope
 
 - Use001's accepted frozen candidate/helper/evidence and its Runloc main merge; do not wait for RUNLOC-001–019 or upstream source PRs still correctly awaiting their gates.
+- Retain the reusable qualified Windows/WHPX backing environment and verified artifacts. Create a fresh single-job ephemeral registration and isolated workspace for each trusted execution; completing a job must not destroy the backing environment.
 - Implement minimal start/status/stop/reconcile helpers for a pinned verified official native Windows runner, foreground JIT/ephemeral registration, one job, unique repository/name/label and owned working directory. Reuse existing authorized host CLI/App credentials without enrolling or exporting long-lived admin material.
 - Add an approved manual-only EzVM private workflow or reconcile PR46's existing one; bind definition and exact candidate SHA/comparison ID. It runs001's full original WHPX harness on the physical Windows host. Do not run it in the Linux TRIO VM or claim Windows host isolation.
 - Capture real GitHub run/job/runner identity, full receipt, diagnostics and exact cleanup/deregistration. Keep workflows/helpers small; no service, webhook daemon, image builder, fleet or scheduler.
@@ -34,10 +35,11 @@ Do not wait for or implement RUNLOC-001–019. This is an interim native Windows
 
 ## Observable acceptance
 
-- A real GitHub job executes the same full scenario for the exact accepted candidate using physical WHPX and exits successfully within001's bounds, with public redacted receipts tied to actual runner/run/job IDs.
+- A real GitHub job executes the full original scenario on the approved exact candidate using physical WHPX and six CPUs, with matching preflight/controller/receipt NoOverallTimeout policy, actual successful exit and complete public run/job/runner evidence. The owner removed the former overall timing bounds for CI-POC-002; keep all original per-operation limits and record elapsed time. GitHub service limits remain external limitations.
 - Registration is genuinely single-job; the used runner cannot take a second job. Runner process exits, exact registration is removed, owned qualification QEMU guests stop and owned sensitive working material is removed. Do not erase unrelated host data or pretend the host OS is disposed.
 - Only approved same-repository exact candidates and trusted definitions can use the host. No automatic fork execution, service installation, privilege/account/driver changes or admin token in job files, workflow secrets/argv/logs.
 - Failed/cancelled job, no-job timeout, lost registration response, startup error and API cleanup failure have bounded truthful outcomes. Remote uncertainty remains explicit and cannot yield a clean-success receipt. Normal PR CI never registers a runner.
+- After the first runner is removed, prove backing-environment reuse with a fresh different runner registration and bounded trusted probe. Independently show the used old registration cannot accept a second job; a second full WHPX run is not required solely for this reuse proof.
 
 
 ## Required tests and evidence
@@ -45,10 +47,11 @@ Do not wait for or implement RUNLOC-001–019. This is an interim native Windows
 - Stub/injected tests assert binary hash/version checks, unique labels, at-most-one job, lost-POST reconciliation, exact-ID cleanup, rate/permission failures, TTL expiry and owned-process/path sentinels. Use synthetic secrets to inspect all logs/error/export paths.
 - Perform a real trusted GitHub full-WHPX run and capture API association plus host completion/disposal evidence. Then exercise a failed/cancelled or no-job case and show deregistration/cleanup without affecting unrelated VMs/runners.
 - Verify the second-job prohibition independently, not from the --ephemeral flag alone. Run existing Runloc checks and focused helper tests; inspect applicable EzVM workflow/source checks on the exact head.
+- Inject missing/incorrect JIT identity and ephemeral policy, external nested-fixture ownership, process-exit uncertainty and preserved backing/sentinel controls. Retain a real no-job or failed/cancelled lifecycle and exact deregistration evidence. Do not replace a single-job registration with a multi-job workflow runner.
 
 ## Excluded scope
 
-No permanent runner, global host installation, arbitrary public PR execution, native Windows-as-disposable-VM claim or CI speed-resolution claim while the required hosted wait remains unchanged.
+No permanent GitHub runner registration, global host installation, service or privilege changes, arbitrary public PR execution, or native Windows-as-disposable-VM claim. Preserve the reusable backing environment. Hosted TCG remains deferred under CI-POC-003; no CI gate migration is implemented here.
 
 ## PR and completion gate
 

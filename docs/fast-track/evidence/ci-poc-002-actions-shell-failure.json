@@ -1,0 +1,216 @@
+{
+  "schemaVersion": 1,
+  "issue": "CI-POC-002",
+  "mode": "qualification",
+  "qualificationPassed": false,
+  "failureClass": "actions-generated-script-blocked-before-checkout",
+  "supervisorExitCode": 1,
+  "controller": {
+    "repository": "https://github.com/techrote/runloc",
+    "commit": "022f45170027ef18a414e78d2fa9a91980bc4213",
+    "tree": "f1ce41838ee0e08a065981d69dc53d433d571f4c",
+    "clean": true,
+    "executedTreeSha256": "504d153776dcadd462d4be676baee25ec9f08016379c01363b09369f8f77ba49",
+    "trackedFileCount": 167,
+    "files": []
+  },
+  "workflowCommit": "62038cf8db68e8b863054c112d79b727e8776031",
+  "workflowSha256Lf": "85c64bbe9e19a4ab303f40dcff83cadde06ba5099eab7981115f33402a10e410",
+  "events": [
+    {
+      "leaseId": "6041b5d7663e4f01bc3947b8d4d0c61a",
+      "schemaVersion": 1,
+      "kind": "registration-intent",
+      "data": {
+        "name": "runloc-6041b5d7663e4f01bc3947b8d4d0c61a"
+      },
+      "utc": "2026-10-18T12:08:40.4749971Z"
+    },
+    {
+      "leaseId": "6041b5d7663e4f01bc3947b8d4d0c61a",
+      "schemaVersion": 1,
+      "kind": "registered",
+      "data": {
+        "name": "runloc-6041b5d7663e4f01bc3947b8d4d0c61a",
+        "runnerId": 40
+      },
+      "utc": "2026-10-18T12:08:43.8134678Z"
+    },
+    {
+      "leaseId": "6041b5d7663e4f01bc3947b8d4d0c61a",
+      "schemaVersion": 1,
+      "kind": "listener-started",
+      "data": {
+        "processId": 9496,
+        "executableSha256": "72c36cc15e21605dc4adc7c280e7ad9ea524fc8f1fb7b6905d3e0ae7df7a5de3",
+        "createdUtc": "2026-10-18T12:08:43.841184Z"
+      },
+      "utc": "2026-10-18T12:08:43.8472314Z"
+    },
+    {
+      "leaseId": "6041b5d7663e4f01bc3947b8d4d0c61a",
+      "schemaVersion": 1,
+      "kind": "online",
+      "data": {
+        "runnerId": 40
+      },
+      "utc": "2026-10-18T12:08:49.7897443Z"
+    },
+    {
+      "leaseId": "6041b5d7663e4f01bc3947b8d4d0c61a",
+      "schemaVersion": 1,
+      "kind": "dispatch-intent",
+      "data": {
+        "workflowCommit": "62038cf8db68e8b863054c112d79b727e8776031",
+        "comparisonId": "6041b5d7663e4f01bc3947b8d4d0c61a"
+      },
+      "utc": "2026-10-18T12:08:49.7932493Z"
+    },
+    {
+      "leaseId": "6041b5d7663e4f01bc3947b8d4d0c61a",
+      "schemaVersion": 1,
+      "kind": "dispatched",
+      "data": {
+        "runId": 39126080753,
+        "comparisonId": "6041b5d7663e4f01bc3947b8d4d0c61a"
+      },
+      "utc": "2026-10-18T12:08:50.9783477Z"
+    },
+    {
+      "leaseId": "6041b5d7663e4f01bc3947b8d4d0c61a",
+      "schemaVersion": 1,
+      "kind": "job-completed-final",
+      "data": {
+        "jobId": 117671387479,
+        "conclusion": "failure",
+        "runnerId": 40,
+        "runId": 39126080753
+      },
+      "utc": "2026-10-18T12:09:09.0519277Z"
+    },
+    {
+      "leaseId": "6041b5d7663e4f01bc3947b8d4d0c61a",
+      "schemaVersion": 1,
+      "kind": "listener-ended",
+      "data": {
+        "forced": false,
+        "exited": true,
+        "outputComplete": true,
+        "exitCode": 0,
+        "activeProcesses": 0
+      },
+      "utc": "2026-10-18T12:09:09.0609631Z"
+    },
+    {
+      "leaseId": "6041b5d7663e4f01bc3947b8d4d0c61a",
+      "schemaVersion": 1,
+      "kind": "registration-absent",
+      "data": {
+        "runnerId": 40,
+        "absent": true
+      },
+      "utc": "2026-10-18T12:09:10.5247012Z"
+    },
+    {
+      "leaseId": "6041b5d7663e4f01bc3947b8d4d0c61a",
+      "schemaVersion": 1,
+      "kind": "final",
+      "data": {
+        "runId": 39126080753,
+        "workflowCleanupConfirmed": true,
+        "controllerUnchanged": true,
+        "activeProcesses": 0,
+        "passed": false,
+        "fixtureRemoved": true,
+        "registrationAbsent": true,
+        "reusableBackingPreserved": true,
+        "elapsedSeconds": 37.3856146,
+        "reason": "listener-exited-without-accepted-job",
+        "unrelatedSentinelSurvived": true,
+        "runnerId": 40
+      },
+      "utc": "2026-10-18T12:09:12.8018182Z"
+    }
+  ],
+  "githubJobs": {
+    "total_count": 1,
+    "jobs": [
+      {
+        "id": 117671387479,
+        "run_id": 39126080753,
+        "workflow_name": "CI-PoC002 6041b5d7663e4f01bc3947b8d4d0c61a",
+        "head_branch": "ci-poc-002-62038cf8db68e8b863054c112d79b727e8776031",
+        "run_url": "https://api.github.com/repos/techrote/ezvm/actions/runs/39126080753",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOVEygbM8AAAAbZcLhVw",
+        "head_sha": "62038cf8db68e8b863054c112d79b727e8776031",
+        "url": "https://api.github.com/repos/techrote/ezvm/actions/jobs/117671387479",
+        "html_url": "https://github.com/techrote/ezvm/actions/runs/39126080753/job/117671387479",
+        "status": "completed",
+        "conclusion": "failure",
+        "created_at": "2026-10-18T12:08:52Z",
+        "started_at": "2026-10-18T12:08:54Z",
+        "completed_at": "2026-10-18T12:09:03Z",
+        "name": "Trusted Windows WHPX PoC",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-10-18T12:08:54Z",
+            "completed_at": "2026-10-18T12:08:57Z"
+          },
+          {
+            "name": "Validate owner dispatch and exact single-use runner identity",
+            "status": "completed",
+            "conclusion": "failure",
+            "number": 2,
+            "started_at": "2026-10-18T12:08:57Z",
+            "completed_at": "2026-10-18T12:08:58Z"
+          },
+          {
+            "name": "Checkout reviewed immutable Runloc controller",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 3,
+            "started_at": "2026-10-18T12:08:58Z",
+            "completed_at": "2026-10-18T12:08:58Z"
+          },
+          {
+            "name": "Exact preflight and full original eight-CPU WHPX qualification",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 4,
+            "started_at": "2026-10-18T12:08:58Z",
+            "completed_at": "2026-10-18T12:08:58Z"
+          },
+          {
+            "name": "Retain only allowlisted receipt digest telemetry and Actions association",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 5,
+            "started_at": "2026-10-18T12:08:58Z",
+            "completed_at": "2026-10-18T12:08:58Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6,
+            "started_at": "2026-10-18T12:08:58Z",
+            "completed_at": "2026-10-18T12:09:00Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/techrote/ezvm/check-runs/117671387479",
+        "labels": [
+          "runloc-6041b5d7663e4f01bc3947b8d4d0c61a"
+        ],
+        "runner_id": 40,
+        "runner_name": "runloc-6041b5d7663e4f01bc3947b8d4d0c61a",
+        "runner_group_id": 1,
+        "runner_group_name": "Default"
+      }
+    ]
+  }
+}

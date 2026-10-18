@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 1,
+  "controllerCommit": "0060a084c66e502d4f494074e0cd6dfb6d370c64",
+  "controllerTree": "4280aa213eeaac6599fa073b60078d1ce5aad518",
+  "attemptedMode": "no-job",
+  "supervisorExitCode": 1,
+  "qualificationPassed": false,
+  "failureClass": "jit-schema-validation-before-listener",
+  "events": [
+    {
+      "leaseId": "02e7e89f152d45bfa6f1a08e122bec6a",
+      "schemaVersion": 1,
+      "kind": "registration-intent",
+      "data": {
+        "name": "runloc-02e7e89f152d45bfa6f1a08e122bec6a"
+      },
+      "utc": "2026-10-18T12:03:11.7238045Z"
+    },
+    {
+      "leaseId": "02e7e89f152d45bfa6f1a08e122bec6a",
+      "schemaVersion": 1,
+      "kind": "registered",
+      "data": {
+        "name": "runloc-02e7e89f152d45bfa6f1a08e122bec6a",
+        "runnerId": 37
+      },
+      "utc": "2026-10-18T12:03:12.9134978Z"
+    },
+    {
+      "leaseId": "02e7e89f152d45bfa6f1a08e122bec6a",
+      "schemaVersion": 1,
+      "kind": "registration-absent",
+      "data": {
+        "runnerId": 37,
+        "absent": true
+      },
+      "utc": "2026-10-18T12:03:14.4464101Z"
+    },
+    {
+      "leaseId": "02e7e89f152d45bfa6f1a08e122bec6a",
+      "schemaVersion": 1,
+      "kind": "final",
+      "data": {
+        "runId": 0,
+        "workflowCleanupConfirmed": true,
+        "controllerUnchanged": true,
+        "activeProcesses": 0,
+        "passed": false,
+        "fixtureRemoved": true,
+        "registrationAbsent": true,
+        "reusableBackingPreserved": true,
+        "elapsedSeconds": 9.3876838,
+        "reason": "jit-capability-invalid",
+        "unrelatedSentinelSurvived": true,
+        "runnerId": 37
+      },
+      "utc": "2026-10-18T12:03:15.8092177Z"
+    }
+  ],
+  "schemaDiagnosis": {
+    "schemaVersion": 1,
+    "purpose": "jit-schema-diagnosis-no-listener-no-job",
+    "name": "runloc-b0a2b14b28dd4101af9386c2ea81f7fa",
+    "registrationAbsent": true,
+    "runnerId": 38,
+    "fileNames": [
+      ".runner",
+      ".credentials",
+      ".credentials_rsaparams"
+    ],
+    "valueTypes": [
+      "System.String",
+      "System.String",
+      "System.String"
+    ],
+    "settingNames": [
+      "AgentId",
+      "AgentName",
+      "DisableUpdate",
+      "Ephemeral",
+      "PoolId",
+      "PoolName",
+      "ServerUrl",
+      "WorkFolder",
+      "GitHubUrl",
+      "ServerUrlV2",
+      "UseV2Flow"
+    ],
+    "idMatches": true,
+    "nameMatches": true,
+    "ephemeralIsBoolean": false,
+    "ephemeralTrue": true,
+    "workFolderMatches": true,
+    "conversionSucceeded": false
+  }
+}
