@@ -110,6 +110,30 @@ class CoordinatorTests(unittest.TestCase):
         path.write_text('{"kind":"registered"}')
         self.assertEqual({'kind': 'registered'}, coordinator.snapshot(path))
 
+    def test_merge_verifier_accepts_bound_early_whpx_but_rejects_mutable_ledger(self):
+        pp, hp = {'runId': 13, 'receiptDigest': 'e'*64}, {'runId': 12, 'status': 'in_progress'}
+        proof = {'candidate': self.state.value['candidate'], 'policySha256': self.state.value['policySha256'],
+                 'private': {'state': 'pass', 'proof': pp}, 'hosted': {'state': 'pending', 'proof': hp}}
+        body = 'bound proof\n\n```json\n' + coordinator.canonical(proof).decode() + '\n```'
+        ledger = {'commentId': 91, 'url': 'https://example.invalid/proof', 'bodySha256': coordinator.digest(body.encode())}
+        self.state.value.update(lastOutcome='accepted-whpx', lastProofKey=coordinator.digest(coordinator.canonical(proof)),
+                                lastLedger=ledger)
+        self.state.value['status-owned'] = {'id': 92}
+        comment = {'user': {'login': 'techrote'}, 'html_url': ledger['url'], 'body': body}
+        status = {'id': 92, 'context': self.policy['statusContext'], 'creator': {'login': 'techrote'}, 'state': 'success',
+                  'target_url': ledger['url'], 'description': 'accepted-whpx proof:' + ledger['bodySha256']}
+        class API:
+            def request(inner, method, endpoint):
+                return (200, comment) if 'issues/comments' in endpoint else (200, [status])
+        self.controller.api = API()
+        with patch.object(self.controller, 'source'), patch.object(self.controller, 'observe_hosted', return_value=('pending', hp)), \
+             patch.object(self.controller, 'observe_private', return_value=('pass', pp)):
+            self.assertNotIn('finalOutcome', self.state.value)
+            self.assertEqual(0, self.controller.verify_for_merge())
+            comment['body'] += '\nchanged'
+            with self.assertRaisesRegex(coordinator.InvalidEvidence, 'ledger-changed'):
+                self.controller.verify_for_merge()
+
 
 if __name__ == '__main__':
     unittest.main()
