@@ -68,7 +68,7 @@ try {
         supervisorLeaseId = $SupervisorLeaseId; supervisorStartedUtc = $SupervisorStartedUtc; overallTimeoutDisabled = [bool]$NoOverallTimeout;
         pathBudget = $workPlan.Budget;
         candidate = $candidate; controller = $controller; preflightOnly = [bool]$PreflightOnly;
-        vmQualificationStarted = $false; sourceUnchanged = $false; requestedAccelerator = 'whpx'; observedAccelerator = ''; requestedGuestCpus = 8;
+        vmQualificationStarted = $false; sourceUnchanged = $false; requestedAccelerator = 'whpx'; observedAccelerator = ''; requestedGuestCpus = 6;
         childExitCode = $null; exitCode = 2; timedOut = $false; cancelled = $false; outputOverflow = $false;
         outputFailed = $false; harnessFailure = $false; controllerFailure = $false; reasonCodes = @(); events = @(); phaseDurations = @();
         host = $null; identities = [ordered]@{ expectedImageSha256 = ''; sourceImageSha256 = ''; qemuBinaries = @() };
@@ -121,7 +121,7 @@ try {
         $receipt.cleanup.childExited = $false; $receipt.cleanup.activeProcesses = $null
         $reason = 'full-qualification-failed'
         $harnessArguments = @(Get-PilotPowerShellArguments -TargetScript (Join-Path $CandidateRoot $configuration.harness) -NamedParameters @{
-            Root = $CandidateRoot; ReleaseQualification = $true; Accelerator = 'whpx'; QualificationCpus = 8; TelemetryPath = (Join-Path $lease.Private 'telemetry.jsonl') })
+            Root = $CandidateRoot; ReleaseQualification = $true; Accelerator = 'whpx'; QualificationCpus = 6; TelemetryPath = (Join-Path $lease.Private 'telemetry.jsonl') })
         $child = Invoke-PilotChild -Executable $windowsPowerShell -Arguments $harnessArguments -WorkingDirectory $CandidateRoot -TemporaryDirectory $lease.Fixture `
             -RawLogPath (Join-Path $lease.Private 'qualification.log') -Clock $clock -ExecutionDeadlineSeconds $executionDeadline -CleanupDeadlineSeconds $cleanupDeadline
         $receipt.childExitCode = $child.exitCode; $receipt.timedOut = $child.timedOut; $receipt.outputOverflow = $child.outputOverflow

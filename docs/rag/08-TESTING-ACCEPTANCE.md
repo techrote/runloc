@@ -3,7 +3,7 @@
 CI-POC-002 adds [offline runner controls](../../poc/windows-whpx/Test-Runner.ps1)
 to both pinned Windows helper lanes. They do not register a runner or qualify a
 physical run. Acceptance separately requires the exact approved Actions
-run/job/runner association, full supervised eight-CPU WHPX evidence, old-runner
+run/job/runner association, full supervised six-CPU WHPX evidence, old-runner
 second-job refusal, fresh-registration reuse of the same backing environment,
 and real failed/no-job deregistration and owned material cleanup. The owner's
 current `-NoOverallTimeout` policy removes Runloc's overall target/wall for this

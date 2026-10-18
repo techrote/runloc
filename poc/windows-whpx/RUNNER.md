@@ -14,6 +14,55 @@ repository/workflow/candidate code may execute with this ordinary host account.
 Host GitHub authorization stays in the existing CLI/keyring; it is not copied
 into runner files, workflow secrets, process argv or the runner environment.
 
+The runner executes natively on this physical Windows PC; the EzVM Linux guest
+uses six vCPUs through WHPX. GitHub schedules the job and retains evidence; its
+hosted workers do not supply this compute. The earlier eight-vCPU attempt was
+interrupted before guest startup. On 18 October the owner reduced the next
+guest allocation to six; the eight READY observations and all24 assertions are
+still required. The frozen candidate's generic resource helper already accepts
+six, so its immutable product source need not change for this allocation.
+
+## Independent visible console
+
+Do not start a long qualification as a Codex terminal child. Closing the app
+can terminate that process tree before its supervisor persists final cleanup.
+Use the Explorer-owned visible console:
+
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File poc/windows-whpx/Open-RunnerConsole.ps1 -Mode Monitor -BackingRoot <private-backing-root>
+```
+
+Monitor is read-only and starts no runner, guest or job. For an approved new
+attempt use Mode Start, ExpectedControllerCommit, WorkflowRef and optional
+QualificationMode. Start requires clean reviewed immutable source and an
+execution-approved workflow pin. The six-vCPU successor is blocked until its
+updated job controller is published and repinned; the old eight-vCPU workflow
+must not silently be reused.
+
+The opener binds to the existing Explorer desktop COM object; a fresh
+Shell.Application's direct ShellExecute is insufficient because it can launch
+under its caller. The child independently verifies its direct Explorer parent
+before starting anything. A private hash-bound plan contains paths and public
+identities, no capability or credentials. A dedicated foreground supervisor
+still owns the runner/job descendants with the original native Windows Job.
+No service, scheduled task, privilege or host policy is installed or changed.
+
+Leave the independent console open and keep Windows awake and online. Closing
+Codex is separate from closing that console, signing out, rebooting or sleeping
+the PC. Console closure can interrupt the job and is never a success receipt.
+The console shows exact host event state and bounded phase telemetry; recorded
+timestamps distinguish retained evidence from live progress.
+
+The opt-in interactive desktop test is separate from ordinary headless CI:
+
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File poc/windows-whpx/Test-RunnerConsole.ps1 -EvidenceParent <private-existing-directory>
+```
+
+It registers no runner and starts no VM. It terminates the launching process's
+owned Windows Job, proves the Explorer-owned probe keeps advancing its
+heartbeat, then requests and confirms its clean bounded exit.
+
 `Invoke-OneJobRunner.ps1` provides Start, Status, Stop and Reconcile. Start is
 foreground; the owned Windows Job contains the listener and every job descendant
 without breakaway. Stop creates an exact-lease request observed by that owner;
@@ -40,7 +89,7 @@ before moving to a different runner. No service or privilege change is used.
 The job clones the exact manifest candidate and executes the reviewed outer
 supervisor in separate dedicated processes, first exact preflight and then the
 complete original scenario. It selects `-NoOverallTimeout` in both invocations
-and eight CPUs in every disposable qualification profile and the copied builder
+and six CPUs in every disposable qualification profile and the copied builder
 recipe. All original memory/profile assertions, per-operation bounds, markers,
 identity/source checks and normal cleanup remain required. The Actions workflow
 removes its former90-minute setting; GitHub's own default job cancellation limit

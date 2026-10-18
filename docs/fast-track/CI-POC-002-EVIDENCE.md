@@ -6,11 +6,47 @@ at Runloc `6c38e30af38993cc193d4c46ec5db55910a2b353`. Its original physical
 receipt remains unchanged and does not qualify this successor.
 
 The owner explicitly selected eight CPUs and no overall Runloc time limit for
-issue22 on 18 October 2026. The successor EzVM candidate is
+the first issue22 attempts on 18 October 2026, then reduced the next attempt to
+six vCPUs after the interrupted run. NoOverallTimeout remains selected. The
+immutable EzVM candidate is
 `2268468cb3040b9e1dd6deed60d0f13594f768d6`, tree
 `d5677a166e54583f26e3f08e90e5836c19f99359`, published on draft
 [EzVM PR46](https://github.com/techrote/ezvm/pull/46). It is not EzVM main.
 All15 controller manifest pins independently match the public candidate.
+
+## Interrupted full run and successor preparation
+
+[Run39127529716/job117675712339](https://github.com/techrote/ezvm/actions/runs/39127529716)
+used runner42 and passed exact preflight, then lost communication. Its
+[retained failed record](evidence/ci-poc-002-actions-interrupted.json) has no
+final supervisor exit or cleanup receipt; the owned disk/workspace material
+remains quarantined. Reconcile confirmed remote absence and retained uncertain
+local material instead of fabricating disposal. Last telemetry was
+12:47:18Z at992.5246148seconds, before guest startup. GitHub reported lost
+communication at12:57:10Z. No host reboot occurred; no runner/QEMU processes
+remained at inspection. The user reported closing Codex. The abrupt cutoff
+and ten-minute server detection lag are consistent with termination of the
+Codex-launched process tree, but do not independently prove that trigger.
+This attempt failed; no prior partial PASS marker overrides it.
+The [redacted phase record](evidence/ci-poc-002-interrupted-phase-events.json)
+retains every observed operation and duration, marks open spans incomplete, and
+binds the privately retained original telemetry digest. It is not a closed or
+successful telemetry receipt.
+
+The owner requested an app-independent visible terminal and six vCPUs for the
+next attempt. The successor controller/oracle requires6 for intent, request and
+each authenticated guest CPU observation; all eight READY occurrences and all24
+markers remain required. Earlier numeric8 requests/proofs are negative controls.
+The generic frozen EzVM resource helper supports6 without a product source
+change. The existing workflow still selects the earlier controller, so its pin
+is explicitly executionApproved=false until the six-vCPU controller is
+published, reviewed and repinned.
+
+The [real independent-console test](evidence/ci-poc-002-independent-console-test.json)
+started no live job/registration. Terminating the launching process's owned
+Windows Job left the Explorer-owned console heartbeat advancing; the probe
+then exited0 on request. This tests launcher lifetime, not qualification.
+The visible read-only monitor likewise starts no runner/guest/job.
 
 ## Actual software results
 

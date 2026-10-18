@@ -1,6 +1,6 @@
 # CI-POC-001 Windows/WHPX pilot
 
-The current development manifest advances to an eight-CPU CI-POC-002 successor.
+The current development manifest advances to a six-CPU CI-POC-002 successor.
 It is not yet physically qualified. CI-POC-001's accepted result below remains
 bound to its historical exact sources. See [the runner lifecycle](RUNNER.md)
 for the new Actions qualification and reusable backing-environment boundary.

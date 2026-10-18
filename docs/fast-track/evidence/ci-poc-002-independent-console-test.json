@@ -1,0 +1,11 @@
+{
+    "probeExitCode":  0,
+    "actualProbeExitObserved":  true,
+    "parentOwnedProcessesAfter":  0,
+    "passed":  true,
+    "desktopParentName":  "explorer.exe",
+    "test":  "independent-console-survives-launcher-job-termination",
+    "heartbeatAdvancedAfterParentDeath":  true,
+    "liveRegistrationOrDispatch":  false,
+    "schemaVersion":  1
+}

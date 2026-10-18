@@ -35,7 +35,7 @@ Do not wait for or implement RUNLOC-001–019. This is an interim native Windows
 
 ## Observable acceptance
 
-- A real GitHub job executes the full original scenario on the approved exact candidate using physical WHPX and eight CPUs, with matching preflight/controller/receipt NoOverallTimeout policy, actual successful exit and complete public run/job/runner evidence. The owner removed the former overall timing bounds for CI-POC-002; keep all original per-operation limits and record elapsed time. GitHub service limits remain external limitations.
+- A real GitHub job executes the full original scenario on the approved exact candidate using physical WHPX and six CPUs, with matching preflight/controller/receipt NoOverallTimeout policy, actual successful exit and complete public run/job/runner evidence. The owner removed the former overall timing bounds for CI-POC-002; keep all original per-operation limits and record elapsed time. GitHub service limits remain external limitations.
 - Registration is genuinely single-job; the used runner cannot take a second job. Runner process exits, exact registration is removed, owned qualification QEMU guests stop and owned sensitive working material is removed. Do not erase unrelated host data or pretend the host OS is disposed.
 - Only approved same-repository exact candidates and trusted definitions can use the host. No automatic fork execution, service installation, privilege/account/driver changes or admin token in job files, workflow secrets/argv/logs.
 - Failed/cancelled job, no-job timeout, lost registration response, startup error and API cleanup failure have bounded truthful outcomes. Remote uncertainty remains explicit and cannot yield a clean-success receipt. Normal PR CI never registers a runner.

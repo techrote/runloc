@@ -85,7 +85,7 @@ $passed = $exitCodes.Count -eq $phases.Count -and @($exitCodes | Where-Object { 
 Write-PilotNewJson -Path (Join-Path $public 'actions-job.json') -Value @{
     schemaVersion = 1; issue = 'CI-POC-002'; repository = 'techrote/ezvm'; comparisonId = $ComparisonId;
     runId = [long]$env:GITHUB_RUN_ID; runAttempt = [int]$env:GITHUB_RUN_ATTEMPT; runnerName = $env:RUNNER_NAME; workflowSha = $env:GITHUB_SHA;
-    controller = $controller; candidate = $candidate; mode = $Mode; overallTimeoutDisabled = $true; qualificationCpus = 8;
+    controller = $controller; candidate = $candidate; mode = $Mode; overallTimeoutDisabled = $true; qualificationCpus = 6;
     physicalQualificationPassed = ($passed -and $Mode -ceq 'qualification'); passed = $passed; phases = $exitCodes; elapsedSeconds = $clock.Elapsed.TotalSeconds }
 ('public_evidence=' + $public) | Out-File -LiteralPath $env:GITHUB_OUTPUT -Append -Encoding utf8
 if (-not $passed) { exit 1 }

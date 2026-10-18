@@ -107,7 +107,7 @@ function New-TestLease {
 }
 function New-GoodReceipt {
     $events = @(); $seconds = 1.0; $utc = [DateTime]::UtcNow
-    $cpuLines = @('ezvm010-source', 'ezvm012-secondary', 'ezvm010-source', 'ezvm012-fresh', 'ezvm010-source', 'ezvm010-stateful', 'ezvm010-imported', 'ezvm010-stateful') | ForEach-Object { 'EZVM010_GUEST_CPUS=8; instance=' + $_; 'EZVM010_STEP=guest_ready; instance=' + $_ }
+    $cpuLines = @('ezvm010-source', 'ezvm012-secondary', 'ezvm010-source', 'ezvm012-fresh', 'ezvm010-source', 'ezvm010-stateful', 'ezvm010-imported', 'ezvm010-stateful') | ForEach-Object { 'EZVM010_GUEST_CPUS=6; instance=' + $_; 'EZVM010_STEP=guest_ready; instance=' + $_ }
     foreach ($line in (@(('EZVM010_STARTED_AT=' + $utc.ToString('o')), 'EZVM010_ACCELERATOR=whpx') + @($cpuLines) + @($script:PilotMarkers | ForEach-Object { $_ + '=PASS' }) + @('EZVM010_COMPLETED_AT=' + $utc.AddSeconds(50).ToString('o')))) {
         $event = ConvertTo-PilotEvidenceEvent -Line $line -Utc $utc.AddSeconds($seconds).ToString('o') -Seconds $seconds
         Assert-True ($null -ne $event) ('Fixture line was not parsed: ' + $line)
@@ -116,7 +116,7 @@ function New-GoodReceipt {
     $guests = @()
     foreach ($root in @('A', 'B')) {
         foreach ($name in @('ezvm010-source', 'ezvm010-stateful', 'ezvm010-imported', 'ezvm012-secondary', 'ezvm012-fresh')) {
-            $guests += @{ root = $root; name = $name; state = 'STOPPED'; accelerator = 'whpx'; launchId = [Guid]::NewGuid().ToString('N'); cpus = 8 }
+            $guests += @{ root = $root; name = $name; state = 'STOPPED'; accelerator = 'whpx'; launchId = [Guid]::NewGuid().ToString('N'); cpus = 6 }
         }
     }
     return [pscustomobject]@{ schemaVersion = 1; leaseId = ('c' * 32);
@@ -124,7 +124,7 @@ function New-GoodReceipt {
         controller = @{ commit = ('b' * 40); tree = ('2' * 40); executedTreeSha256 = ('2' * 64); clean = $true; repository = 'https://github.com/techrote/runloc' };
         startedUtc = $utc.ToString('o'); endedUtc = $utc.AddSeconds(100).ToString('o');
         preflightOnly = $false; vmQualificationStarted = $true; childExitCode = 0; sourceUnchanged = $true;
-        requestedAccelerator = 'whpx'; observedAccelerator = 'whpx'; requestedGuestCpus = 8; timedOut = $false; cancelled = $false;
+        requestedAccelerator = 'whpx'; observedAccelerator = 'whpx'; requestedGuestCpus = 6; timedOut = $false; cancelled = $false;
         outputOverflow = $false; outputFailed = $false; harnessFailure = $false; controllerFailure = $false; elapsedSeconds = 100; targetSeconds = 3600; hardWallSeconds = 5400; overallTimeoutDisabled = $false;
         pathBudget = @{ profile = 'ezvm-pr46-full-release-v1'; fixtureCharacters = 39; relativeReserveCharacters = 215;
             maximumPathCharacters = 259; plannedMaximumCharacters = 254; relativeDirectoryReserveCharacters = 173;
@@ -142,7 +142,7 @@ try {
     Test-Case 'CPU qualification rejects missing mismatching replayed and nonnumeric guest resource proof' {
         $good = New-GoodReceipt
         Assert-True (Test-Receipt $good).Passed
-        foreach ($mutation in @('missing', 'wrong', 'replayed', 'intent', 'request')) {
+        foreach ($mutation in @('missing', 'wrong', 'replayed', 'intent', 'request', 'old-request', 'old-proof')) {
             $receipt = New-GoodReceipt
             $cpu = @($receipt.events | Where-Object { $_.kind -ceq 'guest-cpus' })
             switch ($mutation) {
@@ -150,7 +150,9 @@ try {
                 'wrong' { $cpu[0].value = '4' }
                 'replayed' { $cpu[1].name = 'ezvm010-source' }
                 'intent' { $receipt.identities.guests[0].cpus = 4 }
-                'request' { $receipt.requestedGuestCpus = '8' }
+                'request' { $receipt.requestedGuestCpus = '6' }
+                'old-request' { $receipt.requestedGuestCpus = 8 }
+                'old-proof' { $cpu[0].value = '8' }
             }
             Assert-True (-not (Test-Receipt $receipt).Passed) ('CPU refusal missing: ' + $mutation)
         }
@@ -810,7 +812,7 @@ exit 9
                 foreach ($name in @('ezvm010-source', 'ezvm010-stateful', 'ezvm010-imported', 'ezvm012-secondary', 'ezvm012-fresh')) {
                     [void][IO.Directory]::CreateDirectory((Join-Path $root ('runtime/instances/' + $name)))
                     [IO.File]::WriteAllText((Join-Path $root ('runtime/instances/' + $name + '/runtime.json')), (@{ instanceName = $name; state = 'STOPPED'; accelerator = 'whpx'; launchId = [Guid]::NewGuid().ToString('N') } | ConvertTo-Json))
-                    [IO.File]::WriteAllText((Join-Path $root ('runtime/instances/' + $name + '/instance.json')), (@{ cpus = 8; memoryMiB = 8192 } | ConvertTo-Json))
+                    [IO.File]::WriteAllText((Join-Path $root ('runtime/instances/' + $name + '/instance.json')), (@{ cpus = 6; memoryMiB = 8192 } | ConvertTo-Json))
                 }
             }
             $events = @(

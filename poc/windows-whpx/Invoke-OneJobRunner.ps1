@@ -62,7 +62,9 @@ $backing = Assert-PilotPath -Path $BackingRoot
 Assert-PilotFixtureSeparation -Fixture $backing -ProtectedRoots @($controllerRoot)
 $workflowPinPath = Assert-PilotPath -Path (Join-Path $PSScriptRoot 'runner-workflow.json') -File
 $workflowPin = [IO.File]::ReadAllText($workflowPinPath) | ConvertFrom-Json
-if ($workflowPin.repository -cne 'techrote/ezvm' -or $workflowPin.path -cne '.github/workflows/ezvm-ci-poc-002.yml' -or
+if ($workflowPin.executionApproved -isnot [bool] -or -not $workflowPin.executionApproved -or
+    ($workflowPin.qualificationCpus -isnot [int] -and $workflowPin.qualificationCpus -isnot [long]) -or $workflowPin.qualificationCpus -ne 6 -or
+    $workflowPin.repository -cne 'techrote/ezvm' -or $workflowPin.path -cne '.github/workflows/ezvm-ci-poc-002.yml' -or
     $workflowPin.sha256Lf -cnotmatch '^[a-f0-9]{64}$' -or
     $workflowPin.workflowCommit -cnotmatch '^[a-f0-9]{40}$') { throw 'approved-workflow-pin-required' }
 $commitResponse = Invoke-RunnerApi -Endpoint ('repos/techrote/ezvm/commits/' + [Uri]::EscapeDataString($WorkflowRef))
@@ -96,7 +98,7 @@ try {
     Write-PilotNewJson -Path (Join-Path $lease.Root 'runner-intent.json') -Value @{
         schemaVersion = 1; name = $name; ownerDigest = $lease.OwnerDigest; mode = $Mode; repository = 'techrote/ezvm';
         source = $source; workflowCommit = $workflowCommit; workflowSha256Lf = $workflowHash; candidateCommit = $candidate.commit;
-        backingArchiveSha256 = $pin.sha256; overallTimeoutDisabled = $true; qualificationCpus = 8 }
+        backingArchiveSha256 = $pin.sha256; overallTimeoutDisabled = $true; qualificationCpus = 6 }
     Write-Host ('RUNLOC_RUNNER_LEASE=' + $lease.Root)
     New-PilotFixture -Lease $lease
     $runnerDirectory = Join-Path $lease.Fixture 'runner'
