@@ -132,3 +132,11 @@ conversion. Final monitoring uses retained receipt counts after disposal;
 observations and final host cleanup remain separate facts. Monitor-only and
 synthetic-test visibility repairs do not alter the physically executed payload.
 CI-POC-003 retains gate/fallback/TCG-policy migration and performance work.
+
+CI-POC-003's opt-in guest diagnostics are separate from acceptance. The
+[diagnostic scenarios](../../poc/windows-whpx/QUALIFICATION-GATE.md) distinguish
+basic cold cloning from source restart, export/import and source-reset ordering.
+Their exact-source, owned-process and failed-fixture forensic controls remain
+required; neither successful guest boots nor their diagnostic receipts grant
+full qualification or clear a failed comparison. Synthetic persistence contents
+are asserted through authenticated commands with actual numeric exits.

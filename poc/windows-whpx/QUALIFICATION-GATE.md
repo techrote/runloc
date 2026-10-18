@@ -50,3 +50,20 @@ issue closeout also requires the actual hosted comparison and fallback controls.
 Branch-rule migration and future unapproved-source behavior must be documented
 and tested in EzVM before CI-POC003 completion. Existing legacy hosted deferral is
 still pending replacement; this file alone does not complete issue23.
+
+For guest-failure diagnosis, `Open-GuestDiagnostic.ps1` starts a separate
+Explorer-owned, private-lease invocation without registering a GitHub runner.
+Its hash-bound plan selects `basic-clones` or `release-order`. The latter
+restarts a source with synthetic persistence files, snapshots and exports/imports
+it, boots the fresh clone, resets and boots the source, then boots the saved
+stateful clone and imported instance. Persistence must survive in the stateful
+and imported instances and be absent from the fresh/reset instances. This
+isolates the intervening operations in the failed full scenario; it omits other
+release assertions and can never qualify a candidate. The receipt always says
+`diagnosticOnly=true` and `qualificationPassed=false` and binds the scenario.
+Both modes retain the six-CPU proof, 900-second READY and 2400-second base-build
+bounds, 120-second planned stop and 30-second final cleanup attempts, native
+process ownership, independent cleanup/source checks and a diagnostic one-hour
+containment wall. Failed fixtures remain private forensic quarantine, never a
+reusable qualified artifact or successful fixture-disposal result. A passing
+diagnostic does not clear the production gate's persistent failure quarantine.

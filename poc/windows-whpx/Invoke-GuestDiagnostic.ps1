@@ -8,6 +8,7 @@ if($principal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator) -
 $PlanPath=Assert-PilotPath -Path $PlanPath -File
 if((Get-PilotDigest -Path $PlanPath) -cne $PlanSha256){throw 'diagnostic-plan-changed'}
 $plan=[IO.File]::ReadAllText($PlanPath)|ConvertFrom-Json
+if($plan.scenario -cnotin @('basic-clones','release-order')){throw 'diagnostic-scenario-invalid'}
 $state=Assert-PilotPath -Path $plan.stateRoot
 if([IO.Path]::GetDirectoryName($PlanPath) -cne $state){throw 'diagnostic-state-mismatch'}
 $me=Get-CimInstance Win32_Process -Filter ('ProcessId='+$PID)
@@ -26,7 +27,7 @@ try{
     $lease=New-PilotLease -EvidenceParent $state -CandidateCommit $plan.candidateCommit -ControllerCommit $plan.controllerCommit -WorkParent $workParent
     Assert-PilotFixtureSeparation -Fixture $lease.Fixture -ProtectedRoots @($root,$plan.candidateRoot,$backing)
     New-PilotFixture -Lease $lease
-    $parameters=@{SourceRoot=$plan.candidateRoot;Fixture=$lease.Fixture;PrivateEvidence=$lease.Private}
+    $parameters=@{SourceRoot=$plan.candidateRoot;Fixture=$lease.Fixture;PrivateEvidence=$lease.Private;Scenario=$plan.scenario}
     $arguments=Get-PilotPowerShellArguments -TargetScript (Join-Path $PSScriptRoot 'GuestDiagnostic.Workload.ps1') -NamedParameters $parameters
     Write-Host 'Explorer-owned DIAGNOSTIC ONLY. Six-vCPU WHPX; no GitHub runner or full qualification.'
     Write-Host ('Private lease: '+$lease.Root)
@@ -70,7 +71,7 @@ try{
             # Failed fixtures are private forensic quarantine, never reusable
             # bases or successful full-qualification disposal evidence.
             try{
-                Write-PilotNewJson -Path (Join-Path $state 'diagnostic-result.json') -Value @{schemaVersion=1;diagnosticOnly=$true;qualificationPassed=$false;
+                Write-PilotNewJson -Path (Join-Path $state 'diagnostic-result.json') -Value @{schemaVersion=1;diagnosticOnly=$true;qualificationPassed=$false;scenario=$plan.scenario;
                     diagnosticCompleted=$complete;childExitCode=$code;forced=$forced;activeOwnedProcesses=$(if($empty){0}else{$null});fixtureRemoved=$removed;
                     forensicQuarantineRequired=(-not $removed);leaseId=$lease.Id;candidate=$candidate;controller=$controller;candidateAfter=$candidateAfter;
                     controllerAfter=$controllerAfter;sourceUnchanged=$sourceUnchanged;errors=$errors;elapsedSeconds=$clock.Elapsed.TotalSeconds}

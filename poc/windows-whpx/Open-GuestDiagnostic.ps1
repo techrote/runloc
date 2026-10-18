@@ -1,7 +1,8 @@
 #requires -Version 5.1
 [CmdletBinding()]param([Parameter(Mandatory=$true)][string]$BackingRoot,[Parameter(Mandatory=$true)][string]$CandidateRoot,
     [Parameter(Mandatory=$true)][ValidatePattern('^[a-f0-9]{40}$')][string]$CandidateCommit,
-    [Parameter(Mandatory=$true)][ValidatePattern('^[a-f0-9]{40}$')][string]$ControllerCommit)
+    [Parameter(Mandatory=$true)][ValidatePattern('^[a-f0-9]{40}$')][string]$ControllerCommit,
+    [ValidateSet('basic-clones','release-order')][string]$Scenario='basic-clones')
 $ErrorActionPreference='Stop';$env:PSModulePath=[IO.Path]::Combine($PSHOME,'Modules')
 . (Join-Path $PSScriptRoot 'Pilot.Common.ps1')
 Import-PilotNative
@@ -12,7 +13,7 @@ $backing=Assert-PilotPath -Path $BackingRoot
 $folder=Join-Path $backing ('guest-diagnostic-'+[Guid]::NewGuid().ToString('N'))
 [RunlocPoc.OwnedProcess]::CreateNewDirectory($folder);Set-PilotPrivateDirectory -Path $folder
 $plan=Join-Path $folder 'plan.json'
-Write-PilotNewJson -Path $plan -Value @{backingRoot=$backing;candidateRoot=$CandidateRoot;candidateCommit=$CandidateCommit;controllerCommit=$ControllerCommit;stateRoot=$folder}
+Write-PilotNewJson -Path $plan -Value @{backingRoot=$backing;candidateRoot=$CandidateRoot;candidateCommit=$CandidateCommit;controllerCommit=$ControllerCommit;stateRoot=$folder;scenario=$Scenario}
 $hash=Get-PilotDigest -Path $plan
 $arguments=@('-NoLogo','-NoProfile','-ExecutionPolicy','Bypass','-NoExit','-File',(Join-Path $PSScriptRoot 'Invoke-GuestDiagnostic.ps1'),'-PlanPath',$plan,'-PlanSha256',$hash)
 $command=(@($arguments|ForEach-Object {[RunlocPoc.OwnedProcess]::QuoteArgument([string]$_)}) -join ' ')
