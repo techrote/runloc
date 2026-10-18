@@ -18,6 +18,14 @@ $clock=[Diagnostics.Stopwatch]::StartNew();$started=[DateTime]::UtcNow.ToString(
 $root=[IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../..'))
 $controller=Get-PilotSourceIdentity -Root $root -Repository 'https://github.com/techrote/runloc' -ExpectedCommit $ControllerCommit
 $candidate=Get-PilotSourceIdentity -Root $CandidateRoot -Repository 'https://github.com/techrote/ezvm' -ExpectedCommit $CandidateCommit
+$os=Get-CimInstance Win32_OperatingSystem
+$principal=New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
+Import-PilotNative
+$hostFacts=@{os=$os.Caption;version=$os.Version;build=$os.BuildNumber;powerShell=$PSVersionTable.PSVersion.ToString();
+    logicalProcessors=[Environment]::ProcessorCount;availableMemoryBytes=([long]$os.FreePhysicalMemory*1024);
+    cpuModels=@(Get-CimInstance Win32_Processor|ForEach-Object {$_.Name.Trim()});
+    administrator=$principal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator);
+    seSecurityPrivilegePresent=[RunlocPoc.OwnedProcess]::CurrentTokenHasPrivilege('SeSecurityPrivilege')}
 $parent=Assert-PilotPath -Path $EvidenceParent
 $lease=New-PilotLease -EvidenceParent $parent -CandidateCommit $CandidateCommit -ControllerCommit $ControllerCommit -WorkParent ([Environment]::GetFolderPath('UserProfile'))
 $child=$null;$preflight=$null;$childAttempted=$false;$preflightAttempted=$false;$identities=$null;$sourceUnchanged=$false;$fixtureRemoved=$false;$events=@();$telemetry=$null;$reason='hosted-controller-incomplete'
@@ -79,7 +87,7 @@ $receipt=[ordered]@{schemaVersion=1;issue='CI-POC-003';lane='hosted-tcg';compari
     phaseDurations=(Get-PilotPhaseDurations -Events $events -TotalSeconds $clock.Elapsed.TotalSeconds);
     cleanup=@{childExited=$(if($null -ne $child){$child.childExited}else{$false});activeProcesses=$(if($null -ne $child){$child.activeProcesses}else{$null});
         forced=$(if($null -ne $child){$child.forced}else{$false});fixtureRemoved=$fixtureRemoved};
-    host=@{os=[Environment]::OSVersion.VersionString;powerShell=$PSVersionTable.PSVersion.ToString();logicalProcessors=[Environment]::ProcessorCount}}
+    host=$hostFacts}
 $path=Join-Path $parent 'hosted-receipt.json'
 Write-PilotNewJson -Path $path -Value $receipt
 Write-PilotNewJson -Path (Join-Path $parent 'hosted-receipt-digest.json') -Value @{schemaVersion=1;file='hosted-receipt.json';sha256=(Get-PilotDigest $path)}
