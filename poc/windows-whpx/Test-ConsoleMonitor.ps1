@@ -100,4 +100,13 @@ Test-Monitor 'actual controller exit survives delayed observation' {
         if([IO.Directory]::Exists($resolved)){Remove-Item -LiteralPath $resolved -Recurse -Force}
     }
 }
+Test-Monitor 'large IO deltas retain floating point overload and fractional CPU' {
+    $process=New-MonitorProcess 1 0 $created 1
+    $process.ReadTransferCount=[long]0; $process.WriteTransferCount=[long]0
+    $first=Measure-ConsoleProcesses -Processes @($process) -Previous @{} -IntervalSeconds 0 -LogicalProcessors 12
+    $process.ReadTransferCount=[long]4294967296; $process.WriteTransferCount=[long]3221225472
+    $process.UserModeTime=[long]15000000
+    $next=Measure-ConsoleProcesses -Processes @($process) -Previous $first.previous -IntervalSeconds 10 -LogicalProcessors 12
+    Assert-Monitor ($next.readMiBPerSecond -eq 409.6 -and $next.writeMiBPerSecond -eq 307.2 -and $next.cpuHostPercent -eq 0.42)
+}
 Write-Host ('Monitor groups passed: '+$count)

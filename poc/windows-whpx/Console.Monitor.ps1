@@ -54,9 +54,9 @@ function Measure-ConsoleProcesses {
         $cpu=([double]$process.KernelModeTime+[double]$process.UserModeTime)/10000000
         $read=[double]$process.ReadTransferCount;$write=[double]$process.WriteTransferCount
         if($Previous.ContainsKey($key)){
-            $cpuDelta+=[Math]::Max(0,$cpu-$Previous[$key].cpu)
-            $readDelta+=[Math]::Max(0,$read-$Previous[$key].read)
-            $writeDelta+=[Math]::Max(0,$write-$Previous[$key].write)
+            $cpuDelta+=[Math]::Max([double]0,$cpu-$Previous[$key].cpu)
+            $readDelta+=[Math]::Max([double]0,$read-$Previous[$key].read)
+            $writeDelta+=[Math]::Max([double]0,$write-$Previous[$key].write)
         }
         $next[$key]=@{cpu=$cpu;read=$read;write=$write}
         $rss+=[double]$process.WorkingSetSize
@@ -126,12 +126,12 @@ function Read-ConsoleLeaseSnapshot {
             $snapshot.phaseSequence=$phase.sequence;$snapshot.phaseEvent=$phase.event;$snapshot.phaseOperation=$phase.operation
             $phaseUtc=ConvertTo-ConsoleUtc $phase.utc
             $snapshot.phaseRecordedUtc=$phaseUtc.ToString('o');$snapshot.phaseElapsedSeconds=$phase.elapsedSeconds
-            $snapshot.phaseAgeSeconds=[Math]::Round([Math]::Max(0,($NowUtc-$phaseUtc).TotalSeconds),1)
+            $snapshot.phaseAgeSeconds=[Math]::Round([Math]::Max([double]0,($NowUtc-$phaseUtc).TotalSeconds),1)
         }
         $closed=@($records|Where-Object {$_.event -cin @('end','failure')}|ForEach-Object {$_.operationId})
         $open=$records|Where-Object {$_.event -ceq 'start' -and $closed -cnotcontains $_.operationId}|Select-Object -Last 1
         if($null -ne $open -and $open.operation -cmatch '^[A-Za-z0-9-]+$'){
-            $snapshot.openOperation=$open.operation;$snapshot.openOperationAgeSeconds=[Math]::Round([Math]::Max(0,($NowUtc-(ConvertTo-ConsoleUtc $open.utc)).TotalSeconds),1)
+            $snapshot.openOperation=$open.operation;$snapshot.openOperationAgeSeconds=[Math]::Round([Math]::Max([double]0,($NowUtc-(ConvertTo-ConsoleUtc $open.utc)).TotalSeconds),1)
         }
         $integrity=@($records|Where-Object {$_.event -ceq 'end' -and $_.operation -ceq 'Assert-EzVmQemuPayloadIntegrity'})
         $snapshot.completedIntegrityChecks=$integrity.Count
