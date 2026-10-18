@@ -224,6 +224,14 @@ class Coordinator:
                 json.dump({"leaseId": owner["leaseId"], "requestedUtc": now()}, stream)
         finals = [event for event in events if event["kind"] == "final"]
         if not finals:
+            if (console / "controller-started.json").exists():
+                snapshot(console / "controller-started.json")
+                alive = json_bytes(run_powershell(SCRIPT / "Get-GateControllerState.ps1", ["-ConsoleRoot", console]).encode())
+                if alive["alive"] is False:
+                    if any(snapshot(path)["kind"] == "final" for path in root.glob("event-*.json")):
+                        raise UnknownWrite("private-final-arrived-during-liveness-check")
+                    return "unknown", {"leaseId": owner["leaseId"], "runId": private.get("runId"),
+                                       "reason": "private-controller-disappeared-cleanup-unconfirmed"}
             return "pending", {"leaseId": owner["leaseId"], "runId": private.get("runId"), "lastEvent": events[-1]["kind"] if events else None}
         require(len(finals) == 1, "private-final-count")
         final = finals[0]["data"]
