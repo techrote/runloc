@@ -42,26 +42,42 @@ try{
     }
     $code=$job.ExitCode;$complete=$code -eq 0
 }finally{
-    if($null -ne $job){
-        if(-not $job.HasExited -or $job.ActiveProcesses -gt 0){$forced=$true;$complete=$false;$job.Terminate()}
-        $wait=[Diagnostics.Stopwatch]::StartNew()
-        while((-not $job.HasExited -or $job.ActiveProcesses -gt 0) -and $wait.Elapsed.TotalSeconds -lt 30){Start-Sleep -Milliseconds 100}
-        $empty=$job.HasExited -and $job.ActiveProcesses -eq 0
-        if($job.HasExited){$code=$job.ExitCode}
-        $drained=$job.FinishOutput(3000)
-        foreach($record in $job.Drain()){if($record.Text -cmatch '^DIAGNOSTIC_(PHASE|ONLY|STOP_UNCONFIRMED)='){Write-Host ($record.Utc+' '+$record.Text)}}
-        if(-not $drained -or $job.OutputFailed -or $job.OutputOverflow){$complete=$false}
-        $job.Dispose()
+    $errors=@();$sourceUnchanged=$false;$candidateAfter=$null;$controllerAfter=$null
+    try{
+        if($null -ne $job){
+            try{
+                if(-not $job.HasExited -or $job.ActiveProcesses -gt 0){$forced=$true;$complete=$false;$job.Terminate()}
+                $wait=[Diagnostics.Stopwatch]::StartNew()
+                while((-not $job.HasExited -or $job.ActiveProcesses -gt 0) -and $wait.Elapsed.TotalSeconds -lt 30){Start-Sleep -Milliseconds 100}
+                $empty=$job.HasExited -and $job.ActiveProcesses -eq 0
+                if($job.HasExited){$code=$job.ExitCode}
+                $drained=$job.FinishOutput(3000)
+                foreach($record in $job.Drain()){if($record.Text -cmatch '^DIAGNOSTIC_(PHASE|ONLY|STOP_UNCONFIRMED)='){Write-Host ($record.Utc+' '+$record.Text)}}
+                if(-not $drained -or $job.OutputFailed -or $job.OutputOverflow){$complete=$false}
+            }catch{$complete=$false;$empty=$false;$errors+='process-cleanup-unconfirmed'}
+            finally{try{$job.Dispose()}catch{$complete=$false;$empty=$false;$errors+='job-disposal-unconfirmed'}}
+        }
+        try{
+            $candidateAfter=Get-PilotSourceIdentity -Root $plan.candidateRoot -Repository 'https://github.com/techrote/ezvm' -ExpectedCommit $plan.candidateCommit -ExpectedTree $candidate.tree
+            $controllerAfter=Get-PilotSourceIdentity -Root $root -Repository 'https://github.com/techrote/runloc' -ExpectedCommit $plan.controllerCommit -ExpectedTree $controller.tree
+            $sourceUnchanged=$candidateAfter.executedTreeSha256 -ceq $candidate.executedTreeSha256 -and $controllerAfter.executedTreeSha256 -ceq $controller.executedTreeSha256
+            if(-not $sourceUnchanged){$complete=$false}
+        }catch{$complete=$false;$errors+='source-after-unconfirmed'}
+        if($null -ne $lease){
+            try{
+                if($complete -and $empty){Remove-PilotFixture -Lease $lease -Clock $clock -DeadlineSeconds ($clock.Elapsed.TotalSeconds+180) -OwnedProcessesExited $true;$removed=$true}
+            }catch{$complete=$false;$errors+='fixture-disposal-unconfirmed'}
+            # Failed fixtures are private forensic quarantine, never reusable
+            # bases or successful full-qualification disposal evidence.
+            try{
+                Write-PilotNewJson -Path (Join-Path $state 'diagnostic-result.json') -Value @{schemaVersion=1;diagnosticOnly=$true;qualificationPassed=$false;
+                    diagnosticCompleted=$complete;childExitCode=$code;forced=$forced;activeOwnedProcesses=$(if($empty){0}else{$null});fixtureRemoved=$removed;
+                    forensicQuarantineRequired=(-not $removed);leaseId=$lease.Id;candidate=$candidate;controller=$controller;candidateAfter=$candidateAfter;
+                    controllerAfter=$controllerAfter;sourceUnchanged=$sourceUnchanged;errors=$errors;elapsedSeconds=$clock.Elapsed.TotalSeconds}
+            }catch{$complete=$false;Write-Host 'DIAGNOSTIC_RECEIPT_WRITE_FAILED=quarantine-no-qualification'}
+        }
+    }finally{
+        try{if($null -ne $lease){$lease.Lock.Dispose()}}finally{$capacity.Dispose()}
     }
-    if($null -ne $lease){
-        if($complete -and $empty){Remove-PilotFixture -Lease $lease -Clock $clock -DeadlineSeconds ($clock.Elapsed.TotalSeconds+180) -OwnedProcessesExited $true;$removed=$true}
-        # A failed diagnostic fixture is private forensic quarantine, never a
-        # qualified/reusable base or a completed qualification disposal result.
-        Write-PilotNewJson -Path (Join-Path $state 'diagnostic-result.json') -Value @{schemaVersion=1;diagnosticOnly=$true;qualificationPassed=$false;
-            diagnosticCompleted=$complete;childExitCode=$code;forced=$forced;activeOwnedProcesses=$(if($empty){0}else{$null});fixtureRemoved=$removed;
-            forensicQuarantineRequired=(-not $removed);leaseId=$lease.Id;candidate=$candidate;controller=$controller;elapsedSeconds=$clock.Elapsed.TotalSeconds}
-        $lease.Lock.Dispose()
-    }
-    $capacity.Dispose()
 }
 Write-Host 'Diagnostic stopped. Its receipt never qualifies the complete release scenario.'

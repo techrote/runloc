@@ -39,6 +39,7 @@ function Start-DiagnosticGuest {
     Save-GuestDiagnosticLogs
     Write-Host ('DIAGNOSTIC_PHASE=stopped; instance='+$Name)
 }
+$workloadFailed=$true
 try{
     Write-Host 'DIAGNOSTIC_ONLY=not-full-qualification'
     Write-Host 'DIAGNOSTIC_PHASE=install-runtime'
@@ -58,7 +59,10 @@ try{
         }
     }
     Write-Host 'DIAGNOSTIC_PHASE=completed-no-full-qualification-claim'
+    $workloadFailed=$false
 }finally{
-    Save-GuestDiagnosticLogs
-    foreach($name in $active){try{$null=Stop-EzVmInstance -Root $root -InstanceName $name -ShutdownTimeoutSeconds 30}catch{Write-Host ('DIAGNOSTIC_STOP_UNCONFIRMED='+$name)}}
+    $cleanupFailed=$false
+    try{Save-GuestDiagnosticLogs}catch{$cleanupFailed=$true;Write-Host 'DIAGNOSTIC_SNAPSHOT_UNAVAILABLE=private-evidence'}
+    foreach($name in $active){try{$null=Stop-EzVmInstance -Root $root -InstanceName $name -ShutdownTimeoutSeconds 30}catch{$cleanupFailed=$true;Write-Host ('DIAGNOSTIC_STOP_UNCONFIRMED='+$name)}}
+    if($cleanupFailed -and -not $workloadFailed){throw 'diagnostic-cleanup-incomplete'}
 }

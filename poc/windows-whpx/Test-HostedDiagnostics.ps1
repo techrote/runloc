@@ -16,3 +16,6 @@ Write-Host 'PASS hosted diagnostics: exact panic/launch and READY failure retain
 $signals=Get-HostedDiagnosticSignals -Records @(@{Text='untrusted prose Kernel panic - not syncing: hidden';Utc='2026-10-18T21:14:40Z'})
 if($signals.Count -ne 0){throw 'unframed-panic-text-accepted'}
 Write-Host 'PASS hosted diagnostics: unframed guest prose cannot invent kernel evidence'
+$signals=Get-HostedDiagnosticSignals -Records @(@{Text='EZVM_VENV_VALIDATION_FAILURE stage=create exit=124';Utc=$private})
+if($signals.Count -ne 1 -or $signals[0].validationStage -cne 'create' -or $signals[0].validationExitCode -ne 124 -or $signals[0].utc -cne ''){throw 'structured-venv-exit-not-retained'}
+Write-Host 'PASS hosted diagnostics: bounded stage and actual numeric exit survive without untrusted timestamps'
