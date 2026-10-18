@@ -8,6 +8,15 @@ function Assert-RunnerThrows { param([scriptblock]$Action) try { & $Action | Out
 function Test-RunnerCase { param([string]$Name, [scriptblock]$Action) & $Action; $script:passed++; Write-Host ('PASS runner: ' + $Name) }
 $runnerName = 'runloc-' + ('a' * 32)
 
+Test-RunnerCase 'routing rejects generic labels that could accept an unapproved ordinary job' {
+    $runner = @{ name = $runnerName; labels = @(@{ name = $runnerName }) }
+    Assert-RunnerRouting -Runner $runner -Name $runnerName
+    foreach ($label in @('self-hosted', 'Windows', 'X64', 'ezvm-whpx')) {
+        $runner.labels = @(@{ name = $runnerName }, @{ name = $label })
+        Assert-RunnerThrows { Assert-RunnerRouting -Runner $runner -Name $runnerName }
+    }
+}
+
 Test-RunnerCase 'an earlier green job cannot override later cancellation uncertain cleanup or a live child' {
     $good = @{ JobPassed = $true; Reason = 'job-completed'; Exited = $true; ActiveProcesses = 0; Forced = $false;
         RemoteAbsent = $true; FixtureRemoved = $true; BackingIntact = $true; SentinelIntact = $true; SourceIntact = $true; WorkflowCleanupConfirmed = $true }

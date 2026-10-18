@@ -59,6 +59,7 @@ if ($principal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator) 
 $controllerRoot = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../..'))
 $source = Get-PilotSourceIdentity -Root $controllerRoot -Repository 'https://github.com/techrote/runloc' -ExpectedCommit $ExpectedControllerCommit
 $backing = Assert-PilotPath -Path $BackingRoot
+Assert-PilotFixtureSeparation -Fixture $backing -ProtectedRoots @($controllerRoot)
 $workflowPinPath = Assert-PilotPath -Path (Join-Path $PSScriptRoot 'runner-workflow.json') -File
 $workflowPin = [IO.File]::ReadAllText($workflowPinPath) | ConvertFrom-Json
 if ($workflowPin.repository -cne 'techrote/ezvm' -or $workflowPin.path -cne '.github/workflows/ezvm-ci-poc-002.yml' -or
@@ -73,6 +74,7 @@ $sha = [Security.Cryptography.SHA256]::Create()
 try { $workflowHash = ([BitConverter]::ToString($sha.ComputeHash([Text.Encoding]::UTF8.GetBytes($workflowText)))).Replace('-', '').ToLowerInvariant() }
 finally { $sha.Dispose() }
 if ($workflowHash -cne $workflowPin.sha256Lf) { throw 'workflow-definition-not-approved' }
+$backingLock = [IO.File]::Open((Join-Path $backing 'runner-capacity.lock'), [IO.FileMode]::OpenOrCreate, [IO.FileAccess]::ReadWrite, [IO.FileShare]::None)
 $archive = Get-RunnerPinnedArchive -BackingRoot $backing
 $pin = [IO.File]::ReadAllText((Join-Path $PSScriptRoot 'runner.json')) | ConvertFrom-Json
 $candidate = [IO.File]::ReadAllText((Join-Path $PSScriptRoot 'candidate.json')) | ConvertFrom-Json
@@ -107,6 +109,7 @@ try {
     $registration = New-RunnerRegistration -Name $name
     $runnerId = [long]$registration.runner.id
     Write-RunnerEvent -Kind 'registered' -Data @{ runnerId = $runnerId; name = $name }
+    Assert-RunnerRouting -Runner $registration.runner -Name $name
     $jit = ConvertTo-RunnerPinnedJitConfig -Encoded $registration.encoded_jit_config -RunnerId $runnerId -Name $name
     $exited = $false; $active = $null
     $job = New-Object RunlocPoc.OwnedProcess($listener, [string[]]@('run', '--once'), $runnerDirectory, $lease.Fixture,
@@ -121,6 +124,7 @@ try {
         if ([IO.File]::Exists((Join-Path $lease.Root 'stop.request'))) { throw 'owner-cancelled' }
         $observed = Get-RunnerByName -Name $name
         if ($null -ne $observed -and $observed.id -ne $runnerId) { throw 'runner-identity-changed' }
+        if ($null -ne $observed) { Assert-RunnerRouting -Runner $observed -Name $name }
         if (-not $online -and $null -ne $observed -and $observed.status -ceq 'online') {
             $online = $true
             Write-RunnerEvent -Kind 'online' -Data @{ runnerId = $runnerId }
@@ -240,7 +244,7 @@ finally {
     try { Write-RunnerEvent -Kind 'final' -Data @{ passed = $success; reason = $reason; runnerId = $runnerId; runId = $runId;
         activeProcesses = $active; fixtureRemoved = $fixtureRemoved; registrationAbsent = $remoteAbsent;
         elapsedSeconds = $clock.Elapsed.TotalSeconds; reusableBackingPreserved = $backingIntact; unrelatedSentinelSurvived = $sentinelIntact; controllerUnchanged = $sourceIntact; workflowCleanupConfirmed = $workflowCleanupConfirmed } }
-    finally { $lease.Lock.Dispose() }
+    finally { $lease.Lock.Dispose(); $backingLock.Dispose() }
 }
 if (-not $success) { exit 1 }
 exit 0

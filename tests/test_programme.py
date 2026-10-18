@@ -17,6 +17,9 @@ class ProgrammeTests(unittest.TestCase):
         self.root = Path(self.temp.name) / 'checkout with spaces'
         self.root.mkdir()
         shutil.copytree(ROOT / 'docs', self.root / 'docs')
+        # RAG now links to the executable PoC boundary and its operator docs.
+        # Preserve those real targets in the copied-checkout link audit.
+        shutil.copytree(ROOT / 'poc', self.root / 'poc')
         for name in ['README.md','AGENTS.md','LICENSE']:
             shutil.copy2(ROOT / name, self.root / name)
         self.data = load(self.root)

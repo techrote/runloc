@@ -21,7 +21,7 @@ All15 controller manifest pins independently match the public candidate.
   both supported engines pass. Exact artifact/source audit will accompany final evidence.
 - Hosted full TCG remains explicitly skipped/deferred under issue23. It was not restarted.
 - Local Runloc Windows PowerShell5.1: **59 pilot/21 supervisor groups**, no skips.
-- New runner controls: **13 groups** pass on local Windows PowerShell5.1 and
+- New runner controls: **14 groups** pass on local Windows PowerShell5.1 and
   PowerShell7.6.5. That latter local sanity check is not the required pinned7.6.6 CI lane.
 - Repository contracts and all21 Python tests pass.
 
@@ -32,6 +32,11 @@ were retained, and the committed clean successor passed406/406. A PowerShell7
 runner test initially exceeded the native short-path budget because its test
 fixture did not model the production shortWorkParent; correcting that fixture
 preserved native path guards and all ownership assertions.
+
+The first public Runloc checkpoint's Windows helper lanes passed59/21/13 in
+both supported engines. Its repository negative controls caught a copied-test
+fixture that omitted new linked PoC files. The fixture now copies those actual
+source/doc targets; link and contract assertions remain unchanged.
 
 ## Review and remaining gates
 

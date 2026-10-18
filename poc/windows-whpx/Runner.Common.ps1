@@ -7,6 +7,12 @@ function Test-RunnerQueueExpired {
     return -not $ApprovedJobStarted -and $ElapsedSeconds -ge $QueueSeconds
 }
 
+function Assert-RunnerRouting {
+    param([object]$Runner, [string]$Name)
+    $labels = @($Runner.labels)
+    if ($Runner.name -cne $Name -or $labels.Count -ne 1 -or $labels[0].name -cne $Name) { throw 'runner-routing-not-isolated' }
+}
+
 function Test-RunnerFinalOutcome {
     param([bool]$JobPassed, [string]$Reason, [bool]$Exited, [object]$ActiveProcesses,
         [bool]$Forced, [bool]$RemoteAbsent, [bool]$FixtureRemoved, [bool]$BackingIntact,
