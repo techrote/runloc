@@ -1,0 +1,232 @@
+{
+  "schemaVersion": 1,
+  "kind": "exact-successor-software-and-acl-evidence",
+  "physicalQualificationPassed": false,
+  "controller": {
+    "commit": "462618eb4a59a8e187b4a248671012651ed557d8",
+    "tree": "e6ef447e82e8b59fc45125eed2c894a0cf0a9b0c"
+  },
+  "candidate": {
+    "commit": "61b695470028d029f253b77acffabb81c3c6d2f9",
+    "tree": "a9ad2424854050aabc6e964ab8e766619172c6ca"
+  },
+  "githubRuns": [
+    {
+      "repository": "ezvm",
+      "runId": 39096610554,
+      "headSha": "61b695470028d029f253b77acffabb81c3c6d2f9",
+      "conclusion": "success",
+      "url": "https://github.com/techrote/ezvm/actions/runs/39096610554",
+      "jobs": [
+        {
+          "name": "Repository contract (Windows PowerShell 5.1)",
+          "id": 117584285689,
+          "conclusion": "success"
+        },
+        {
+          "name": "Control plane (Windows PowerShell 5.1)",
+          "id": 117584285879,
+          "conclusion": "success"
+        },
+        {
+          "name": "Control plane (PowerShell 7.6.6)",
+          "id": 117584285986,
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "repository": "ezvm",
+      "runId": 39096610562,
+      "headSha": "61b695470028d029f253b77acffabb81c3c6d2f9",
+      "conclusion": "success",
+      "url": "https://github.com/techrote/ezvm/actions/runs/39096610562",
+      "jobs": [
+        {
+          "name": "Private ACL standard user (PowerShell 5)",
+          "id": 117584285624,
+          "conclusion": "success"
+        },
+        {
+          "name": "Private ACL standard user (PowerShell 7)",
+          "id": 117584285750,
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "repository": "ezvm",
+      "runId": 39096610564,
+      "headSha": "61b695470028d029f253b77acffabb81c3c6d2f9",
+      "conclusion": "success",
+      "url": "https://github.com/techrote/ezvm/actions/runs/39096610564",
+      "jobs": [
+        {
+          "name": "Hosted TCG deferral notice (not qualification)",
+          "id": 117584285925,
+          "conclusion": "success"
+        },
+        {
+          "name": "Real v0.1 end-to-end release (Windows TCG; WHPX SKIP)",
+          "id": 117584286993,
+          "conclusion": "skipped"
+        }
+      ]
+    },
+    {
+      "repository": "runloc",
+      "runId": 39096699903,
+      "headSha": "462618eb4a59a8e187b4a248671012651ed557d8",
+      "conclusion": "success",
+      "url": "https://github.com/techrote/runloc/actions/runs/39096699903",
+      "jobs": [
+        {
+          "name": "PoC helper (PowerShell 7.6.6)",
+          "id": 117584558335,
+          "conclusion": "success"
+        },
+        {
+          "name": "PoC helper (Windows PowerShell 5.1)",
+          "id": 117584558537,
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "repository": "runloc",
+      "runId": 39096699802,
+      "headSha": "462618eb4a59a8e187b4a248671012651ed557d8",
+      "conclusion": "success",
+      "url": "https://github.com/techrote/runloc/actions/runs/39096699802",
+      "jobs": [
+        {
+          "name": "Programme contract (windows-2022)",
+          "id": 117584557869,
+          "conclusion": "success"
+        },
+        {
+          "name": "Programme contract (ubuntu-24.04)",
+          "id": 117584557991,
+          "conclusion": "success"
+        }
+      ]
+    }
+  ],
+  "ordinaryUserArtifacts": [
+    {
+      "id": 12125076934,
+      "name": "private-acl-powershell-5-61b695470028d029f253b77acffabb81c3c6d2f9",
+      "bytes": 22209,
+      "sha256": "9652c0e7199e1e2e0d80770ef7657824151947eaaed5f73eee619de664b72731",
+      "githubDigestMatched": true,
+      "suiteResults": [
+        {
+          "file": "fixed-suite.log",
+          "line": "RESULT: 403 passed, 0 failed, 0 skipped, 403 total."
+        },
+        {
+          "file": "process.stdout.log",
+          "line": "RESULT: 403 passed, 0 failed, 0 skipped, 403 total."
+        },
+        {
+          "file": "receipt.json",
+          "line": "    \"fullSuite\":  \"RESULT: 403 passed, 0 failed, 0 skipped, 403 total.\","
+        }
+      ]
+    },
+    {
+      "id": 12124748011,
+      "name": "private-acl-powershell-7-61b695470028d029f253b77acffabb81c3c6d2f9",
+      "bytes": 22191,
+      "sha256": "221b4226e5af16d52e94187d78f612e3a8b940572a687f5dd13e684162c98430",
+      "githubDigestMatched": true,
+      "suiteResults": [
+        {
+          "file": "fixed-suite.log",
+          "line": "RESULT: 403 passed, 0 failed, 0 skipped, 403 total."
+        },
+        {
+          "file": "process.stdout.log",
+          "line": "RESULT: 403 passed, 0 failed, 0 skipped, 403 total."
+        },
+        {
+          "file": "receipt.json",
+          "line": "  \"fullSuite\": \"RESULT: 403 passed, 0 failed, 0 skipped, 403 total.\","
+        }
+      ]
+    }
+  ],
+  "coreCheckout": {
+    "commit": "b06b3951c985aabddbbe604d4e13099b8cb6f73e",
+    "tree": "a9ad2424854050aabc6e964ab8e766619172c6ca",
+    "treeEqualsCandidate": true,
+    "powerShell51": {
+      "passed": 403,
+      "failed": 0,
+      "skipped": 0
+    },
+    "powerShell766": {
+      "passed": 403,
+      "failed": 0,
+      "skipped": 0
+    }
+  },
+  "localCleanPowerShell51": {
+    "passed": 403,
+    "failed": 0,
+    "skipped": 0,
+    "actualExitCode": 0,
+    "logSha256": "e3b99827d4ea98d287ee19c81efac3c209bb22de8eecd35332286642ef397313"
+  },
+  "runlocWindowsEachEngine": {
+    "pilotGroupsPassed": 58,
+    "supervisorGroupsPassed": 21,
+    "platformGroupsSkipped": 0
+  },
+  "runlocPythonTests": {
+    "passed": 21
+  },
+  "independentlyReviewedOrdinaryUserFacts": {
+    "actualChildExitCode": 0,
+    "childExited": true,
+    "sourceUnchanged": true,
+    "nonAdministrator": true,
+    "auditOwnershipBackupRestorePrivilegesAbsent": true,
+    "allFourLegacyRedCasesReproduced": true,
+    "allFourFixedGreenCasesPassed": true,
+    "temporaryAccountRemoved": true,
+    "fixtureRemoved": true,
+    "failureReasonEmpty": true
+  },
+  "ordinaryUserStderr": [
+    {
+      "artifactId": 12125076934,
+      "bytes": 917,
+      "sha256": "24cb81319d21354c1d2d4a65bf65c68fd679aa8a9470a6f846b36ec082847e7a",
+      "classification": "nonempty Git clone/checkout status and detached-commit warning; child exit 0"
+    },
+    {
+      "artifactId": 12124748011,
+      "bytes": 917,
+      "sha256": "e36425e992dc6c2226d6956639f646612db05e491d535f35467d664caaa3cf85",
+      "classification": "nonempty Git clone/checkout status and detached-commit warning; child exit 0"
+    }
+  ],
+  "initialIntegrationFailureRetained": {
+    "commit": "79561672a44d7466713a5e2553766fc732f15e88",
+    "passed": 401,
+    "failed": 1,
+    "skipped": 0,
+    "classification": "synthetic-four-file-legacy-fixture-used-full-overlay-manifest",
+    "successorCorrection": "test-only; preserve legacy assertions and add full-overlay six-mode tampering counterpart"
+  },
+  "review": {
+    "authorRole": "primary model agent",
+    "independentReviewerRole": "separate model agent at Extra High",
+    "materialFindingsRemaining": 0
+  },
+  "limitations": [
+    "Software/ACL checks do not establish physical WHPX acceptance.",
+    "Full hosted TCG remains explicitly owner-deferred; its skipped job is not qualification PASS."
+  ]
+}

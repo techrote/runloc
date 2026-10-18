@@ -1,6 +1,6 @@
 # CI-POC-001 — Unblock clean-source ACLs and complete the timed EzVM WHPX pilot
 
-**Urgent Windows CI proof of concept. Status: blocked.** Creating this issue is not implementation or qualification.
+**Urgent Windows CI proof of concept. Status: qualified.** Creating this issue is not implementation or qualification.
 
 ## Dependencies and autonomous prompt
 
@@ -36,7 +36,7 @@ Do not wait for or implement RUNLOC-001–019. This is an interim native Windows
 
 - Both existing failing ACL tests and new broad/inherited-ACE regressions prove old failure then fixed standard-user behavior under PowerShell5.1; applicable PS7 and repository checks also pass. Wrong-path/ACL failure still refuses work.
 - A fresh clean immutable public candidate completes the full WHPX scenario with exit0, complete original release markers, actual accelerator agreement, unchanged tested source/tree and clean owned fixture shutdown. No unqualified PASS from detection, a single READY or a skipped clause.
-- Record all phase times and tool/image/host/source identities. Target <=60minutes with90minute hard wall and owned bounded cleanup; a cancelled or timed-out run is failure, not a speed benchmark. Keep this issue open while any full-run clause or target is unresolved.
+- Record all phase times and tool/image/host/source identities. Target <=60minutes with90minute hard wall and owned bounded cleanup; a cancelled or timed-out run is failure, not a speed benchmark. Keep this issue open while any full-run clause or target is unresolved. The later explicit owner instruction documented in WINDOWS-WHPX-CI-POC.md permits -NoOverallTimeout for the replacement attempt: both whole-invocation timing bounds are disabled only for matching operator/controller/receipt policy; all original operation limits and non-timing acceptance remain. Record actual elapsed time and never claim a long success met the former target.
 - Publish a reusable redacted receipt/evidence set and exact candidate/controller SHA plus upstream PR links/disposition. Its Runloc helper/docs PR is merged after its own checks and actual physical acceptance; upstream EzVM PRs remain subject to their own gates. A frozen reviewed candidate may be used before upstream merge without claiming it is main.
 
 

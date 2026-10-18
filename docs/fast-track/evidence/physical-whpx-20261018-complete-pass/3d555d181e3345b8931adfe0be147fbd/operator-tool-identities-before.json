@@ -1,0 +1,34 @@
+{
+    "schemaVersion":  1,
+    "supervisorLeaseId":  "3d555d181e3345b8931adfe0be147fbd",
+    "phase":  "before",
+    "observedUtc":  "2026-10-18T04:25:13.6680413Z",
+    "source":  "Unchanged candidate Get-EzVmOpenSshTools in Windows PowerShell 5.1, plus the Git and Windows ACL tools; process PATH matches the inherited qualification PATH.",
+    "tools":  [
+                  {
+                      "name":  "ssh.exe",
+                      "sha256":  "98d447730047f5df91373e852d057928a921c3d1e89938700ab656ba84b19dc8",
+                      "version":  "OpenSSH_9.5p2 for Windows"
+                  },
+                  {
+                      "name":  "scp.exe",
+                      "sha256":  "b9cc1ae5fdba1f3833cc1130f6e11a9bed84a7953099dc40789c7d2744a862a1",
+                      "version":  "OpenSSH_9.5p2 for Windows"
+                  },
+                  {
+                      "name":  "ssh-keygen.exe",
+                      "sha256":  "c9dc170cd161db87e75eb6cf282f1325005b9e35628b9a36cb19883a8be1a34f",
+                      "version":  "OpenSSH_9.5p2 for Windows"
+                  },
+                  {
+                      "name":  "git.exe",
+                      "sha256":  "78211c7ed73988da93a6d8a33d47ec6187f464d7ea2a9a00c182bbd7a1ecf30f",
+                      "version":  "2.55.0.windows.5"
+                  },
+                  {
+                      "name":  "icacls.exe",
+                      "sha256":  "cb9e55d4c02f4e55100724d2da9a1267f49e196bd39fcdf36cec6ea6314fad2a",
+                      "version":  "10.0.26100.1"
+                  }
+              ]
+}

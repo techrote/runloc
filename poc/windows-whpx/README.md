@@ -6,8 +6,12 @@ verification, exact synthetic ACL preflight, owned process containment, timing
 and independently checked evidence. It does not install the Runloc product or
 register a GitHub runner.
 
-**Physical qualification is still required.** Software tests and the
-`-PreflightOnly` result do not satisfy [issue #21](https://github.com/techrote/runloc/issues/21).
+**Complete cold physical qualification passed on 18 October 2026**, with the
+owner-authorized `-NoOverallTimeout` policy, in 6,791.4463709 supervised seconds.
+See the [exact-source receipt and limitations](../../docs/fast-track/evidence/physical-whpx-20261018-complete-pass-analysis.json).
+This does not meet the former 60-minute target or qualify the default bounded
+policy. Software tests and `-PreflightOnly` alone do not satisfy
+[issue #21](https://github.com/techrote/runloc/issues/21).
 The [implementation checkpoint](../../docs/fast-track/CI-POC-001-EVIDENCE.md)
 records current upstream work, actual results and the remaining merge gate.
 The [binding contract](../../docs/fast-track/WINDOWS-WHPX-CI-POC.md) requires one

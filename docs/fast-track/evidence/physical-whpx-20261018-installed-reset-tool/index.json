@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "scope": "Exact read-only ten-file installed-tool observation; no independent qualification claim.",
+  "files": [
+    {
+      "path": "observation.json",
+      "sha256": "8817de0100b54348a6f68c8472afe1b2764a8a492f596f92ee0332bd9905b554",
+      "bytes": 3952
+    }
+  ]
+}

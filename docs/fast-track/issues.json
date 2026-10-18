@@ -10,7 +10,7 @@
       "title": "Unblock clean-source ACLs and complete the timed EzVM WHPX pilot",
       "depends_on": [],
       "issue_number": 21,
-      "status": "blocked",
+      "status": "qualified",
       "scope": [
         "Inspect current EzVM main and PRs43/45/46 plus their actual failing logs. Reuse the reviewed explicit-accelerator harness from PR46 in a clean pinned checkout. Do not resume the dirty owner checkout or old incomplete fixtures.",
         "Implement a narrow independently reviewed upstream EzVM private-DACL fix and retained standard-user regressions: preserve confidentiality while avoiding the SeSecurityPrivilege failure. Do not copy owner patches, elevate or grant privileges. Keep the exact synthetic preflight before expensive work.",
@@ -20,7 +20,7 @@
       "acceptance": [
         "Both existing failing ACL tests and new broad/inherited-ACE regressions prove old failure then fixed standard-user behavior under PowerShell5.1; applicable PS7 and repository checks also pass. Wrong-path/ACL failure still refuses work.",
         "A fresh clean immutable public candidate completes the full WHPX scenario with exit0, complete original release markers, actual accelerator agreement, unchanged tested source/tree and clean owned fixture shutdown. No unqualified PASS from detection, a single READY or a skipped clause.",
-        "Record all phase times and tool/image/host/source identities. Target <=60minutes with90minute hard wall and owned bounded cleanup; a cancelled or timed-out run is failure, not a speed benchmark. Keep this issue open while any full-run clause or target is unresolved.",
+        "Record all phase times and tool/image/host/source identities. Target <=60minutes with90minute hard wall and owned bounded cleanup; a cancelled or timed-out run is failure, not a speed benchmark. Keep this issue open while any full-run clause or target is unresolved. The later explicit owner instruction documented in WINDOWS-WHPX-CI-POC.md permits -NoOverallTimeout for the replacement attempt: both whole-invocation timing bounds are disabled only for matching operator/controller/receipt policy; all original operation limits and non-timing acceptance remain. Record actual elapsed time and never claim a long success met the former target.",
         "Publish a reusable redacted receipt/evidence set and exact candidate/controller SHA plus upstream PR links/disposition. Its Runloc helper/docs PR is merged after its own checks and actual physical acceptance; upstream EzVM PRs remain subject to their own gates. A frozen reviewed candidate may be used before upstream merge without claiming it is main."
       ],
       "tests": [

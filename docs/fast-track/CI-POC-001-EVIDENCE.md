@@ -2,7 +2,21 @@
 
 ## Acceptance status
 
-**The reviewed software checkpoint passed; physical acceptance remains incomplete.**
+**Complete cold physical WHPX qualification passed on 18 October 2026 under the
+owner-authorized no-overall-timeout policy.** The post-I/O supervised duration was
+**6,791.4463709 seconds (1 hour 53 minutes 11 seconds)**. This does not meet the
+former 60-minute target or qualify default 90-minute bounded operation.
+
+The [complete evidence index](evidence/physical-whpx-20261018-complete-pass/index.json)
+and [qualification analysis](evidence/physical-whpx-20261018-complete-pass-analysis.json)
+retain all 24 required markers exactly once, actual harness/controller/supervisor
+exits 0/0/0, all 2,526 public telemetry events, WHPX agreement, unchanged source,
+normal owned shutdown, zero active owned processes and verified fixture removal.
+The final exact source and timing exception are recorded below. Normal review,
+exact publication-head checks and expected-head merge gates remain required.
+
+The following earlier checkpoints and failed attempts are retained as history;
+they do not replace or alter the final successful attempt.
 
 This checkpoint belongs to [Runloc issue #21](https://github.com/techrote/runloc/issues/21).
 The [binding PoC contract](WINDOWS-WHPX-CI-POC.md) records the owner's temporary
@@ -22,7 +36,8 @@ diagnosis are appended below; no physical qualification is claimed.
 The standalone helper is under `poc/windows-whpx/`. It is an invocation and
 evidence boundary for the existing EzVM scenario. RUNLOC-001 through RUNLOC-019,
 CI-POC-002 runner registration and CI-POC-003 gate/fallback migration are outside
-this change. CI-POC-001 remains open until every full-run and timing clause passes.
+this change. CI-POC-001 closes only after actual acceptance under the selected
+owner-authorized policy and the normal review/merge gates pass.
 
 ## Reconciled public upstream work
 
@@ -756,3 +771,92 @@ full-overlay six-mode tampering counterpart. All production, native-tool and
 original full-harness bytes remain unchanged. Independent review and focused
 Windows PowerShell 5.1 checks passed: 49 groups, zero failures or skips.
 Exact successor CI and complete physical acceptance remain pending.
+
+## Complete cold physical qualification: 18 October 2026
+
+Fresh GitHub-independent attempt `3d555d181e3345b8931adfe0be147fbd` ran from
+04:25:10 UTC on the supported standard-user Windows 11 host. It used exactly:
+
+| Component | Executed commit | Executed tree |
+|---|---|---|
+| Runloc controller | `462618eb4a59a8e187b4a248671012651ed557d8` | `e6ef447e82e8b59fc45125eed2c894a0cf0a9b0c` |
+| EzVM candidate | `61b695470028d029f253b77acffabb81c3c6d2f9` | `a9ad2424854050aabc6e964ab8e766619172c6ca` |
+
+The exact separate preflight passed with actual exit 0 and 14.2286497 seconds
+post-I/O elapsed time. The full invocation repeated preflight, used the fresh
+sources and created a new lease/fixture; it reused no diagnostic base, mutable
+guest or old receipt.
+Normal managed bootstrap reacquired and verified the original provider plus the
+published ten-file QEMU 11.1.2 reset overlay. The
+[installed-tool observation](evidence/physical-whpx-20261018-installed-reset-tool/observation.json)
+records all ten actual sizes/hashes and source/build/asset identities. A separate
+reviewer independently rehashed those files while the fixture existed.
+
+All original release/portability assertions executed. All 24 required markers
+occur exactly once between coherent boundaries. Eight READY assertions completed
+under the frozen harness's exact state/accelerator/loopback checks. Requested,
+prepared-base and READY accelerators agree on WHPX. Both inspected roots contain
+the five expected stopped guests and their launch identities. The prepared base,
+source image, exported content and QEMU binaries have retained hashes.
+
+Actual harness, controller and supervisor exits are all **0**. The terminal
+post-I/O supervised elapsed time is **6791.4463709 seconds**; the receipt records
+6791.4158175 seconds and the independent operator 6792.6058044 seconds. The inner
+controller records 6782.7824902 seconds. Neither containment layer required force,
+timed out, overflowed or failed output collection. Inner owned cleanup took
+24.1248649 seconds, reached zero active processes, verified ownership and removed
+the fixture. Source-before/after bytes match; additional tools stayed unchanged;
+the unrelated sentinel survived. No pre-existing QEMU process was present, and
+post-run observation found no QEMU/image child. The reusable backing host and
+published tool artifacts remain available.
+
+The [complete redacted record](evidence/physical-whpx-20261018-complete-pass/index.json)
+retains both preflight and full receipts/digests, every completion-marker result,
+the independent observations, all 30 marker-to-marker phase spans and all 2,526
+telemetry events. The outer receipt SHA-256 is
+`e125a2dcc2a2c1680f4cbe7b7de06c83d54eb1060f7bb1445f3616a5500968d0`.
+The private original console uses Windows PowerShell 5.1 UTF-16/BOM and CRLF.
+The external publication collector strictly decodes that format and applies the
+same universal-newline normalization as its original text reader; 13 decoding
+and malformed-input controls pass. Original logs, receipt bytes and digests are
+unchanged. Private logs, leases, credentials and guest disks are excluded.
+
+This is functional physical acceptance under the owner's explicit timing
+exception. It is **not** a <=60-minute result and does not qualify the default
+90-minute bounded policy. The complete release telemetry duration is
+6741.9838785 seconds. Its 292 QEMU-integrity calls account for 6049.0069634
+inclusive seconds; QEMU payload digest counters record 984746 calls and
+366199261506 bytes. These counters explain substantial host-side work while
+QEMU itself appears idle. Nested durations are inclusive; do not add parent and
+child totals. No integrity check was removed to obtain this pass.
+
+The [final software evidence](evidence/physical-whpx-20261018-final-software.json)
+binds both supported Windows engines: Runloc 58 pilot / 21 supervisor groups per
+engine with zero skips; EzVM core and ordinary-user lanes 403 passed / 0 failed /
+0 skipped each, exact candidate-equivalent tree, real exit zero, unchanged
+source and complete account/fixture cleanup. Both original ordinary-user ZIP
+hashes match GitHub metadata. Their nonempty Git diagnostic stderr is classified
+and hashed accurately. Clean local PS5.1 also passed 403/0/0 and all 21 Python
+tests passed. Earlier red attempts remain immutable and linked above.
+
+Hosted full TCG remains explicitly deferred/unmeasured under CI-POC-003. Native
+Windows 10 behavior with this binary is also physically unmeasured. CI-POC-002
+still needs a real GitHub execution using a fresh ephemeral one-job registration
+on the reusable qualified backing environment; CI-POC-003 retains the gate and
+hosted fallback/rollback work. Neither is implemented or closed here. EzVM PR46
+remains draft; this qualification binds the public frozen candidate and does
+not call it EzVM main. PR45 was not imported and no administrator bypass occurred.
+
+The primary model agent authored/integrated the repairs and evidence. A separate
+Extra High model agent reviewed source, security, pinning, receipt/marker oracle,
+process ownership, cleanup and public evidence. These are model-agent roles,
+not external human approvals. Publication changes only documentation/evidence;
+the executed controller/candidate identities above remain the qualified source.
+
+Final independent review found no material issue. It matched all 24 markers to
+actual stdout, rehashed every executed controller/candidate file against public
+Git blobs, checked all receipt/event/observation digests and privacy, and
+verified actual fixture absence, tool/sentinel survival and zero QEMU processes.
+The reviewed publication preserves the exact original receipt and observation
+bytes under the existing evidence attributes. The successful timing policy is
+the explicit owner exception, not a claim that the former target was met.

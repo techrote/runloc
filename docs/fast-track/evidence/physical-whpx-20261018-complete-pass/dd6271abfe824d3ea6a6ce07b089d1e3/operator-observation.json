@@ -1,0 +1,334 @@
+{
+  "schemaVersion": 1,
+  "issue": "CI-POC-001",
+  "mode": "preflight",
+  "attemptIdentity": "dd6271abfe824d3ea6a6ce07b089d1e3",
+  "githubIndependent": true,
+  "controller": {
+    "repository": "https://github.com/techrote/runloc",
+    "commit": "462618eb4a59a8e187b4a248671012651ed557d8",
+    "tree": "e6ef447e82e8b59fc45125eed2c894a0cf0a9b0c",
+    "clean": true,
+    "executedTreeSha256": "11675b123105ac8dcdc421d451a253f72521eceaded40ace67bedf0af369e51a",
+    "trackedFileCount": 138,
+    "files": [
+      {
+        "path": "poc/windows-whpx/Invoke-WhpxPilot.ps1",
+        "sha256Lf": "c75d103ae8598dacb0770fa884a91fd55c3b325722c4024965b5b9b3cc4f6883",
+        "executedBytesSha256": "e0cc7c76f8a3aa54f631066d8ec736d07fde13f835dd2633e7c998cdda39e841"
+      },
+      {
+        "path": "poc/windows-whpx/Pilot.Controller.ps1",
+        "sha256Lf": "2140c1eb06e6677b3c52b36e2126e18a9ecf6a7fa8705a9a158074babaea1abc",
+        "executedBytesSha256": "becd2069c91bdb3401482697f504968bcceec2595cc5123a44a0bf046fdfe981"
+      },
+      {
+        "path": "poc/windows-whpx/Invoke-AclPreflight.ps1",
+        "sha256Lf": "8df722bf0ea4eb6c643cd33dbf621cc02dcf09a98f811d0b5b65c6220f2f50b8",
+        "executedBytesSha256": "6282e14fd9449d21a6f37969572294613da30c32e6e1468737aa1cfe33ed8a1e"
+      },
+      {
+        "path": "poc/windows-whpx/Pilot.Common.ps1",
+        "sha256Lf": "eceb955c27e2349553ab5bdd8cb4d5878f568e64af2e40c10e51a95c8512bb62",
+        "executedBytesSha256": "f386b5988a48d72da341332b09a6ace9e165b22c879efd13769d6333931a4974"
+      },
+      {
+        "path": "poc/windows-whpx/OwnedProcess.cs",
+        "sha256Lf": "eaa258b6f8e36e45c98694901295cc440b71119aaf9bb8f82dfd3a28ad7f2a65",
+        "executedBytesSha256": "eaa258b6f8e36e45c98694901295cc440b71119aaf9bb8f82dfd3a28ad7f2a65"
+      },
+      {
+        "path": "poc/windows-whpx/Pilot.Supervisor.ps1",
+        "sha256Lf": "1e732616e40d73d51f06589da3e6ca6a670bcdc11f57f23dbec1a3bc05f8badf",
+        "executedBytesSha256": "bb14bc096bc1d144e25a6006b859e6df95d86ceb4670df7ae9cf68513aad09a2"
+      },
+      {
+        "path": "poc/windows-whpx/SupervisorDeadline.cs",
+        "sha256Lf": "ed0f07e9973958181c86f8cddf8e53a54fffb7f0ceb2ba5430f13d023598d500",
+        "executedBytesSha256": "ed0f07e9973958181c86f8cddf8e53a54fffb7f0ceb2ba5430f13d023598d500"
+      },
+      {
+        "path": "poc/windows-whpx/Pilot.PowerShellEntry.ps1",
+        "sha256Lf": "9afc5ec981cf254135dd92a2f466db42b6f282ed8a6dca93cd36fafdf5fd00b8",
+        "executedBytesSha256": "48791ef4947ab51827daea3e2d3c981e15462bcbba1d4372aa0ddc0b38bed633"
+      },
+      {
+        "path": "poc/windows-whpx/Pilot.Bootstrap.ps1",
+        "sha256Lf": "a81efa37ddc0b8040ab811fd05c3b76cf5f0f95661ce06eaabf6d366d3d7d587",
+        "executedBytesSha256": "01cc21fae8e5b3e28f99f3685e64b6e24e01fd7b91cc9cbe0da992a18bd96a3a"
+      },
+      {
+        "path": "poc/windows-whpx/candidate.json",
+        "sha256Lf": "f4cf28573457e276fe4658d793452ea5c2e911b0b1649025a113d6a39688fbdf",
+        "executedBytesSha256": "f4cf28573457e276fe4658d793452ea5c2e911b0b1649025a113d6a39688fbdf"
+      }
+    ]
+  },
+  "candidate": {
+    "repository": "https://github.com/techrote/ezvm",
+    "commit": "61b695470028d029f253b77acffabb81c3c6d2f9",
+    "tree": "a9ad2424854050aabc6e964ab8e766619172c6ca",
+    "clean": true,
+    "executedTreeSha256": "5648ce74fe31e4db67bdeccbd890fe557bf5dea7f034ab5213e45c7baa70100f",
+    "trackedFileCount": 191,
+    "files": [
+      {
+        "path": "scripts/Invoke-EzVm010RealPortability.ps1",
+        "sha256Lf": "471c6938edd54a834a80d0064f3cff604a5b832d171d34ede0baf26bdc52fee6",
+        "executedBytesSha256": "471c6938edd54a834a80d0064f3cff604a5b832d171d34ede0baf26bdc52fee6"
+      },
+      {
+        "path": "guest/base-cloud-init/user-data.yaml",
+        "sha256Lf": "68b19eedf46aba223aa5b4b3760fd6f496e86b3225606fa5b32c0c1d288b8f40",
+        "executedBytesSha256": "68b19eedf46aba223aa5b4b3760fd6f496e86b3225606fa5b32c0c1d288b8f40"
+      },
+      {
+        "path": "scripts/QualificationTelemetry.ps1",
+        "sha256Lf": "f5c91a34be2cf43f25fdba4b0b4ac8491a3654fe24be7f3bb4077af14d4a9651",
+        "executedBytesSha256": "f5c91a34be2cf43f25fdba4b0b4ac8491a3654fe24be7f3bb4077af14d4a9651"
+      },
+      {
+        "path": "src/EzVm/Keys.ps1",
+        "sha256Lf": "89e437ce908695b9d90ddaa5cb590c3aa44c1a7c52d3696ebe9e7ae218f04fe5",
+        "executedBytesSha256": "89e437ce908695b9d90ddaa5cb590c3aa44c1a7c52d3696ebe9e7ae218f04fe5"
+      },
+      {
+        "path": "src/EzVm/Security.ps1",
+        "sha256Lf": "eebfdaac48c8b424dfe4c01b7d50cf50e78941bd67d5a31d5257f7c22a2867ac",
+        "executedBytesSha256": "eebfdaac48c8b424dfe4c01b7d50cf50e78941bd67d5a31d5257f7c22a2867ac"
+      },
+      {
+        "path": "manifests/qemu-windows.json",
+        "sha256Lf": "51ba4cd3eef4f94d0d6af5b330021455732e71cdac009f8f841c76f991410a1b",
+        "executedBytesSha256": "51ba4cd3eef4f94d0d6af5b330021455732e71cdac009f8f841c76f991410a1b"
+      },
+      {
+        "path": "manifests/ubuntu-noble-amd64.json",
+        "sha256Lf": "f261a3781920fbce1ad1f6811ccb75ec1544754a4ab3f86cc376f2f4513c7f64",
+        "executedBytesSha256": "f261a3781920fbce1ad1f6811ccb75ec1544754a4ab3f86cc376f2f4513c7f64"
+      },
+      {
+        "path": "src/EzVm/Qemu.ps1",
+        "sha256Lf": "3d791037dc829e712d0cbd2bf2cc184c7bcd2f38f2a881cdf628edec2a952e46",
+        "executedBytesSha256": "3d791037dc829e712d0cbd2bf2cc184c7bcd2f38f2a881cdf628edec2a952e46"
+      },
+      {
+        "path": "src/EzVm/QemuIntegrity.ps1",
+        "sha256Lf": "c15c5322fc7cb3dfb417c7f0ab4c89c61485cc1cf701860587cca4f1fd970685",
+        "executedBytesSha256": "c15c5322fc7cb3dfb417c7f0ab4c89c61485cc1cf701860587cca4f1fd970685"
+      },
+      {
+        "path": "src/EzVm/QemuOverlay.ps1",
+        "sha256Lf": "c24450c19a5a2222ae5ac889176d1af643aa9c2e6b1f0f2ffce296dd72658fc4",
+        "executedBytesSha256": "c24450c19a5a2222ae5ac889176d1af643aa9c2e6b1f0f2ffce296dd72658fc4"
+      },
+      {
+        "path": "tools/qemu-whpx/build-manifest.json",
+        "sha256Lf": "dd8aa663b56374134cf094370a13aa518d4a0de7d910cc56a3dd77472a771f5b",
+        "executedBytesSha256": "dd8aa663b56374134cf094370a13aa518d4a0de7d910cc56a3dd77472a771f5b"
+      },
+      {
+        "path": "tools/qemu-whpx/upstream.patch",
+        "sha256Lf": "8134ba44c351be17fa6262fa973e3528688d467ba89cc6a0a5803bd7a391a2e5",
+        "executedBytesSha256": "8134ba44c351be17fa6262fa973e3528688d467ba89cc6a0a5803bd7a391a2e5"
+      }
+    ]
+  },
+  "actualOperatorObservation": {
+    "mode": "preflight",
+    "overallTimeoutDisabled": true,
+    "actualExitCode": 0,
+    "observedStartUtc": "2026-10-18T04:20:15.2848968Z",
+    "observedEndUtc": "2026-10-18T04:20:30.6975389Z",
+    "observedElapsedSeconds": 15.4117011,
+    "stdoutSha256": "FF8D011E26D1ADA297409CBB5665D5926CB51B8ECD508E38B48307F9A2566DCF",
+    "stderrSha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+  },
+  "expectedOverallTimeoutDisabled": true,
+  "timingPolicyMatchesOperator": true,
+  "terminalOutcome": "RUNLOC_WHPX_SUPERVISOR_OUTCOME=preflight-pass; elapsedSeconds=14.2286497",
+  "totalSupervisedElapsedSeconds": 14.2286497,
+  "receiptElapsedSeconds": 14.2043544,
+  "receiptSha256": "b873b19a0a66098f0f9e53a834be4c198696e5307a2cd20e0b59c3012fb14415",
+  "innerReceiptSha256": "ef494d58ee70831bd4653ceb07f572e2ca79203880b4a36933a462a64930f537",
+  "requestedAccelerator": "whpx",
+  "observedAccelerator": "",
+  "host": {
+    "label": "lab-win11-01",
+    "os": "Microsoft Windows 11 Pro",
+    "version": "10.0.26300",
+    "build": "26300",
+    "architecture": "64-bit",
+    "logicalProcessors": 12,
+    "availableMemoryBytes": 46183260160,
+    "cpuModels": [
+      "AMD Ryzen 5 5600X 6-Core Processor             "
+    ],
+    "controllerPowerShell": "5.1.26100.9711",
+    "harnessPowerShell": "10.0.26100.8972",
+    "harnessPowerShellSha256": "60c9b29843624dd8af6b6a7b26147753be6aeef65098b9a503cc50850afe410f",
+    "standardUser": true,
+    "seSecurityPrivilegePresent": false,
+    "availableDiskBytes": 100908597248
+  },
+  "toolImageGuestIdentities": {
+    "expectedImageSha256": "",
+    "sourceImageSha256": "",
+    "qemuBinaries": []
+  },
+  "completionMarkers": [
+    {
+      "name": "EZVM012_REAL_FRESH_ROOT_DOCTOR",
+      "count": 0,
+      "exactlyOnce": false
+    },
+    {
+      "name": "EZVM012_REAL_BOOTSTRAP_DOCTOR",
+      "count": 0,
+      "exactlyOnce": false
+    },
+    {
+      "name": "EZVM010_REAL_TINY_RESET_FRESH_STATEFUL_INDEPENDENCE",
+      "count": 0,
+      "exactlyOnce": false
+    },
+    {
+      "name": "EZVM010_REAL_SENSITIVE_BASELINE_RESET_AND_FRESH",
+      "count": 0,
+      "exactlyOnce": false
+    },
+    {
+      "name": "EZVM010_REAL_STANDALONE_EXPORT_IMPORT",
+      "count": 0,
+      "exactlyOnce": false
+    },
+    {
+      "name": "EZVM010_REAL_UNSAFE_IMPORT_REFUSAL",
+      "count": 0,
+      "exactlyOnce": false
+    },
+    {
+      "name": "EZVM010_REAL_FAILED_EXPORT_PRESERVES_DATA",
+      "count": 0,
+      "exactlyOnce": false
+    },
+    {
+      "name": "EZVM012_REAL_TWO_CONCURRENT_READY_GUESTS",
+      "count": 0,
+      "exactlyOnce": false
+    },
+    {
+      "name": "EZVM011_REAL_SCP_ROUNDTRIP_AND_FAILED_DESTINATION_PRESERVATION",
+      "count": 0,
+      "exactlyOnce": false
+    },
+    {
+      "name": "EZVM011_REAL_RUNNING_DIAGNOSIS_AND_RUNTIME_TRANSFER_REFUSAL",
+      "count": 0,
+      "exactlyOnce": false
+    },
+    {
+      "name": "EZVM012_REAL_STOP_RESTART_PERSISTENCE",
+      "count": 0,
+      "exactlyOnce": false
+    },
+    {
+      "name": "EZVM010_REAL_RUNNING_OPERATIONS_REFUSE",
+      "count": 0,
+      "exactlyOnce": false
+    },
+    {
+      "name": "EZVM012_REAL_FRESH_CLONE_PRISTINE_READY",
+      "count": 0,
+      "exactlyOnce": false
+    },
+    {
+      "name": "EZVM010_REAL_RESET_PRISTINE_READY",
+      "count": 0,
+      "exactlyOnce": false
+    },
+    {
+      "name": "EZVM010_REAL_STATEFUL_NEW_IDENTITY_AND_CONTENT",
+      "count": 0,
+      "exactlyOnce": false
+    },
+    {
+      "name": "EZVM010_REAL_IMPORTED_NEW_IDENTITY_AND_CONTENT",
+      "count": 0,
+      "exactlyOnce": false
+    },
+    {
+      "name": "EZVM012_REAL_RELOCATED_DOCTOR",
+      "count": 0,
+      "exactlyOnce": false
+    },
+    {
+      "name": "EZVM010_REAL_COLD_RELOCATION_READY",
+      "count": 0,
+      "exactlyOnce": false
+    },
+    {
+      "name": "EZVM010_REAL_RELATIVE_BACKING_AND_RUNTIME_REGENERATION",
+      "count": 0,
+      "exactlyOnce": false
+    },
+    {
+      "name": "EZVM010_REAL_GRACEFUL_STOP",
+      "count": 0,
+      "exactlyOnce": false
+    },
+    {
+      "name": "EZVM011_REAL_COMPLETE_SECURITY_AND_PORTABILITY",
+      "count": 0,
+      "exactlyOnce": false
+    },
+    {
+      "name": "EZVM012_REAL_RELOCATED_DOCTOR_AND_RESTART",
+      "count": 0,
+      "exactlyOnce": false
+    },
+    {
+      "name": "EZVM012_REAL_COMPLETE_END_TO_END",
+      "count": 0,
+      "exactlyOnce": false
+    },
+    {
+      "name": "EZVM010_WHPX_EXECUTION",
+      "count": 0,
+      "exactlyOnce": false
+    }
+  ],
+  "numericHarnessExitCode": null,
+  "numericSupervisorExitCode": 0,
+  "phaseDurations": [],
+  "cleanup": {
+    "childExited": true,
+    "activeProcesses": 0,
+    "fixtureRemoved": true,
+    "forced": false,
+    "ownershipVerified": true,
+    "startSeconds": 8.3321162,
+    "endSeconds": 8.3840833
+  },
+  "outerControllerProcess": {
+    "method": "CreateProcess-suspended-then-Job-assignment",
+    "killOnClose": true,
+    "breakawayAllowed": false,
+    "createdUtc": "2026-10-18T04:20:18.0807433Z",
+    "endedUtc": "2026-10-18T04:20:30.3705431Z",
+    "exitCode": 0,
+    "childExited": true,
+    "activeProcesses": 0,
+    "forced": false,
+    "timedOut": false,
+    "outputOverflow": false,
+    "outputFailed": false,
+    "controllerError": false
+  },
+  "sourceUnchanged": true,
+  "physicalQualificationPassed": false,
+  "qualificationResult": "preflight-pass",
+  "reasonCodes": [
+    "physical-qualification-not-run"
+  ]
+}

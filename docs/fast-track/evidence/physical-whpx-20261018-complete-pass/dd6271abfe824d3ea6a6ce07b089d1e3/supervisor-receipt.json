@@ -1,0 +1,182 @@
+{
+    "schemaVersion":  1,
+    "issue":  "CI-POC-001",
+    "kind":  "supervisor",
+    "supervisorLeaseId":  "dd6271abfe824d3ea6a6ce07b089d1e3",
+    "outcome":  "preflight-pass",
+    "exitCode":  0,
+    "startedUtc":  "2026-10-18T04:20:16.4296792Z",
+    "endedUtc":  "2026-10-18T04:20:30.6347217Z",
+    "elapsedSeconds":  14.2043544,
+    "targetSeconds":  0,
+    "executionDeadlineSeconds":  0,
+    "cleanupDeadlineSeconds":  0,
+    "hardWallSeconds":  0,
+    "overallTimeoutDisabled":  true,
+    "controllerBudgetSeconds":  0,
+    "preflightOnly":  true,
+    "physicalQualificationPassed":  false,
+    "hostLabel":  "lab-win11-01",
+    "elapsedSecondsScope":  "through-outcome-evaluation-before-receipt-write",
+    "acceptanceRequires":  [
+                               "matching-receipt-digest",
+                               "terminal-outcome-marker-with-post-io-elapsed",
+                               "actual-supervisor-exit-zero"
+                           ],
+    "candidate":  {
+                      "repository":  "https://github.com/techrote/ezvm",
+                      "commit":  "61b695470028d029f253b77acffabb81c3c6d2f9",
+                      "tree":  "a9ad2424854050aabc6e964ab8e766619172c6ca",
+                      "files":  [
+                                    {
+                                        "path":  "scripts/Invoke-EzVm010RealPortability.ps1",
+                                        "sha256Lf":  "471c6938edd54a834a80d0064f3cff604a5b832d171d34ede0baf26bdc52fee6",
+                                        "executedBytesSha256":  "471c6938edd54a834a80d0064f3cff604a5b832d171d34ede0baf26bdc52fee6"
+                                    },
+                                    {
+                                        "path":  "guest/base-cloud-init/user-data.yaml",
+                                        "sha256Lf":  "68b19eedf46aba223aa5b4b3760fd6f496e86b3225606fa5b32c0c1d288b8f40",
+                                        "executedBytesSha256":  "68b19eedf46aba223aa5b4b3760fd6f496e86b3225606fa5b32c0c1d288b8f40"
+                                    },
+                                    {
+                                        "path":  "scripts/QualificationTelemetry.ps1",
+                                        "sha256Lf":  "f5c91a34be2cf43f25fdba4b0b4ac8491a3654fe24be7f3bb4077af14d4a9651",
+                                        "executedBytesSha256":  "f5c91a34be2cf43f25fdba4b0b4ac8491a3654fe24be7f3bb4077af14d4a9651"
+                                    },
+                                    {
+                                        "path":  "src/EzVm/Keys.ps1",
+                                        "sha256Lf":  "89e437ce908695b9d90ddaa5cb590c3aa44c1a7c52d3696ebe9e7ae218f04fe5",
+                                        "executedBytesSha256":  "89e437ce908695b9d90ddaa5cb590c3aa44c1a7c52d3696ebe9e7ae218f04fe5"
+                                    },
+                                    {
+                                        "path":  "src/EzVm/Security.ps1",
+                                        "sha256Lf":  "eebfdaac48c8b424dfe4c01b7d50cf50e78941bd67d5a31d5257f7c22a2867ac",
+                                        "executedBytesSha256":  "eebfdaac48c8b424dfe4c01b7d50cf50e78941bd67d5a31d5257f7c22a2867ac"
+                                    },
+                                    {
+                                        "path":  "manifests/qemu-windows.json",
+                                        "sha256Lf":  "51ba4cd3eef4f94d0d6af5b330021455732e71cdac009f8f841c76f991410a1b",
+                                        "executedBytesSha256":  "51ba4cd3eef4f94d0d6af5b330021455732e71cdac009f8f841c76f991410a1b"
+                                    },
+                                    {
+                                        "path":  "manifests/ubuntu-noble-amd64.json",
+                                        "sha256Lf":  "f261a3781920fbce1ad1f6811ccb75ec1544754a4ab3f86cc376f2f4513c7f64",
+                                        "executedBytesSha256":  "f261a3781920fbce1ad1f6811ccb75ec1544754a4ab3f86cc376f2f4513c7f64"
+                                    },
+                                    {
+                                        "path":  "src/EzVm/Qemu.ps1",
+                                        "sha256Lf":  "3d791037dc829e712d0cbd2bf2cc184c7bcd2f38f2a881cdf628edec2a952e46",
+                                        "executedBytesSha256":  "3d791037dc829e712d0cbd2bf2cc184c7bcd2f38f2a881cdf628edec2a952e46"
+                                    },
+                                    {
+                                        "path":  "src/EzVm/QemuIntegrity.ps1",
+                                        "sha256Lf":  "c15c5322fc7cb3dfb417c7f0ab4c89c61485cc1cf701860587cca4f1fd970685",
+                                        "executedBytesSha256":  "c15c5322fc7cb3dfb417c7f0ab4c89c61485cc1cf701860587cca4f1fd970685"
+                                    },
+                                    {
+                                        "path":  "src/EzVm/QemuOverlay.ps1",
+                                        "sha256Lf":  "c24450c19a5a2222ae5ac889176d1af643aa9c2e6b1f0f2ffce296dd72658fc4",
+                                        "executedBytesSha256":  "c24450c19a5a2222ae5ac889176d1af643aa9c2e6b1f0f2ffce296dd72658fc4"
+                                    },
+                                    {
+                                        "path":  "tools/qemu-whpx/build-manifest.json",
+                                        "sha256Lf":  "dd8aa663b56374134cf094370a13aa518d4a0de7d910cc56a3dd77472a771f5b",
+                                        "executedBytesSha256":  "dd8aa663b56374134cf094370a13aa518d4a0de7d910cc56a3dd77472a771f5b"
+                                    },
+                                    {
+                                        "path":  "tools/qemu-whpx/upstream.patch",
+                                        "sha256Lf":  "8134ba44c351be17fa6262fa973e3528688d467ba89cc6a0a5803bd7a391a2e5",
+                                        "executedBytesSha256":  "8134ba44c351be17fa6262fa973e3528688d467ba89cc6a0a5803bd7a391a2e5"
+                                    }
+                                ]
+                  },
+    "controller":  {
+                       "repository":  "https://github.com/techrote/runloc",
+                       "commit":  "462618eb4a59a8e187b4a248671012651ed557d8",
+                       "tree":  "e6ef447e82e8b59fc45125eed2c894a0cf0a9b0c",
+                       "files":  [
+                                     {
+                                         "path":  "poc/windows-whpx/Invoke-WhpxPilot.ps1",
+                                         "sha256Lf":  "c75d103ae8598dacb0770fa884a91fd55c3b325722c4024965b5b9b3cc4f6883",
+                                         "executedBytesSha256":  "e0cc7c76f8a3aa54f631066d8ec736d07fde13f835dd2633e7c998cdda39e841"
+                                     },
+                                     {
+                                         "path":  "poc/windows-whpx/Pilot.Controller.ps1",
+                                         "sha256Lf":  "2140c1eb06e6677b3c52b36e2126e18a9ecf6a7fa8705a9a158074babaea1abc",
+                                         "executedBytesSha256":  "becd2069c91bdb3401482697f504968bcceec2595cc5123a44a0bf046fdfe981"
+                                     },
+                                     {
+                                         "path":  "poc/windows-whpx/Invoke-AclPreflight.ps1",
+                                         "sha256Lf":  "8df722bf0ea4eb6c643cd33dbf621cc02dcf09a98f811d0b5b65c6220f2f50b8",
+                                         "executedBytesSha256":  "6282e14fd9449d21a6f37969572294613da30c32e6e1468737aa1cfe33ed8a1e"
+                                     },
+                                     {
+                                         "path":  "poc/windows-whpx/Pilot.Common.ps1",
+                                         "sha256Lf":  "eceb955c27e2349553ab5bdd8cb4d5878f568e64af2e40c10e51a95c8512bb62",
+                                         "executedBytesSha256":  "f386b5988a48d72da341332b09a6ace9e165b22c879efd13769d6333931a4974"
+                                     },
+                                     {
+                                         "path":  "poc/windows-whpx/OwnedProcess.cs",
+                                         "sha256Lf":  "eaa258b6f8e36e45c98694901295cc440b71119aaf9bb8f82dfd3a28ad7f2a65",
+                                         "executedBytesSha256":  "eaa258b6f8e36e45c98694901295cc440b71119aaf9bb8f82dfd3a28ad7f2a65"
+                                     },
+                                     {
+                                         "path":  "poc/windows-whpx/Pilot.Supervisor.ps1",
+                                         "sha256Lf":  "1e732616e40d73d51f06589da3e6ca6a670bcdc11f57f23dbec1a3bc05f8badf",
+                                         "executedBytesSha256":  "bb14bc096bc1d144e25a6006b859e6df95d86ceb4670df7ae9cf68513aad09a2"
+                                     },
+                                     {
+                                         "path":  "poc/windows-whpx/SupervisorDeadline.cs",
+                                         "sha256Lf":  "ed0f07e9973958181c86f8cddf8e53a54fffb7f0ceb2ba5430f13d023598d500",
+                                         "executedBytesSha256":  "ed0f07e9973958181c86f8cddf8e53a54fffb7f0ceb2ba5430f13d023598d500"
+                                     },
+                                     {
+                                         "path":  "poc/windows-whpx/Pilot.Bootstrap.ps1",
+                                         "sha256Lf":  "a81efa37ddc0b8040ab811fd05c3b76cf5f0f95661ce06eaabf6d366d3d7d587",
+                                         "executedBytesSha256":  "01cc21fae8e5b3e28f99f3685e64b6e24e01fd7b91cc9cbe0da992a18bd96a3a"
+                                     },
+                                     {
+                                         "path":  "poc/windows-whpx/Pilot.PowerShellEntry.ps1",
+                                         "sha256Lf":  "9afc5ec981cf254135dd92a2f466db42b6f282ed8a6dca93cd36fafdf5fd00b8",
+                                         "executedBytesSha256":  "48791ef4947ab51827daea3e2d3c981e15462bcbba1d4372aa0ddc0b38bed633"
+                                     },
+                                     {
+                                         "path":  "poc/windows-whpx/candidate.json",
+                                         "sha256Lf":  "f4cf28573457e276fe4658d793452ea5c2e911b0b1649025a113d6a39688fbdf",
+                                         "executedBytesSha256":  "f4cf28573457e276fe4658d793452ea5c2e911b0b1649025a113d6a39688fbdf"
+                                     }
+                                 ]
+                   },
+    "reasonCodes":  [
+                        "physical-qualification-not-run"
+                    ],
+    "controllerProcess":  {
+                              "method":  "CreateProcess-suspended-then-Job-assignment",
+                              "killOnClose":  true,
+                              "breakawayAllowed":  false,
+                              "createdUtc":  "2026-10-18T04:20:18.0807433Z",
+                              "endedUtc":  "2026-10-18T04:20:30.3705431Z",
+                              "exitCode":  0,
+                              "childExited":  true,
+                              "activeProcesses":  0,
+                              "forced":  false,
+                              "timedOut":  false,
+                              "outputOverflow":  false,
+                              "outputFailed":  false,
+                              "controllerError":  false
+                          },
+    "inner":  {
+                  "label":  "private/attempts/runloc-whpx-62350866a2764e26889495531753a95b/receipt.json",
+                  "leaseId":  "62350866a2764e26889495531753a95b",
+                  "receiptSha256":  "ef494d58ee70831bd4653ceb07f572e2ca79203880b4a36933a462a64930f537",
+                  "leaseSha256":  "af666ed6670d4bb723dcb4ee526eda346ac170d47d79b07e4733285cf7695901",
+                  "outcome":  "preflight-pass",
+                  "validated":  true
+              },
+    "quarantine":  {
+                       "required":  false,
+                       "label":  "private/attempts",
+                       "fixtureLocation":  "lease-bound-work-parent",
+                       "mayContainQualificationFixture":  false
+                   }
+}
