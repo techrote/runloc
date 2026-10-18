@@ -1,0 +1,669 @@
+{
+  "schemaVersion": 1,
+  "kind": "focused-whpx-manual-recovery-controls",
+  "issue": "CI-POC-001",
+  "executedControllerCommit": "90ed76448f13cbb7048888ae67451de2f9b28819",
+  "diagnosticId": "342821e0bd07490eab5d00919644ec32",
+  "phases": [
+    {
+      "mode": "cont-only",
+      "startedUtc": "2026-10-18T02:21:44.8535864Z",
+      "endedUtc": "2026-10-18T02:28:52.9522218Z",
+      "candidateCommit": "2afcd6a61b16e08cb7e35925e6d2cfc46cac24c0",
+      "candidateTree": "a5f70cc1a7018b77518b83e7c3a393a2c8068cd7",
+      "diagnosticScriptSha256": "d07dee5ca15a1c74f89d7cf7043c2ce798428c404c68f66de4531b057dd7325f",
+      "interventionScriptSha256": null,
+      "predicateSha256": null,
+      "actualChildExitCode": 1,
+      "actualInterventionExitCode": 0,
+      "childExited": true,
+      "activeProcesses": 0,
+      "forcedContainment": true,
+      "elapsedSeconds": 430.83706579999995,
+      "readyTimeoutSeconds": 300,
+      "shutdownTimeoutSeconds": 10,
+      "telemetryRecordCount": 150,
+      "requestedAccelerator": "whpx",
+      "actualAcceleratorArgument": "whpx",
+      "cpus": 4,
+      "memoryMiB": 8192,
+      "sourceBefore": "40e9c5d1858d7dda4e408f5b86c74a1378d900644bba7893b45cee38a1f79ad6",
+      "sourceAfter": "40e9c5d1858d7dda4e408f5b86c74a1378d900644bba7893b45cee38a1f79ad6",
+      "sourceUnchanged": true,
+      "initialFailureSealedBeforeIntervention": true,
+      "sealedIndexSha256": "ef51e8b30da91558ea1e8c438706dc8e21ff08dd723fb6046ba94dd8a5f095f8",
+      "sealedArtifactDigests": [
+        {
+          "label": "capture-cont-only-qemu.stderr.txt",
+          "sha256": "8c49088a1e78bd0d78f9f5c823a7f0972ff876625d63bb4862cada495928d8d8",
+          "bytes": 497
+        },
+        {
+          "label": "serial-b34ecc0ecbb14754be1057450d02222b.log",
+          "sha256": "c6f2ec7ee86a8b28265e3085819e461d51f5d04b9673d074c49162beb9620f7a",
+          "bytes": 86521
+        },
+        {
+          "label": "runtime.json",
+          "sha256": "a721d42ee51effd4149579b9dba7fada72c0bcbacfee7546bf6b58b1927ee980",
+          "bytes": 995
+        },
+        {
+          "label": "capture-cont-only-private-argv.json",
+          "sha256": "13794e09dad1cdf9d0d33a1a180e6c4c1d45a63db632494a6c0b22d73a0f2c17",
+          "bytes": 1673
+        },
+        {
+          "label": "capture-cont-only-telemetry.jsonl",
+          "sha256": "b2e8cc8ec99c96ad2b5e677a57a337592023230dc7cd0d38942256a99d961b6d",
+          "bytes": 32699
+        },
+        {
+          "label": "initial-qmp.json",
+          "sha256": "cea8a04ed48f21a69f660511c9c9046c6abec235e361a5642e5bb2cbfa1a783f",
+          "bytes": 20299
+        }
+      ],
+      "commands": [
+        {
+          "command": "qmp_capabilities",
+          "id": "f207a2fb97af4d7dad3396cb13bc2512",
+          "sentUtc": "2026-10-18T02:25:17.1687000Z",
+          "replyUtc": "2026-10-18T02:25:17.1782275Z",
+          "successfulReply": true
+        },
+        {
+          "command": "query-status",
+          "id": "37b9f29d6dce4ca595f2d343d9c1bcd2",
+          "sentUtc": "2026-10-18T02:25:17.1830995Z",
+          "replyUtc": "2026-10-18T02:25:17.1840989Z",
+          "successfulReply": true
+        },
+        {
+          "command": "human-monitor-command",
+          "id": "5f7b8bf896e34cc1b0548749f4fb1370",
+          "sentUtc": "2026-10-18T02:25:17.1866049Z",
+          "replyUtc": "2026-10-18T02:25:17.1901146Z",
+          "successfulReply": true
+        },
+        {
+          "command": "cont",
+          "id": "21a29e38f1d04157ba9258ff27690f2f",
+          "sentUtc": "2026-10-18T02:25:17.3209168Z",
+          "replyUtc": "2026-10-18T02:25:17.3988085Z",
+          "successfulReply": true
+        },
+        {
+          "command": "query-status",
+          "id": "b0daf9bad06e4643aa40b6bffde112d9",
+          "sentUtc": "2026-10-18T02:25:17.3988085Z",
+          "replyUtc": "2026-10-18T02:25:17.3998175Z",
+          "successfulReply": true
+        }
+      ],
+      "resetEventObserved": false,
+      "postResetStatus": null,
+      "preContStatus": null,
+      "postContStatus": {
+        "status": "running",
+        "running": true
+      },
+      "interventionCompleted": true,
+      "interventionFailure": null,
+      "authenticatedReadyEstablished": false,
+      "postInitializationBootProofEstablished": false,
+      "stopReturnedStopped": false,
+      "normalGuestShutdownEstablished": false,
+      "unexpectedVpExit4LinesObserved": 6,
+      "decoderFailureObservedOnStdout": false,
+      "decoderFailureObservedOnStderr": false,
+      "qualificationEligible": false,
+      "unassistedRebootPassed": false,
+      "physicalQualificationPassed": false,
+      "privateArtifactDigests": [
+        {
+          "label": "capture-cont-only-cont-dispatch-intent.json",
+          "bytes": 232,
+          "sha256": "44b10f04261968b4c86374b7a6d4b4c2f9ff70ecb5c3072632107b960dd00075"
+        },
+        {
+          "label": "capture-cont-only-intervention-exit.txt",
+          "bytes": 1,
+          "sha256": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9"
+        },
+        {
+          "label": "capture-cont-only-intervention-intent.json",
+          "bytes": 20407,
+          "sha256": "b887761ff6381ec11bef64e1e0eb885cd975b76b1d0e4222a906df4dc3e2ee91"
+        },
+        {
+          "label": "capture-cont-only-intervention-result.json",
+          "bytes": 22201,
+          "sha256": "85fca453269f5927008d0933035c485b2ed47c18b18d8698a084a482d984a96b"
+        },
+        {
+          "label": "capture-cont-only-observation.json",
+          "bytes": 2454,
+          "sha256": "2350327074ddf6e6797524e51f14d8f327953362af8f1484dd91f6914146ab89"
+        },
+        {
+          "label": "capture-cont-only-private-argv.json",
+          "bytes": 1673,
+          "sha256": "13794e09dad1cdf9d0d33a1a180e6c4c1d45a63db632494a6c0b22d73a0f2c17"
+        },
+        {
+          "label": "capture-cont-only-process.json",
+          "bytes": 1976,
+          "sha256": "41ff1c9fa39b97dfd423b951d51576438450ca42eda63cd10ecb0e6f926974db"
+        },
+        {
+          "label": "capture-cont-only-qemu.stderr.txt",
+          "bytes": 857,
+          "sha256": "83969723f60be64b7e3ebe02b5f01f5c28aae6f6787601128f0839292f7ad8c5"
+        },
+        {
+          "label": "capture-cont-only-qemu.stdout.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "label": "capture-cont-only-ready-window-closed.json",
+          "bytes": 92,
+          "sha256": "db7af20d187b9f489dcde1f36e9362fa66e4b0911871c3e9aa0cd63d5f12e505"
+        },
+        {
+          "label": "capture-cont-only-ready-window.json",
+          "bytes": 427,
+          "sha256": "ca2e4e6098aa5a157dac0a94819392eccf416ba2d9626a5b9b88890323f64bef"
+        },
+        {
+          "label": "capture-cont-only-source-proof.json",
+          "bytes": 536,
+          "sha256": "7810111cbd2a76a7f3c3fbbebe72e378ee64a4902896659ad8834c9750855ba3"
+        },
+        {
+          "label": "capture-cont-only-telemetry.jsonl",
+          "bytes": 41548,
+          "sha256": "da5301ebabd21a322ebc77f205b1c05a783d68c667b5b048ca0d5d6b4b82355d"
+        },
+        {
+          "label": "capture-cont-only.log",
+          "bytes": 730,
+          "sha256": "a7789760882173b84d9b9cd53b1688aaac6c8490ba025aced95ec19ac507084a"
+        }
+      ]
+    },
+    {
+      "mode": "reset-cont",
+      "startedUtc": "2026-10-18T02:29:17.1901602Z",
+      "endedUtc": "2026-10-18T02:36:31.9617276Z",
+      "candidateCommit": "2afcd6a61b16e08cb7e35925e6d2cfc46cac24c0",
+      "candidateTree": "a5f70cc1a7018b77518b83e7c3a393a2c8068cd7",
+      "diagnosticScriptSha256": "d07dee5ca15a1c74f89d7cf7043c2ce798428c404c68f66de4531b057dd7325f",
+      "interventionScriptSha256": null,
+      "predicateSha256": null,
+      "actualChildExitCode": 1,
+      "actualInterventionExitCode": 1,
+      "childExited": true,
+      "activeProcesses": 0,
+      "forcedContainment": true,
+      "elapsedSeconds": 437.41458159999996,
+      "readyTimeoutSeconds": 300,
+      "shutdownTimeoutSeconds": 10,
+      "telemetryRecordCount": 100,
+      "requestedAccelerator": "whpx",
+      "actualAcceleratorArgument": "whpx",
+      "cpus": 4,
+      "memoryMiB": 8192,
+      "sourceBefore": "40e9c5d1858d7dda4e408f5b86c74a1378d900644bba7893b45cee38a1f79ad6",
+      "sourceAfter": "40e9c5d1858d7dda4e408f5b86c74a1378d900644bba7893b45cee38a1f79ad6",
+      "sourceUnchanged": true,
+      "initialFailureSealedBeforeIntervention": true,
+      "sealedIndexSha256": "def4c7a4f467135834f2dee58196854f2f8efa0c71096a0e7d6eeacc300a378d",
+      "sealedArtifactDigests": [
+        {
+          "label": "capture-reset-cont-qemu.stderr.txt",
+          "sha256": "8c49088a1e78bd0d78f9f5c823a7f0972ff876625d63bb4862cada495928d8d8",
+          "bytes": 497
+        },
+        {
+          "label": "serial-adf0b47b033541ff865bcbe9c975d954.log",
+          "sha256": "5545d0b97a444d9d3ca6b8875664b3dbd18ca38aded8aae8fd1395856b57e372",
+          "bytes": 84677
+        },
+        {
+          "label": "runtime.json",
+          "sha256": "5df46c680cb4f2cab6e7e4ca1c875d830c1addeee93b06ab24d3bd9b064a2924",
+          "bytes": 999
+        },
+        {
+          "label": "capture-reset-cont-private-argv.json",
+          "sha256": "34b05c0cfabfb4d142774b083acf16ef7a3b32c83c9933acfb32a70ad3b22a6b",
+          "bytes": 1679
+        },
+        {
+          "label": "capture-reset-cont-telemetry.jsonl",
+          "sha256": "80d155e9c6181e7391fd6d9c4f8e01184ba0ed76961e5a8d2e204af7b2aace99",
+          "bytes": 21838
+        },
+        {
+          "label": "initial-qmp.json",
+          "sha256": "5b73f8ed46dd94d3e7b649ca555746be82b88bd56945100086ce5629cf0928ff",
+          "bytes": 20301
+        }
+      ],
+      "commands": [
+        {
+          "command": "qmp_capabilities",
+          "id": "d2b5a179052a45a6b68cc11871dc023b",
+          "sentUtc": "2026-10-18T02:33:34.0590836Z",
+          "replyUtc": "2026-10-18T02:33:34.0681044Z",
+          "successfulReply": true
+        },
+        {
+          "command": "query-status",
+          "id": "b94aaca2d4cf40a5b87d5c5d2f6e9fa8",
+          "sentUtc": "2026-10-18T02:33:34.0701057Z",
+          "replyUtc": "2026-10-18T02:33:34.0716127Z",
+          "successfulReply": true
+        },
+        {
+          "command": "human-monitor-command",
+          "id": "a6f1805b8ba04cc8b99b257756f6c321",
+          "sentUtc": "2026-10-18T02:33:34.0746416Z",
+          "replyUtc": "2026-10-18T02:33:34.0761830Z",
+          "successfulReply": true
+        },
+        {
+          "command": "system_reset",
+          "id": "9730cfe8fa23413498867d7fc3d078d1",
+          "sentUtc": "2026-10-18T02:33:34.2117705Z",
+          "replyUtc": "2026-10-18T02:33:34.2751495Z",
+          "successfulReply": true
+        },
+        {
+          "command": "query-status",
+          "id": "bd5470dca81545dab596cf5a1839508c",
+          "sentUtc": "2026-10-18T02:33:34.2801742Z",
+          "replyUtc": "2026-10-18T02:33:34.2801742Z",
+          "successfulReply": true
+        },
+        {
+          "command": "human-monitor-command",
+          "id": "18e18e000c7b47f0856a748d12fda02c",
+          "sentUtc": "2026-10-18T02:33:34.2811745Z",
+          "replyUtc": "2026-10-18T02:33:34.2821734Z",
+          "successfulReply": true
+        }
+      ],
+      "resetEventObserved": true,
+      "postResetStatus": {
+        "status": "prelaunch",
+        "running": false
+      },
+      "preContStatus": null,
+      "postContStatus": null,
+      "interventionCompleted": false,
+      "interventionFailure": "Reset completion while paused was not established; no retry/cont",
+      "authenticatedReadyEstablished": false,
+      "postInitializationBootProofEstablished": false,
+      "stopReturnedStopped": false,
+      "normalGuestShutdownEstablished": false,
+      "unexpectedVpExit4LinesObserved": 3,
+      "decoderFailureObservedOnStdout": false,
+      "decoderFailureObservedOnStderr": false,
+      "qualificationEligible": false,
+      "unassistedRebootPassed": false,
+      "physicalQualificationPassed": false,
+      "privateArtifactDigests": [
+        {
+          "label": "capture-reset-cont-intervention-exit.txt",
+          "bytes": 1,
+          "sha256": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"
+        },
+        {
+          "label": "capture-reset-cont-intervention-intent.json",
+          "bytes": 20409,
+          "sha256": "fa59560c1da2fde239681fe21e795630dcf9221f4e59d0b66651b816a80446b4"
+        },
+        {
+          "label": "capture-reset-cont-intervention-result.json",
+          "bytes": 34192,
+          "sha256": "043460fd9a362c17c0755b35f2948c304196dcd894bce60d57ecdd39e4cc1c66"
+        },
+        {
+          "label": "capture-reset-cont-observation.json",
+          "bytes": 2461,
+          "sha256": "bb286da5e5d8d314f55a056c8c63fbdeb75575b65b6477fbed8659ac794484d0"
+        },
+        {
+          "label": "capture-reset-cont-private-argv.json",
+          "bytes": 1679,
+          "sha256": "34b05c0cfabfb4d142774b083acf16ef7a3b32c83c9933acfb32a70ad3b22a6b"
+        },
+        {
+          "label": "capture-reset-cont-process.json",
+          "bytes": 1959,
+          "sha256": "d8c6a815754d09145302a070bc54591b899b35d78b8b730cf1a906a11d9c299a"
+        },
+        {
+          "label": "capture-reset-cont-qemu.stderr.txt",
+          "bytes": 497,
+          "sha256": "8c49088a1e78bd0d78f9f5c823a7f0972ff876625d63bb4862cada495928d8d8"
+        },
+        {
+          "label": "capture-reset-cont-qemu.stdout.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "label": "capture-reset-cont-ready-window-closed.json",
+          "bytes": 92,
+          "sha256": "c046ccebe70a5e1d3917c4da0ff5344ca3c1786a2cb47f262e4486a4a12ada6d"
+        },
+        {
+          "label": "capture-reset-cont-ready-window.json",
+          "bytes": 428,
+          "sha256": "47dfffd85435e813199dff9655e6c1050fa314db68082bdfcb577cbcf103cbfa"
+        },
+        {
+          "label": "capture-reset-cont-source-proof.json",
+          "bytes": 536,
+          "sha256": "7810111cbd2a76a7f3c3fbbebe72e378ee64a4902896659ad8834c9750855ba3"
+        },
+        {
+          "label": "capture-reset-cont-system_reset-dispatch-intent.json",
+          "bytes": 241,
+          "sha256": "982eed322c68eca47dcaeb571fc9869670302e162ce604476a4addc12622c77e"
+        },
+        {
+          "label": "capture-reset-cont-telemetry.jsonl",
+          "bytes": 29166,
+          "sha256": "f0eaf2a29cbed6a8b4c93538613d9c35e5776a055bc51bd70eec3e5a2cfd8626"
+        },
+        {
+          "label": "capture-reset-cont.log",
+          "bytes": 732,
+          "sha256": "fbadfb88e486784dc8d86aa89a07608facd4c145819f6966285088bc7961cc62"
+        }
+      ]
+    },
+    {
+      "mode": "reset-v4",
+      "startedUtc": "2026-10-18T02:39:01.2346467Z",
+      "endedUtc": "2026-10-18T02:46:33.9421784Z",
+      "candidateCommit": "2afcd6a61b16e08cb7e35925e6d2cfc46cac24c0",
+      "candidateTree": "a5f70cc1a7018b77518b83e7c3a393a2c8068cd7",
+      "diagnosticScriptSha256": "dc7bb4d773688aa1ec2a077536c54102c197a8ef9e513914b4b70512e02c7f92",
+      "interventionScriptSha256": "059e3c26ec624d6f12c51c27804a031ca90b1060a9cdc4a8b16bd6dca28363dc",
+      "predicateSha256": "4cfadedf0ab6f480d5767ac358184b090136c4f55c01326835d7de26c4922d15",
+      "actualChildExitCode": 1,
+      "actualInterventionExitCode": 0,
+      "childExited": true,
+      "activeProcesses": 0,
+      "forcedContainment": false,
+      "elapsedSeconds": 455.2510888,
+      "readyTimeoutSeconds": 300,
+      "shutdownTimeoutSeconds": 10,
+      "telemetryRecordCount": 126,
+      "requestedAccelerator": "whpx",
+      "actualAcceleratorArgument": "whpx",
+      "cpus": 4,
+      "memoryMiB": 8192,
+      "sourceBefore": "40e9c5d1858d7dda4e408f5b86c74a1378d900644bba7893b45cee38a1f79ad6",
+      "sourceAfter": "40e9c5d1858d7dda4e408f5b86c74a1378d900644bba7893b45cee38a1f79ad6",
+      "sourceUnchanged": true,
+      "initialFailureSealedBeforeIntervention": true,
+      "sealedIndexSha256": "d44b2ba9ef29e6fb29821496ef866041852b501b02496f5ae4a408ae39389950",
+      "sealedArtifactDigests": [
+        {
+          "label": "capture-reset-v4-qemu.stderr.txt",
+          "sha256": "8c49088a1e78bd0d78f9f5c823a7f0972ff876625d63bb4862cada495928d8d8",
+          "bytes": 497
+        },
+        {
+          "label": "serial-4f94fcb231164a3fa2c5cbdb2094ef4a.log",
+          "sha256": "ea6f09eadc1de32dcfbe222b47e767b9e11a67e842dd28e6d142cd56f84a58ff",
+          "bytes": 86165
+        },
+        {
+          "label": "runtime.json",
+          "sha256": "d5564b735ce5fa07286a4446c3f58cd3beccc709a9e1d91bc2bc368c623af965",
+          "bytes": 992
+        },
+        {
+          "label": "capture-reset-v4-private-argv.json",
+          "sha256": "759ec1a33e50773cc78d1b8d598c4ce243fd6724e4f7298948ef2070615e156b",
+          "bytes": 1667
+        },
+        {
+          "label": "capture-reset-v4-telemetry.jsonl",
+          "sha256": "51c77c02fe09f0fdecc1fb960f52495e63c7b05638c87bb7f13da8845973cbd1",
+          "bytes": 33818
+        },
+        {
+          "label": "initial-qmp.json",
+          "sha256": "9ff9b64f7a3aa422675a3c617b1221573931697282e07ea262072c08a73b2013",
+          "bytes": 20493
+        }
+      ],
+      "commands": [
+        {
+          "command": "qmp_capabilities",
+          "id": "767c1ac401414a31b5efec336798be8f",
+          "sentUtc": "2026-10-18T02:43:35.5521451Z",
+          "replyUtc": "2026-10-18T02:43:35.5757254Z",
+          "successfulReply": true
+        },
+        {
+          "command": "query-status",
+          "id": "47c7c7b230d149e9a60b462282d3c65b",
+          "sentUtc": "2026-10-18T02:43:35.5767714Z",
+          "replyUtc": "2026-10-18T02:43:35.5777705Z",
+          "successfulReply": true
+        },
+        {
+          "command": "human-monitor-command",
+          "id": "193cb6fd87384ff89839e014c6321145",
+          "sentUtc": "2026-10-18T02:43:35.5812801Z",
+          "replyUtc": "2026-10-18T02:43:35.5832810Z",
+          "successfulReply": true
+        },
+        {
+          "command": "system_reset",
+          "id": "1b2a8eea65614e8e912f4a4c10a91ef0",
+          "sentUtc": "2026-10-18T02:43:35.7324625Z",
+          "replyUtc": "2026-10-18T02:43:35.8232045Z",
+          "successfulReply": true
+        },
+        {
+          "command": "query-status",
+          "id": "cc9ea3dec1f04c939e7b7e91737efffa",
+          "sentUtc": "2026-10-18T02:43:35.8287164Z",
+          "replyUtc": "2026-10-18T02:43:35.8297237Z",
+          "successfulReply": true
+        },
+        {
+          "command": "human-monitor-command",
+          "id": "efe2a493805d49b59fdf1bd8b80bd643",
+          "sentUtc": "2026-10-18T02:43:35.8297237Z",
+          "replyUtc": "2026-10-18T02:43:35.8307277Z",
+          "successfulReply": true
+        },
+        {
+          "command": "query-status",
+          "id": "d5759a203cf1436e9e8d36b23620106b",
+          "sentUtc": "2026-10-18T02:43:35.8578580Z",
+          "replyUtc": "2026-10-18T02:43:35.8588660Z",
+          "successfulReply": true
+        },
+        {
+          "command": "cont",
+          "id": "7e71781f6ad44e74806912d4bdc19ae6",
+          "sentUtc": "2026-10-18T02:43:35.8603742Z",
+          "replyUtc": "2026-10-18T02:43:35.9644183Z",
+          "successfulReply": true
+        },
+        {
+          "command": "query-status",
+          "id": "00019bb40dc54b0ea1bbbfeada8d4cd8",
+          "sentUtc": "2026-10-18T02:43:35.9644183Z",
+          "replyUtc": "2026-10-18T02:43:35.9659288Z",
+          "successfulReply": true
+        }
+      ],
+      "resetEventObserved": true,
+      "postResetStatus": {
+        "status": "prelaunch",
+        "running": false
+      },
+      "preContStatus": {
+        "status": "prelaunch",
+        "running": false
+      },
+      "postContStatus": {
+        "status": "running",
+        "running": true
+      },
+      "interventionCompleted": true,
+      "interventionFailure": null,
+      "authenticatedReadyEstablished": false,
+      "postInitializationBootProofEstablished": false,
+      "stopReturnedStopped": false,
+      "normalGuestShutdownEstablished": false,
+      "unexpectedVpExit4LinesObserved": 3,
+      "decoderFailureObservedOnStdout": true,
+      "decoderFailureObservedOnStderr": false,
+      "qualificationEligible": false,
+      "unassistedRebootPassed": false,
+      "physicalQualificationPassed": false,
+      "privateArtifactDigests": [
+        {
+          "label": "capture-reset-v4-cont-dispatch-intent.json",
+          "bytes": 232,
+          "sha256": "d09e8622ec4f9fa824bd9409a29ebe43a14f2b3e10a02213a2d771c59fd1f2f7"
+        },
+        {
+          "label": "capture-reset-v4-intervention-exit.txt",
+          "bytes": 1,
+          "sha256": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9"
+        },
+        {
+          "label": "capture-reset-v4-intervention-intent.json",
+          "bytes": 20601,
+          "sha256": "ffd3a73e4ceae99b23b92163087a5f0e1469f2543aa2d44396226a386b53a75f"
+        },
+        {
+          "label": "capture-reset-v4-intervention-result.json",
+          "bytes": 36923,
+          "sha256": "5e894c7bcdbc1afb991a2b20cf524c644ce8dfb59e5d60aac377300c95fa2d75"
+        },
+        {
+          "label": "capture-reset-v4-observation.json",
+          "bytes": 2369,
+          "sha256": "f89b441340c037c84fdd850d36daa83682dc6d224cd5a42fb361c7e04e0b7084"
+        },
+        {
+          "label": "capture-reset-v4-private-argv.json",
+          "bytes": 1667,
+          "sha256": "759ec1a33e50773cc78d1b8d598c4ce243fd6724e4f7298948ef2070615e156b"
+        },
+        {
+          "label": "capture-reset-v4-process.json",
+          "bytes": 2818,
+          "sha256": "a8263a96acf660b56c7bf95c5f76ca669b54d6672b6d3d16deb7dd4ed29591b4"
+        },
+        {
+          "label": "capture-reset-v4-qemu.stderr.txt",
+          "bytes": 497,
+          "sha256": "8c49088a1e78bd0d78f9f5c823a7f0972ff876625d63bb4862cada495928d8d8"
+        },
+        {
+          "label": "capture-reset-v4-qemu.stdout.txt",
+          "bytes": 586,
+          "sha256": "9faa467f7bd3e507fb9239a3d680701f941e5fbbd1cf1bdc183c67371d787658"
+        },
+        {
+          "label": "capture-reset-v4-readonly-last.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "label": "capture-reset-v4-ready-window-closed.json",
+          "bytes": 92,
+          "sha256": "bd2116fd2e5491caa33d64a01972e21922663b4f447948b5dead286d0a3a37f1"
+        },
+        {
+          "label": "capture-reset-v4-ready-window.json",
+          "bytes": 425,
+          "sha256": "ab126a20a2163f9565def6995c77286f13e9ef8f4928d80e8692586ef1e55116"
+        },
+        {
+          "label": "capture-reset-v4-source-proof.json",
+          "bytes": 537,
+          "sha256": "f6255ff3b23cd7d85de6e8ec38a3b6ae1f7c533209c5e8958574e4a8c39c4818"
+        },
+        {
+          "label": "capture-reset-v4-system_reset-dispatch-intent.json",
+          "bytes": 240,
+          "sha256": "94b5274e225f11cd2185410fb398620898bf3c35f29eb62586a8818ec3d5c740"
+        },
+        {
+          "label": "capture-reset-v4-telemetry.jsonl",
+          "bytes": 35660,
+          "sha256": "cb17420bdfd924eaad62582e2cfcb89f82379f760b20adfc01401c4225940ba8"
+        },
+        {
+          "label": "capture-reset-v4.log",
+          "bytes": 774,
+          "sha256": "6b2f6ed87907d4893de3cfbe0ad5ed37f295e5fde838185935a3df0f20f42b0e"
+        }
+      ]
+    }
+  ],
+  "copiedSourceAfter": {
+    "observedUtc": "2026-10-18T02:47:12.582199+00:00",
+    "matchedTrackedFileCount": 166,
+    "allCopiedTrackedBytesMatch": true,
+    "canonicalCopiedSourceDigest": "b17d4ac5664fc83af85bbbdcbe84eeabda1da054d53b32bb49d3a7e859c16d4a"
+  },
+  "copiedSourceAfterPrivateSha256": "cc4ca34f911d81f4d2eb33870afafbdb3c85d34aa61ef856dad1492627013574",
+  "proofScope": "Per-phase source proof binds the clean input checkout; the separate copied-byte audit binds 166 executed copied tracked files. Diagnostic in-memory proxies and manual intervention are separately identified.",
+  "limitations": [
+    "All arms are diagnostic and manually intervened. None can qualify unassisted reboot or complete physical acceptance, regardless of later READY or exit status.",
+    "HMP reset-vector registers establish QEMU-visible architectural state, not internal hypervisor reset or WHvResetPartition invocation.",
+    "Positive early redirected stderr is retained; complete reader drain after forced containment is not certified.",
+    "Private diagnostic fixture remains owned and retained pending further tests and verified disposal."
+  ],
+  "physicalQualificationPassed": false,
+  "diagnosticExecutionFiles": [
+    {
+      "label": "ci-poc-001-capture-reset-child-v3.ps1",
+      "sha256": "d07dee5ca15a1c74f89d7cf7043c2ce798428c404c68f66de4531b057dd7325f"
+    },
+    {
+      "label": "ci-poc-001-capture-reset-v3.ps1",
+      "sha256": "0034fbae0cdf3d4a08d755f54ba4406f79620157cbd2c483322304fc45f83c90"
+    },
+    {
+      "label": "ci-poc-001-intervene-reset.ps1",
+      "sha256": "33ef57d3d80bcafa179c079ac70b718781f318328bb44f4d881d4d134d740fb3"
+    },
+    {
+      "label": "ci-poc-001-capture-reset-child-v4.ps1",
+      "sha256": "dc7bb4d773688aa1ec2a077536c54102c197a8ef9e513914b4b70512e02c7f92"
+    },
+    {
+      "label": "ci-poc-001-capture-reset-v4.ps1",
+      "sha256": "2ea8a46e803d90750ebdfa0634eeb8fa2637ca54b7d85bd02ce184b30d1c757b"
+    },
+    {
+      "label": "ci-poc-001-intervene-reset-v4.ps1",
+      "sha256": "059e3c26ec624d6f12c51c27804a031ca90b1060a9cdc4a8b16bd6dca28363dc"
+    },
+    {
+      "label": "ci-poc-001-reset-v4-predicates.ps1",
+      "sha256": "4cfadedf0ab6f480d5767ac358184b090136c4f55c01326835d7de26c4922d15"
+    }
+  ]
+}

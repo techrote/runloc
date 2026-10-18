@@ -637,3 +637,32 @@ owned fixture remains retained for further separately identified recovery
 experiments. Those latch the initial unassisted failure before intervention and
 remain ineligible for qualification even if later authenticated READY succeeds.
 No runtime/candidate correction, full physical PASS or merge is claimed.
+
+The [manual recovery controls](evidence/physical-whpx-20261018-manual-recovery-controls.json)
+preserve three further fresh four-vCPU/8192-MiB trials with original WHPX.
+Each latched and sealed the initial fault before any intervention. One `cont`
+was accepted in the first arm, followed by more faults and no authenticated
+READY. The second arm accepted one host `system_reset`, observed its new host
+RESET event and all four architectural reset vectors, then refused to resume
+because the diagnostic guard expected `paused` and QEMU reported `prelaunch`.
+That failed arm was preserved without retry.
+
+A separately reviewed fresh arm accepted only stopped `paused`/`prelaunch`
+states with Boolean `running=false`, exactly four unique CPU reset-vector
+blocks, a fresh host RESET event, unchanged process ownership and sufficient
+READY-window headroom. Its 32 PS5 refusal/positive controls passed. It dispatched
+one reset and one resume. QEMU subsequently disappeared before authenticated
+READY; decoder-failure messages were captured on stdout. The normal stop
+refused the stale missing PID. Command completion did not establish recovery.
+QEMU-visible register vectors do not prove internal hypervisor partition reset.
+
+All three child exits were 1; intervention exits were respectively 0, 1 and 0.
+All native ownership receipts reached zero active processes; the first two
+required forced containment, while the last did not. None established another
+authenticated guest boot, normal guest shutdown or physical qualification.
+The record binds all three initial-failure seals, 44 private artifact digests,
+command IDs/timings, execution-script hashes and a renewed 166-file copied-source
+audit. A separate Extra High model reviewer verified the evidence and privacy.
+The private diagnostic fixture remains retained for further separately identified
+comparison tests and verified disposal. No production reset-and-resume behavior
+has been introduced; PR #25 remains draft and CI-POC-001 remains incomplete.
