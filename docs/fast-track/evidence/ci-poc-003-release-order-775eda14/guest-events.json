@@ -1,0 +1,66 @@
+{
+  "diagnosticOnly": true,
+  "qualificationPassed": false,
+  "events": [
+    {
+      "recordedUtc": "2026-10-18T23:26:43.6279395Z",
+      "event": "authenticated-ready-six-cpu",
+      "instance": "diagnostic-source"
+    },
+    {
+      "recordedUtc": "2026-10-18T23:26:45.5010901Z",
+      "event": "stopped",
+      "instance": "diagnostic-source"
+    },
+    {
+      "recordedUtc": "2026-10-18T23:27:55.6203003Z",
+      "event": "authenticated-ready-six-cpu",
+      "instance": "diagnostic-source"
+    },
+    {
+      "recordedUtc": "2026-10-18T23:27:57.3531730Z",
+      "event": "stopped",
+      "instance": "diagnostic-source"
+    },
+    {
+      "recordedUtc": "2026-10-18T23:45:49.2332138Z",
+      "event": "authenticated-ready-six-cpu",
+      "instance": "diagnostic-fresh-1"
+    },
+    {
+      "recordedUtc": "2026-10-18T23:45:51.3091056Z",
+      "event": "stopped",
+      "instance": "diagnostic-fresh-1"
+    },
+    {
+      "recordedUtc": "2026-10-18T23:50:19.6493003Z",
+      "event": "authenticated-ready-six-cpu",
+      "instance": "diagnostic-source"
+    },
+    {
+      "recordedUtc": "2026-10-18T23:50:21.5124595Z",
+      "event": "stopped",
+      "instance": "diagnostic-source"
+    },
+    {
+      "recordedUtc": "2026-10-18T23:51:59.3197090Z",
+      "event": "authenticated-ready-six-cpu",
+      "instance": "diagnostic-stateful-1"
+    },
+    {
+      "recordedUtc": "2026-10-18T23:52:01.1041779Z",
+      "event": "stopped",
+      "instance": "diagnostic-stateful-1"
+    },
+    {
+      "recordedUtc": "2026-10-18T23:53:36.2849074Z",
+      "event": "authenticated-ready-six-cpu",
+      "instance": "diagnostic-imported"
+    },
+    {
+      "recordedUtc": "2026-10-18T23:53:38.0332810Z",
+      "event": "stopped",
+      "instance": "diagnostic-imported"
+    }
+  ]
+}

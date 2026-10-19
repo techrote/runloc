@@ -77,8 +77,8 @@ try {
     $lease.Lock.Dispose()
 }
 $passed=$reason -ceq 'complete-functional-scenario' -and $fixtureRemoved
-$diagnostics=@{signals=@();rawLogSha256='';rawLogBytes=0}
-if($null -ne $child){$diagnostics.signals=Get-HostedDiagnosticSignals -Records $child.records}
+$diagnostics=@{signals=@();coverage=(Get-HostedDiagnosticCoverage -Records @());rawLogSha256='';rawLogBytes=0}
+if($null -ne $child){$diagnostics.signals=Get-HostedDiagnosticSignals -Records $child.records;$diagnostics.coverage=Get-HostedDiagnosticCoverage -Records $child.records}
 $rawLog=Join-Path $lease.Private 'harness.log'
 if([IO.File]::Exists($rawLog)){$diagnostics.rawLogSha256=Get-PilotDigest -Path $rawLog;$diagnostics.rawLogBytes=(Get-Item -LiteralPath $rawLog).Length}
 $receipt=[ordered]@{schemaVersion=1;issue='CI-POC-003';lane='hosted-tcg';comparisonId=$ComparisonId;

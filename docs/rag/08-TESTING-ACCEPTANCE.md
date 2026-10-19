@@ -140,3 +140,12 @@ Their exact-source, owned-process and failed-fixture forensic controls remain
 required; neither successful guest boots nor their diagnostic receipts grant
 full qualification or clear a failed comparison. Synthetic persistence contents
 are asserted through authenticated commands with actual numeric exits.
+
+Hosted failure reduction must recognize the original harness's bounded
+`BASE_LOG_TAIL`/`BASE_LOG_LINE` sections as well as instance serial tails. Only
+exact base-stage UUID headers establish diagnostic context. JSON failure messages
+and serial tails reduce to closed codes and bounded numeric facts; raw paths,
+prose and seed material are not published. Stripping a diagnostic prefix is local
+to the reducer and must never expose guest success markers to the host oracle.
+Negative controls cover absent/stale/wrong contexts, nested headers, large lines,
+spoofed PASS text, redaction and missing versus observed/truncated capture.

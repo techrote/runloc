@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "diagnosticOnly": true,
+  "qualificationPassed": false,
+  "comparisonId": "e0662220b60a47599db266b8695296e9",
+  "runId": 39171273724,
+  "files": [
+    {
+      "path": "hosted-receipt-digest.json",
+      "bytes": 151,
+      "sha256": "d478a1f72c45e06485990ba72e77fd51b72c25b9f32d5cefd997c0a73128a770"
+    },
+    {
+      "path": "hosted-receipt.json",
+      "bytes": 20281,
+      "sha256": "6cb9b88b25892ee4d61cf8a5870ca35d559ce6ec91e9e40ab4523ccc51269626"
+    },
+    {
+      "path": "telemetry-events.json",
+      "bytes": 671321,
+      "sha256": "73e845c0e2e26b5a29a960aba405f86ae2d0c08a0e827ebd25b5ae5c38eec464"
+    }
+  ],
+  "failureClassification": "base-build-failure-underlying-cause-unknown",
+  "limitations": [
+    "Original reducer ignored BASE_LOG_LINE prefixes; empty signals do not prove absent raw diagnostics.",
+    "The outer cleanup forced flag does not establish whether the candidate force-stopped QEMU internally.",
+    "Timing is consistent with the 2400-second base guest deadline; the exact underlying failure is not established."
+  ]
+}

@@ -1,5 +1,41 @@
 # CI-POC-003 implementation checkpoint
 
+## Ordered diagnostic passed; hosted diagnostic failed — 18 October 2026 UTC
+
+The [release-order receipt and digest manifest](evidence/ci-poc-003-release-order-775eda14/manifest.json)
+preserve lease `775eda141ee1492d890a5309f331a84b` on controller
+`b86b3f88dc1cd4ebf8b19934e6daf49e57039a56`, tree
+`950b4b8526dee2dca00a5e1202cd0ddc1fd264fc`, and unchanged candidate
+`2268468cb3040b9e1dd6deed60d0f13594f768d6`.
+Six authenticated six-CPU READY/stop pairs covered source creation/restart,
+fresh clone, source reset, saved stateful clone and imported instance. The
+workload asserted persistence in stateful/imported guests and its absence in
+fresh/reset guests. Child exit0, elapsed2111.7476304seconds (35m11.748s), no
+forced outer termination, owned processes0, fixture removed, unchanged sources
+and no cleanup errors. This remains diagnostic-only, not the complete release
+scenario or proof the original crash is fixed. Neither focused diagnostic
+reproduced that crash; the failed production comparison remains quarantined.
+
+[Hosted diagnostic run39171273724](https://github.com/techrote/ezvm/actions/runs/39171273724)
+failed with exit1 after4555.4656027seconds (75m55.466s), during base preparation,
+before any authenticated READY. Its [unaltered receipt and telemetry](evidence/ci-poc-003-hosted-e0662220-failed/manifest.json)
+bind workflow087dc38bdd44f187e29290f5ad4daef4fdcf62f0, controller11fa575 and
+the same candidate2268468. Source unchanged, outer child exited, owned
+processes0 and fixture removed. The final image-info operation ended at
+2136.2433844seconds and base build failed at4539.6492937seconds, a2403.4059093
+second gap consistent with the2400second guest deadline and termination
+overhead. The actual underlying guest failure is not established. Outer
+`cleanup.forced=false` does not prove the candidate never force-stopped QEMU.
+
+The candidate already emits bounded base-stage `failure.json` and `serial.log`
+tails with `BASE_LOG_LINE=` framing. Controller11fa575's reducer ignored that
+framing, so its empty public signals do not prove the raw record lacked useful
+diagnostics. The narrow follow-up recognizes those frames only in exact
+`.build-<UUID>` sections, emits closed failure codes/numeric deadline facts and
+capture coverage, and never feeds stripped guest content to the host marker
+oracle. Original receipts are not rewritten and all functional assertions,
+source/cleanup gates and per-operation limits remain required.
+
 ## Basic cold-clone diagnostic completed — 18 October 2026 UTC
 
 The [unaltered receipt, closed guest events and digest manifest](evidence/ci-poc-003-basic-clones-2dc2e21f/manifest.json)
@@ -19,8 +55,7 @@ This is explicitly diagnostic-only, with `qualificationPassed=false`. It
 narrows the basic cold-clone path but does not reproduce every original source
 restart/export/import/reset interaction, identify the original guest crash,
 qualify the full release scenario or clear the failed comparison's quarantine.
-The separately reviewed `release-order` diagnostic and independent full hosted
-run39171273724 are still in progress at this checkpoint.
+The subsequent release-order diagnostic and hosted result are recorded above.
 
 ## First real comparison failed — 18 October 2026
 
