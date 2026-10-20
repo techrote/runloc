@@ -1,5 +1,33 @@
 # CI-POC-003 implementation checkpoint
 
+## Full forensic workload passed — 20 October 2026 UTC
+
+The [unaltered forensic receipt, phase telemetry and digest manifest](evidence/ci-poc-003-full-forensic-7aa570a0/manifest.json)
+record lease `7aa570a051924fdc8d03fd3f42a2ccff` executing the original complete
+release/portability workload under WHPX with six guest CPUs. Controller
+`f167950a865df3baad247ba37ff53f0fcb683a72`, tree
+`2d0eb3c68a6ad507c53fbb2af620dec57c3315eb`, and candidate
+`2268468cb3040b9e1dd6deed60d0f13594f768d6`, tree
+`d5677a166e54583f26e3f08e90e5836c19f99359`, were clean and unchanged before/after.
+Independent review and all four exact-head software checks passed before launch.
+
+Exact ACL preflight exited0 without timeout/cancellation. The full child exited0;
+all24 required completion markers occurred exactly once, with8 authenticated
+READY responses and8 six-CPU proofs. Complete telemetry retains2482 records and
+SHA256 `c6578d90c2339ac05031f42d124fd68147bf455287d656519b7dbd5a2c736531`.
+Supervised elapsed7330.5943492seconds (2h02m10.594s), no forced outer
+termination, zero owned processes, fixture removed and no cleanup/source errors.
+Receipt SHA256 is
+`431848642414e38b3ad85b62ec0f3f4eb9c58f15eaed24a04418c4b9e4377091`.
+
+The original guest crash did not reproduce. This direct-host run had no JIT
+runner or Actions association and remains `diagnosticOnly=true`,
+`qualificationPassed=false`. It does not establish a root fix, replace the real
+Actions acceptance, clear the existing comparison quarantine or qualify the
+previously failed hosted lane. The quarantine file digest was unchanged across
+this attempt. Successful disposal was appropriate because no failed fixture was
+produced. No60minute performance result is claimed under NoOverallTimeout.
+
 ## Ordered diagnostic passed; hosted diagnostic failed — 18 October 2026 UTC
 
 The [release-order receipt and digest manifest](evidence/ci-poc-003-release-order-775eda14/manifest.json)
