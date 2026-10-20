@@ -261,11 +261,17 @@ class Coordinator:
             "queueSeconds": elapsed, "reason": "absence-control-awaiting-bounded-cancellation"}
 
     def association(self, lane, run_id, comparison):
+        require(type(run_id) is int and run_id > 0, "requested-run-id-invalid")
         status, run = self.api.request("GET", f"repos/techrote/ezvm/actions/runs/{run_id}")
         require(status == 200, "run-state-unavailable")
+        require(type(run["id"]) is int and run["id"] == run_id
+                and run["repository"]["full_name"] == "techrote/ezvm", "run-response-association-mismatch")
         status, jobs = self.api.request("GET", f"repos/techrote/ezvm/actions/runs/{run_id}/jobs?per_page=100")
         require(status == 200 and jobs["total_count"] == len(jobs["jobs"]) and len(jobs["jobs"]) <= 1, "job-association-count")
         job = jobs["jobs"][0] if jobs["jobs"] else None
+        if job is not None:
+            require(type(job["id"]) is int and job["id"] > 0 and type(job["run_id"]) is int
+                    and job["run_id"] == run_id, "job-response-association-mismatch")
         pin = self.policy[lane]
         require(run["head_sha"] == pin["workflowCommit"] and run["path"].split("@", 1)[0] == pin["workflowPath"]
                 and run["display_title"] == ("CI-PoC002 " if lane == "private" else "CI-PoC003 hosted ") + comparison

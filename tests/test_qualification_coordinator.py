@@ -60,6 +60,28 @@ class CoordinatorTests(unittest.TestCase):
             self.controller.start_private()
         self.assertNotIn('private', self.state.value)
 
+    def test_run_job_api_responses_must_bind_exact_positive_ids_and_repository(self):
+        pin = self.policy['private']
+        run = dict(id=13, repository={'full_name': 'techrote/ezvm'}, head_sha=pin['workflowCommit'],
+            path=pin['workflowPath'], display_title='CI-PoC002 '+'c'*32, event='workflow_dispatch',
+            run_attempt=1, actor={'login': 'techrote'})
+        job = dict(id=14, run_id=13)
+        def observe(returned_run, returned_job):
+            with patch.object(self.controller.api, 'request', side_effect=[(200, returned_run),
+                (200, {'total_count': int(returned_job is not None), 'jobs': [] if returned_job is None else [returned_job]})]):
+                return self.controller.association('private', 13, 'c'*32)
+        self.assertEqual((run, job), observe(run, job))
+        self.assertEqual((run, None), observe(run, None))
+        for changed in ({'id': 99}, {'id': True}, {'id': None}, {'repository': {'full_name': 'other/ezvm'}}):
+            with self.subTest(run=changed), self.assertRaises(coordinator.InvalidEvidence): observe(run | changed, job)
+        for changed in ({'id': 0}, {'id': True}, {'id': None}, {'run_id': 99}, {'run_id': True}, {'run_id': None}):
+            with self.subTest(job=changed), self.assertRaises(coordinator.InvalidEvidence): observe(run, job | changed)
+        for target in (run, job):
+            missing = {key: value for key, value in target.items() if key != 'id'}
+            with self.subTest(missing=target), self.assertRaises((coordinator.InvalidEvidence, KeyError)):
+                observe(missing, job) if target is run else observe(run, missing)
+        with self.assertRaises(coordinator.InvalidEvidence): self.controller.association('private', True, 'c'*32)
+
     def test_uncertain_private_start_is_never_replayed(self):
         self.state.value.update(hosted={'runId': 12}, private={'outcome': 'pending', 'startupAttempted': True})
         with patch.object(coordinator, 'run_powershell', side_effect=AssertionError('duplicate startup')):
