@@ -17,7 +17,7 @@ import uuid
 
 from gate_runtime import GitHub, State, UnknownWrite, cancel_private_once, create_ledger_once, dispatch_once, publish_status_once
 from qualification_gate import (InvalidEvidence, artifact_files, canonical, decide, digest, json_bytes, require,
-                                utc, validate_association, validate_hosted, validate_private)
+                                utc, validate_association, validate_cancelled_before_harness, validate_hosted, validate_private)
 
 ROOT = Path(__file__).resolve().parents[2]
 SCRIPT = Path(__file__).resolve().parent
@@ -374,16 +374,24 @@ class Coordinator:
                 and final["reusableBackingPreserved"] is True and final["unrelatedSentinelSurvived"] is True,
                 "private-cleanup-unresolved")
         if final["passed"] is not True:
-            if final["reason"] == "no-job-deadline":
-                return "queue-expired", {"leaseId": owner["leaseId"], "final": final, "controllerExit": snapshot(ended)}
-            if final["reason"] == "owner-cancelled" and private.get("stopIntentUtc") and final["runId"]:
+            controlled_loss = final["reason"] == "owner-cancelled" and private.get("stopIntentUtc")
+            if (final["reason"] == "no-job-deadline" or controlled_loss) and final["runId"]:
+                controller_exit = snapshot(ended)
+                require(controller_exit["exitObserved"] is True and type(controller_exit["exitCode"]) is int
+                        and controller_exit["exitCode"] == 1, "private-infrastructure-controller-exit-unconfirmed")
                 run, job = self.association("private", final["runId"], owner["leaseId"])
+                settled = (datetime.now(timezone.utc) - utc(controller_exit["endedUtc"])).total_seconds()
+                if job is None or run["status"] != "completed" or job["status"] != "completed":
+                    require(run.get("conclusion") in {None, "cancelled"}
+                            and (job is None or (job.get("conclusion") in {None, "cancelled"}
+                                and not any(step.get("conclusion") == "failure" for step in job.get("steps", [])))),
+                            "private-cancellation-observed-failure")
+                    require(0 <= settled <= 120, "private-cancellation-unresolved")
+                    return "pending", {"leaseId": owner["leaseId"], "runId": run["id"], "reason": "await-private-cancellation-api-settle"}
                 require(job is not None, "private-job-not-observed")
-                scenario = [step for step in job.get("steps", []) if step["name"] == "Exact preflight and full original six-CPU WHPX qualification"]
-                require(job["conclusion"] == "cancelled" and len(scenario) == 1
-                        and not any(s.get("conclusion") == "failure" for s in job.get("steps", []))
-                        and scenario[0].get("conclusion") == "skipped", "fault-control-reached-harness-or-assertion")
-                return "cancelled-before-harness", {"leaseId": owner["leaseId"], "runId": run["id"], "jobId": job["id"], "final": final, "controllerExit": snapshot(ended)}
+                validate_cancelled_before_harness(run, job, runner_id=final["runnerId"], runner_name="runloc-" + owner["leaseId"])
+                outcome = "queue-expired" if final["reason"] == "no-job-deadline" else "cancelled-before-harness"
+                return outcome, {"leaseId": owner["leaseId"], "runId": run["id"], "jobId": job["id"], "final": final, "controllerExit": controller_exit}
             return "unknown", {"leaseId": owner["leaseId"], "final": final, "controllerExit": snapshot(ended)}
         run, job = self.association("private", final["runId"], owner["leaseId"])
         require(job is not None, "private-job-not-observed")

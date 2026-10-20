@@ -66,6 +66,48 @@ class CoordinatorTests(unittest.TestCase):
             self.controller.start_private()
         self.assertEqual('unknown', self.controller.observe_private()[0])
 
+    def private_final_fixture(self, reason='no-job-deadline'):
+        lease_id = 'd'*32
+        lease = self.root / ('runloc-whpx-'+lease_id); lease.mkdir()
+        console = self.root / 'console-test'; console.mkdir()
+        (console / 'controller.stdout.log').write_text('RUNLOC_RUNNER_LEASE='+str(lease)+'\n')
+        owner = dict(leaseId=lease_id, root=str(lease), controllerCommit=self.policy['private']['hostController'],
+                     candidateCommit=self.policy['candidate']['commit'], createdUtc=self.state.value['createdUtc'])
+        (lease / 'lease.json').write_bytes(coordinator.canonical(owner))
+        final = dict(passed=False, reason=reason, runId=13, runnerId=48, registrationAbsent=True, activeProcesses=0,
+                     fixtureRemoved=True, controllerUnchanged=True, reusableBackingPreserved=True, unrelatedSentinelSurvived=True)
+        (lease / 'event-000001.json').write_bytes(coordinator.canonical(dict(kind='dispatched', data={'runId': 13})))
+        (lease / 'event-000002.json').write_bytes(coordinator.canonical(dict(kind='final', data=final)))
+        ended = dict(exitObserved=True, exitCode=1, endedUtc=datetime.now(timezone.utc).isoformat())
+        (console / 'controller-ended.json').write_bytes(coordinator.canonical(ended))
+        self.state.value.update(selection='loss-before-harness' if reason == 'owner-cancelled' else 'available',
+            private={'outcome': 'pending', 'console': str(console), 'stopIntentUtc': self.state.value['createdUtc']})
+        run = dict(id=13, status='completed', conclusion='cancelled')
+        job = dict(id=14, run_id=13, status='completed', conclusion='cancelled', runner_id=0, runner_name='', labels=['runloc-'+lease_id], steps=[])
+        return run, job, console, ended
+
+    def test_queue_expired_requires_api_nonexecution_and_cannot_hide_failed_assertion(self):
+        run, job, _, _ = self.private_final_fixture()
+        with patch.object(self.controller.api, 'request', return_value=(404, None)), \
+             patch.object(self.controller, 'association', return_value=(run, job)):
+            self.assertEqual('queue-expired', self.controller.observe_private()[0])
+            job.update(runner_id=48, runner_name='runloc-'+'d'*32, conclusion='failure',
+                steps=[dict(name='Exact preflight and full original six-CPU WHPX qualification', status='completed', conclusion='failure')])
+            run['conclusion'] = 'failure'
+            with self.assertRaises(coordinator.InvalidEvidence): self.controller.observe_private()
+
+    def test_loss_control_accepts_positive_unassigned_proof_and_bounds_api_settling(self):
+        run, job, console, ended = self.private_final_fixture('owner-cancelled')
+        with patch.object(self.controller.api, 'request', return_value=(404, None)), \
+             patch.object(self.controller, 'association', return_value=(run, job)):
+            self.assertEqual('cancelled-before-harness', self.controller.observe_private()[0])
+            run.update(status='queued', conclusion=None)
+            self.assertEqual('pending', self.controller.observe_private()[0])
+            ended['endedUtc'] = (datetime.now(timezone.utc)-timedelta(seconds=121)).isoformat()
+            (console / 'controller-ended.json').write_bytes(coordinator.canonical(ended))
+            with self.assertRaisesRegex(coordinator.InvalidEvidence, 'cancellation-unresolved'):
+                self.controller.observe_private()
+
     def test_hosted_only_does_not_launch_registration(self):
         self.state.value.update(hosted={'runId': 12}, selection='hosted-only')
         with patch.object(coordinator, 'run_powershell', side_effect=AssertionError('unexpected registration')):

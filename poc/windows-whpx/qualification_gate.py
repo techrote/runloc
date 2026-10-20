@@ -114,6 +114,25 @@ def validate_association(run, job, *, workflow_commit, workflow_path, title, can
     require(re.fullmatch(r"[a-f0-9]{40}", candidate) and re.fullmatch(r"[a-f0-9]{40}", tree), "source-identity-format")
 
 
+def validate_cancelled_before_harness(run, job, *, runner_id, runner_name):
+    """Positive GitHub nonexecution evidence; caller binds owned run and cleanup."""
+    require(type(run["id"]) is int and run["id"] > 0 and type(job["run_id"]) is int and job["run_id"] == run["id"],
+            "private-cancellation-job-association")
+    require(run["status"] == job["status"] == "completed" and run["conclusion"] == job["conclusion"] == "cancelled",
+            "private-cancellation-not-terminal")
+    require(type(job["runner_id"]) is int and job.get("labels") == [runner_name]
+            and isinstance(job.get("steps"), list), "private-cancellation-partial-or-label-mismatch")
+    if job["runner_id"] == 0:
+        require(job.get("runner_name") == "" and job["steps"] == [], "private-unassigned-cancellation-executed")
+        return
+    require(type(runner_id) is int and runner_id > 0 and job["runner_id"] == runner_id
+            and job.get("runner_name") == runner_name, "private-cancellation-runner-mismatch")
+    scenario = [step for step in job["steps"] if step.get("name") == "Exact preflight and full original six-CPU WHPX qualification"]
+    require(len(scenario) == 1 and scenario[0].get("conclusion") == "skipped"
+            and all(step.get("status") == "completed" and step.get("conclusion") in {"success", "skipped", "cancelled"}
+                    for step in job["steps"]), "private-cancellation-reached-harness-or-failure")
+
+
 def assertion_control_artifact_files(archive, expected_sha256):
     require(digest(archive) == expected_sha256.removeprefix("sha256:"), "assertion-artifact-transport-digest")
     receipt_name = "assertion-control-receipt.json"
@@ -152,6 +171,7 @@ def validate_assertion_control(receipt, run, job, *, candidate, tree, controller
             and receipt["control"] == "authenticated-fixed-false-guest-assertion", "assertion-control-not-negative-only")
     require(receipt["candidate"]["commit"] == candidate and receipt["candidate"]["tree"] == tree
             and receipt["controller"]["commit"] == controller and receipt["controller"]["tree"] == controller_tree
+            and receipt["candidate"].get("clean") is True and receipt["controller"].get("clean") is True
             and receipt["comparisonId"] == comparison and receipt["workflowCommit"] == workflow_commit
             and receipt["repository"] == "techrote/ezvm" and receipt["runId"] == run["id"]
             and receipt["runAttempt"] == 1 and receipt["runnerEnvironment"] == "github-hosted"
@@ -271,14 +291,20 @@ def validate_hosted(receipt, *, candidate, tree, controller, comparison, run_id,
     require(receipt["passed"] is True and receipt["classification"] == "pass"
             and type(receipt["exitCode"]) is int and receipt["exitCode"] == 0
             and type(receipt["preflightExitCode"]) is int and receipt["preflightExitCode"] == 0, "hosted-outcome")
+    require(receipt.get("preflightTimedOut") is False and receipt.get("preflightCancelled") is False,
+            "hosted-preflight-incomplete")
     require(receipt["requestedAccelerator"] == receipt["observedAccelerator"] == "tcg"
             and receipt["whpxExecution"] == "SKIP" and receipt["qualificationCpus"] == 6, "hosted-profile")
-    require(utc(receipt["startedUtc"]) >= utc(created_utc), "replayed-hosted-receipt")
+    require(utc(created_utc) <= utc(receipt["startedUtc"]) < utc(receipt["endedUtc"])
+            and type(receipt["elapsedSeconds"]) in (int, float) and math.isfinite(receipt["elapsedSeconds"])
+            and receipt["elapsedSeconds"] > 0, "replayed-or-invalid-hosted-timing")
     cleanup = receipt["cleanup"]
     require(cleanup["childExited"] is True and type(cleanup["activeProcesses"]) is int
             and cleanup["activeProcesses"] == 0 and cleanup["forced"] is False and cleanup["fixtureRemoved"] is True, "hosted-cleanup")
     require(receipt["telemetry"]["complete"] is True and receipt["telemetry"]["recordCount"] > 0, "hosted-telemetry")
     validate_events(receipt["events"], "tcg")
+    capability = [event for event in receipt["events"] if event["kind"] == "capability" and event["name"] == "whpx"]
+    require(len(capability) == 1 and capability[0]["value"] == "SKIP", "hosted-whpx-skip-evidence")
     validate_identity_bindings(receipt["identities"], receipt["telemetry"], "tcg")
     return "pass"
 

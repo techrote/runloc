@@ -14,6 +14,25 @@ gate = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(gate)
 
 
+class CancellationProofTests(unittest.TestCase):
+    def setUp(self):
+        self.run = {'id': 13, 'status': 'completed', 'conclusion': 'cancelled'}
+        self.job = dict(run_id=13, status='completed', conclusion='cancelled', runner_id=48, runner_name='runloc-test',
+            labels=['runloc-test'], steps=[dict(name='Exact preflight and full original six-CPU WHPX qualification',
+                                               status='completed', conclusion='skipped')])
+
+    def test_only_exact_assigned_skipped_or_explicitly_unassigned_empty_job_can_fall_back(self):
+        gate.validate_cancelled_before_harness(self.run, self.job, runner_id=48, runner_name='runloc-test')
+        gate.validate_cancelled_before_harness(self.run, self.job | {'runner_id': 0, 'runner_name': '', 'steps': []},
+                                              runner_id=48, runner_name='runloc-test')
+        for change in ({'run_id': 99}, {'runner_id': 49}, {'runner_id': False}, {'runner_name': 'other'}, {'labels': ['other']},
+                       {'steps': None}, {'steps': []}, {'conclusion': 'failure'}, {'conclusion': 'success'},
+                       {'steps': [dict(name='Exact preflight and full original six-CPU WHPX qualification',
+                                       status='completed', conclusion='failure')]}):
+            with self.subTest(change=change), self.assertRaises(gate.InvalidEvidence):
+                gate.validate_cancelled_before_harness(self.run, self.job | change, runner_id=48, runner_name='runloc-test')
+
+
 class AssertionControlTests(unittest.TestCase):
     def setUp(self):
         self.expected = dict(candidate='a'*40, tree='b'*40, controller='c'*40, controller_tree='d'*40,
@@ -25,8 +44,8 @@ class AssertionControlTests(unittest.TestCase):
         self.job = dict(run_id=31, status='completed', conclusion='failure', runner_id=4, runner_name='GitHub Actions',
             steps=[dict(status='completed', conclusion='failure', name='Authenticated fixed false guest assertion (expected failure)')])
         self.receipt = dict(schemaVersion=1, negativeControlOnly=True, qualificationPassed=False, passed=False, controlObserved=True,
-            control='authenticated-fixed-false-guest-assertion', candidate={'commit': 'a'*40, 'tree': 'b'*40},
-            controller={'commit': 'c'*40, 'tree': 'd'*40}, comparisonId='e'*32, workflowCommit='f'*40,
+            control='authenticated-fixed-false-guest-assertion', candidate={'commit': 'a'*40, 'tree': 'b'*40, 'clean': True},
+            controller={'commit': 'c'*40, 'tree': 'd'*40, 'clean': True}, comparisonId='e'*32, workflowCommit='f'*40,
             repository='techrote/ezvm', runId=31, runAttempt=1, runnerEnvironment='github-hosted', runnerName='GitHub Actions',
             requestedAccelerator='tcg', qualificationCpus=6, qualificationMemoryMiB=4096, sourceUnchanged=True, errors=[],
             exitCode=1, guestAssertionExitCode=1, preflightExitCode=0, timedOut=False, cancelled=False, outputFailed=False,
@@ -61,6 +80,9 @@ class AssertionControlTests(unittest.TestCase):
                 gate.validate_assertion_control(self.receipt, self.run, self.job, **(self.expected | {key: '0'*len(self.expected[key])}))
         with self.assertRaises(gate.InvalidEvidence):
             gate.validate_assertion_control(self.receipt, self.run, self.job | {'steps': []}, **self.expected)
+        for source in ('candidate', 'controller'):
+            with self.subTest(source=source), self.assertRaises(gate.InvalidEvidence):
+                gate.validate_assertion_control(self.receipt | {source: self.receipt[source] | {'clean': False}}, self.run, self.job, **self.expected)
 
     def test_control_archive_has_separate_closed_two_file_schema_and_digest(self):
         def archive(extra=False):
@@ -97,6 +119,45 @@ class GatePolicyTests(unittest.TestCase):
 
     def test_known_complete_parser_fixture(self):
         self.assertEqual("pass", gate.validate_private(self.host, self.actions, self.receipt, self.supervisor, **self.expected))
+
+    def hosted_fixture(self):
+        # Synthetic adapter fixture derived from retained complete WHPX shape;
+        # this is never published or claimed as an actual TCG result.
+        receipt = copy.deepcopy(self.receipt)
+        receipt.update(schemaVersion=1, lane='hosted-tcg', repository='techrote/ezvm', comparisonId=self.expected['comparison'],
+            runId=self.expected['run_id'], runAttempt=1, workflowCommit='f'*40, runnerEnvironment='github-hosted',
+            passed=True, classification='pass', preflightExitCode=0, preflightTimedOut=False, preflightCancelled=False,
+            requestedAccelerator='tcg', observedAccelerator='tcg', whpxExecution='SKIP', qualificationCpus=6)
+        receipt['events'] = [event for event in receipt['events'] if event['name'] != 'EZVM010_WHPX_EXECUTION']
+        for event in receipt['events']:
+            if event['kind'] == 'accelerator': event['value'] = 'tcg'
+        receipt['events'].append(dict(kind='capability', name='whpx', value='SKIP',
+            utc=receipt['events'][-1]['utc'], seconds=receipt['events'][-1]['seconds']))
+        for guest in receipt['identities']['guests']: guest['accelerator'] = 'tcg'
+        expected = {key: self.expected[key] for key in ('candidate', 'tree', 'controller', 'comparison', 'run_id', 'created_utc')}
+        expected['workflow_commit'] = 'f'*40
+        return receipt, expected
+
+    def test_hosted_preflight_flags_cannot_be_overridden_by_pass_and_zero_exit(self):
+        receipt, expected = self.hosted_fixture()
+        self.assertEqual('pass', gate.validate_hosted(receipt, **expected))
+        for field in ('preflightTimedOut', 'preflightCancelled'):
+            for value in (True, None, 0, 'false', 'missing'):
+                changed = copy.deepcopy(receipt)
+                if value == 'missing': changed.pop(field)
+                else: changed[field] = value
+                with self.subTest(field=field, value=value), self.assertRaises(gate.InvalidEvidence):
+                    gate.validate_hosted(changed, **expected)
+
+    def test_hosted_requires_observed_capability_and_valid_recorded_timing(self):
+        receipt, expected = self.hosted_fixture()
+        for value in (0, -1, float('nan'), float('inf'), True, '10'):
+            with self.subTest(value=value), self.assertRaises(gate.InvalidEvidence):
+                gate.validate_hosted(receipt | {'elapsedSeconds': value}, **expected)
+        with self.assertRaises(gate.InvalidEvidence):
+            gate.validate_hosted(receipt | {'endedUtc': receipt['startedUtc']}, **expected)
+        receipt['events'] = [event for event in receipt['events'] if event['kind'] != 'capability']
+        with self.assertRaises(gate.InvalidEvidence): gate.validate_hosted(receipt, **expected)
 
     def test_source_and_attempt_replay_are_rejected(self):
         for field, value in (("candidate", "b"*40), ("tree", "c"*40), ("comparison", "a"*32),

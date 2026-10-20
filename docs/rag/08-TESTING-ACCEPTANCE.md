@@ -161,6 +161,11 @@ association and can never clear the source gate or grant CI-POC003 acceptance.
 Every controller rejects a timed-out or cancelled ACL preflight even when its
 child races to a natural exit0 before cleanup. Timeout/cancellation facts remain
 in the receipt; a PASS line and zero exit cannot override either condition.
+The independent hosted oracle also requires both flags explicitly false, finite
+positive elapsed time, coherent start/end timestamps and one actual WHPX-SKIP
+capability record. Missing legacy hosted fields cannot qualify the current
+f167-pinned policy. This does not invent those fields in the unchanged legacy
+private002 receipt; its actual preflight evidence requires separate audit.
 
 The003 absent-capacity control must positively establish that no eligible
 registration exists for its fresh UUID. It uses the unchanged private workflow,

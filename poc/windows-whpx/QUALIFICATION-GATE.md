@@ -44,9 +44,14 @@ run/job identities, original artifact transport digests and complete receipts.
 It never grants acceptance from a check name or a raw PASS string.
 
 `loss-before-harness` is an opt-in fault control. It requests stop on the exact
-owned lease after dispatch. Infrastructure classification requires one explicitly
-skipped full-scenario step with no failing step, complete disposal and registration
-absence. Missing or partial steps are unknown, not proof of a safe fallback.
+owned lease after dispatch. Loss and queue-expiry infrastructure classifications
+require terminal cancelled run/job association, complete disposal and registration
+absence. An assigned job must bind the exact owned runner ID/name/UUID label,
+uniquely skip the full scenario and have no failed step. An unassigned job must
+positively show integer runner ID0, empty runner name, exact UUID label and an
+explicit empty steps list. Missing or partial steps are unknown. Non-atomic API
+cancellation observations may settle for120seconds after observed controller
+exit; they cannot accept, and any observed assertion failure blocks immediately.
 
 This host-side observer is not an independent cloud service. Hosted execution
 continues if the PC goes offline, but publication/revocation can wait for observer
