@@ -1,5 +1,29 @@
 # CI-POC-003 implementation checkpoint
 
+## Live negative assertion control observed — 20 October 2026 UTC
+
+[Actions run39496444460](https://github.com/techrote/ezvm/actions/runs/39496444460/job/118882602207)
+is an intentional failed functional control. Its [unaltered receipt and digest,
+redacted Actions association and manifest](evidence/ci-poc-003-assertion-013a6cfe/manifest.json)
+bind comparison `013a6cfef4b448719083b17c9adb9165`, workflow0580dd2/controller1e20cb9
+and unchanged frozen candidate2268468. A cold TCG light-profile guest proved
+authenticated READY and six CPUs, then the fixed false assertion `test 1 -eq 2`
+returned actual guest exit1. Actual harness exit1 and a failed Actions job remain
+red; the assertion step was the sole failed step. Preflight exit0 with explicit
+false timeout/cancellation flags, unchanged sources, no forced termination,
+owned processes0 and fixture disposal all passed. Elapsed884.6739359seconds
+(14m44.674s). Receipt SHA256 is
+`313322ad189e80aaf0bb2c2ad3c79b2d5727b7e03f662eaf67d8e5560f874f29`.
+
+The strict separate failed-run validator classified the actual receipt as
+`assertion`; the shared decision rejects that classification against a symbolic
+passing alternative. A separately validated live green alternative is still
+pending, so the complete live dominance acceptance is not yet established.
+This focused negative-only receipt always denies qualification. It is not the
+complete release scenario, WHPX coverage, a historical root fix, quarantine
+recovery or issue completion. The immutable negative definition is retained in
+draft EzVM57 and must not replace the ordinary hosted workflow.
+
 ## Full forensic workload passed — 20 October 2026 UTC
 
 The [unaltered forensic receipt, phase telemetry and digest manifest](evidence/ci-poc-003-full-forensic-7aa570a0/manifest.json)
