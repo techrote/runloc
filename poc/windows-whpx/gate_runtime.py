@@ -60,10 +60,14 @@ def dispatch_once(state, api, *, key, workflow_path, workflow_commit, workflow_r
     intent = dict(path=workflow_path, commit=workflow_commit, ref=workflow_ref, comparison=comparison,
                   title=title, inputs=inputs)
     previous = state.value.get(key)
-    if previous:
-        require(previous["intent"] == intent, "dispatch-intent-changed")
-        if previous.get("runId"):
+    if key in state.value:
+        require(isinstance(previous, dict) and previous.get("intent") == intent
+                and previous.get("writeState") in {"intent", "unknown", "confirmed", "reconciled"}, "dispatch-intent-changed-or-malformed")
+        if "runId" in previous:
+            require(type(previous["runId"]) is int and previous["runId"] > 0
+                    and previous["writeState"] in {"confirmed", "reconciled"}, "dispatch-confirmation-invalid")
             return previous["runId"]
+        require(previous["writeState"] in {"intent", "unknown"}, "dispatch-confirmation-missing-id")
     else:
         state.value[key] = {"intent": intent, "writeState": "intent"}
         state.save()
@@ -81,10 +85,12 @@ def dispatch_once(state, api, *, key, workflow_path, workflow_commit, workflow_r
     status, runs = api.request("GET", f"repos/techrote/ezvm/actions/workflows/{workflow_path}/runs?event=workflow_dispatch&per_page=100")
     require(status == 200 and len(runs["workflow_runs"]) <= 100, "dispatch-reconciliation-bound")
     matched = [run for run in runs["workflow_runs"] if run["display_title"] == title and run["head_sha"] == workflow_commit
-               and run["event"] == "workflow_dispatch" and run["run_attempt"] == 1 and run["actor"]["login"] == "techrote"]
+               and run["event"] == "workflow_dispatch" and type(run["run_attempt"]) is int
+               and run["run_attempt"] == 1 and run["actor"]["login"] == "techrote"]
     require(len(matched) <= 1, "duplicate-dispatch")
     if not matched:
         raise UnknownWrite("dispatch-not-yet-reconciled-do-not-replay")
+    require(type(matched[0].get("id")) is int and matched[0]["id"] > 0, "dispatch-reconciled-run-id-invalid")
     state.value[key].update(runId=matched[0]["id"], writeState="reconciled")
     state.save()
     return matched[0]["id"]

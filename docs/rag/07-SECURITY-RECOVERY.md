@@ -41,6 +41,13 @@ runner forever: collection has a finite budget and failure is recorded.
 
 ## Recovery matrix
 
+The003 coordinator distinguishes an absent dispatch key from a present malformed
+intent. Empty/null/partial intents, inconsistent confirmation states and invalid
+run IDs fail closed before any API write; an existing valid unknown intent can
+only reconcile. Writable observer state is reloaded after acquiring its exclusive
+lock so an earlier unlocked snapshot cannot authorize another POST. The reviewed
+assertion-control dispatch wrapper also holds its own exclusive state lock.
+
 Inject controller death at every persisted transition, including API-intent windows.
 On Windows the owned Job Object closes QEMU when the supervisor dies. Restart
 reconciles remaining files, API objects and reservations; it never replays execution

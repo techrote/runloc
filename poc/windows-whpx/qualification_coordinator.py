@@ -533,7 +533,9 @@ def main():
         lock.seek(0); lock.write(b"0"); lock.flush(); lock.seek(0)
         msvcrt.locking(lock.fileno(), msvcrt.LK_NBLCK, 1)
         try:
-            return Coordinator(state).run()
+            # Another observer may have published intent after our initial read.
+            # Only the snapshot loaded UNDER the acquired lock may issue writes.
+            return Coordinator(State(args.state)).run()
         finally:
             lock.seek(0); msvcrt.locking(lock.fileno(), msvcrt.LK_UNLCK, 1)
 

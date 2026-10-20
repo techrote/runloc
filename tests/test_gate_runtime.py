@@ -58,6 +58,37 @@ class RuntimeTests(unittest.TestCase):
         self.assertEqual(12, runtime.dispatch_once(self.state, api, **self.arguments))
         self.assertEqual(["POST", "GET"], [call[0] for call in api.calls])
 
+    def test_present_empty_or_malformed_dispatch_cannot_issue_a_new_post(self):
+        for malformed in ({}, None, [], {'intent': {}}, {'intent': {}, 'writeState': 'unknown'}):
+            self.state.value['hosted'] = malformed
+            api = FakeAPI([])
+            with self.subTest(malformed=malformed), self.assertRaises(runtime.InvalidEvidence):
+                runtime.dispatch_once(self.state, api, **self.arguments)
+            self.assertFalse(api.calls)
+
+    def test_inconsistent_confirmed_run_id_cannot_authorize_reuse_or_post(self):
+        api = FakeAPI([(200, {'workflow_run_id': 12})], self.state)
+        runtime.dispatch_once(self.state, api, **self.arguments)
+        original = self.state.value['hosted'].copy()
+        for bad in (original | {'runId': True}, original | {'runId': 0}, original | {'writeState': 'unknown'},
+                    {key: value for key, value in original.items() if key != 'runId'}):
+            self.state.value['hosted'] = bad
+            api = FakeAPI([])
+            with self.subTest(bad=bad), self.assertRaises(runtime.InvalidEvidence):
+                runtime.dispatch_once(self.state, api, **self.arguments)
+            self.assertFalse(api.calls)
+
+    def test_reconciliation_cannot_return_invalid_numeric_or_missing_run_id(self):
+        initial = FakeAPI([runtime.UnknownWrite(), (200, {'workflow_runs': []})], self.state)
+        with self.assertRaises(runtime.UnknownWrite): runtime.dispatch_once(self.state, initial, **self.arguments)
+        for bad_id in (True, 0, '12', None):
+            run = self.run_record(bad_id)
+            if bad_id is None: run.pop('id')
+            api = FakeAPI([(200, {'workflow_runs': [run]})])
+            with self.subTest(bad_id=bad_id), self.assertRaises(runtime.InvalidEvidence):
+                runtime.dispatch_once(runtime.State(self.state.path), api, **self.arguments)
+            self.assertEqual(['GET'], [call[0] for call in api.calls])
+
     def test_unknown_dispatch_waits_and_restart_does_not_replay(self):
         api = FakeAPI([runtime.UnknownWrite(), (200, {"workflow_runs": []})], self.state)
         with self.assertRaises(runtime.UnknownWrite): runtime.dispatch_once(self.state, api, **self.arguments)

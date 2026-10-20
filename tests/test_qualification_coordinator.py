@@ -7,6 +7,7 @@ import sys
 import tempfile
 import unittest
 from unittest.mock import patch
+from types import SimpleNamespace
 
 SOURCE = Path(__file__).resolve().parents[1] / 'poc/windows-whpx'
 sys.path.insert(0, str(SOURCE))
@@ -34,6 +35,25 @@ class CoordinatorTests(unittest.TestCase):
         self.controller.policy = self.state.value['policy']
         with self.assertRaisesRegex(coordinator.InvalidEvidence, 'state-policy-not-committed'):
             self.controller.source()
+
+    def test_observer_loads_writable_state_only_after_exclusive_lock(self):
+        fresh = object()
+        events = []
+        def read_state(path):
+            if events: self.assertEqual('acquired', events[-1])
+            events.append('read')
+            return self.state if len(events) == 1 else fresh
+        fake_native = SimpleNamespace(LK_NBLCK=1, LK_UNLCK=2,
+            locking=lambda descriptor, mode, count: events.append('acquired' if mode == 1 else 'released'))
+        with patch.object(coordinator.sys, 'argv', ['coordinator', '--state', str(self.path)]), \
+             patch.object(coordinator.sys, 'platform', 'win32'), \
+             patch.dict(sys.modules, {'msvcrt': fake_native}), \
+             patch.object(coordinator, 'State', side_effect=read_state), \
+             patch.object(coordinator, 'Coordinator') as constructor:
+            constructor.return_value.run.return_value = 0
+            self.assertEqual(0, coordinator.main())
+            constructor.assert_called_once_with(fresh)
+        self.assertEqual(['read', 'acquired', 'read', 'released'], events)
 
     def test_no_private_attempt_before_confirmed_hosted_run(self):
         with self.assertRaisesRegex(coordinator.InvalidEvidence, 'hosted-must-start-first'):
