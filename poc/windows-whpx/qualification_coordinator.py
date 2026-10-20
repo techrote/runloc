@@ -15,7 +15,7 @@ import time
 import zipfile
 import uuid
 
-from gate_runtime import GitHub, State, UnknownWrite, create_ledger_once, dispatch_once, publish_status_once
+from gate_runtime import GitHub, State, UnknownWrite, cancel_private_once, create_ledger_once, dispatch_once, publish_status_once
 from qualification_gate import (InvalidEvidence, artifact_files, canonical, decide, digest, json_bytes, require,
                                 utc, validate_association, validate_hosted, validate_private)
 
@@ -74,7 +74,7 @@ class Coordinator:
     def source(self):
         approved = load(SCRIPT / "gate-policy.json")
         require(canonical(approved) == canonical(self.policy) and digest(canonical(approved)) == self.state.value["policySha256"], "state-policy-not-committed")
-        require(self.state.value["selection"] in {"available", "hosted-only", "loss-before-harness"}, "unapproved-selection")
+        require(self.state.value["selection"] in {"available", "hosted-only", "loss-before-harness", "absent-capacity"}, "unapproved-selection")
         require(approved["schemaVersion"] == 1 and approved["profile"] == {"cpus": 6, "overallTimeoutDisabled": True}
                 and approved["privateQueueSeconds"] == 600 and approved["pollSeconds"] == 30
                 and approved["publicationWallSeconds"] == 28800 and approved["statusContext"] == "EzVM qualification / source-bound", "unapproved-policy-profile")
@@ -105,6 +105,8 @@ class Coordinator:
         value = self.state.value
         require(value.get("hosted", {}).get("runId", 0) > 0, "hosted-must-start-first")
         if "private" in value:
+            if value["selection"] == "absent-capacity" and value["private"].get("absenceIntent") and not value["private"].get("runId"):
+                self.start_absent_capacity()  # Reconcile the same durable POST, never replay it.
             return  # Never replay local startup on resume, including uncertain startup.
         if value["selection"] == "hosted-only":
             value["private"] = {"outcome": "hosted-only", "reason": "explicit-hosted-only-rollback"}
@@ -116,6 +118,9 @@ class Coordinator:
             self.state.save()
             return
         self.definition("private")
+        if value["selection"] == "absent-capacity":
+            self.start_absent_capacity()
+            return
         capacity = Path(value["backingRoot"]) / "runner-capacity.lock"
         try:
             with capacity.open("r+b"):
@@ -137,6 +142,123 @@ class Coordinator:
         require(console.parent == Path(value["backingRoot"]).resolve() and console.name.startswith("console-"), "console-path-binding")
         value["private"]["console"] = str(console)
         self.state.save()
+
+    def absent_inventory(self, runner_name):
+        status, inventory = self.api.request("GET", "repos/techrote/ezvm/actions/runners?per_page=100")
+        require(status == 200 and inventory["total_count"] == len(inventory["runners"]) <= 100,
+                "absence-runner-inventory-incomplete")
+        require(not any(r["name"] == runner_name or any(label["name"] == runner_name for label in r["labels"])
+                        for r in inventory["runners"]), "absence-eligible-runner-present")
+        return {"observedUtc": now(), "runnerCount": inventory["total_count"], "eligibleCount": 0}
+
+    def start_absent_capacity(self):
+        value = self.state.value
+        require(not self.read_only, "absence-dispatch-read-only")
+        private = value.get("private")
+        if private is not None:
+            expected = self.absence_dispatch_intent(private)
+        if "absentDispatch" in value:
+            dispatch = value["absentDispatch"]
+            require(private is not None and isinstance(dispatch, dict) and dispatch.get("intent") == expected
+                    and dispatch.get("writeState") in {"intent", "unknown", "confirmed", "reconciled"},
+                    "absence-resume-api-intent-invalid")
+        if "absentDispatch" not in value:
+            # A crash can leave a local intent before the durable API intent.
+            # Revalidate before that FIRST POST; existing API intents only reconcile.
+            self.source()
+            require(not (Path(value["backingRoot"]) / "ci-poc-003-private-quarantine.json").exists(),
+                    "absence-quarantined-before-dispatch")
+            self.definition("private")
+        if private is None:
+            comparison = uuid.uuid4().hex
+            name = "runloc-" + comparison
+            inventory = self.absent_inventory(name)
+            private = value["private"] = {"outcome": "pending", "absenceIntent": True,
+                "comparisonId": comparison, "runnerName": name, "startIntentUtc": now(),
+                "registrationRequested": False, "initialInventory": inventory}
+            self.state.save()
+        elif "absentDispatch" not in value:
+            private["initialInventory"] = self.absent_inventory(private["runnerName"])
+            self.state.save()
+        pin = self.policy["private"]
+        run_id = dispatch_once(self.state, self.api, key="absentDispatch", workflow_path=pin["workflowPath"].rsplit("/", 1)[-1],
+            workflow_commit=pin["workflowCommit"], workflow_ref=pin["workflowRef"], comparison=private["comparisonId"],
+            title="CI-PoC002 " + private["comparisonId"], inputs={"comparison_id": private["comparisonId"],
+                "runner_name": private["runnerName"], "mode": "qualification"})
+        private["runId"] = run_id
+        self.state.save()
+
+    def absence_dispatch_intent(self, private):
+        require(private.get("absenceIntent") is True and private.get("registrationRequested") is False
+                and re.fullmatch("[a-f0-9]{32}", private["comparisonId"])
+                and private["runnerName"] == "runloc-" + private["comparisonId"], "absence-uuid-label-binding")
+        pin = self.policy["private"]
+        return dict(path=pin["workflowPath"].rsplit("/", 1)[-1], commit=pin["workflowCommit"],
+            ref=pin["workflowRef"], comparison=private["comparisonId"], title="CI-PoC002 " + private["comparisonId"],
+            inputs={"comparison_id": private["comparisonId"], "runner_name": "runloc-" + private["comparisonId"], "mode": "qualification"})
+
+    def observe_absent_capacity(self):
+        value = self.state.value
+        private = value["private"]
+        require(private["registrationRequested"] is False and private["absenceIntent"] is True,
+                "absence-intent-invalid")
+        if not private.get("runId"):
+            raise UnknownWrite("absence-dispatch-unconfirmed-no-replay")
+        expected = self.absence_dispatch_intent(private)
+        dispatch = value["absentDispatch"]
+        require(dispatch["intent"] == expected and dispatch["runId"] == private["runId"]
+                and dispatch["writeState"] in {"confirmed", "reconciled"}, "absence-dispatch-binding")
+        inventory = self.absent_inventory(private["runnerName"])
+        run, job = self.association("private", private["runId"], private["comparisonId"])
+        require(utc(run["created_at"]) >= utc(value["createdUtc"]), "absence-fresh-job-required")
+        if job is None:
+            if (datetime.now(timezone.utc) - utc(private["startIntentUtc"])).total_seconds() < 90:
+                return "pending", {"runId": run["id"], "reason": "absence-awaiting-job-observation"}
+            raise UnknownWrite("absence-job-unavailable")
+        require(type(job["runner_id"]) is int and job["runner_id"] == 0 and job.get("steps") == []
+                and job.get("runner_name") == "" and job.get("labels") == [private["runnerName"]],
+                "absence-job-executed-or-assigned")
+        require(run["status"] in {"queued", "in_progress", "completed"}, "absence-run-status")
+        mixed_cancellation = ((run["status"] != "completed" and job["status"] == "completed"
+                               and job.get("conclusion") == "cancelled")
+                              or (run["status"] == "completed" and run.get("conclusion") == "cancelled"
+                                  and job["status"] == "queued" and job.get("conclusion") is None))
+        if mixed_cancellation:
+            require(private.get("cancelIntent", {}).get("runId") == private["runId"]
+                    and run.get("conclusion") in {None, "cancelled"}, "absence-unowned-cancellation-transition")
+            settling = (datetime.now(timezone.utc) - utc(private["cancelRequestedUtc"])).total_seconds()
+            require(0 <= settling <= 120, "absence-cancellation-transition-unresolved")
+            return "pending", {"runId": run["id"], "jobId": job["id"], "runnerId": 0,
+                "reason": "absence-cancellation-api-transition"}
+        if run["status"] == "completed":
+            require(private.get("cancelIntent", {}).get("runId") == private["runId"] and run["conclusion"] == "cancelled"
+                    and job["conclusion"] == "cancelled" and job["status"] == "completed", "absence-unexpected-terminal-result")
+            require((utc(private["cancelRequestedUtc"]) - utc(private["queuedObservedUtc"])).total_seconds()
+                    >= self.policy["privateQueueSeconds"], "absence-cancelled-before-deadline")
+            if "finalInventory" not in private:
+                require(not self.read_only, "absence-final-proof-not-durable")
+                private["finalInventory"] = inventory
+                self.state.save()
+            return "absent", {"runId": run["id"], "jobId": job["id"], "runnerId": 0,
+                "comparisonId": private["comparisonId"], "registrationRequested": False,
+                "initialInventory": private["initialInventory"], "finalInventory": private["finalInventory"],
+                "queuedObservedUtc": private["queuedObservedUtc"], "cancelIntent": private["cancelIntent"],
+                "cancelRequestedUtc": private["cancelRequestedUtc"],
+                "reason": "eligible-private-capacity-absent-no-harness-executed"}
+        require(job["status"] == "queued", "absence-job-not-queued")
+        if not private.get("queuedObservedUtc"):
+            require(not self.read_only, "absence-queue-proof-not-durable")
+            private["queuedObservedUtc"] = now()
+            self.state.save()
+        elapsed = (datetime.now(timezone.utc) - utc(private["queuedObservedUtc"])).total_seconds()
+        if elapsed >= self.policy["privateQueueSeconds"]:
+            require(not self.read_only, "absence-cancellation-not-completed")
+            if "cancelRequestedUtc" not in private:
+                private["cancelRequestedUtc"] = now()
+                self.state.save()
+            cancel_private_once(self.state, self.api, private["runId"])
+        return "pending", {"runId": run["id"], "jobId": job["id"], "runnerId": 0,
+            "queueSeconds": elapsed, "reason": "absence-control-awaiting-bounded-cancellation"}
 
     def association(self, lane, run_id, comparison):
         status, run = self.api.request("GET", f"repos/techrote/ezvm/actions/runs/{run_id}")
@@ -196,6 +318,8 @@ class Coordinator:
         private = value["private"]
         if private["outcome"] != "pending":
             return private["outcome"], private.get("proof", {"reason": private["reason"]})
+        if value["selection"] == "absent-capacity":
+            return self.observe_absent_capacity()
         if "console" not in private:
             return "unknown", {"reason": "private-start-unconfirmed-no-replay"}
         console = Path(private["console"])

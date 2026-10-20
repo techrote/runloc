@@ -3,7 +3,7 @@
     [Parameter(Mandatory=$true)][string]$BackingRoot,
     [Parameter(Mandatory=$true)][ValidatePattern('^[a-f0-9]{40}$')][string]$ExpectedControllerCommit,
     [string]$PrivateControllerRoot,
-    [ValidateSet('available','hosted-only','loss-before-harness')][string]$Selection='available',
+    [ValidateSet('available','hosted-only','loss-before-harness','absent-capacity')][string]$Selection='available',
     [string]$ResumeState
 )
 $ErrorActionPreference='Stop'

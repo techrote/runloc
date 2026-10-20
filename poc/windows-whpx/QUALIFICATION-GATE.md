@@ -51,6 +51,20 @@ Branch-rule migration and future unapproved-source behavior must be documented
 and tested in EzVM before CI-POC003 completion. Existing legacy hosted deferral is
 still pending replacement; this file alone does not complete issue23.
 
+`absent-capacity` is a separate opt-in control for an absent eligible runner,
+not a claim that the physical PC is offline. It allocates a fresh UUID label,
+positively checks the complete repository runner inventory for both matching
+names and labels, and dispatches the unchanged qualification workflow without
+requesting any registration. The exact associated job must remain queued with
+runner ID0 and no executed steps for the600second queue interval. Only that
+owned run is then cancelled; terminal cancelled/no-runner/no-step evidence and
+a fresh complete inventory are required before the decision becomes `absent`.
+An assigned runner, executed step, unexpected conclusion, incomplete inventory,
+API error or premature cancellation cannot grant fallback. Ambiguous dispatch
+uses the original durable intent, and merge verification refetches the evidence.
+The existing quarantine still blocks this control from accepting; this addition
+is software coverage until its fresh live Actions proof is recorded.
+
 For guest-failure diagnosis, `Open-GuestDiagnostic.ps1` starts a separate
 Explorer-owned, private-lease invocation without registering a GitHub runner.
 Its hash-bound plan selects `basic-clones` or `release-order`. The latter

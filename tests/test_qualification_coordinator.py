@@ -1,6 +1,6 @@
 """Offline coordinator recovery and authoritative-publication controls; no live API."""
 from contextlib import nullcontext
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 import json
 from pathlib import Path
 import sys
@@ -58,6 +58,156 @@ class CoordinatorTests(unittest.TestCase):
         with patch.object(coordinator, 'run_powershell', side_effect=AssertionError('quarantined registration')):
             self.controller.start_private()
         self.assertEqual('security', self.controller.observe_private()[0])
+
+    def test_absence_never_treats_api_error_partial_inventory_or_matching_label_as_absent(self):
+        class API:
+            def request(inner, method, endpoint):
+                return inner.response
+        api = API(); self.controller.api = api
+        for response in ((403, {}), (200, {'total_count': 101, 'runners': []}),
+                         (200, {'total_count': 1, 'runners': [{'name': 'other', 'labels': [{'name': 'runloc-test'}]}]})):
+            api.response = response
+            with self.subTest(response=response), self.assertRaises(coordinator.InvalidEvidence):
+                self.controller.absent_inventory('runloc-test')
+        api.response = (200, {'total_count': 0, 'runners': []})
+        self.assertEqual(0, self.controller.absent_inventory('runloc-test')['eligibleCount'])
+
+    def test_absence_dispatch_reconciles_same_intent_without_any_registration(self):
+        self.state.value.update(selection='absent-capacity', hosted={'runId': 12})
+        calls = []
+        def dispatch(*args, **kwargs):
+            calls.append(kwargs)
+            if len(calls) == 1:
+                self.state.value['absentDispatch'] = {'intent': self.controller.absence_dispatch_intent(self.state.value['private']),
+                                                     'writeState': 'unknown'}
+                self.state.save()
+                raise coordinator.UnknownWrite('ambiguous')
+            return 13
+        with patch.object(self.controller, 'definition'), \
+             patch.object(self.controller, 'source'), \
+             patch.object(self.controller, 'absent_inventory', return_value={'eligibleCount': 0}) as inventory, \
+             patch.object(coordinator, 'dispatch_once', side_effect=dispatch), \
+             patch.object(coordinator, 'run_powershell', side_effect=AssertionError('registration not permitted')):
+            with self.assertRaises(coordinator.UnknownWrite): self.controller.start_private()
+            self.controller.start_private()
+            self.assertEqual(calls[0], calls[1])
+            self.assertEqual(13, self.state.value['private']['runId'])
+            self.assertFalse(self.state.value['private']['registrationRequested'])
+            inventory.assert_called_once()
+
+    def test_absence_cannot_bypass_existing_quarantine(self):
+        self.state.value.update(selection='absent-capacity', hosted={'runId': 12})
+        (self.root / 'ci-poc-003-private-quarantine.json').write_text('{}')
+        with patch.object(coordinator, 'dispatch_once', side_effect=AssertionError('quarantine bypass')):
+            self.controller.start_private()
+        self.assertEqual('security', self.controller.observe_private()[0])
+
+    def test_absence_resume_before_api_intent_rechecks_quarantine_and_definition(self):
+        self.absence_fixture()
+        self.state.value['private'].pop('runId')
+        self.state.value.pop('absentDispatch')
+        (self.root / 'ci-poc-003-private-quarantine.json').write_text('{}')
+        with patch.object(self.controller, 'source'), \
+             patch.object(coordinator, 'dispatch_once', side_effect=AssertionError('first POST after quarantine')):
+            with self.assertRaisesRegex(coordinator.InvalidEvidence, 'quarantined-before-dispatch'):
+                self.controller.start_private()
+        (self.root / 'ci-poc-003-private-quarantine.json').unlink()
+        with patch.object(self.controller, 'source'), \
+             patch.object(self.controller, 'definition', side_effect=coordinator.InvalidEvidence('moved-tag')), \
+             patch.object(coordinator, 'dispatch_once', side_effect=AssertionError('first POST after moved tag')):
+            with self.assertRaisesRegex(coordinator.InvalidEvidence, 'moved-tag'):
+                self.controller.start_private()
+
+    def test_absence_empty_api_intent_and_broad_label_cannot_dispatch(self):
+        for changed in ('empty-api-intent', 'broad-label'):
+            self.absence_fixture()
+            self.state.value['private'].pop('runId')
+            if changed == 'empty-api-intent': self.state.value['absentDispatch'] = {}
+            else: self.state.value['private']['runnerName'] = 'self-hosted'
+            with self.subTest(changed=changed), \
+                 patch.object(coordinator, 'dispatch_once', side_effect=AssertionError('invalid intent POST')), \
+                 self.assertRaises(coordinator.InvalidEvidence):
+                self.controller.start_private()
+
+    def absence_fixture(self, seconds=0):
+        queued = datetime.now(timezone.utc) - timedelta(seconds=seconds)
+        self.state.value.update(selection='absent-capacity', hosted={'runId': 12},
+            private={'outcome': 'pending', 'absenceIntent': True, 'registrationRequested': False,
+                     'comparisonId': 'c'*32, 'runnerName': 'runloc-'+'c'*32, 'runId': 13,
+                     'startIntentUtc': queued.isoformat(), 'queuedObservedUtc': queued.isoformat(),
+                     'initialInventory': {'eligibleCount': 0}})
+        run = {'id': 13, 'status': 'queued', 'created_at': self.state.value['createdUtc']}
+        pin = self.policy['private']
+        self.state.value['absentDispatch'] = {'runId': 13, 'writeState': 'confirmed', 'intent': dict(
+            path=pin['workflowPath'].rsplit('/', 1)[-1], commit=pin['workflowCommit'], ref=pin['workflowRef'],
+            comparison='c'*32, title='CI-PoC002 '+'c'*32,
+            inputs={'comparison_id': 'c'*32, 'runner_name': 'runloc-'+'c'*32, 'mode': 'qualification'})}
+        job = {'id': 14, 'runner_id': 0, 'runner_name': '', 'steps': [], 'status': 'queued', 'labels': ['runloc-'+'c'*32]}
+        return run, job
+
+    def test_absence_queue_bound_cancels_only_owned_private_run_and_never_starts_console(self):
+        run, job = self.absence_fixture(seconds=601)
+        with patch.object(self.controller, 'absent_inventory', return_value={'eligibleCount': 0}), \
+             patch.object(self.controller, 'association', return_value=(run, job)), \
+             patch.object(coordinator, 'cancel_private_once') as cancel, \
+             patch.object(coordinator, 'run_powershell', side_effect=AssertionError('registration not permitted')):
+            self.assertEqual('pending', self.controller.observe_private()[0])
+            cancel.assert_called_once_with(self.state, self.controller.api, 13)
+        self.assertIn('cancelRequestedUtc', self.state.value['private'])
+
+    def test_absence_cannot_hide_assigned_job_or_executed_step(self):
+        run, job = self.absence_fixture()
+        for changed in ({'runner_id': 48}, {'runner_id': False}, {'runner_name': 'assigned'},
+                        {'steps': [{'conclusion': 'failure'}]}, {'steps': None}, {'labels': ['other']},
+                        {'status': 'in_progress'}):
+            with self.subTest(changed=changed), \
+                 patch.object(self.controller, 'absent_inventory', return_value={'eligibleCount': 0}), \
+                 patch.object(self.controller, 'association', return_value=(run, job | changed)), \
+                 self.assertRaises(coordinator.InvalidEvidence):
+                self.controller.observe_private()
+        del job['steps']
+        with patch.object(self.controller, 'absent_inventory', return_value={'eligibleCount': 0}), \
+             patch.object(self.controller, 'association', return_value=(run, job)), \
+             self.assertRaises(coordinator.InvalidEvidence):
+            self.controller.observe_private()
+
+    def test_absence_terminal_proof_is_durable_and_revalidated(self):
+        run, job = self.absence_fixture(seconds=601)
+        private = self.state.value['private']
+        private.update(cancelIntent={'runId': 13}, cancelRequestedUtc=datetime.now(timezone.utc).isoformat())
+        run.update(status='completed', conclusion='cancelled')
+        job.update(status='completed', conclusion='cancelled')
+        with patch.object(self.controller, 'absent_inventory', side_effect=[{'eligibleCount': 0, 'observedUtc': 'first'},
+                                                                         {'eligibleCount': 0, 'observedUtc': 'second'}]), \
+             patch.object(self.controller, 'association', return_value=(run, job)):
+            outcome, proof = self.controller.observe_private()
+            self.assertEqual('absent', outcome)
+            self.controller.read_only = True
+            self.assertEqual((outcome, proof), self.controller.observe_private())
+
+    def test_absence_unrequested_or_early_cancellation_is_failure(self):
+        run, job = self.absence_fixture(seconds=10)
+        run.update(status='completed', conclusion='cancelled')
+        job.update(status='completed', conclusion='cancelled')
+        with patch.object(self.controller, 'absent_inventory', return_value={'eligibleCount': 0}), \
+             patch.object(self.controller, 'association', return_value=(run, job)):
+            with self.assertRaises(coordinator.InvalidEvidence): self.controller.observe_private()
+            self.state.value['private'].update(cancelIntent={'runId': 13}, cancelRequestedUtc=datetime.now(timezone.utc).isoformat())
+            with self.assertRaisesRegex(coordinator.InvalidEvidence, 'before-deadline'): self.controller.observe_private()
+
+    def test_absence_non_atomic_cancel_observations_settle_without_accepting(self):
+        for run_done in (False, True):
+            run, job = self.absence_fixture(seconds=601)
+            self.state.value['private'].update(cancelIntent={'runId': 13}, cancelRequestedUtc=datetime.now(timezone.utc).isoformat())
+            if run_done: run.update(status='completed', conclusion='cancelled')
+            else: job.update(status='completed', conclusion='cancelled')
+            with self.subTest(run_done=run_done), \
+                 patch.object(self.controller, 'absent_inventory', return_value={'eligibleCount': 0}), \
+                 patch.object(self.controller, 'association', return_value=(run, job)):
+                self.assertEqual('pending', self.controller.observe_private()[0])
+                self.state.value['private']['cancelRequestedUtc'] = (datetime.now(timezone.utc)-timedelta(seconds=121)).isoformat()
+                with self.assertRaisesRegex(coordinator.InvalidEvidence, 'transition-unresolved'):
+                    self.controller.observe_private()
 
     def test_late_hosted_failure_revokes_and_new_green_cannot_clear_latch(self):
         with patch.object(coordinator, 'exclusive', return_value=nullcontext()), \

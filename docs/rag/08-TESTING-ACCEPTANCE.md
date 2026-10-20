@@ -161,3 +161,13 @@ association and can never clear the source gate or grant CI-POC003 acceptance.
 Every controller rejects a timed-out or cancelled ACL preflight even when its
 child races to a natural exit0 before cleanup. Timeout/cancellation facts remain
 in the receipt; a PASS line and zero exit cannot override either condition.
+
+The003 absent-capacity control must positively establish that no eligible
+registration exists for its fresh UUID. It uses the unchanged private workflow,
+retains complete runner-inventory observations, proves no runner assignment or
+executed steps throughout the bounded queued attempt, and cancels only its exact
+owned run. Offline API access and incomplete inventory are unknown evidence.
+Tests cover ambiguous-dispatch reconciliation, quarantine refusal, matching
+labels, assigned/executed jobs, premature/unrequested cancellation and durable
+terminal proof revalidation. Software controls do not substitute for its actual
+GitHub queued/cancelled job and independent hosted fallback acceptance.
