@@ -14,11 +14,11 @@
     "workflowCommit": "a3c6d3ec4c7506d8f8d1c553eb7a4560ddc61d4d"
   },
   "hosted": {
-    "controller": "c1a2bb727da5c1099c0ac693c92c2f07fcf84d1d",
+    "controller": "f167950a865df3baad247ba37ff53f0fcb683a72",
     "workflowId": 388691839,
-    "workflowRef": "ci-poc-003-aa98d6cbe6df6b7ca27fa4050620ba776e37038d",
-    "sha256Lf": "288fb83bf760b4942127fecbd7088da20759a7127faf8a4b2938f8825607d3a3",
-    "workflowCommit": "aa98d6cbe6df6b7ca27fa4050620ba776e37038d",
+    "workflowRef": "ci-poc-003-diagnostic-1c1dbb68ab48d1f5f17501032318d057957557d8",
+    "sha256Lf": "1ed68ffe08632075c5a3315c571e557c165fc665f919f617286bdb6bc5e4b454",
+    "workflowCommit": "1c1dbb68ab48d1f5f17501032318d057957557d8",
     "workflowPath": ".github/workflows/ezvm-ci-poc-003-hosted.yml"
   },
   "profile": {

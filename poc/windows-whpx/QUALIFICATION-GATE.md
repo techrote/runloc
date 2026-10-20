@@ -7,6 +7,12 @@ original full release scenario remain unchanged. WHPX uses six vCPUs per guest;
 original memory and operation limits remain in force. Hosted TCG starts first,
 independently, with no dependency on private capacity.
 
+The current hosted pin is immutable workflow1c1dbb68/controllerf167950, with
+bounded original-base log reduction and preflight timeout/cancellation rejection.
+The unchanged private002 definition remains separately pinned. Updating these
+definitions does not recover or supersede the original failed comparison; its
+quarantine still blocks acceptance until an explicit reviewed recovery action.
+
 From a clean pinned Runloc checkout, run `Open-QualificationGate.ps1` in a dedicated
 PowerShell process, passing `BackingRoot`, `ExpectedControllerCommit`, and the
 qualified `PrivateControllerRoot`. The opener creates a private DACL state folder
