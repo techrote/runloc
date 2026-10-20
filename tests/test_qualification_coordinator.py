@@ -69,6 +69,9 @@ class CoordinatorTests(unittest.TestCase):
     def private_final_fixture(self, reason='no-job-deadline'):
         lease_id = 'd'*32
         lease = self.root / ('runloc-whpx-'+lease_id); lease.mkdir()
+        # Hosted Windows TEMP can contain RUNNER~1. Ownership records require
+        # the same canonical spelling that the real observer resolves.
+        lease = lease.resolve()
         console = self.root / 'console-test'; console.mkdir()
         (console / 'controller.stdout.log').write_text('RUNLOC_RUNNER_LEASE='+str(lease)+'\n')
         owner = dict(leaseId=lease_id, root=str(lease), controllerCommit=self.policy['private']['hostController'],
