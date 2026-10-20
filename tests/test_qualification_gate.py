@@ -14,6 +14,71 @@ gate = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(gate)
 
 
+class AssertionControlTests(unittest.TestCase):
+    def setUp(self):
+        self.expected = dict(candidate='a'*40, tree='b'*40, controller='c'*40, controller_tree='d'*40,
+            comparison='e'*32, workflow_commit='f'*40, workflow_path='.github/workflows/ezvm-ci-poc-003-hosted.yml',
+            created_utc='2026-10-20T00:00:00Z')
+        self.run = dict(id=31, repository={'full_name': 'techrote/ezvm'}, event='workflow_dispatch', actor={'login': 'techrote'},
+            run_attempt=1, head_sha='f'*40, path=self.expected['workflow_path'], display_title='CI-PoC003 assertion '+'e'*32,
+            status='completed', conclusion='failure')
+        self.job = dict(run_id=31, status='completed', conclusion='failure', runner_id=4, runner_name='GitHub Actions',
+            steps=[dict(status='completed', conclusion='failure', name='Authenticated fixed false guest assertion (expected failure)')])
+        self.receipt = dict(schemaVersion=1, negativeControlOnly=True, qualificationPassed=False, passed=False, controlObserved=True,
+            control='authenticated-fixed-false-guest-assertion', candidate={'commit': 'a'*40, 'tree': 'b'*40},
+            controller={'commit': 'c'*40, 'tree': 'd'*40}, comparisonId='e'*32, workflowCommit='f'*40,
+            repository='techrote/ezvm', runId=31, runAttempt=1, runnerEnvironment='github-hosted', runnerName='GitHub Actions',
+            requestedAccelerator='tcg', qualificationCpus=6, qualificationMemoryMiB=4096, sourceUnchanged=True, errors=[],
+            exitCode=1, guestAssertionExitCode=1, preflightExitCode=0, timedOut=False, cancelled=False, outputFailed=False,
+            outputOverflow=False, preflightTimedOut=False, preflightCancelled=False,
+            cleanup=dict(childExited=True, activeProcesses=0, forced=False, fixtureRemoved=True),
+            elapsedSeconds=30, startedUtc='2026-10-20T00:00:01Z', endedUtc='2026-10-20T00:00:31Z')
+
+    def test_real_failed_control_classification_can_only_block_even_with_green_other_lane(self):
+        outcome = gate.validate_assertion_control(self.receipt, self.run, self.job, **self.expected)
+        self.assertEqual('assertion', outcome)
+        self.assertEqual('failure', gate.decide(outcome, 'pass'))
+        self.assertEqual('failure', gate.decide('pass', outcome))
+
+    def test_control_cannot_hide_wrong_exit_partial_cleanup_profile_or_false_success(self):
+        changes = {'passed': True, 'negativeControlOnly': False, 'qualificationPassed': True, 'controlObserved': False,
+            'sourceUnchanged': False, 'exitCode': 0, 'guestAssertionExitCode': 0, 'preflightExitCode': 1,
+            'qualificationCpus': 8, 'requestedAccelerator': 'whpx', 'timedOut': True, 'cancelled': True,
+            'outputFailed': True, 'preflightTimedOut': True, 'preflightCancelled': True, 'errors': ['cleanup']}
+        for key, value in changes.items():
+            with self.subTest(key=key), self.assertRaises(gate.InvalidEvidence):
+                gate.validate_assertion_control(self.receipt | {key: value}, self.run, self.job, **self.expected)
+        for key, value in {'activeProcesses': 1, 'fixtureRemoved': False, 'forced': True, 'childExited': False}.items():
+            with self.subTest(key=key), self.assertRaises(gate.InvalidEvidence):
+                gate.validate_assertion_control(self.receipt | {'cleanup': self.receipt['cleanup'] | {key: value}}, self.run, self.job, **self.expected)
+
+    def test_control_requires_actual_failed_job_exact_definition_fresh_source_and_expected_step(self):
+        for key, value in {'conclusion': 'success', 'head_sha': '0'*40, 'run_attempt': 2, 'display_title': 'replay'}.items():
+            with self.subTest(key=key), self.assertRaises(gate.InvalidEvidence):
+                gate.validate_assertion_control(self.receipt, self.run | {key: value}, self.job, **self.expected)
+        for key in ('candidate', 'tree', 'controller', 'controller_tree', 'comparison', 'workflow_commit'):
+            with self.subTest(key=key), self.assertRaises(gate.InvalidEvidence):
+                gate.validate_assertion_control(self.receipt, self.run, self.job, **(self.expected | {key: '0'*len(self.expected[key])}))
+        with self.assertRaises(gate.InvalidEvidence):
+            gate.validate_assertion_control(self.receipt, self.run, self.job | {'steps': []}, **self.expected)
+
+    def test_control_archive_has_separate_closed_two_file_schema_and_digest(self):
+        def archive(extra=False):
+            buffer = io.BytesIO()
+            raw = gate.canonical(self.receipt)
+            with zipfile.ZipFile(buffer, 'w') as zipped:
+                zipped.writestr('assertion-control-receipt.json', raw)
+                zipped.writestr('assertion-control-receipt-digest.json', gate.canonical(dict(schemaVersion=1,
+                    file='assertion-control-receipt.json', sha256=gate.digest(raw))))
+                if extra: zipped.writestr('../private.log', 'synthetic-secret')
+            return buffer.getvalue()
+        raw = archive()
+        self.assertEqual(self.receipt, gate.assertion_control_artifact_files(raw, gate.digest(raw))['assertion-control-receipt.json'])
+        with self.assertRaises(gate.InvalidEvidence): gate.assertion_control_artifact_files(raw, '0'*64)
+        extra = archive(True)
+        with self.assertRaises(gate.InvalidEvidence): gate.assertion_control_artifact_files(extra, gate.digest(extra))
+
+
 class GatePolicyTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):

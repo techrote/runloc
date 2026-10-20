@@ -114,6 +114,64 @@ def validate_association(run, job, *, workflow_commit, workflow_path, title, can
     require(re.fullmatch(r"[a-f0-9]{40}", candidate) and re.fullmatch(r"[a-f0-9]{40}", tree), "source-identity-format")
 
 
+def assertion_control_artifact_files(archive, expected_sha256):
+    require(digest(archive) == expected_sha256.removeprefix("sha256:"), "assertion-artifact-transport-digest")
+    receipt_name = "assertion-control-receipt.json"
+    digest_name = "assertion-control-receipt-digest.json"
+    with zipfile.ZipFile(io.BytesIO(archive)) as zipped:
+        entries = zipped.infolist()
+        require(len(entries) == 2 and {entry.filename for entry in entries} == {receipt_name, digest_name}
+                and all(not entry.is_dir() and entry.file_size <= 1024*1024 for entry in entries), "assertion-artifact-layout")
+        raw = zipped.read(receipt_name)
+        sidecar = json_bytes(zipped.read(digest_name))
+    require(sidecar["schemaVersion"] == 1 and sidecar["file"] == receipt_name and sidecar["sha256"] == digest(raw),
+            "assertion-artifact-receipt-digest")
+    return {receipt_name: json_bytes(raw), digest_name: sidecar}
+
+
+def validate_assertion_control(receipt, run, job, *, candidate, tree, controller, controller_tree,
+                               comparison, workflow_commit, workflow_path, created_utc):
+    """Negative-only: validated real failure can return assertion, never pass."""
+    require(all(isinstance(value, str) and re.fullmatch(r"[a-f0-9]{40}", value)
+                for value in (candidate, tree, controller, controller_tree, workflow_commit))
+            and re.fullmatch(r"[a-f0-9]{32}", comparison), "assertion-control-source-format")
+    require(run["repository"]["full_name"] == "techrote/ezvm" and run["event"] == "workflow_dispatch"
+            and run["actor"]["login"] == "techrote" and run["run_attempt"] == 1, "assertion-control-untrusted-run")
+    require(run["head_sha"] == workflow_commit and run["path"].split("@", 1)[0] == workflow_path
+            and run["display_title"] == "CI-PoC003 assertion " + comparison, "assertion-control-definition")
+    require(run["status"] == job["status"] == "completed" and run["conclusion"] == job["conclusion"] == "failure"
+            and job["run_id"] == run["id"] and type(job["runner_id"]) is int and job["runner_id"] > 0,
+            "assertion-control-not-actual-failed-job")
+    steps = job["steps"]
+    failures = [step for step in steps if step["conclusion"] == "failure"]
+    require(len(failures) == 1 and failures[0]["name"] == "Authenticated fixed false guest assertion (expected failure)"
+            and all(step["status"] == "completed" and step["conclusion"] in {"success", "failure", "skipped"} for step in steps),
+            "assertion-control-wrong-failure-step")
+    require(receipt["schemaVersion"] == 1 and receipt["negativeControlOnly"] is True
+            and receipt["qualificationPassed"] is False and receipt["passed"] is False and receipt["controlObserved"] is True
+            and receipt["control"] == "authenticated-fixed-false-guest-assertion", "assertion-control-not-negative-only")
+    require(receipt["candidate"]["commit"] == candidate and receipt["candidate"]["tree"] == tree
+            and receipt["controller"]["commit"] == controller and receipt["controller"]["tree"] == controller_tree
+            and receipt["comparisonId"] == comparison and receipt["workflowCommit"] == workflow_commit
+            and receipt["repository"] == "techrote/ezvm" and receipt["runId"] == run["id"]
+            and receipt["runAttempt"] == 1 and receipt["runnerEnvironment"] == "github-hosted"
+            and receipt["runnerName"] == job["runner_name"], "assertion-control-source-or-attempt")
+    require(receipt["requestedAccelerator"] == "tcg" and receipt["qualificationCpus"] == 6
+            and receipt["qualificationMemoryMiB"] == 4096 and receipt["sourceUnchanged"] is True
+            and receipt["errors"] == [], "assertion-control-profile-or-source")
+    for key, expected in (("exitCode", 1), ("guestAssertionExitCode", 1), ("preflightExitCode", 0)):
+        require(type(receipt[key]) is int and receipt[key] == expected, "assertion-control-numeric-exit")
+    require(all(receipt[key] is False for key in ("timedOut", "cancelled", "outputFailed", "outputOverflow",
+                                                 "preflightTimedOut", "preflightCancelled")), "assertion-control-incomplete")
+    cleanup = receipt["cleanup"]
+    require(cleanup["childExited"] is True and type(cleanup["activeProcesses"]) is int and cleanup["activeProcesses"] == 0
+            and cleanup["forced"] is False and cleanup["fixtureRemoved"] is True, "assertion-control-cleanup")
+    require(type(receipt["elapsedSeconds"]) in (int, float) and math.isfinite(receipt["elapsedSeconds"])
+            and receipt["elapsedSeconds"] > 0 and utc(created_utc) <= utc(receipt["startedUtc"]) < utc(receipt["endedUtc"]),
+            "assertion-control-freshness")
+    return "assertion"
+
+
 def validate_events(events, accelerator):
     require(isinstance(events, list) and 0 < len(events) <= 10000, "event-count")
     begin = [e for e in events if e.get("kind") == "boundary" and e.get("name") == "STARTED_AT"]

@@ -65,6 +65,21 @@ uses the original durable intent, and merge verification refetches the evidence.
 The existing quarantine still blocks this control from accepting; this addition
 is software coverage until its fresh live Actions proof is recorded.
 
+`Invoke-AssertionControl.ps1` is a separate negative-only hosted Actions adapter.
+It requires the trusted owner's first dispatch, exact clean sources and ACL
+preflight, then builds a cold TCG guest with six CPUs and the original light
+profile's4096MiB. After authenticated READY and CPU verification, it executes
+the fixed false guest assertion `test 1 -eq 2`. The actual guest exit must be1;
+the harness and Actions job remain failed. Native process ownership, original
+base/READY/stop limits, a separate one-hour control wall, unchanged sources and
+owned fixture cleanup remain mandatory. This is a focused failure control, not
+the full qualification or WHPX coverage. The dedicated receipt always has
+`negativeControlOnly=true`, `qualificationPassed=false` and `passed=false`.
+Its observed-control field cannot grant success or reset quarantine. Missing,
+duplicate or reordered host control records, wrong exits, timeouts, source
+changes and unresolved cleanup cannot establish the intended failure control.
+Live immutable definition/run/job binding and gate refusal remain outstanding.
+
 For guest-failure diagnosis, `Open-GuestDiagnostic.ps1` starts a separate
 Explorer-owned, private-lease invocation without registering a GitHub runner.
 Its hash-bound plan selects `basic-clones` or `release-order`. The latter

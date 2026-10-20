@@ -171,3 +171,14 @@ Tests cover ambiguous-dispatch reconciliation, quarantine refusal, matching
 labels, assigned/executed jobs, premature/unrequested cancellation and durable
 terminal proof revalidation. Software controls do not substitute for its actual
 GitHub queued/cancelled job and independent hosted fallback acceptance.
+
+The functional assertion control is negative-only and uses an authenticated
+fixed false guest command after READY and six-CPU proof, with the original
+light profile and operation limits. Its actual guest/harness/job nonzero exits
+remain failures. Its separate receipt and closed two-file artifact schema can
+only classify as `assertion`; neither this adapter nor its parser has a success
+path. Source/definition/attempt/runner mismatches, partial or unexpected failure
+steps, timeout/cancellation, missing numeric exits and unresolved cleanup reject
+the intended-control proof. The shared gate decision must demonstrate that the
+actual assertion evidence dominates a separately validated green alternative.
+Software fixtures do not establish that live Actions refusal.
