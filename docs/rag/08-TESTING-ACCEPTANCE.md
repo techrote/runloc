@@ -149,3 +149,15 @@ prose and seed material are not published. Stripping a diagnostic prefix is loca
 to the reducer and must never expose guest success markers to the host oracle.
 Negative controls cover absent/stale/wrong contexts, nested headers, large lines,
 spoofed PASS text, redaction and missing versus observed/truncated capture.
+
+The opt-in `full-forensic` local diagnostic runs the unchanged complete original
+workload after exact ACL preflight, under private native ownership. Six CPUs,
+original memory/assertions/per-operation limits, exact sources before/after,
+numeric child status, phase telemetry and cleanup remain required. Only that
+explicit mode uses the owner's NoOverallTimeout policy; focused modes remain
+bounded. Failed private fixtures are forensic quarantine, inspected only after
+positive process emptiness. Direct-host diagnostic execution has no JIT/Actions
+association and can never clear the source gate or grant CI-POC003 acceptance.
+Every controller rejects a timed-out or cancelled ACL preflight even when its
+child races to a natural exit0 before cleanup. Timeout/cancellation facts remain
+in the receipt; a PASS line and zero exit cannot override either condition.

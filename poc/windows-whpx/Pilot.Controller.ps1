@@ -88,11 +88,11 @@ try {
         -RawLogPath (Join-Path $lease.Private 'acl-preflight.log') -Clock $clock -ExecutionDeadlineSeconds ([Math]::Min($preflightStart + 120, $executionDeadline)) `
         -CleanupDeadlineSeconds ([Math]::Min($preflightStart + 150, $cleanupDeadline)) -MaximumLogBytes 1048576
     $receipt.preflight = [ordered]@{ exitCode = $preflight.exitCode; elapsedSeconds = $preflight.endSeconds - $preflight.startSeconds;
-        childExited = $preflight.childExited; activeProcesses = $preflight.activeProcesses; forced = $preflight.forced;
+        childExited = $preflight.childExited; activeProcesses = $preflight.activeProcesses; forced = $preflight.forced; timedOut = $preflight.timedOut; cancelled = $preflight.cancelled;
         ownership = $preflight.ownership; fixtureCreated = $false; qualificationStarted = $false }
     $receipt.cleanup.childExited = $preflight.childExited; $receipt.cleanup.activeProcesses = $preflight.activeProcesses
     $receipt.cleanup.forced = $preflight.forced
-    if ($preflight.exitCode -ne 0 -or -not $preflight.childExited -or $preflight.activeProcesses -ne 0 -or $preflight.forced -or
+    if ($preflight.exitCode -ne 0 -or -not $preflight.childExited -or $preflight.activeProcesses -ne 0 -or $preflight.forced -or $preflight.timedOut -or $preflight.cancelled -or
         $preflight.outputOverflow -or $preflight.outputFailed -or @($preflight.records | Where-Object { $_.Text -ceq 'RUNLOC_EXACT_ACL_PREFLIGHT=PASS' }).Count -ne 1) { throw 'exact-acl-preflight-failed' }
     $receipt.cleanup.childExited = $preflight.childExited; $receipt.cleanup.activeProcesses = $preflight.activeProcesses
     $receipt.cleanup.ownershipVerified = $true

@@ -67,3 +67,21 @@ process ownership, independent cleanup/source checks and a diagnostic one-hour
 containment wall. Failed fixtures remain private forensic quarantine, never a
 reusable qualified artifact or successful fixture-disposal result. A passing
 diagnostic does not clear the production gate's persistent failure quarantine.
+
+The explicit `-Scenario full-forensic` mode instead invokes the unchanged
+candidate's original `Invoke-EzVm010RealPortability.ps1 -ReleaseQualification`
+workload under the same private native Job. Exact ACL preflight must pass before
+that workload starts. It requests six CPUs, preserves original memory,
+assertions and per-operation limits, and retains complete phase telemetry.
+This mode alone uses the owner's NoOverallTimeout policy; both focused modes
+retain their one-hour wall. Console workload events are newly drained records,
+not repeated log tails. Successful execution additionally requires every original
+completion marker exactly once and complete telemetry before fixture disposal.
+Failed fixtures stay private for forensic inspection only after owned processes
+are positively proven zero; an unknown process count permits no disk inspection.
+
+This is a direct-host troubleshooting run: no JIT runner registration, Actions
+ancestry, gate publication, latch recovery or automatic retry. Even a successful
+full workload receipt always says `qualificationPassed=false` and
+`actionsAssociation=none-diagnostic-only`. It cannot substitute for the real
+Actions acceptance required by CI-POC003 or establish the original crash cause.

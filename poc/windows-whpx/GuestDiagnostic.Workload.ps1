@@ -1,10 +1,17 @@
 #requires -Version 5.1
 [CmdletBinding()]param([Parameter(Mandatory=$true)][string]$SourceRoot,[Parameter(Mandatory=$true)][string]$Fixture,
     [Parameter(Mandatory=$true)][string]$PrivateEvidence,
-    [ValidateSet('basic-clones','release-order')][string]$Scenario='basic-clones')
+    [ValidateSet('basic-clones','release-order','full-forensic')][string]$Scenario='basic-clones')
 $ErrorActionPreference='Stop'
 $ProgressPreference='SilentlyContinue'
 $env:PSModulePath=[IO.Path]::Combine($PSHOME,'Modules')
+if($Scenario -ceq 'full-forensic'){
+    Write-Host 'DIAGNOSTIC_ONLY=not-full-qualification'
+    Write-Host 'DIAGNOSTIC_PHASE=original-full-release-workload'
+    & (Join-Path $SourceRoot 'scripts/Invoke-EzVm010RealPortability.ps1') -Root $SourceRoot -ReleaseQualification -Accelerator whpx -QualificationCpus 6 -TelemetryPath (Join-Path $PrivateEvidence 'full-telemetry.jsonl')
+    if(-not $?){throw 'diagnostic-full-workload-failed'}
+    return
+}
 $root=Join-Path $Fixture 'guest diagnostic'
 $null=New-Item -ItemType Directory -Path $root
 foreach($relative in @('ezvm.ps1','src','config','manifests','guest','scripts','tools')){

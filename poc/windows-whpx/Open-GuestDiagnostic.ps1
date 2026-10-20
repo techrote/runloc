@@ -2,7 +2,7 @@
 [CmdletBinding()]param([Parameter(Mandatory=$true)][string]$BackingRoot,[Parameter(Mandatory=$true)][string]$CandidateRoot,
     [Parameter(Mandatory=$true)][ValidatePattern('^[a-f0-9]{40}$')][string]$CandidateCommit,
     [Parameter(Mandatory=$true)][ValidatePattern('^[a-f0-9]{40}$')][string]$ControllerCommit,
-    [ValidateSet('basic-clones','release-order')][string]$Scenario='basic-clones')
+    [ValidateSet('basic-clones','release-order','full-forensic')][string]$Scenario='basic-clones')
 $ErrorActionPreference='Stop';$env:PSModulePath=[IO.Path]::Combine($PSHOME,'Modules')
 . (Join-Path $PSScriptRoot 'Pilot.Common.ps1')
 Import-PilotNative

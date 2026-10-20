@@ -38,7 +38,7 @@ try {
     $preflightAttempted=$true
     $preflight=Invoke-PilotChild -Executable $exe -Arguments $aclArguments -WorkingDirectory $CandidateRoot -TemporaryDirectory $lease.Fixture `
         -RawLogPath (Join-Path $lease.Private 'preflight.log') -Clock $clock -ExecutionDeadlineSeconds ($clock.Elapsed.TotalSeconds+60) -CleanupDeadlineSeconds ($clock.Elapsed.TotalSeconds+70)
-    if($preflight.exitCode -ne 0 -or -not $preflight.childExited -or $preflight.activeProcesses -ne 0 -or $preflight.forced -or
+    if($preflight.exitCode -ne 0 -or -not $preflight.childExited -or $preflight.activeProcesses -ne 0 -or $preflight.forced -or $preflight.timedOut -or $preflight.cancelled -or
         $preflight.outputFailed -or $preflight.outputOverflow -or @($preflight.records|Where-Object {$_.Text -ceq 'RUNLOC_EXACT_ACL_PREFLIGHT=PASS'}).Count -ne 1){throw 'exact-acl-preflight-failed'}
     $telemetryPath=Join-Path $lease.Private 'telemetry.jsonl'
     $arguments=Get-PilotPowerShellArguments -TargetScript (Join-Path $CandidateRoot 'scripts/Invoke-EzVm010RealPortability.ps1') -NamedParameters @{
@@ -88,6 +88,7 @@ $receipt=[ordered]@{schemaVersion=1;issue='CI-POC-003';lane='hosted-tcg';compari
     startedUtc=$started;endedUtc=[DateTime]::UtcNow.ToString('o');elapsedSeconds=$clock.Elapsed.TotalSeconds;
     sourceUnchanged=$sourceUnchanged;passed=$passed;classification=$(if($passed){'pass'}else{'assertion-or-unknown'});reason=$reason;
     preflightExitCode=$(if($null -ne $preflight){$preflight.exitCode}else{$null});
+    preflightTimedOut=$(if($null -ne $preflight){$preflight.timedOut}else{$null});preflightCancelled=$(if($null -ne $preflight){$preflight.cancelled}else{$null});
     exitCode=$(if($null -ne $child){$child.exitCode}else{$null});events=$events;telemetry=$telemetry;identities=$identities;
     phaseDurations=(Get-PilotPhaseDurations -Events $events -TotalSeconds $clock.Elapsed.TotalSeconds);
     cleanup=@{childExited=$(if($null -ne $child){$child.childExited}else{$false});activeProcesses=$(if($null -ne $child){$child.activeProcesses}else{$null});
