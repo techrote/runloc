@@ -1,5 +1,27 @@
 # CI-POC-003 implementation checkpoint
 
+## Fresh full hosted recovery failed in base provisioning — 20 October 2026 UTC
+
+[Actions run39491915114/job118866993056](https://github.com/techrote/ezvm/actions/runs/39491915114/job/118866993056)
+used immutable hosted workflow1c1dbb68, controllerf167950 and unchanged frozen
+candidate2268468/d5677a1. The [original receipt, digest, retained phase
+records and manifest](evidence/ci-poc-003-hosted-ebca5084-failed/manifest.json)
+record exit1 after4613.1129273seconds (76m53.113s). Exact preflight exit0 and
+explicit timeout/cancellation flags false; source unchanged; child exited,
+owned processes0 and fixture removed.
+
+Only7/23 functional markers and no authenticated READY were observed. The base
+build failed after2486.0099359seconds. Bounded diagnostic reduction observed the
+original2400-second provisioning deadline with0 seed requests and a guest kernel
+panic in the same base build. This establishes a guest failure before READY;
+it does not identify the panic reason or prove the same root cause as an older
+stateful guest crash. Raw guest/tool logs were not uploaded. Outer cleanup's
+`forced=false` does not prove candidate-internal QEMU cleanup was unforced.
+
+The private recovery and separate policy-head hosted checks were still active
+when this record was added. No recovery, source-bound acceptance, merge or issue
+completion is claimed. The original persistent quarantine remains unchanged.
+
 ## Live negative assertion control observed — 20 October 2026 UTC
 
 [Actions run39496444460](https://github.com/techrote/ezvm/actions/runs/39496444460/job/118882602207)
