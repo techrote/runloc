@@ -6,9 +6,10 @@ $off=@(Get-TimerProbeArguments -Hpet off -Image 'C:\owned\image.qcow2' -Firmware
 $differences=@(for($i=0;$i -lt $default.Count;$i++){if($default[$i] -cne $off[$i]){$i}})
 if($default.Count -ne $off.Count -or $differences.Count -ne 1 -or $default[$differences[0]] -cne 'q35' -or $off[$differences[0]] -cne 'q35,hpet=off' -or $default[$differences[0]-1] -cne '-machine'){throw 'timer-control-changes-other-inputs'}
 foreach($pair in @(@('-smp','6'),@('-m','4096'),@('-accel','tcg,thread=multi'))){$index=[Array]::IndexOf($off,$pair[0]);if($index -lt 0 -or $off[$index+1] -cne $pair[1]){throw 'timer-control-resources-changed'}}
-if(($off -join ' ') -match 'noapic|no_timer_check|icount|-append|-netdev|-nic|-virtfs|-fsdev' -or $off -cnotcontains '-nodefaults' -or $off -cnotcontains '-snapshot'){throw 'timer-control-check-bypass-or-host-exposure'}
+if(($off -join ' ') -match 'noapic|no_timer_check|icount|-append|-nic|-virtfs|-fsdev|hostfwd|guestfwd|smb=|tftp=' -or $off -cnotcontains '-nodefaults' -or $off -cnotcontains '-snapshot'){throw 'timer-control-check-bypass-or-host-exposure'}
+if($off -cnotcontains 'user,id=net0,ipv6=off,restrict=on' -or $off -cnotcontains 'virtio-net-pci,netdev=net0' -or @($off|Where-Object {$_ -ceq '-netdev'}).Count -ne 1){throw 'timer-nic-topology-or-isolation-changed'}
 $invalid=$false;try{Get-TimerProbeArguments -Hpet bypass}catch{$invalid=$true};if(-not $invalid){throw 'unknown-timer-mode-accepted'}
-Write-Host 'PASS timer arguments: only HPET device differs; six CPUs, APIC and guest checks retained; no host/network exposure'
+Write-Host 'PASS timer arguments: only HPET device differs; six CPUs, APIC and guest checks retained; original NIC topology with restricted networking and no forwarding'
 $cpu='[    0.020000] smp: Brought up 1 node, 6 CPUs'
 $init='[    1.000000] Run /init as init process'
 $panic="[    0.018000] Kernel panic - not syncing: IO-APIC + timer doesn't work!"

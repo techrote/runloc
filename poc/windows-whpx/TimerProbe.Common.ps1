@@ -6,7 +6,8 @@ function Get-TimerProbeArguments {
         '-accel','tcg,thread=multi','-cpu','max','-smp','6','-m','4096','-display','none','-monitor','none',
         '-serial',('file:'+$SerialLog),'-drive',('if=pflash,format=raw,readonly=on,file='+$FirmwareCode),
         '-drive',('if=pflash,format=raw,file='+$FirmwareVariables),'-drive',('if=none,id=osdisk,format=qcow2,file='+$Image),
-        '-device','virtio-blk-pci,drive=osdisk,bootindex=0','-boot','order=c,strict=on','-rtc','base=utc',
+        '-device','virtio-blk-pci,drive=osdisk,bootindex=0','-netdev','user,id=net0,ipv6=off,restrict=on',
+        '-device','virtio-net-pci,netdev=net0','-boot','order=c,strict=on','-rtc','base=utc',
         '-snapshot','-no-user-config','-nodefaults','-no-reboot')
 }
 function Get-TimerProbeSignals {

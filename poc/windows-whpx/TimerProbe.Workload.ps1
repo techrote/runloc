@@ -16,7 +16,7 @@ try{
     $image=Get-EzVmVerifiedSourceImage -Root $root
     $status=Get-EzVmManagedQemuStatus -Root $root
     if(-not $status.Valid){throw 'timer-probe-qemu-not-verified'}
-    $identities=@{qemuSha256=(Get-PilotDigest $status.QemuSystem);imageSha256=(Get-PilotDigest $image.path);requestedCpus=6;memoryMiB=4096;accelerator='tcg';network='none';disk='fresh-temporary-snapshot-each-boot'}
+    $identities=@{qemuSha256=(Get-PilotDigest $status.QemuSystem);imageSha256=(Get-PilotDigest $image.path);requestedCpus=6;memoryMiB=4096;accelerator='tcg';network='restricted-user-no-forwarding';disk='fresh-temporary-snapshot-each-boot'}
     foreach($number in 1..3){foreach($mode in @('default','off')){
         $id=('boot-'+$number+'-'+$mode);$stage=Join-Path $Fixture $id;[void][IO.Directory]::CreateDirectory($stage)
         $firmware=& (Get-Module EzVm) {param($r,$s) Get-EzVmBaseFirmwarePaths -Root $r -StagingDirectory $s} $root $stage
