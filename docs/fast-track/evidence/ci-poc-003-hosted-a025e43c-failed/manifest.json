@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "files": [
+    {
+      "file": "failure-association.json",
+      "sha256": "afeee71aae4a790bbf83defbc5e1e236d6016d89ad0d8d68c36cfd2041a74b57",
+      "bytes": 2354
+    },
+    {
+      "file": "hosted-receipt-digest.json",
+      "sha256": "7d7c2c9ca76e153f713d14c1120749063c23c0f5c7d8393046bd68be906e6055",
+      "bytes": 151
+    },
+    {
+      "file": "hosted-receipt.json",
+      "sha256": "4507001ce0586c085690c55ca7c055e83ff150c06cee1d13eb129ed2131dc807",
+      "bytes": 27011
+    },
+    {
+      "file": "telemetry-events.json",
+      "sha256": "d497ecc7e124a3703b7f133d3637b87d088681cf922bb1d255c0fa8fef8f7e2c",
+      "bytes": 815246
+    }
+  ],
+  "qualificationPassed": false,
+  "quarantineReset": false
+}

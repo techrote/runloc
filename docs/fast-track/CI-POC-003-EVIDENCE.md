@@ -1,5 +1,29 @@
 # CI-POC-003 implementation checkpoint
 
+## Hosted forensic and legacy timer failures — 21 October 2026 UTC
+
+[Forensic run39505303335/job118912620478](https://github.com/techrote/ezvm/actions/runs/39505303335/job/118912620478)
+failed after4944.716207seconds with actual harness exit1. Its original public
+receipt, digest and866 retained phase events are preserved with the
+[artifact/source association and manifest](evidence/ci-poc-003-hosted-a025e43c-failed/manifest.json).
+Base provisioning completed, but the first managed guest panicked before READY:
+Linux6.8.0-142, CPU0/PID0, IO-APIC timer validation. Exact preflight exited0;
+sources remained unchanged. Outer cleanup was forced, then observed child exit,
+owned processes0 and fixture disposal. Incomplete telemetry and forced cleanup
+remain failures, regardless of earlier markers.
+
+The separate encrypted artifact was authenticated and decrypted locally; a second
+model independently repeated decryption and verified the identical plaintext
+SHA256. Raw guest logs and the private recipient key remain private. The
+[legacy policy-head job39500448386/118896293651](https://github.com/techrote/ezvm/actions/runs/39500448386/job/118896293651)
+shows the same early timer panic on its own source/default resource profile;
+it is not a six-core candidate qualification. Both jobs remain failed.
+
+The underlying emulator/timer cause and correction are not yet proven. A focused
+six-vCPU default-versus-HPET-off diagnostic preserves APIC and Linux timer
+validation; it cannot qualify the full scenario. The older late PID1 crash is a
+separate unresolved observation. Quarantine, draft PRs and issue23 remain open.
+
 ## Complete fresh Actions WHPX pass; gate remains blocked — 20 October 2026 UTC
 
 [Actions run39491986907/job118867251965](https://github.com/techrote/ezvm/actions/runs/39491986907/job/118867251965)
