@@ -1,10 +1,11 @@
 #requires -Version 5.1
-[CmdletBinding()]param([string]$SourceRoot,[string]$Fixture,[string]$PrivateEvidence)
+[CmdletBinding()]param([string]$SourceRoot,[string]$Fixture,[string]$PrivateEvidence,[switch]$ClockSuite)
 $ErrorActionPreference='Stop';$ProgressPreference='SilentlyContinue'
 $env:PSModulePath=[IO.Path]::Combine($PSHOME,'Modules')
 . (Join-Path $PSScriptRoot 'Pilot.Common.ps1')
 . (Join-Path $PSScriptRoot 'TimerProbe.Common.ps1')
 Import-PilotNative
+$casePlans=@(Get-TimerProbeCases -ClockSuite:$ClockSuite)
 $clock=[Diagnostics.Stopwatch]::StartNew();$cases=@();$resolved=$true;$failure='';$failureDetail='';$identities=@{}
 try{
     $root=Join-Path $Fixture 'timer-diagnostic'
@@ -17,13 +18,13 @@ try{
     $status=Get-EzVmManagedQemuStatus -Root $root
     if(-not $status.Valid){throw 'timer-probe-qemu-not-verified'}
     $identities=@{qemuSha256=(Get-PilotDigest $status.QemuSystem);imageSha256=(Get-PilotDigest $image.path);requestedCpus=6;memoryMiB=4096;accelerator='tcg';network='restricted-user-no-forwarding';disk='fresh-temporary-snapshot-each-boot'}
-    foreach($number in 1..3){foreach($mode in @('default','off')){
-        $id=('boot-'+$number+'-'+$mode);$stage=Join-Path $Fixture $id;[void][IO.Directory]::CreateDirectory($stage)
+    foreach($casePlan in $casePlans){
+        $mode=$casePlan.hpet;$clockMode=$casePlan.clockMode;$id=$casePlan.name;$stage=Join-Path $Fixture $id;[void][IO.Directory]::CreateDirectory($stage)
         $firmware=& (Get-Module EzVm) {param($r,$s) Get-EzVmBaseFirmwarePaths -Root $r -StagingDirectory $s} $root $stage
         $serial=Join-Path $stage 'serial.log';$job=$null;$signals=Get-TimerProbeSignals -Text '';$stop='';$started=$clock.Elapsed.TotalSeconds
-        $case=@{name=$id;hpet=$mode;requestedCpus=6;plannedDiagnosticTermination=$true;terminationIssued=$false;qualificationPassed=$false}
+        $case=@{name=$id;hpet=$mode;clockMode=$clockMode;requestedCpus=6;plannedDiagnosticTermination=$true;terminationIssued=$false;qualificationPassed=$false}
         try{
-            $arguments=Get-TimerProbeArguments -Hpet $mode -Image $image.path -FirmwareCode $firmware.Code -FirmwareVariables $firmware.Variables -SerialLog $serial
+            $arguments=Get-TimerProbeArguments -Hpet $mode -ClockMode $clockMode -Image $image.path -FirmwareCode $firmware.Code -FirmwareVariables $firmware.Variables -SerialLog $serial
             $case.arguments=$arguments
             $case.firmwareCodeSha256=Get-PilotDigest $firmware.Code
             $case.firmwareVariablesInitialSha256=Get-PilotDigest $firmware.Variables
@@ -68,10 +69,10 @@ try{
         $cases+=,$case
         Write-Host ('TIMER_PROBE_RESULT='+($case|ConvertTo-Json -Depth 4 -Compress))
         if(-not $resolved){throw 'timer-probe-process-cleanup-unresolved'}
-    }}
+    }
     if((Get-PilotDigest $image.path) -cne $identities.imageSha256 -or (Get-PilotDigest $status.QemuSystem) -cne $identities.qemuSha256){throw 'timer-probe-input-changed'}
 }catch{$failure='diagnostic-incomplete';$failureDetail=$_.Exception.Message+' line='+$_.InvocationInfo.ScriptLineNumber}finally{
     Write-PilotNewJson -Path (Join-Path $PrivateEvidence 'timer-workload.json') -Value @{diagnosticOnly=$true;qualificationPassed=$false;cases=$cases;identities=$identities;processesResolved=$resolved;failure=$failure;failureDetail=$failureDetail}
 }
-if($failure -or -not $resolved -or $cases.Count -ne 6){exit 1}
+if($failure -or -not $resolved -or $cases.Count -ne $casePlans.Count){exit 1}
 exit 0

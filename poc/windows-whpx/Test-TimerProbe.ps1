@@ -83,3 +83,15 @@ try{
     }
 }finally{foreach($name in $names){[Environment]::SetEnvironmentVariable($name,$saved[$name],'Process')}}
 Write-Host 'PASS hosted diagnostic: explicit opt-in and complete hosted environment required; no qualification path'
+
+$clockCases=@(Get-TimerProbeCases -ClockSuite)
+if($clockCases.Count -ne 9 -or @($clockCases|Select-Object -ExpandProperty name -Unique).Count -ne 9 -or @($clockCases|Where-Object {$_.hpet -cne 'default'}).Count){throw 'clock-suite-case-isolation'}
+foreach($mode in @('multi','single','icount')){
+    $arguments=@(Get-TimerProbeArguments -Hpet default -ClockMode $mode -Image image -FirmwareCode code -FirmwareVariables vars -SerialLog serial)
+    $accel=$arguments[[Array]::IndexOf($arguments,'-accel')+1]
+    if($accel -cne $(if($mode -ceq 'multi'){'tcg,thread=multi'}else{'tcg,thread=single'}) -or $arguments[[Array]::IndexOf($arguments,'-smp')+1] -cne '6' -or $arguments[[Array]::IndexOf($arguments,'-machine')+1] -cne 'q35'){throw 'clock-suite-resources-or-machine-changed'}
+    if(($arguments -ccontains '-icount') -ne ($mode -ceq 'icount')){throw 'clock-suite-instruction-count-control'}
+    if($mode -ceq 'icount' -and $arguments[[Array]::IndexOf($arguments,'-icount')+1] -cne 'shift=auto,sleep=on'){throw 'clock-suite-virtual-clock-config'}
+    if(($arguments -join ' ') -match 'noapic|no_timer_check|-append|hostfwd|guestfwd|-virtfs|-fsdev'){throw 'clock-suite-guest-check-bypass-or-exposure'}
+}
+Write-Host 'PASS clock suite: nine interleaved controls preserve six guest CPUs, APIC and HPET; only TCG scheduling/virtual clock vary'

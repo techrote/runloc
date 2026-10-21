@@ -1,14 +1,23 @@
 function Get-TimerProbeArguments {
-    param([ValidateSet('default','off')][string]$Hpet,[string]$Image,[string]$FirmwareCode,[string]$FirmwareVariables,[string]$SerialLog)
+    param([ValidateSet('default','off')][string]$Hpet,[string]$Image,[string]$FirmwareCode,[string]$FirmwareVariables,[string]$SerialLog,[ValidateSet('multi','single','icount')][string]$ClockMode='multi')
     # Both controls retain APIC, six vCPUs, memory and the same fresh source disk.
     # No guest kernel option disables its timer validation.
-    return @('-name','runloc-timer-diagnostic','-machine',$(if($Hpet -ceq 'off'){'q35,hpet=off'}else{'q35'}),
-        '-accel','tcg,thread=multi','-cpu','max','-smp','6','-m','4096','-display','none','-monitor','none',
+    $arguments=@('-name','runloc-timer-diagnostic','-machine',$(if($Hpet -ceq 'off'){'q35,hpet=off'}else{'q35'}),
+        '-accel',$(if($ClockMode -ceq 'multi'){'tcg,thread=multi'}else{'tcg,thread=single'}),'-cpu','max','-smp','6','-m','4096','-display','none','-monitor','none',
         '-serial',('file:'+$SerialLog),'-drive',('if=pflash,format=raw,readonly=on,file='+$FirmwareCode),
         '-drive',('if=pflash,format=raw,file='+$FirmwareVariables),'-drive',('if=none,id=osdisk,format=qcow2,file='+$Image),
         '-device','virtio-blk-pci,drive=osdisk,bootindex=0','-netdev','user,id=net0,ipv6=off,restrict=on',
         '-device','virtio-net-pci,netdev=net0','-boot','order=c,strict=on','-rtc','base=utc',
         '-snapshot','-no-user-config','-nodefaults','-no-reboot')
+    if($ClockMode -ceq 'icount'){$arguments+=@('-icount','shift=auto,sleep=on')}
+    return $arguments
+}
+function Get-TimerProbeCases {
+    param([switch]$ClockSuite)
+    foreach($number in 1..3){
+        if($ClockSuite){foreach($mode in @('multi','single','icount')){[pscustomobject]@{name=('boot-'+$number+'-'+$mode);hpet='default';clockMode=$mode}}}
+        else{foreach($mode in @('default','off')){[pscustomobject]@{name=('boot-'+$number+'-'+$mode);hpet=$mode;clockMode='multi'}}}
+    }
 }
 function Get-TimerProbeSignals {
     param([string]$Text)
