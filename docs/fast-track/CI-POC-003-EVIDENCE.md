@@ -1,5 +1,44 @@
 # CI-POC-003 implementation checkpoint
 
+## Complete fresh Actions WHPX pass; gate remains blocked — 20 October 2026 UTC
+
+[Actions run39491986907/job118867251965](https://github.com/techrote/ezvm/actions/runs/39491986907/job/118867251965)
+completed the original full six-vCPU WHPX release/portability scenario. The
+[original artifact files, host lifecycle association and manifest](evidence/ci-poc-003-private-a8e37290/manifest.json)
+retain24/24 markers,8/8 authenticated READY and six-CPU proofs, actual controller
+and harness exits0, unchanged sources, complete2518-record telemetry, unforced
+cleanup, owned processes0, fixture disposal, runner48 deregistration verified by
+HTTP404, reusable backing preservation and unrelated sentinel survival.
+
+Exact frozen candidate2268468/d5677a1, job controllerd3be2aa/e98d68f and host
+controllerf29e4fa/3a7ee51 were used. Whole supervised host elapsed6941.422876seconds
+(1h55m41.423s); inner controller elapsed6873.752939seconds. Explicit
+NoOverallTimeout was retained, with every original operation/assertion. No former
+60-minute performance target is claimed. Both exact preflights exited0 in
+1.9080518 and1.1285527seconds, below the frozen controller's original120-second
+execution/150-second cleanup bounds. Their nested timeout/cancellation fields
+are unavailable; containing-attempt flags are separately recorded, not inferred
+as missing nested observations. Both original receipts and their supervisor
+chain are bound to this same actual Actions artifact.
+
+The [live assertion-dominance proof](evidence/ci-poc-003-assertion-dominance-a8e37290/manifest.json)
+combines this independently validated real WHPX pass with the separately validated
+real TCG assertion failure39496444460. The shared decision returns failure in
+both argument orders with `quarantined=False` explicitly. The swapped call is a
+decision-symmetry control, not another physical lane. No status transition or
+quarantine reset is claimed; the original quarantine digest remains unchanged.
+
+This pass did not grant early source-bound acceptance: the independent hosted
+recovery had already failed. The separate encrypted forensic run39505303335
+and policy-head run39500448386 subsequently failed with an early IO-APIC timer
+panic before READY. This is distinct from the older late PID1 crash; neither a
+root correction nor gate recovery is claimed. Live available/fallback/loss/rollback
+acceptance remains pending. CI-POC-003 is open and the implementation PRs remain
+draft. Independent model review verified the original artifact bytes, live API
+associations, source fingerprints, lifecycle and assertion composition. The seven
+nested failed calls are the original expected refusal controls (existing export
+destination, two unsafe imports and four operations against a running source).
+
 ## Fresh full hosted recovery failed in base provisioning — 20 October 2026 UTC
 
 [Actions run39491915114/job118866993056](https://github.com/techrote/ezvm/actions/runs/39491915114/job/118866993056)
