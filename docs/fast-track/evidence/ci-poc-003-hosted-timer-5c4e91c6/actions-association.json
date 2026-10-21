@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "runId": 39684084537,
+  "jobId": 119513601106,
+  "actualConclusion": "success",
+  "artifactId": 12386220136,
+  "artifactDigest": "sha256:bc5debb297a00ed938fb34203ea9dd5933a517817f52e5e0fa90002ef9d77db8",
+  "plaintextAuthenticated": true,
+  "plaintextSha256": "093dc7a39404843178e393f48600652cc8fa9ba789100031a1f31985145eb943",
+  "diagnosticOnly": true,
+  "qualificationPassed": false,
+  "quarantineReset": false,
+  "independentReview": "Separate Codex review agent refreshed API/archive and repeated authenticated decryption and serial/receipt crosschecks.",
+  "finding": "All three default and all three HPET-off boots reproduced the early IO-APIC timer panic; no kernel init or six-CPU activation. HPET-off is unsupported as a correction.",
+  "rawGuestLogsPublished": false,
+  "privateKeyPublished": false,
+  "encryptedOriginalArchiveRetainedPrivately": true
+}

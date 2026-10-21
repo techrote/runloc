@@ -1,5 +1,35 @@
 # CI-POC-003 implementation checkpoint
 
+## Hosted timer comparison reproduces panic in both modes — 21 October 2026 UTC
+
+[Diagnostic run39684084537/job119513601106](https://github.com/techrote/ezvm/actions/runs/39684084537/job/119513601106)
+completed its bounded observation in181.5026119seconds. The
+[original public summary/digest and API/crypto association](evidence/ci-poc-003-hosted-timer-5c4e91c6/manifest.json)
+retain three default and three HPET-off boots. All six reproduced the same early
+IO-APIC timer panic on kernel6.8.0-142, before init or six-CPU activation.
+Six guest CPUs were requested in every case; no successful guest-CPU proof is
+claimed. Both controls retained APIC and kernel checks, the same virtio NIC and
+restricted user networking with no forwarding.
+
+Workflowb70fc49, controller3db4aa2 and unchanged candidate2268468 were used on
+Windows2022/build20348, image20261012.333.1, four-logical-processor AMD EPYC host.
+All original serial bytes and receipt bytes authenticated through the encrypted
+artifact, independently repeated by a second model. Sources remained unchanged;
+preflight and outer diagnostic child exited0 with no timeout/cancellation/output
+failure, owned processes0. The diagnostic fixture was quarantined after panic.
+An Actions success here means the observations completed, never qualification:
+the original receipt and public summary explicitly deny qualification.
+
+HPET-off has no supporting correction evidence. Local earlier no-NIC controls
+on controller6a8dfda reached init in all six cases; that nonreproduction cannot
+identify a host or NIC cause. A subsequent local same-NIC run on controller3db4aa2
+completed in183.9611007seconds: all six boots reached init and six-CPU activation,
+source unchanged, owned processes0 and fixture removed. Its pinned QEMU and image
+SHA256 match the hosted probe. NIC presence is insufficient to reproduce this
+symptom locally; no single host/environment cause is established. Further focused
+scheduling/clock controls retain six guest CPUs and Linux checks. No production change, full release pass, gate
+acceptance, quarantine reset or issue completion follows from this diagnostic.
+
 ## Hosted forensic and legacy timer failures — 21 October 2026 UTC
 
 [Forensic run39505303335/job118912620478](https://github.com/techrote/ezvm/actions/runs/39505303335/job/118912620478)
