@@ -67,3 +67,18 @@ foreach($script in @('TimerProbe.Workload.ps1','Invoke-TimerProbe.ps1')){
     $null=[Management.Automation.Language.Parser]::ParseFile((Join-Path $PSScriptRoot $script),[ref]$tokens,[ref]$errors)
     if($errors.Count){throw ('timer-probe-syntax-'+$script)}
 }
+
+$hostedGuards=@($ast.FindAll({param($node) $node -is [Management.Automation.Language.IfStatementAst] -and $node.Clauses[0].Item1.Extent.Text -ceq '$HostedDiagnostic'},$true))
+if($hostedGuards.Count -ne 1){throw 'hosted-diagnostic-guard-not-identified'}
+$names=@('GITHUB_ACTIONS','RUNNER_ENVIRONMENT','GITHUB_REPOSITORY','GITHUB_RUN_ID','GITHUB_EVENT_NAME','GITHUB_ACTOR','GITHUB_RUN_ATTEMPT');$saved=@{}
+foreach($name in $names){$saved[$name]=[Environment]::GetEnvironmentVariable($name,'Process')}
+try{
+    foreach($bad in @('none')+$names){
+        $env:GITHUB_ACTIONS='true';$env:RUNNER_ENVIRONMENT='github-hosted';$env:GITHUB_REPOSITORY='techrote/ezvm';$env:GITHUB_RUN_ID='123';$env:GITHUB_EVENT_NAME='workflow_dispatch';$env:GITHUB_ACTOR='techrote';$env:GITHUB_RUN_ATTEMPT='1'
+        if($bad -cne 'none'){[Environment]::SetEnvironmentVariable($bad,'wrong','Process')}
+        $HostedDiagnostic=$true;$rejected=$false
+        try{& ([scriptblock]::Create($hostedGuards[0].Extent.Text))}catch{$rejected=$_.Exception.Message -ceq 'hosted-timer-diagnostic-environment-required'}
+        if($rejected -ne ($bad -cne 'none')){throw 'hosted-environment-control-failed'}
+    }
+}finally{foreach($name in $names){[Environment]::SetEnvironmentVariable($name,$saved[$name],'Process')}}
+Write-Host 'PASS hosted diagnostic: explicit opt-in and complete hosted environment required; no qualification path'

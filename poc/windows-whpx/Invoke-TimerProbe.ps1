@@ -1,12 +1,14 @@
 #requires -Version 5.1
-[CmdletBinding()]param([Parameter(Mandatory=$true)][string]$CandidateRoot,[Parameter(Mandatory=$true)][ValidatePattern('^[a-f0-9]{40}$')][string]$ControllerCommit,[Parameter(Mandatory=$true)][string]$EvidenceParent,[Parameter(Mandatory=$true)][string]$BackingRoot)
+[CmdletBinding()]param([Parameter(Mandatory=$true)][string]$CandidateRoot,[Parameter(Mandatory=$true)][ValidatePattern('^[a-f0-9]{40}$')][string]$ControllerCommit,[Parameter(Mandatory=$true)][string]$EvidenceParent,[Parameter(Mandatory=$true)][string]$BackingRoot,[switch]$HostedDiagnostic)
 $ErrorActionPreference='Stop';$ProgressPreference='SilentlyContinue'
 $env:PSModulePath=[IO.Path]::Combine($PSHOME,'Modules')
 . (Join-Path $PSScriptRoot 'Pilot.Common.ps1')
 . (Join-Path $PSScriptRoot 'TimerProbe.Common.ps1')
 Import-PilotNative
 $principal=New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
-if($principal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator) -or [RunlocPoc.OwnedProcess]::CurrentTokenHasPrivilege('SeSecurityPrivilege')){throw 'standard-user-without-security-privilege-required'}
+if($HostedDiagnostic){
+    if($env:GITHUB_ACTIONS -cne 'true' -or $env:RUNNER_ENVIRONMENT -cne 'github-hosted' -or $env:GITHUB_REPOSITORY -cne 'techrote/ezvm' -or $env:GITHUB_RUN_ID -cnotmatch '^[1-9][0-9]*$' -or $env:GITHUB_EVENT_NAME -cne 'workflow_dispatch' -or $env:GITHUB_ACTOR -cne 'techrote' -or $env:GITHUB_RUN_ATTEMPT -cne '1'){throw 'hosted-timer-diagnostic-environment-required'}
+}elseif($principal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator) -or [RunlocPoc.OwnedProcess]::CurrentTokenHasPrivilege('SeSecurityPrivilege')){throw 'standard-user-without-security-privilege-required'}
 $BackingRoot=Assert-PilotPath -Path $BackingRoot
 $sourceRoot=[IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../..'))
 $controller=Get-PilotSourceIdentity -Root $sourceRoot -Repository 'https://github.com/techrote/runloc' -ExpectedCommit $ControllerCommit
@@ -44,7 +46,7 @@ try{
         try{Remove-PilotFixture -Lease $lease -Clock $clock -DeadlineSeconds ($clock.Elapsed.TotalSeconds+120) -OwnedProcessesExited $true;$removed=-not [IO.Directory]::Exists($lease.Fixture)}catch{$failure='diagnostic-fixture-cleanup-failed'}
     }
     try{
-    Write-PilotNewJson -Path (Join-Path $lease.Root 'timer-probe-receipt.json') -Value @{schemaVersion=1;diagnosticOnly=$true;qualificationPassed=$false;candidate=$candidate;controller=$controller;elapsedSeconds=$clock.Elapsed.TotalSeconds;cases=$cases;identities=$identities;preflight=$preflight;child=$child;sourceUnchanged=$sourceUnchanged;processesResolved=$resolved;fixtureRemoved=$removed;fixtureQuarantined=(-not $removed);failure=$failure}
+    Write-PilotNewJson -Path (Join-Path $lease.Root 'timer-probe-receipt.json') -Value @{schemaVersion=1;hostContext=@{administrator=$principal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator);seSecurityPrivilegePresent=[RunlocPoc.OwnedProcess]::CurrentTokenHasPrivilege('SeSecurityPrivilege');repository=$env:GITHUB_REPOSITORY;runId=$env:GITHUB_RUN_ID;attempt=$env:GITHUB_RUN_ATTEMPT;event=$env:GITHUB_EVENT_NAME;actor=$env:GITHUB_ACTOR;runnerEnvironment=$env:RUNNER_ENVIRONMENT;workflowCommit=$env:GITHUB_SHA};hostedDiagnostic=[bool]$HostedDiagnostic;diagnosticOnly=$true;qualificationPassed=$false;candidate=$candidate;controller=$controller;elapsedSeconds=$clock.Elapsed.TotalSeconds;cases=$cases;identities=$identities;preflight=$preflight;child=$child;sourceUnchanged=$sourceUnchanged;processesResolved=$resolved;fixtureRemoved=$removed;fixtureQuarantined=(-not $removed);failure=$failure}
     }finally{$lease.Lock.Dispose()}
     Write-Host ('TIMER_PROBE_EVIDENCE='+$lease.Root)
 }
