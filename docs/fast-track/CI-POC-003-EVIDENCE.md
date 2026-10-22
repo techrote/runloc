@@ -290,3 +290,34 @@ URL. Any concrete settings change requires its own reviewed and tested migration
 The primary model implements; a separate Extra High model has reviewed the live
 contract and initial architecture, with implementation/evidence review still
 pending. No previous physical run is claimed as issue23's second automated run.
+
+
+## Fresh hosted VM scheduling comparison and mitigation under test
+
+The [four-job diagnostic run39828718868](https://github.com/techrote/ezvm/actions/runs/39828718868)
+completed all observations. Original public summaries/digests and exact associations
+are retained in [the evidence manifest](evidence/ci-poc-003-hosted-cold-fac68bdf/manifest.json).
+Fresh API reads and authenticated private bundle decryption were repeated independently;
+all twelve serial/receipt/source/profile associations matched. All four first guest
+boots reached init with six CPUs. Multi-thread TCG had one exact IO-APIC timer panic
+on replica2 boot2 among six boots; single-thread had none among six boots. These
+are correlated observations across two fresh hosted VMs per mode, not twelve
+independent physical hosts. CPU models varied; identical image/tool/firmware hashes
+were retained. Diagnostic job success reports completed observation, not guest or
+release success. Planned guest termination exit124 is retained; outer/preflight
+exit0, owned0, and no forced/timeout/cancellation/output failure were recorded.
+The panic fixture was quarantined during its job; the other three were removed.
+Hosted VM teardown does not imply permanent retention of its disk fixture.
+
+[EzVM PR60](https://github.com/techrote/ezvm/pull/60) tests the narrow empirical
+mitigation `tcg,thread=single` in both prepared-base and runtime argument builders,
+with six requested guest CPUs and original WHPX/APIC/READY/persistence checks.
+No icount or timer-check bypass is added. New candidate
+`e29c0a9c9196d55914a4659cf51d7a49c0a21e84`, tree
+`3deca45ef74ae7b8a6470cd69dfa8d38cf90674f`, is selected only for fresh qualification;
+its two changed argument builders are explicitly pinned alongside the original
+harness/image/tool pins. This is not a root-cause or reliability guarantee. Earlier
+physical receipts cannot qualify the changed tree. New full six-core hosted TCG
+and physical WHPX evidence is required before acceptance. The original quarantine
+remains in force; historical source-bound gate allowlists have not been reset or
+silently expanded. No gate acceptance, merge or issue completion is claimed.

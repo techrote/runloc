@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "executionApproved": true,
   "repository": "https://github.com/techrote/ezvm",
-  "commit": "2268468cb3040b9e1dd6deed60d0f13594f768d6",
-  "tree": "d5677a166e54583f26e3f08e90e5836c19f99359",
+  "commit": "e29c0a9c9196d55914a4659cf51d7a49c0a21e84",
+  "tree": "3deca45ef74ae7b8a6470cd69dfa8d38cf90674f",
   "harness": "scripts/Invoke-EzVm010RealPortability.ps1",
   "pins": [
     {
@@ -65,6 +65,14 @@
     {
       "path": "guest/base-cloud-init/baseline.json",
       "sha256Lf": "924a93a1c121332e9720c246ab8594eda934ec487c823768e47db79ad1d6850e"
+    },
+    {
+      "path": "src/EzVm/BaseRecipe.ps1",
+      "sha256Lf": "b76fa1fa3506ebd02321b5244486ea056b31a975c712231e3280b93bd6163472"
+    },
+    {
+      "path": "src/EzVm/Runtime.ps1",
+      "sha256Lf": "407812e6bf3b32950b91672b3fdffd5bc35bc7d6732269bc2180ec1141025ca7"
     }
   ]
 }
