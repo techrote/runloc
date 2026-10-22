@@ -95,3 +95,12 @@ foreach($mode in @('multi','single','icount')){
     if(($arguments -join ' ') -match 'noapic|no_timer_check|-append|hostfwd|guestfwd|-virtfs|-fsdev'){throw 'clock-suite-guest-check-bypass-or-exposure'}
 }
 Write-Host 'PASS clock suite: nine interleaved controls preserve six guest CPUs, APIC and HPET; only TCG scheduling/virtual clock vary'
+
+foreach($mode in @('multi','single')){
+    $cases=@(Get-TimerProbeCases -ColdMode $mode)
+    if($cases.Count -ne 3 -or ($cases.name -join ',') -cne ((1..3|ForEach-Object {'boot-'+$_+'-'+$mode}) -join ',') -or @($cases|Where-Object {$_.clockMode -cne $mode -or $_.hpet -cne 'default'}).Count){throw 'cold-fixed-mode-inventory'}
+    $rejected=$false;try{$null=Get-TimerProbeCases -ColdMode $mode -ClockSuite}catch{$rejected=$_.Exception.Message -ceq 'timer-profile-conflict'}
+    if(-not $rejected){throw 'cold-conflicting-profile-accepted'}
+}
+if(@(Get-TimerProbeCases).Count -ne 6){throw 'original-hpet-profile-changed'}
+Write-Host 'PASS fresh VM controls: three fixed-mode boots, first guest launch primary; mixed profiles rejected'

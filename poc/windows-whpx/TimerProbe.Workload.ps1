@@ -1,11 +1,11 @@
 #requires -Version 5.1
-[CmdletBinding()]param([string]$SourceRoot,[string]$Fixture,[string]$PrivateEvidence,[switch]$ClockSuite)
+[CmdletBinding()]param([string]$SourceRoot,[string]$Fixture,[string]$PrivateEvidence,[switch]$ClockSuite,[ValidateSet('none','multi','single')][string]$ColdMode='none')
 $ErrorActionPreference='Stop';$ProgressPreference='SilentlyContinue'
 $env:PSModulePath=[IO.Path]::Combine($PSHOME,'Modules')
 . (Join-Path $PSScriptRoot 'Pilot.Common.ps1')
 . (Join-Path $PSScriptRoot 'TimerProbe.Common.ps1')
 Import-PilotNative
-$casePlans=@(Get-TimerProbeCases -ClockSuite:$ClockSuite)
+$casePlans=@(Get-TimerProbeCases -ClockSuite:$ClockSuite -ColdMode $ColdMode)
 $clock=[Diagnostics.Stopwatch]::StartNew();$cases=@();$resolved=$true;$failure='';$failureDetail='';$identities=@{}
 try{
     $root=Join-Path $Fixture 'timer-diagnostic'

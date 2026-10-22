@@ -13,9 +13,11 @@ function Get-TimerProbeArguments {
     return $arguments
 }
 function Get-TimerProbeCases {
-    param([switch]$ClockSuite)
+    param([switch]$ClockSuite,[ValidateSet('none','multi','single')][string]$ColdMode='none')
+    if($ClockSuite -and $ColdMode -cne 'none'){throw 'timer-profile-conflict'}
     foreach($number in 1..3){
-        if($ClockSuite){foreach($mode in @('multi','single','icount')){[pscustomobject]@{name=('boot-'+$number+'-'+$mode);hpet='default';clockMode=$mode}}}
+        if($ColdMode -cne 'none'){[pscustomobject]@{name=('boot-'+$number+'-'+$ColdMode);hpet='default';clockMode=$ColdMode}}
+        elseif($ClockSuite){foreach($mode in @('multi','single','icount')){[pscustomobject]@{name=('boot-'+$number+'-'+$mode);hpet='default';clockMode=$mode}}}
         else{foreach($mode in @('default','off')){[pscustomobject]@{name=('boot-'+$number+'-'+$mode);hpet=$mode;clockMode='multi'}}}
     }
 }
