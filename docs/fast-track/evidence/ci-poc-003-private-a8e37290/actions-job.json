@@ -1,0 +1,130 @@
+{
+    "runId":  39491986907,
+    "controller":  {
+                       "repository":  "https://github.com/techrote/runloc",
+                       "commit":  "d3be2aa7677c338fab86508da6f390fcae1bc541",
+                       "tree":  "e98d68fce03bc39fcb779efc5bd26e60d600b57c",
+                       "clean":  true,
+                       "executedTreeSha256":  "d2cfc04dd0db2de7c9beb68f13b2eb937829ffd51167a6bb3ebc3bfe3198b9dc",
+                       "trackedFileCount":  179,
+                       "files":  [
+
+                                 ]
+                   },
+    "issue":  "CI-POC-002",
+    "passed":  true,
+    "candidate":  {
+                      "repository":  "https://github.com/techrote/ezvm",
+                      "commit":  "2268468cb3040b9e1dd6deed60d0f13594f768d6",
+                      "tree":  "d5677a166e54583f26e3f08e90e5836c19f99359",
+                      "clean":  true,
+                      "executedTreeSha256":  "aa1f4254bcbe517f9838742d297779cba11b91a939b1d428f9a4de81a6dd7e00",
+                      "trackedFileCount":  194,
+                      "files":  [
+                                    {
+                                        "path":  "scripts/Invoke-EzVm010RealPortability.ps1",
+                                        "sha256Lf":  "be06c466b6d5f1e4d5ba30c78da5d533f276fe98b3240926f41d616f155c5197",
+                                        "executedBytesSha256":  "be06c466b6d5f1e4d5ba30c78da5d533f276fe98b3240926f41d616f155c5197"
+                                    },
+                                    {
+                                        "path":  "guest/base-cloud-init/user-data.yaml",
+                                        "sha256Lf":  "68b19eedf46aba223aa5b4b3760fd6f496e86b3225606fa5b32c0c1d288b8f40",
+                                        "executedBytesSha256":  "68b19eedf46aba223aa5b4b3760fd6f496e86b3225606fa5b32c0c1d288b8f40"
+                                    },
+                                    {
+                                        "path":  "scripts/QualificationTelemetry.ps1",
+                                        "sha256Lf":  "f5c91a34be2cf43f25fdba4b0b4ac8491a3654fe24be7f3bb4077af14d4a9651",
+                                        "executedBytesSha256":  "f5c91a34be2cf43f25fdba4b0b4ac8491a3654fe24be7f3bb4077af14d4a9651"
+                                    },
+                                    {
+                                        "path":  "src/EzVm/Keys.ps1",
+                                        "sha256Lf":  "89e437ce908695b9d90ddaa5cb590c3aa44c1a7c52d3696ebe9e7ae218f04fe5",
+                                        "executedBytesSha256":  "89e437ce908695b9d90ddaa5cb590c3aa44c1a7c52d3696ebe9e7ae218f04fe5"
+                                    },
+                                    {
+                                        "path":  "src/EzVm/Security.ps1",
+                                        "sha256Lf":  "eebfdaac48c8b424dfe4c01b7d50cf50e78941bd67d5a31d5257f7c22a2867ac",
+                                        "executedBytesSha256":  "eebfdaac48c8b424dfe4c01b7d50cf50e78941bd67d5a31d5257f7c22a2867ac"
+                                    },
+                                    {
+                                        "path":  "manifests/qemu-windows.json",
+                                        "sha256Lf":  "51ba4cd3eef4f94d0d6af5b330021455732e71cdac009f8f841c76f991410a1b",
+                                        "executedBytesSha256":  "51ba4cd3eef4f94d0d6af5b330021455732e71cdac009f8f841c76f991410a1b"
+                                    },
+                                    {
+                                        "path":  "manifests/ubuntu-noble-amd64.json",
+                                        "sha256Lf":  "f261a3781920fbce1ad1f6811ccb75ec1544754a4ab3f86cc376f2f4513c7f64",
+                                        "executedBytesSha256":  "f261a3781920fbce1ad1f6811ccb75ec1544754a4ab3f86cc376f2f4513c7f64"
+                                    },
+                                    {
+                                        "path":  "src/EzVm/Qemu.ps1",
+                                        "sha256Lf":  "3d791037dc829e712d0cbd2bf2cc184c7bcd2f38f2a881cdf628edec2a952e46",
+                                        "executedBytesSha256":  "3d791037dc829e712d0cbd2bf2cc184c7bcd2f38f2a881cdf628edec2a952e46"
+                                    },
+                                    {
+                                        "path":  "src/EzVm/QemuIntegrity.ps1",
+                                        "sha256Lf":  "c15c5322fc7cb3dfb417c7f0ab4c89c61485cc1cf701860587cca4f1fd970685",
+                                        "executedBytesSha256":  "c15c5322fc7cb3dfb417c7f0ab4c89c61485cc1cf701860587cca4f1fd970685"
+                                    },
+                                    {
+                                        "path":  "src/EzVm/QemuOverlay.ps1",
+                                        "sha256Lf":  "c24450c19a5a2222ae5ac889176d1af643aa9c2e6b1f0f2ffce296dd72658fc4",
+                                        "executedBytesSha256":  "c24450c19a5a2222ae5ac889176d1af643aa9c2e6b1f0f2ffce296dd72658fc4"
+                                    },
+                                    {
+                                        "path":  "tools/qemu-whpx/build-manifest.json",
+                                        "sha256Lf":  "dd8aa663b56374134cf094370a13aa518d4a0de7d910cc56a3dd77472a771f5b",
+                                        "executedBytesSha256":  "dd8aa663b56374134cf094370a13aa518d4a0de7d910cc56a3dd77472a771f5b"
+                                    },
+                                    {
+                                        "path":  "tools/qemu-whpx/upstream.patch",
+                                        "sha256Lf":  "8134ba44c351be17fa6262fa973e3528688d467ba89cc6a0a5803bd7a391a2e5",
+                                        "executedBytesSha256":  "8134ba44c351be17fa6262fa973e3528688d467ba89cc6a0a5803bd7a391a2e5"
+                                    },
+                                    {
+                                        "path":  "scripts/QualificationResources.ps1",
+                                        "sha256Lf":  "d039645f3c29b8cc3fa88b5f33ba85d486170bb37847146969045964812c8323",
+                                        "executedBytesSha256":  "d039645f3c29b8cc3fa88b5f33ba85d486170bb37847146969045964812c8323"
+                                    },
+                                    {
+                                        "path":  "config/defaults.json",
+                                        "sha256Lf":  "ae92374c3b4d1aaa008851cc332e47d961c1a908a05fab2f2aec65ff05583739",
+                                        "executedBytesSha256":  "ae92374c3b4d1aaa008851cc332e47d961c1a908a05fab2f2aec65ff05583739"
+                                    },
+                                    {
+                                        "path":  "guest/base-cloud-init/baseline.json",
+                                        "sha256Lf":  "924a93a1c121332e9720c246ab8594eda934ec487c823768e47db79ad1d6850e",
+                                        "executedBytesSha256":  "924a93a1c121332e9720c246ab8594eda934ec487c823768e47db79ad1d6850e"
+                                    }
+                                ]
+                  },
+    "qualificationCpus":  6,
+    "mode":  "qualification",
+    "runnerName":  "runloc-a8e37290595645d0b9db577c09cece01",
+    "runAttempt":  1,
+    "schemaVersion":  1,
+    "repository":  "techrote/ezvm",
+    "phases":  [
+                   {
+                       "passed":  true,
+                       "endedSeconds":  8.5696251,
+                       "exitCode":  0,
+                       "activeProcesses":  0,
+                       "phase":  "preflight",
+                       "terminal":  "RUNLOC_WHPX_SUPERVISOR_OUTCOME=preflight-pass; elapsedSeconds=8.166838799999999"
+                   },
+                   {
+                       "passed":  true,
+                       "endedSeconds":  6889.3280236,
+                       "exitCode":  0,
+                       "activeProcesses":  0,
+                       "phase":  "qualification",
+                       "terminal":  "RUNLOC_WHPX_SUPERVISOR_OUTCOME=pass; elapsedSeconds=6880.4929268999995"
+                   }
+               ],
+    "overallTimeoutDisabled":  true,
+    "elapsedSeconds":  6889.3698439,
+    "workflowSha":  "a3c6d3ec4c7506d8f8d1c553eb7a4560ddc61d4d",
+    "physicalQualificationPassed":  true,
+    "comparisonId":  "a8e37290595645d0b9db577c09cece01"
+}

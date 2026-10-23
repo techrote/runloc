@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "diagnosticOnly": true,
+  "qualificationPassed": false,
+  "scenario": "release-order",
+  "leaseId": "775eda141ee1492d890a5309f331a84b",
+  "authenticatedReadySixCpuCount": 6,
+  "stoppedCount": 6,
+  "sourceReceiptCopiedWithoutModification": true,
+  "privateLogDigest": {
+    "bytes": 2319,
+    "sha256": "87239ca9d41eceb2e9f73a9bc57b7d08e26e007bb0d2bb804693e55395076167"
+  },
+  "files": [
+    {
+      "path": "diagnostic-result.json",
+      "bytes": 2792,
+      "sha256": "0d11239b55322bb4395cc87f7bb0d2e4c55e907c7a932f26a2117df07fdafe1f"
+    },
+    {
+      "path": "guest-events.json",
+      "bytes": 1839,
+      "sha256": "1d36a4b8cc4a76877b9ce59eaf1eb0f6a3a2c2b93c0f4bea7a9a871e1f0a45a7"
+    }
+  ],
+  "limitations": [
+    "Not the complete release scenario.",
+    "Does not identify or repair the original failure or clear its quarantine."
+  ]
+}

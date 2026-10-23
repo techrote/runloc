@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "files": [
+    {
+      "file": "actions-association.json",
+      "bytes": 889,
+      "sha256": "e93a44804aa9d9a5dc15a36db5949b6140cf7ec975869252a965821bae2d9e23"
+    },
+    {
+      "file": "timer-summary-digest.json",
+      "bytes": 150,
+      "sha256": "e544fe66ce6ad30366dc7aabae271027f42a2b66942dee8b81c899e4b91cbb97"
+    },
+    {
+      "file": "timer-summary.json",
+      "bytes": 11249,
+      "sha256": "8746067d26549ab8bb61334e8dc72bce28d8996e8a186f32a05a87bbbe1405fe"
+    }
+  ],
+  "diagnosticOnly": true,
+  "qualificationPassed": false,
+  "quarantineReset": false
+}

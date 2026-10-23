@@ -132,3 +132,68 @@ conversion. Final monitoring uses retained receipt counts after disposal;
 observations and final host cleanup remain separate facts. Monitor-only and
 synthetic-test visibility repairs do not alter the physically executed payload.
 CI-POC-003 retains gate/fallback/TCG-policy migration and performance work.
+
+CI-POC-003's opt-in guest diagnostics are separate from acceptance. The
+[diagnostic scenarios](../../poc/windows-whpx/QUALIFICATION-GATE.md) distinguish
+basic cold cloning from source restart, export/import and source-reset ordering.
+Their exact-source, owned-process and failed-fixture forensic controls remain
+required; neither successful guest boots nor their diagnostic receipts grant
+full qualification or clear a failed comparison. Synthetic persistence contents
+are asserted through authenticated commands with actual numeric exits.
+
+Hosted failure reduction must recognize the original harness's bounded
+`BASE_LOG_TAIL`/`BASE_LOG_LINE` sections as well as instance serial tails. Only
+exact base-stage UUID headers establish diagnostic context. JSON failure messages
+and serial tails reduce to closed codes and bounded numeric facts; raw paths,
+prose and seed material are not published. Stripping a diagnostic prefix is local
+to the reducer and must never expose guest success markers to the host oracle.
+Negative controls cover absent/stale/wrong contexts, nested headers, large lines,
+spoofed PASS text, redaction and missing versus observed/truncated capture.
+
+The opt-in `full-forensic` local diagnostic runs the unchanged complete original
+workload after exact ACL preflight, under private native ownership. Six CPUs,
+original memory/assertions/per-operation limits, exact sources before/after,
+numeric child status, phase telemetry and cleanup remain required. Only that
+explicit mode uses the owner's NoOverallTimeout policy; focused modes remain
+bounded. Failed private fixtures are forensic quarantine, inspected only after
+positive process emptiness. Direct-host diagnostic execution has no JIT/Actions
+association and can never clear the source gate or grant CI-POC003 acceptance.
+Every controller rejects a timed-out or cancelled ACL preflight even when its
+child races to a natural exit0 before cleanup. Timeout/cancellation facts remain
+in the receipt; a PASS line and zero exit cannot override either condition.
+The independent hosted oracle also requires both flags explicitly false, finite
+positive elapsed time, coherent start/end timestamps and one actual WHPX-SKIP
+capability record. Missing legacy hosted fields cannot qualify the current
+f167-pinned policy. This does not invent those fields in the unchanged legacy
+private002 receipt; its actual preflight evidence requires separate audit.
+
+The003 absent-capacity control must positively establish that no eligible
+registration exists for its fresh UUID. It uses the unchanged private workflow,
+retains complete runner-inventory observations, proves no runner assignment or
+executed steps throughout the bounded queued attempt, and cancels only its exact
+owned run. Offline API access and incomplete inventory are unknown evidence.
+Tests cover ambiguous-dispatch reconciliation, quarantine refusal, matching
+labels, assigned/executed jobs, premature/unrequested cancellation and durable
+terminal proof revalidation. Software controls do not substitute for its actual
+GitHub queued/cancelled job and independent hosted fallback acceptance.
+
+The functional assertion control is negative-only and uses an authenticated
+fixed false guest command after READY and six-CPU proof, with the original
+light profile and operation limits. Its actual guest/harness/job nonzero exits
+remain failures. Its separate receipt and closed two-file artifact schema can
+only classify as `assertion`; neither this adapter nor its parser has a success
+path. Source/definition/attempt/runner mismatches, partial or unexpected failure
+steps, timeout/cancellation, missing numeric exits and unresolved cleanup reject
+the intended-control proof. The shared gate decision must demonstrate that the
+actual assertion evidence dominates a separately validated green alternative.
+Software fixtures do not establish that live Actions refusal.
+
+Gate regression controls reject a successful job paired with a failed,
+cancelled or unfinished parent run, Boolean run/job/runner IDs, and a hosted
+receipt whose runner differs from the actual GitHub Actions job/profile.
+Both hosted/private observers retain pending status during the narrow API
+terminal-arrival race without opening an artifact or accepting a receipt.
+Actual temporary-history controls require the committed backing/history
+baseline even with no recovery, and exercise another empty backing directory
+against the current real policy. Synthetic eligible fixtures carry explicit
+synthetic baseline/adjudication proof; they do not enable actual recovery.

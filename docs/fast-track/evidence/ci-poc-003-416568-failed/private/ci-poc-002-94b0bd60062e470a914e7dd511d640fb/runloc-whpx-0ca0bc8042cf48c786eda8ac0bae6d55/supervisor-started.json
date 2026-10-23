@@ -1,0 +1,19 @@
+{
+    "schemaVersion":  1,
+    "issue":  "CI-POC-001",
+    "kind":  "supervisor-started",
+    "supervisorLeaseId":  "0ca0bc8042cf48c786eda8ac0bae6d55",
+    "startedUtc":  "2026-10-18T19:35:47.2930245Z",
+    "candidateCommit":  "2268468cb3040b9e1dd6deed60d0f13594f768d6",
+    "candidateTree":  "d5677a166e54583f26e3f08e90e5836c19f99359",
+    "controllerCommit":  "d3be2aa7677c338fab86508da6f390fcae1bc541",
+    "preflightOnly":  true,
+    "hostLabel":  "lab-win11-01",
+    "targetSeconds":  0,
+    "executionDeadlineSeconds":  0,
+    "cleanupDeadlineSeconds":  0,
+    "hardWallSeconds":  0,
+    "overallTimeoutDisabled":  true,
+    "completedReceipt":  "supervisor-receipt.json",
+    "incompleteMeansFailure":  true
+}

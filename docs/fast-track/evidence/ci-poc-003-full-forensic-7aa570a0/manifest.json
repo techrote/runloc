@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "scenario": "full-forensic",
+  "diagnosticOnly": true,
+  "qualificationPassed": false,
+  "leaseId": "7aa570a051924fdc8d03fd3f42a2ccff",
+  "completionMarkers": 24,
+  "authenticatedReadyCount": 8,
+  "sixCpuProofCount": 8,
+  "elapsedSeconds": 7330.5943492,
+  "sourceReceiptsCopiedWithoutModification": true,
+  "privateLogDigest": {
+    "bytes": 10186,
+    "sha256": "39ebf31e2b10071c32bf79fef9e5d2fb7aa382200998b890b7110fb1f6cbb016"
+  },
+  "files": [
+    {
+      "path": "diagnostic-result.json",
+      "bytes": 36318,
+      "sha256": "431848642414e38b3ad85b62ec0f3f4eb9c58f15eaed24a04418c4b9e4377091"
+    },
+    {
+      "path": "telemetry-events.json",
+      "bytes": 2198137,
+      "sha256": "c6578d90c2339ac05031f42d124fd68147bf455287d656519b7dbd5a2c736531"
+    }
+  ],
+  "limitations": [
+    "No JIT runner or GitHub Actions association.",
+    "The original crash did not reproduce; its cause remains unresolved.",
+    "Does not clear the prior comparison quarantine or grant CI-POC003 acceptance.",
+    "No 60-minute performance acceptance is claimed under NoOverallTimeout."
+  ]
+}

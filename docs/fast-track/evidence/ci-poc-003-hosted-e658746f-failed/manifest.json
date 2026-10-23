@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "files": [
+    {
+      "name": "association.json",
+      "sha256": "9f5da6679bbf738c37a6b4166ce0c3362eddb2808469eeec9c21e78b115eded3",
+      "bytes": 2443
+    },
+    {
+      "name": "hosted-receipt-digest.json",
+      "sha256": "470e34564840d66a62e5599755b330d5e42879bff3082cf005a08aaef0ed768a",
+      "bytes": 151
+    },
+    {
+      "name": "hosted-receipt.json",
+      "sha256": "59139e59a3bd83801345c3ba95c94f6d3ae466c83e3bb3f76175d15fea5f077e",
+      "bytes": 25809
+    },
+    {
+      "name": "telemetry-events.json",
+      "sha256": "a4fefc0e0ecc283727ee8dd613246a958d0916dcabc73aa5ff68e94463e179db",
+      "bytes": 993105
+    }
+  ]
+}

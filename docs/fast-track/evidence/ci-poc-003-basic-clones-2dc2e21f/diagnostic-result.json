@@ -1,0 +1,61 @@
+{
+    "controller":  {
+                       "repository":  "https://github.com/techrote/runloc",
+                       "commit":  "11fa575d356fe9a774df9ec7147b31edb49cc168",
+                       "tree":  "a3685a66759e57f9e61702e86398d6ae9358e4f2",
+                       "clean":  true,
+                       "executedTreeSha256":  "3aee359ada11ec001c994e5f12666e33ee70f826f86bd396af66003d4ef2fd1d",
+                       "trackedFileCount":  243,
+                       "files":  [
+
+                                 ]
+                   },
+    "sourceUnchanged":  true,
+    "fixtureRemoved":  true,
+    "forensicQuarantineRequired":  false,
+    "candidate":  {
+                      "repository":  "https://github.com/techrote/ezvm",
+                      "commit":  "2268468cb3040b9e1dd6deed60d0f13594f768d6",
+                      "tree":  "d5677a166e54583f26e3f08e90e5836c19f99359",
+                      "clean":  true,
+                      "executedTreeSha256":  "aa1f4254bcbe517f9838742d297779cba11b91a939b1d428f9a4de81a6dd7e00",
+                      "trackedFileCount":  194,
+                      "files":  [
+
+                                ]
+                  },
+    "forced":  false,
+    "leaseId":  "2dc2e21fb19546669cf3d71d79b3da89",
+    "controllerAfter":  {
+                            "repository":  "https://github.com/techrote/runloc",
+                            "commit":  "11fa575d356fe9a774df9ec7147b31edb49cc168",
+                            "tree":  "a3685a66759e57f9e61702e86398d6ae9358e4f2",
+                            "clean":  true,
+                            "executedTreeSha256":  "3aee359ada11ec001c994e5f12666e33ee70f826f86bd396af66003d4ef2fd1d",
+                            "trackedFileCount":  243,
+                            "files":  [
+
+                                      ]
+                        },
+    "schemaVersion":  1,
+    "errors":  [
+
+               ],
+    "diagnosticOnly":  true,
+    "childExitCode":  0,
+    "elapsedSeconds":  2841.232588,
+    "activeOwnedProcesses":  0,
+    "qualificationPassed":  false,
+    "candidateAfter":  {
+                           "repository":  "https://github.com/techrote/ezvm",
+                           "commit":  "2268468cb3040b9e1dd6deed60d0f13594f768d6",
+                           "tree":  "d5677a166e54583f26e3f08e90e5836c19f99359",
+                           "clean":  true,
+                           "executedTreeSha256":  "aa1f4254bcbe517f9838742d297779cba11b91a939b1d428f9a4de81a6dd7e00",
+                           "trackedFileCount":  194,
+                           "files":  [
+
+                                     ]
+                       },
+    "diagnosticCompleted":  true
+}

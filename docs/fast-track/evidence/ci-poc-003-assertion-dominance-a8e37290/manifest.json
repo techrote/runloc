@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "qualificationPassed": false,
+  "quarantineReset": false,
+  "liveGreenAlternativeValidated": true,
+  "greenEvidence": "../ci-poc-003-private-a8e37290/manifest.json",
+  "negativeEvidence": "../ci-poc-003-assertion-013a6cfe/manifest.json",
+  "files": [
+    {
+      "path": "live-assertion-dominance.json",
+      "bytes": 3721,
+      "sha256": "a4da153a412871b7fc73cb206346c488ffca19f86ec7eb8f79957d1c129a6258"
+    }
+  ]
+}

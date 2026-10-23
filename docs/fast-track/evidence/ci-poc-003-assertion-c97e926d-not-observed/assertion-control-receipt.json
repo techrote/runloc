@@ -1,0 +1,63 @@
+{
+    "elapsedSeconds":  1749.3854018,
+    "cancelled":  false,
+    "sourceUnchanged":  true,
+    "runAttempt":  1,
+    "workflowCommit":  "ee9bcc671b9fb9416930454122274089438e3812",
+    "passed":  false,
+    "preflightCancelled":  false,
+    "preflightTimedOut":  false,
+    "schemaVersion":  1,
+    "preflightExitCode":  0,
+    "requestedAccelerator":  "tcg",
+    "errors":  [
+
+               ],
+    "qualificationMemoryMiB":  4096,
+    "cleanup":  {
+                    "forced":  false,
+                    "childExited":  true,
+                    "fixtureRemoved":  true,
+                    "activeProcesses":  0
+                },
+    "control":  "authenticated-fixed-false-guest-assertion",
+    "negativeControlOnly":  true,
+    "runId":  39932423994,
+    "controller":  {
+                       "repository":  "https://github.com/techrote/runloc",
+                       "commit":  "a71e9e1adae1fb749b2325277c4a52dff69d7b6d",
+                       "tree":  "80d9204fbdc496e3d321fed7e6c127fafc9e205c",
+                       "clean":  true,
+                       "executedTreeSha256":  "5bdc9a38e85eb6bc51907868403a65887d027a22b1d04a3027f46b77972fd3a0",
+                       "trackedFileCount":  327,
+                       "files":  [
+
+                                 ]
+                   },
+    "qualificationCpus":  6,
+    "outputOverflow":  false,
+    "endedUtc":  "2026-10-23T10:00:38.6153811Z",
+    "exitCode":  1,
+    "startedUtc":  "2026-10-23T09:31:29.2381968Z",
+    "comparisonId":  "c97e926d058d43838a8e8facbbb126e1",
+    "repository":  "techrote/ezvm",
+    "guestAssertionExitCode":  null,
+    "candidate":  {
+                      "repository":  "https://github.com/techrote/ezvm",
+                      "commit":  "b205230d3f1ade15550bbbb8d8b405d17858c514",
+                      "tree":  "e79f5d0a8f642a3fa53158852dbea5cb7e64d465",
+                      "clean":  true,
+                      "executedTreeSha256":  "535ab2dadf05a3862d3b43c95dfd34c1672651d48be7f3b9ec0c826bbeb8eb16",
+                      "trackedFileCount":  196,
+                      "files":  [
+
+                                ]
+                  },
+    "controlObserved":  false,
+    "runnerEnvironment":  "github-hosted",
+    "outputFailed":  false,
+    "qualificationPassed":  false,
+    "timedOut":  false,
+    "runnerName":  "GitHub Actions 1000039244",
+    "issue":  "CI-POC-003"
+}

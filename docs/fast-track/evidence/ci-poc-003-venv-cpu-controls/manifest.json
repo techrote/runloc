@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "files": [
+    {
+      "name": "association.json",
+      "sha256": "b256013da4ef21c4cb84a0eb6506ee5f3b5fec128a309e31d3140801e0aa292b",
+      "bytes": 2336
+    },
+    {
+      "name": "cpu-controller.json",
+      "sha256": "2d377c6b5ebd3f41c62390c398e97c71b723429126ff0164db332f1005172abc",
+      "bytes": 320
+    },
+    {
+      "name": "cpu-result.json",
+      "sha256": "27b1dc2efc82ed6a759d41042692158dfc3a119356eb7c49a1ee3e328f6bef51",
+      "bytes": 30290
+    },
+    {
+      "name": "disk-ram-controller.json",
+      "sha256": "a9b66942a42895e00df5a60657b53e3ced25416877a6b0a2451c5a4b2d5cf5d3",
+      "bytes": 321
+    },
+    {
+      "name": "disk-ram-result.json",
+      "sha256": "32d2138ca540b20f7dce85c9d45ed38fd7f4bb70f73be72729c90ad80f24c02b",
+      "bytes": 529
+    }
+  ]
+}

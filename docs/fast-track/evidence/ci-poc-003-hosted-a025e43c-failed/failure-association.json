@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "qualificationPassed": false,
+  "quarantineReset": false,
+  "forensic": {
+    "actualConclusion": "failure",
+    "artifacts": [
+      {
+        "digest": "sha256:67e83669a7669bc28e7660ac8ffb790a3fac2fac8dd57f34b14342b127b444e5",
+        "id": 12308160600,
+        "name": "ci-poc-003-forensic-encrypted-a025e43c1946499ca53100fc13cf7a19",
+        "size_in_bytes": 32258
+      },
+      {
+        "digest": "sha256:efb0a9a45ab6a6a93db07bc7cd0ff762e47fe26984aad8de4a5337b81c960c9d",
+        "id": 12307697387,
+        "name": "ci-poc-003-forensic-public-a025e43c1946499ca53100fc13cf7a19",
+        "size_in_bytes": 40932
+      }
+    ],
+    "comparisonId": "a025e43c1946499ca53100fc13cf7a19",
+    "diagnosticOnly": true,
+    "jobId": 118912620478,
+    "localDecryptToolSha256": "78340fb01dea2df5caab73dcf28833b31329226a4c9e02f717f1d399592265b9",
+    "observedUtc": "2026-10-20T23:27:13.548073+00:00",
+    "plaintextAuthenticated": true,
+    "plaintextBytes": 30751,
+    "plaintextSha256": "4b8409f449a8dcd41bffc8d73810e6ef3f9185f22e01e50a2b70f52c5afe5db9",
+    "qualificationPassed": false,
+    "quarantineReset": false,
+    "runId": 39505303335,
+    "schemaVersion": 1,
+    "workflowCommit": "b1232b3ec076fb06dbf9bb51dd83c5f8b635b172",
+    "workflowSha256Lf": "f6cddb85cad6d2158c94ffa99dd1cecd1265fe6dcf5c989a97b01d9057eeeaae"
+  },
+  "kernelFailure": {
+    "classification": "early-boot-ioapic-timer-panic",
+    "kernel": "6.8.0-142-generic",
+    "cpu": 0,
+    "pid": 0,
+    "task": "swapper/0",
+    "phase": "first-managed-guest-boot-after-successful-base-build",
+    "authenticatedReadyCount": 0,
+    "guestTimerCheckBypassed": false,
+    "diagnosis": "Observed panic; exact emulator/host cause not yet established. HPET comparison is only a hypothesis."
+  },
+  "legacy": {
+    "runId": 39500448386,
+    "jobId": 118896293651,
+    "workflowCommit": "a2968c66a2b8b64890b92f94a455fe7f63c16bb0",
+    "conclusion": "failure",
+    "rawActionsLogSha256": "668ab181e50e126a10ba06ac4c32d0df03406b9f8a84a63157f3c28e72230754",
+    "sameEarlyBootPanicObserved": true,
+    "sixCpuProfileClaimed": false
+  },
+  "privacy": {
+    "rawGuestLogsPublished": false,
+    "privateKeyPublished": false,
+    "encryptedArtifactRetained": true
+  },
+  "historicalLatePid1CrashResolved": false
+}

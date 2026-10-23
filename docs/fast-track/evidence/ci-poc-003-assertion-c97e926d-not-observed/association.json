@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "runId": 39932423994,
+  "jobId": 120343686385,
+  "runUrl": "https://github.com/techrote/ezvm/actions/runs/39932423994/job/120343686385",
+  "workflowCommit": "ee9bcc671b9fb9416930454122274089438e3812",
+  "comparisonId": "c97e926d058d43838a8e8facbbb126e1",
+  "artifact": {
+    "id": 12494360452,
+    "name": "ci-poc-003-assertion-c97e926d058d43838a8e8facbbb126e1",
+    "size_in_bytes": 1410,
+    "digest": "sha256:e6a08fa38b1577accd1ccfbceaf7d5a45f3054e9e95e15d5b6fe91895f1f3d59",
+    "workflow_run": {
+      "head_branch": "ci-poc-003-assertion-ee9bcc671b9fb9416930454122274089438e3812",
+      "head_repository_id": 1414307948,
+      "head_sha": "ee9bcc671b9fb9416930454122274089438e3812",
+      "id": 39932423994,
+      "repository_id": 1414307948
+    }
+  },
+  "actualConclusion": "failure",
+  "intendedControlAccepted": false,
+  "qualificationPassed": false,
+  "quarantineReset": false,
+  "interpretation": "The attempt failed before its intended fixed false guest assertion was observed. The public receipt alone does not identify the setup failure. Preserve it as failure evidence, not a successful negative control."
+}

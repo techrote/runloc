@@ -1,0 +1,45 @@
+{
+  "schemaVersion": 1,
+  "diagnosticOnly": true,
+  "qualificationPassed": false,
+  "quarantineReset": false,
+  "comparisonId": "ebca50844f3c418795bf7be46b6a3695",
+  "runId": 39491915114,
+  "jobId": 118866993056,
+  "workflowCommit": "1c1dbb68ab48d1f5f17501032318d057957557d8",
+  "controllerCommit": "f167950a865df3baad247ba37ff53f0fcb683a72",
+  "candidateCommit": "2268468cb3040b9e1dd6deed60d0f13594f768d6",
+  "candidateTree": "d5677a166e54583f26e3f08e90e5836c19f99359",
+  "artifact": {
+    "id": 12302380825,
+    "name": "ci-poc-003-hosted-ebca50844f3c418795bf7be46b6a3695",
+    "digest": "sha256:3863b26ffd9c53615a82f0a59bd834964f653e02f6ac3b15704063544ef58fdb",
+    "size_in_bytes": 33289
+  },
+  "files": [
+    {
+      "path": "hosted-receipt.json",
+      "bytes": 22489,
+      "sha256": "fd0c7dee68e320e9171cd9c3173dccf18d082ecbba1c3efa8635bc5940a0ea46"
+    },
+    {
+      "path": "hosted-receipt-digest.json",
+      "bytes": 151,
+      "sha256": "7948d3d641bfcda2a319f2669ebf4922da3dc5cf5ce7fb9332e1a799569d87d8"
+    },
+    {
+      "path": "telemetry-events.json",
+      "bytes": 671462,
+      "sha256": "e935cf054d05b27641cee379d4c8c2e540e2a4bb86b86ac43bb0f40ace542af0"
+    }
+  ],
+  "failureClassification": "prepared-base-guest-kernel-panic-underlying-cause-unresolved",
+  "elapsedSeconds": 4613.1129273,
+  "exitCode": 1,
+  "limitations": [
+    "Closed diagnostic signals establish a base provisioning deadline and guest kernel panic, not the panic text or root cause.",
+    "No authenticated READY was observed. Seven original markers are insufficient for the complete scenario.",
+    "Outer cleanup forced=false does not establish whether candidate cleanup force-stopped QEMU internally.",
+    "Raw private guest/tool logs were not uploaded and cannot be recovered from the public artifact. Original quarantine remains unchanged."
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "diagnosticOnly": true,
+  "qualificationPassed": false,
+  "gateAcceptance": false,
+  "quarantineReset": false,
+  "runId": 39943992446,
+  "jobId": 120382038901,
+  "url": "https://github.com/techrote/ezvm/actions/runs/39943992446/job/120382038901",
+  "workflowCommit": "e95eca7d7026bab810e469fb8f2cd62cdc2c17ff",
+  "workflowTree": "c42bf8f0dd08cfa994a504890781370bc476a6b8",
+  "attemptId": "414cc908a7d44f2e82e96eb235f25ff8",
+  "artifactSha256": "897c7c57b6c437e0aed239d45cc3e955fd9a9bb07fcc92b627ad4e6aef67ac49",
+  "receiptSha256": "8f6afc6e6d59a84ce316450dd7a585faac84135b8fb56b04fc1f2a0c07cbcbc3",
+  "independentReview": {
+    "role": "separate Codex agent",
+    "freshApiAndDownload": true,
+    "originalValidator": true,
+    "records": 78,
+    "apiWrites": 0
+  },
+  "interpretation": "Direct fresh guest only; all eight trials exited zero. No full-context timeout reproduced; no product correction or qualification established.",
+  "limitations": [
+    "Fixed order permits cache warming.",
+    "Guest CPU accounting, not host CPU.",
+    "Diagnostic instrumentation consumes shared 90-second variant budget.",
+    "Actual full coding-profile/finalizer context remains unmeasured."
+  ]
+}

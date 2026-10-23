@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "diagnosticOnly": true,
+  "qualificationPassed": false,
+  "scenario": "basic-clones",
+  "leaseId": "2dc2e21fb19546669cf3d71d79b3da89",
+  "authenticatedReadySixCpuCount": 7,
+  "stoppedCount": 7,
+  "sourceReceiptCopiedWithoutModification": true,
+  "privateLogDigest": {
+    "bytes": 3105,
+    "sha256": "58272332e5f5bd8e6be0721bb5ec1f7482e9f9e4145006785009290318e650d2"
+  },
+  "files": [
+    {
+      "path": "diagnostic-result.json",
+      "bytes": 2750,
+      "sha256": "87b915058e4a471a385d09d15615a78417a275e8098d450c3a8808cca923b2b3"
+    },
+    {
+      "path": "guest-events.json",
+      "bytes": 2145,
+      "sha256": "cdb8a0b564e40ef08fad2b8156f8296e6d99f1911f72f00308c8e1a938bd3845"
+    }
+  ],
+  "limitations": [
+    "Does not execute the complete release scenario.",
+    "Does not cover source restart/export/import/reset ordering.",
+    "Does not identify or repair the original failure or clear the gate quarantine."
+  ]
+}

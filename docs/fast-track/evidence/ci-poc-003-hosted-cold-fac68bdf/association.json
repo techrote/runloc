@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 1,
+  "runId": 39828718868,
+  "workflowCommit": "0095621faa2050d2767721ab575a98e2a0589557",
+  "workflowTree": "dea9313d43a8fbea75d17da1e1f5fd26c109fc23",
+  "workflowSha256Lf": "3b54eb227bf19182bc0ed8424c29f43b99c766913d52bae90ae128bd98458579",
+  "controllerCommit": "abe1f76e07cfb3fc1727f45914c820f47238260f",
+  "controllerTree": "19a168eaea82f49b5ec7c1848f05f71dc13800cf",
+  "candidateCommit": "2268468cb3040b9e1dd6deed60d0f13594f768d6",
+  "candidateTree": "d5677a166e54583f26e3f08e90e5836c19f99359",
+  "jobs": [
+    {
+      "artifactDigest": "sha256:47cac6857eb87c6934ce67b0ebac87a970413e73b4fc88b14d595c0b293c9c92",
+      "artifactId": 12447568338,
+      "jobId": 119998838643,
+      "mode": "multi",
+      "primaryCase": "boot-1-multi",
+      "primaryClassification": "early-boot-observed-not-qualified",
+      "replica": 1,
+      "summarySha256": "7fa611f7cf187f463bfd4cb70e64161f60eb6386721faffd1a371bf6651fdd61"
+    },
+    {
+      "artifactDigest": "sha256:4f0d087f3f1ff53e1d05240f0d5fa21301665db68a21486851612d7bacc8c57c",
+      "artifactId": 12447429572,
+      "jobId": 119998838753,
+      "mode": "multi",
+      "primaryCase": "boot-1-multi",
+      "primaryClassification": "early-boot-observed-not-qualified",
+      "replica": 2,
+      "summarySha256": "dd6828a6f7a37a3d8c62c642872f1dfc8b29d59db4e910c495835473c09acfc6"
+    },
+    {
+      "artifactDigest": "sha256:d41c2f6e73e0ba535adb01444d6b5a8ddf98b231c3746dc18d129903df4179e1",
+      "artifactId": 12447073653,
+      "jobId": 119998839068,
+      "mode": "single",
+      "primaryCase": "boot-1-single",
+      "primaryClassification": "early-boot-observed-not-qualified",
+      "replica": 1,
+      "summarySha256": "6ece8fef91813d49c6b42bc9807cd354f382a5ed69e67c9e9fdc2050d2cfcc03"
+    },
+    {
+      "artifactDigest": "sha256:a712859a2f108c56907be003dd1682351fcc5cc6d37244b41f4ae1ad7caacf8d",
+      "artifactId": 12447153396,
+      "jobId": 119998838858,
+      "mode": "single",
+      "primaryCase": "boot-1-single",
+      "primaryClassification": "early-boot-observed-not-qualified",
+      "replica": 2,
+      "summarySha256": "ef79f67db3e5ca523ad3364ca7b335c7b82e6a68c23d8c4fa831bebe368bfe1e"
+    }
+  ],
+  "diagnosticOnly": true,
+  "qualificationPassed": false,
+  "quarantineReset": false,
+  "inference": "One of six multi-thread boots panicked at IO-APIC timer setup; zero of six single-thread boots panicked. All first boots reached init. Empirical mitigation under test; no proven root cause or reliability guarantee. Distinct hosted VMs, not cold physical hardware."
+}

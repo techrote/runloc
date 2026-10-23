@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "executionApproved": true,
+  "quarantineBaseline": {
+    "backingRootSha256": "cef0b643dc010ab6bf22042c9a5041dabcd28a20ce9a6d4248e3570e678130b9",
+    "legacySha256": "b2f411620b3702c06223a7ba109d6065c8e7ea64a90ff696137695dc376ba28d"
+  },
+  "candidate": {
+    "tree": "e79f5d0a8f642a3fa53158852dbea5cb7e64d465",
+    "commit": "b205230d3f1ade15550bbbb8d8b405d17858c514"
+  },
+  "private": {
+    "hostController": "cfea92c28890aa51a6a1d15c236364ed9d49220c",
+    "sha256Lf": "ff2041e1d2f0efc92e2fc2c9a42beb2aeebf3779a8f6026a67c394d572e03728",
+    "workflowPath": ".github/workflows/ezvm-ci-poc-002.yml",
+    "workflowRef": "ci-poc-002-8ed0bdd6af7f04fc637fbd9986b823e43933d666",
+    "jobController": "a71e9e1adae1fb749b2325277c4a52dff69d7b6d",
+    "workflowCommit": "8ed0bdd6af7f04fc637fbd9986b823e43933d666"
+  },
+  "hosted": {
+    "controller": "a71e9e1adae1fb749b2325277c4a52dff69d7b6d",
+    "workflowId": 388691839,
+    "workflowRef": "ci-poc-003-qualified-8ed0bdd6af7f04fc637fbd9986b823e43933d666",
+    "sha256Lf": "7b78e457183480051ff4cb30e9af80e11ad6606a65beab029c43b628005e8c5d",
+    "workflowCommit": "8ed0bdd6af7f04fc637fbd9986b823e43933d666",
+    "workflowPath": ".github/workflows/ezvm-ci-poc-003-hosted.yml"
+  },
+  "profile": {
+    "cpus": 6,
+    "overallTimeoutDisabled": true
+  },
+  "privateQueueSeconds": 600,
+  "pollSeconds": 30,
+  "publicationWallSeconds": 28800,
+  "statusContext": "EzVM qualification / source-bound"
+}
