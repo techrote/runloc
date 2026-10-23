@@ -381,4 +381,3 @@ contains the three original public artifact JSON files and an independently
 reviewed association to the actual run/job/artifacts and authenticated private
 plaintext digest. Raw decrypted guest material and the attempt private key stay
 private. Quarantine, gate approval and issue completion remain unchanged.
-
