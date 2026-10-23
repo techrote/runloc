@@ -439,7 +439,7 @@ The record does not measure individual substage durations or establish the
 cause of the hosted slowdown. The local optional-cache improvement did not
 establish hosted recovery; no deadline or assertion was relaxed.
 
-The fresh fixed-false-assertion run39932423994 also failed before observing its
+The [fresh fixed-false-assertion run39932423994](evidence/ci-poc-003-assertion-c97e926d-not-observed/manifest.json) also failed before observing its
 intended assertion: its retained receipt says `controlObserved=false` and
 `guestAssertionExitCode=null`. That is unqualified failure evidence, not a
 successful negative control. Its receipt records unchanged sources, exit1,

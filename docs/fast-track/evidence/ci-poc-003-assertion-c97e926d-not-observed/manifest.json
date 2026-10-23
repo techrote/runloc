@@ -1,0 +1,10 @@
+{
+  "schemaVersion": 1,
+  "qualificationPassed": false,
+  "intendedControlAccepted": false,
+  "files": {
+    "assertion-control-receipt-digest.json": "911901866f0bee6b418b05a0d4ae7a364dc3c97f078467d9f18caf8d30cb6c99",
+    "assertion-control-receipt.json": "f3bda3e75e94a51d35fdd525d792a408f91e2bedfea0f0b4db2361af1a620c9a",
+    "association.json": "e027eb52a4d237bdb0ee71141bb318e76d84bc596cb00330fc4fdfd294aa7c05"
+  }
+}
