@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "diagnosticOnly": true,
+  "qualificationPassed": false,
+  "quarantineReset": false,
+  "candidateCommit": "2a624a1d0d90e076cac5b81aebe115d66fa66e65",
+  "candidateTree": "835c1b19917e0185e3c55e0c563f009ee4e126cd",
+  "controllerCommit": "81324943ac2327eff9e1e6b769c67add63041709",
+  "controllerTree": "052c95df4bb7c247233bb78e3d74fcdd12abc18f",
+  "execution": "Native Windows host; six guest CPUs,4096MiB,TCG single-thread",
+  "host": {
+    "os": "Windows11 Pro",
+    "build": "26300",
+    "cpu": "AMD Ryzen5 5600X",
+    "logicalProcessors": 12,
+    "memoryGiB": 64
+  },
+  "diskRamCreationOnly": [
+    {
+      "location": "disk",
+      "sequence": 1,
+      "exit": 0,
+      "seconds": 46
+    },
+    {
+      "location": "RAM",
+      "sequence": 2,
+      "exit": 0,
+      "seconds": 44
+    },
+    {
+      "location": "disk",
+      "sequence": 3,
+      "exit": 0,
+      "seconds": 47
+    }
+  ],
+  "sourceBeforeAfter": "Exact clean candidate2a retained unchanged in both controls; private original source descriptors independently reviewed",
+  "privateProducerSha256": {
+    "probe.ps1": "0a3d3fdff28ae322a7bdc00d668d503ec31c0256afee57a8359ad269e4d6450d",
+    "workload.ps1": "38484d5f165fa537a272b9095c8ad96adc178efaecd7f8ae0bfdfafc08b046c5",
+    "probe.sh": "3fdab993647f0fb0730f42bd8f40c41ed00e931dd779349080a84261e996a0ed",
+    "measure.py": "19c62585b0574bdee1430bb832f675d2b6df3302b9b5183b32fd187b66174351",
+    "bootstrap.py": "997fe484932bcc5eb3ec7b689329907472ad1adb513bbff4d267190faca32987"
+  },
+  "limits": [
+    "Native diagnostic, not a hosted VM result or full release qualification.",
+    "Prepared guest and fixed ordering limit generalization. Matched unprofiled controls differ only by optional compile flag.",
+    "Profiled timing is separate and nested function durations overlap.",
+    "Source descriptors and original private serial/worker logs remain retained privately.",
+    "Earlier technical probeA had complete guest metrics but strict framing rejected a CR-prefixed record; controller1,owned0. Earlier CPUprobeC1 stopped before VM launch on a PS5 array-shape guard; controller1,owned0. Both failed attempts remain immutable and are not reported as successful controls.",
+    "Product candidateb205 is a different tree and requires fresh complete hosted TCG and WHPX qualification."
+  ]
+}

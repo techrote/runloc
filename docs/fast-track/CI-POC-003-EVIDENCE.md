@@ -358,7 +358,8 @@ at813 while an owner-reviewed immutable definition selects this exact new source
 its old physical approval/runner/gate allowlists are not expanded by that selection.
 No old physical result transfers to this diagnostic tree, and no quarantine reset,
 new gate acceptance, merge or issue completion is claimed.
-# Exact diagnostic candidate2a: hosted venv creation timeout
+
+## Exact diagnostic candidate2a: hosted venv creation timeout
 
 The fresh complete six-vCPU hosted run
 [39890465778](https://github.com/techrote/ezvm/actions/runs/39890465778),
@@ -381,3 +382,41 @@ contains the three original public artifact JSON files and an independently
 reviewed association to the actual run/job/artifacts and authenticated private
 plaintext digest. Raw decrypted guest material and the attempt private key stay
 private. Quarantine, gate approval and issue completion remain unchanged.
+
+## Venv CPU diagnosis and disposable-cache correction under qualification
+
+[Independently reviewed native diagnostic records](evidence/ci-poc-003-venv-cpu-controls/manifest.json)
+retain a six-vCPU TCG disk/RAM/disk control and a matched CPU experiment on the
+same supported backing PC. Ordinary venv creation took46/44/47seconds on
+disk/RAM/disk; layout without pip took1second. An ordinary44.21second creation
+consumed39.93user+4.21kernel CPU seconds. The comparable WHPX creation was about
+2seconds. These observations identify substantial CPU emulation/bootstrap cost;
+they do not establish the exact CPU speed or package state of the failed hosted VM.
+
+Matched unprofiled pass-through ensurepip controls took43.58/42.93seconds,
+versus35.83/35.77seconds when only optional eager bytecode compilation was
+disabled. All used real ensurepip/offline wheels, isolated-prefix proof and
+actual pip execution within the same90second deadline; each bootstrap executed
+once and exited0. A separate actual pip-child profile recorded495
+`compileall.compile_file` calls taking14.69inclusive seconds. Nested profile
+times overlap, and profiling changes timing. Both completed diagnostic controllers
+exited0 with complete output, unforced cleanup and zero owned processes. Original
+technical probe failures remain preserved and are explicitly described in the
+association; they are not counted as successful controls.
+
+Reviewed EzVMPR60 candidateb205230d3f1ade15550bbbb8d8b405d17858c514,
+treee79f5d0a8f642a3fa53158852dbea5cb7e64d465, applies only that optional-cache
+optimization to the disposable readiness environment. It still creates a fresh
+isolated venv and runs real ensurepip before prefix/pip checks under the unchanged
+90seconds. The child-local private CPython adapter preserves original flags,
+offline wheel paths and errors, restores the original function, and rejects
+interface/call-count changes. Normal user-created venv behavior is unchanged.
+Eight exact Python controls and twelve actual shell controls cover success,
+real offline installation, missing wheels and failure propagation. The measured
+17–18% local improvement does not establish hosted recovery.
+
+The qualification candidate manifest selects this immutable candidate and adds
+its guest implementation hash; all previous17source pins are unchanged. Source
+tree identity continues to bind every tracked file. Fresh complete six-vCPU
+hosted TCG and physical WHPX qualification are required. No e29/2a pass transfers,
+and no gate allowlist, quarantine reset or issue completion is implied.

@@ -1,0 +1,382 @@
+{
+    "accelerator":  "tcg",
+    "qemuSha256":  "e393972f000c4fe92e137d7b48d7d8bdeae3fe9595dceab611b1f5e21f373eb2",
+    "cpus":  6,
+    "qualificationPassed":  false,
+    "elapsedSeconds":  417.9223972,
+    "measurements":  [
+                         {
+                             "sequence":  1,
+                             "variant":  "normal",
+                             "exit":  0,
+                             "elapsedSeconds":  44.21051219,
+                             "userSeconds":  39.929702,
+                             "systemSeconds":  4.207661,
+                             "pyFiles":  495,
+                             "pycFiles":  495
+                         },
+                         {
+                             "sequence":  2,
+                             "variant":  "pass_through",
+                             "exit":  0,
+                             "elapsedSeconds":  43.58006527399999,
+                             "userSeconds":  39.669743000000004,
+                             "systemSeconds":  3.901816,
+                             "pyFiles":  495,
+                             "pycFiles":  495,
+                             "bootstrap":  {
+                                               "calls":  1,
+                                               "interface":  "(args, additional_paths=None)"
+                                           }
+                         },
+                         {
+                             "sequence":  3,
+                             "variant":  "no_compile",
+                             "exit":  0,
+                             "elapsedSeconds":  35.825806755,
+                             "userSeconds":  32.435005000000004,
+                             "systemSeconds":  3.3815749999999998,
+                             "pyFiles":  495,
+                             "pycFiles":  245,
+                             "bootstrap":  {
+                                               "calls":  1,
+                                               "interface":  "(args, additional_paths=None)"
+                                           }
+                         },
+                         {
+                             "sequence":  4,
+                             "variant":  "pass_through",
+                             "exit":  0,
+                             "elapsedSeconds":  42.92587961700002,
+                             "userSeconds":  38.94377300000001,
+                             "systemSeconds":  3.974862,
+                             "pyFiles":  495,
+                             "pycFiles":  495,
+                             "bootstrap":  {
+                                               "calls":  1,
+                                               "interface":  "(args, additional_paths=None)"
+                                           }
+                         },
+                         {
+                             "sequence":  5,
+                             "variant":  "no_compile",
+                             "exit":  0,
+                             "elapsedSeconds":  35.77135571299999,
+                             "userSeconds":  32.40281999999999,
+                             "systemSeconds":  3.361016000000001,
+                             "pyFiles":  495,
+                             "pycFiles":  245,
+                             "bootstrap":  {
+                                               "calls":  1,
+                                               "interface":  "(args, additional_paths=None)"
+                                           }
+                         },
+                         {
+                             "sequence":  6,
+                             "variant":  "profile",
+                             "exit":  0,
+                             "elapsedSeconds":  48.42457800699998,
+                             "userSeconds":  37.918698000000006,
+                             "systemSeconds":  10.492214,
+                             "pyFiles":  495,
+                             "pycFiles":  495,
+                             "bootstrap":  {
+                                               "calls":  1,
+                                               "interface":  "(args, additional_paths=None)"
+                                           },
+                             "pipChildProfile":  {
+                                                     "finished":  true,
+                                                     "rows":  [
+                                                                  {
+                                                                      "group":  "builtin",
+                                                                      "function":  "\u003cbuilt-in method builtins.compile\u003e",
+                                                                      "calls":  1331,
+                                                                      "totalSeconds":  31.037126013,
+                                                                      "selfSeconds":  31.035777966
+                                                                  },
+                                                                  {
+                                                                      "group":  "pip-wheel",
+                                                                      "function":  "install_wheel",
+                                                                      "calls":  1,
+                                                                      "totalSeconds":  17.258863653000002,
+                                                                      "selfSeconds":  0.001347136
+                                                                  },
+                                                                  {
+                                                                      "group":  "pip-wheel",
+                                                                      "function":  "_install_wheel",
+                                                                      "calls":  1,
+                                                                      "totalSeconds":  17.165457952,
+                                                                      "selfSeconds":  0.066221716
+                                                                  },
+                                                                  {
+                                                                      "group":  "compileall",
+                                                                      "function":  "compile_file",
+                                                                      "calls":  495,
+                                                                      "totalSeconds":  14.689289685,
+                                                                      "selfSeconds":  0.10643335300000001
+                                                                  },
+                                                                  {
+                                                                      "group":  "py_compile",
+                                                                      "function":  "compile",
+                                                                      "calls":  495,
+                                                                      "totalSeconds":  14.441145491,
+                                                                      "selfSeconds":  0.085918348
+                                                                  },
+                                                                  {
+                                                                      "group":  "pip-wheel",
+                                                                      "function":  "save",
+                                                                      "calls":  505,
+                                                                      "totalSeconds":  1.141819356,
+                                                                      "selfSeconds":  0.043353659
+                                                                  },
+                                                                  {
+                                                                      "group":  "pip-wheel",
+                                                                      "function":  "\u003cmodule\u003e",
+                                                                      "calls":  1,
+                                                                      "totalSeconds":  0.8820882080000001,
+                                                                      "selfSeconds":  0.000750125
+                                                                  },
+                                                                  {
+                                                                      "group":  "pip-wheel",
+                                                                      "function":  "record_installed",
+                                                                      "calls":  1000,
+                                                                      "totalSeconds":  0.5545896880000001,
+                                                                      "selfSeconds":  0.011616724
+                                                                  },
+                                                                  {
+                                                                      "group":  "pip-wheel",
+                                                                      "function":  "_fs_to_record_path",
+                                                                      "calls":  1005,
+                                                                      "totalSeconds":  0.546059751,
+                                                                      "selfSeconds":  0.04506981
+                                                                  },
+                                                                  {
+                                                                      "group":  "zipfile",
+                                                                      "function":  "__init__",
+                                                                      "calls":  7,
+                                                                      "totalSeconds":  0.384267841,
+                                                                      "selfSeconds":  0.0006749190000000001
+                                                                  },
+                                                                  {
+                                                                      "group":  "zipfile",
+                                                                      "function":  "_RealGetContents",
+                                                                      "calls":  4,
+                                                                      "totalSeconds":  0.38193027100000004,
+                                                                      "selfSeconds":  0.14358003
+                                                                  },
+                                                                  {
+                                                                      "group":  "zipfile",
+                                                                      "function":  "read",
+                                                                      "calls":  1047,
+                                                                      "totalSeconds":  0.308951019,
+                                                                      "selfSeconds":  0.033733016000000005
+                                                                  },
+                                                                  {
+                                                                      "group":  "zipfile",
+                                                                      "function":  "_read1",
+                                                                      "calls":  555,
+                                                                      "totalSeconds":  0.264963795,
+                                                                      "selfSeconds":  0.036091296
+                                                                  },
+                                                                  {
+                                                                      "group":  "zipfile",
+                                                                      "function":  "open",
+                                                                      "calls":  530,
+                                                                      "totalSeconds":  0.21274194300000002,
+                                                                      "selfSeconds":  0.048206637000000004
+                                                                  },
+                                                                  {
+                                                                      "group":  "pip-wheel",
+                                                                      "function":  "make_root_scheme_file",
+                                                                      "calls":  505,
+                                                                      "totalSeconds":  0.18185351300000002,
+                                                                      "selfSeconds":  0.014780245000000001
+                                                                  },
+                                                                  {
+                                                                      "group":  "builtin",
+                                                                      "function":  "\u003cbuilt-in method zlib.decompress\u003e",
+                                                                      "calls":  725,
+                                                                      "totalSeconds":  0.16235716,
+                                                                      "selfSeconds":  0.16235716
+                                                                  },
+                                                                  {
+                                                                      "group":  "zipfile",
+                                                                      "function":  "read",
+                                                                      "calls":  1580,
+                                                                      "totalSeconds":  0.130523904,
+                                                                      "selfSeconds":  0.059513307
+                                                                  },
+                                                                  {
+                                                                      "group":  "pip-wheel",
+                                                                      "function":  "assert_no_path_traversal",
+                                                                      "calls":  505,
+                                                                      "totalSeconds":  0.128576724,
+                                                                      "selfSeconds":  0.003645305
+                                                                  },
+                                                                  {
+                                                                      "group":  "pip-wheel",
+                                                                      "function":  "pyc_output_path",
+                                                                      "calls":  495,
+                                                                      "totalSeconds":  0.11500797200000001,
+                                                                      "selfSeconds":  0.006784366
+                                                                  },
+                                                                  {
+                                                                      "group":  "builtin",
+                                                                      "function":  "\u003cmethod \u0027decompress\u0027 of \u0027zlib.Decompress\u0027 objects\u003e",
+                                                                      "calls":  542,
+                                                                      "totalSeconds":  0.11267855800000001,
+                                                                      "selfSeconds":  0.11267855800000001
+                                                                  },
+                                                                  {
+                                                                      "group":  "pip-wheel",
+                                                                      "function":  "pyc_source_file_paths",
+                                                                      "calls":  496,
+                                                                      "totalSeconds":  0.08554764200000001,
+                                                                      "selfSeconds":  0.013868605
+                                                                  },
+                                                                  {
+                                                                      "group":  "zipfile",
+                                                                      "function":  "_read2",
+                                                                      "calls":  555,
+                                                                      "totalSeconds":  0.079068253,
+                                                                      "selfSeconds":  0.013718507000000001
+                                                                  },
+                                                                  {
+                                                                      "group":  "zipfile",
+                                                                      "function":  "__init__",
+                                                                      "calls":  2020,
+                                                                      "totalSeconds":  0.058843980000000004,
+                                                                      "selfSeconds":  0.019655513000000003
+                                                                  },
+                                                                  {
+                                                                      "group":  "zipfile",
+                                                                      "function":  "__init__",
+                                                                      "calls":  530,
+                                                                      "totalSeconds":  0.050312603000000004,
+                                                                      "selfSeconds":  0.027319807
+                                                                  },
+                                                                  {
+                                                                      "group":  "py_compile",
+                                                                      "function":  "_get_default_invalidation_mode",
+                                                                      "calls":  495,
+                                                                      "totalSeconds":  0.044917807000000004,
+                                                                      "selfSeconds":  0.005926683
+                                                                  },
+                                                                  {
+                                                                      "group":  "zipfile",
+                                                                      "function":  "_sanitize_filename",
+                                                                      "calls":  2020,
+                                                                      "totalSeconds":  0.039188467000000005,
+                                                                      "selfSeconds":  0.021687351
+                                                                  },
+                                                                  {
+                                                                      "group":  "pip-wheel",
+                                                                      "function":  "_generate_file",
+                                                                      "calls":  4,
+                                                                      "totalSeconds":  0.031590075,
+                                                                      "selfSeconds":  0.000179404
+                                                                  },
+                                                                  {
+                                                                      "group":  "pip-wheel",
+                                                                      "function":  "get_csv_rows_for_installed",
+                                                                      "calls":  1,
+                                                                      "totalSeconds":  0.031235765000000002,
+                                                                      "selfSeconds":  0.013383772
+                                                                  },
+                                                                  {
+                                                                      "group":  "zipfile",
+                                                                      "function":  "read",
+                                                                      "calls":  25,
+                                                                      "totalSeconds":  0.024517340000000002,
+                                                                      "selfSeconds":  0.0007712250000000001
+                                                                  },
+                                                                  {
+                                                                      "group":  "zipfile",
+                                                                      "function":  "close",
+                                                                      "calls":  530,
+                                                                      "totalSeconds":  0.024065016,
+                                                                      "selfSeconds":  0.012823579000000002
+                                                                  },
+                                                                  {
+                                                                      "group":  "pip-wheel",
+                                                                      "function":  "is_data_scheme_path",
+                                                                      "calls":  1010,
+                                                                      "totalSeconds":  0.020465003000000002,
+                                                                      "selfSeconds":  0.010765513
+                                                                  },
+                                                                  {
+                                                                      "group":  "zipfile",
+                                                                      "function":  "_decodeExtra",
+                                                                      "calls":  2020,
+                                                                      "totalSeconds":  0.020009081,
+                                                                      "selfSeconds":  0.013906424
+                                                                  },
+                                                                  {
+                                                                      "group":  "zipfile",
+                                                                      "function":  "\u003cmodule\u003e",
+                                                                      "calls":  1,
+                                                                      "totalSeconds":  0.017642157000000002,
+                                                                      "selfSeconds":  0.0070874250000000005
+                                                                  },
+                                                                  {
+                                                                      "group":  "zipfile",
+                                                                      "function":  "_update_crc",
+                                                                      "calls":  555,
+                                                                      "totalSeconds":  0.017069894000000002,
+                                                                      "selfSeconds":  0.005937076
+                                                                  },
+                                                                  {
+                                                                      "group":  "zipfile",
+                                                                      "function":  "_get_decompressor",
+                                                                      "calls":  530,
+                                                                      "totalSeconds":  0.013487808,
+                                                                      "selfSeconds":  0.006004372
+                                                                  },
+                                                                  {
+                                                                      "group":  "pip-wheel",
+                                                                      "function":  "_getinfo",
+                                                                      "calls":  505,
+                                                                      "totalSeconds":  0.011294161,
+                                                                      "selfSeconds":  0.004032639
+                                                                  },
+                                                                  {
+                                                                      "group":  "pip-wheel",
+                                                                      "function":  "_normalized_outrows",
+                                                                      "calls":  1,
+                                                                      "totalSeconds":  0.01118071,
+                                                                      "selfSeconds":  2.9301000000000003E-05
+                                                                  },
+                                                                  {
+                                                                      "group":  "compileall",
+                                                                      "function":  "\u003cmodule\u003e",
+                                                                      "calls":  1,
+                                                                      "totalSeconds":  0.009784202,
+                                                                      "selfSeconds":  0.000108503
+                                                                  },
+                                                                  {
+                                                                      "group":  "pip-wheel",
+                                                                      "function":  "make",
+                                                                      "calls":  3,
+                                                                      "totalSeconds":  0.007651412000000001,
+                                                                      "selfSeconds":  0.000101303
+                                                                  },
+                                                                  {
+                                                                      "group":  "zipfile",
+                                                                      "function":  "getinfo",
+                                                                      "calls":  530,
+                                                                      "totalSeconds":  0.007541933000000001,
+                                                                      "selfSeconds":  0.00441605
+                                                                  }
+                                                              ]
+                                                 }
+                         }
+                     ],
+    "probeComplete":  true,
+    "imageSha256":  "6a81c37564db9b1ee84e141922625e1d7c5b389b99bb3c572e0243607d5bb4d2",
+    "activeProcesses":  0,
+    "actualExit":  0,
+    "outputComplete":  true,
+    "serialSha256":  "3b57dac58b1fed38d9fa9e6ff50a60946f865bf73378044fbd7fd1a4a85924f8",
+    "diagnosticOnly":  true,
+    "preparedInputSha256":  "86a146811565fe400879f81203c697ae6cb1892116c65c68bf0d9a9a5caa6e6e"
+}
