@@ -25,9 +25,11 @@ class QuarantineStoreTests(unittest.TestCase):
         self.old = dict(schemaVersion=1, candidate=self.old_candidate, comparisonId='e'*32,
             private='unknown', hosted='pending', utc=datetime.now(timezone.utc).isoformat(), resetRequires='explicit-reviewed-reset')
         self.old_raw = canonical(self.old)
+        self.baseline = dict(backingRootSha256=digest(os.path.normcase(str(self.backing.resolve())).encode()),
+                             legacySha256=digest(self.old_raw))
 
     def blocked(self, recovery=None):
-        return store.quarantine_blocked(self.backing, self.candidate, recovery, source_root=self.source)
+        return store.quarantine_blocked(self.backing, self.candidate, recovery, source_root=self.source, baseline=self.baseline)
 
     def recovery(self):
         self.legacy.write_bytes(self.old_raw)
@@ -43,9 +45,9 @@ class QuarantineStoreTests(unittest.TestCase):
         return dict(schemaVersion=1, candidate=self.candidate, legacySha256=digest(self.old_raw), adjudicationSha256=digest(raw),
                     backingRootSha256=self.adjudication['backingRootSha256'])
 
-    def test_default_blocks_retained_failure_and_no_history_allows_only_pending(self):
-        self.assertFalse(self.blocked())
-        self.assertEqual('pending', decide('pending', 'pending', quarantined=self.blocked()))
+    def test_default_blocks_both_missing_and_retained_required_history(self):
+        self.assertTrue(self.blocked())
+        self.assertEqual('failure', decide('pending', 'pending', quarantined=self.blocked()))
         self.legacy.write_bytes(self.old_raw)
         self.assertTrue(self.blocked())
 
@@ -77,9 +79,23 @@ class QuarantineStoreTests(unittest.TestCase):
     def test_another_empty_backing_cannot_evade_required_history(self):
         recovery = self.recovery()
         other = self.root / 'other'; other.mkdir()
-        self.assertTrue(store.quarantine_blocked(other, self.candidate, recovery, source_root=self.source))
+        self.assertTrue(store.quarantine_blocked(other, self.candidate, recovery, source_root=self.source, baseline=self.baseline))
         (other/store.LEGACY).write_bytes(self.old_raw)
-        self.assertTrue(store.quarantine_blocked(other, self.candidate, recovery, source_root=self.source))
+        self.assertTrue(store.quarantine_blocked(other, self.candidate, recovery, source_root=self.source, baseline=self.baseline))
+
+    def test_baseline_is_required_even_without_recovery_and_before_history_exists(self):
+        other = self.root / 'other-without-recovery'; other.mkdir()
+        for backing in (self.backing, other):
+            self.assertTrue(store.quarantine_blocked(backing, self.candidate, source_root=self.source, baseline=self.baseline))
+        recovery = self.recovery()
+        for baseline in (None, {}, True, self.baseline | {'legacySha256': '0'*64},
+                         self.baseline | {'backingRootSha256': '0'*64}, self.baseline | {'extra': True}):
+            with self.subTest(baseline=baseline):
+                self.assertTrue(store.quarantine_blocked(self.backing, self.candidate, recovery,
+                                                         source_root=self.source, baseline=baseline))
+        self.assertTrue(store.quarantine_blocked(other, self.candidate, source_root=self.source, baseline=self.baseline))
+        (other/store.LEGACY).write_bytes(self.old_raw)
+        self.assertTrue(store.quarantine_blocked(other, self.candidate, source_root=self.source, baseline=self.baseline))
 
     def test_new_actual_failure_persists_despite_existing_exempt_legacy(self):
         recovery = self.recovery()
@@ -96,7 +112,7 @@ class QuarantineStoreTests(unittest.TestCase):
         path = self.backing/store.STORE/('6'*32+'.json'); first = path.read_bytes()
         store.record_failure(self.backing, self.candidate, '6'*32, 'pass', 'assertion')
         self.assertEqual(first, path.read_bytes())
-        self.assertTrue(store.quarantine_blocked(self.backing, self.candidate, source_root=self.source))
+        self.assertTrue(store.quarantine_blocked(self.backing, self.candidate, source_root=self.source, baseline=self.baseline))
         with self.assertRaisesRegex(InvalidEvidence, 'existing-failure-candidate'):
             store.record_failure(self.backing, self.old_candidate, '6'*32, 'unknown', 'pending')
 

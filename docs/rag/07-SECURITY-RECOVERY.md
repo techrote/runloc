@@ -106,6 +106,9 @@ legacy-byte digest and a digest-bound reviewed adjudication. The adjudication
 retains the unresolved historical cause and real physical/hosted proof identities.
 It permits a fresh comparison to run; it cannot supply its result. No recovery is
 currently enabled. Writable observer state cannot enable or broaden recovery.
+Before any recovery, the committed policy already pins the qualified backing
+directory and exact retained legacy bytes. Missing baseline/history or selecting
+another empty backing directory blocks; recovery cannot replace that baseline.
 
 Each new actual failure is fsynced into a separate immutable comparison record
 under the existing publication lock, even if the legacy latch already exists.
@@ -124,3 +127,9 @@ bytes. Artifact workflow-run ID and workflow source must match the requested
 lane; expired or contradictory metadata fails closed. A cache hit still requires
 fresh bound API metadata and the original transport digest. API size metadata is
 bounded without assuming it equals the downloaded ZIP length.
+
+Acceptance binds terminal success of both the actual Actions run and job,
+strict integer run/job/runner identities, and the hosted receipt's runner name
+to the actual windows-2022 GitHub Actions runner/group. A terminal green job
+with an unfinished parent run supplies only pending evidence, never acceptance;
+observed failures cannot use that settling path.

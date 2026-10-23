@@ -60,6 +60,18 @@ Partial or unknown files, malformed
 records, hardlinks and reparse points block startup, publication and merge
 verification through the same predicate. Failure derived solely from an existing
 quarantine does not fabricate another observed workload failure.
+The committed policy independently pins the canonical backing-directory digest
+and original retained legacy-byte digest, including before recovery exists.
+Selecting a different empty backing directory, missing history or a missing or
+malformed baseline blocks eligibility. Recovery can exempt only that same
+baseline; it cannot define replacement history.
+
+Successful evidence requires both the actual Actions run and job to be terminal
+success, with strict positive integer run/job/runner IDs and integer attempt1.
+A successful job whose parent run is still queued/in progress with no conclusion
+remains pending under the publication wall. An observed failed step or terminal
+failed/cancelled run cannot use that transition. Hosted receipts additionally
+bind their runner name to the actual windows-2022 GitHub Actions job and group.
 If recording fails but retained history already blocks eligibility, publication
 still revokes success with a failure-only persistence-error flag; the history is
 not repaired or overwritten. If no persistent block can be confirmed, publication

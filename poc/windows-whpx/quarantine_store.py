@@ -69,22 +69,26 @@ def failures(backing):
     return names
 
 
-def quarantine_blocked(backing, candidate, recovery=None, *, source_root):
+def quarantine_blocked(backing, candidate, recovery=None, *, source_root, baseline):
     """Malformed, absent required history or unreadable storage always blocks."""
     try:
         require(candidate_valid(candidate), 'quarantine-candidate-invalid')
+        backing_digest = digest(os.path.normcase(str(Path(backing).resolve())).encode())
+        require(isinstance(baseline, dict) and set(baseline) == {'backingRootSha256', 'legacySha256'}
+                and all(isinstance(baseline[k], str) and re.fullmatch('[a-f0-9]{64}', baseline[k]) for k in baseline)
+                and baseline['backingRootSha256'] == backing_digest, 'quarantine-baseline-root-mismatch')
         # The store is created only after observing an actual failure. Even an
         # empty directory can mean a crash between mkdir and durable recording.
         if failures(backing) or os.path.lexists(Path(backing) / STORE):
             return True
         legacy = Path(backing) / LEGACY
         if not os.path.lexists(legacy):
-            return recovery is not None
+            return True
         raw = read_small(legacy)
         validate_failure(raw)
+        require(digest(raw) == baseline['legacySha256'], 'quarantine-baseline-history-mismatch')
         if recovery is None:
             return True
-        backing_digest = digest(os.path.normcase(str(Path(backing).resolve())).encode())
         require(isinstance(recovery, dict) and set(recovery) == {'schemaVersion', 'candidate', 'legacySha256', 'adjudicationSha256', 'backingRootSha256'}
                 and type(recovery['schemaVersion']) is int and recovery['schemaVersion'] == 1
                 and recovery['candidate'] == candidate and recovery['legacySha256'] == digest(raw)

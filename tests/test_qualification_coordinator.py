@@ -3,6 +3,7 @@ from contextlib import nullcontext
 from datetime import datetime, timedelta, timezone
 import json
 import io
+import os
 from pathlib import Path
 import sys
 import tempfile
@@ -15,6 +16,7 @@ SOURCE = Path(__file__).resolve().parents[1] / 'poc/windows-whpx'
 sys.path.insert(0, str(SOURCE))
 try:
     import qualification_coordinator as coordinator
+    from quarantine_store import ADJUDICATION
 finally:
     sys.path.pop(0)
 
@@ -25,12 +27,49 @@ class CoordinatorTests(unittest.TestCase):
         self.addCleanup(self.directory.cleanup)
         self.root = Path(self.directory.name)
         self.policy = coordinator.load(SOURCE / 'gate-policy.json')
+        self.real_policy = json.loads(coordinator.canonical(self.policy))
+        # Eligible controls have explicit synthetic reviewed history. This does
+        # not alter the committed real policy or its retained private backing.
+        legacy = coordinator.canonical(dict(schemaVersion=1, candidate=self.policy['candidate'], comparisonId='e'*32,
+            private='unknown', hosted='pending', utc=datetime.now(timezone.utc).isoformat(), resetRequires='explicit-reviewed-reset'))
+        self.legacy_raw = legacy
+        (self.root / 'ci-poc-003-private-quarantine.json').write_bytes(legacy)
+        baseline = dict(backingRootSha256=coordinator.digest(os.path.normcase(str(self.root.resolve())).encode()),
+                        legacySha256=coordinator.digest(legacy))
+        adjudication = dict(schemaVersion=1, candidate=self.policy['candidate'], **baseline,
+            historicalCauseResolved=False, authorRole='Codex primary agent', reviewerRole='separate Codex agent',
+            reason='Synthetic offline eligibility fixture only.', proofs=dict(physicalReceiptSha256='1'*64,
+                hostedReceiptSha256='2'*64, physicalAttemptId='3'*32, hostedRunId=123, controllerCommit='4'*40, controllerTree='5'*40))
+        raw = coordinator.canonical(adjudication)
+        adjudication_path = self.root / ADJUDICATION
+        adjudication_path.parent.mkdir(parents=True); adjudication_path.write_bytes(raw)
+        self.policy['quarantineBaseline'] = baseline
+        self.policy['recovery'] = dict(schemaVersion=1, candidate=self.policy['candidate'], **baseline,
+                                      adjudicationSha256=coordinator.digest(raw))
+        original_load = coordinator.load
+        root_patch = patch.object(coordinator, 'ROOT', self.root); root_patch.start(); self.addCleanup(root_patch.stop)
+        load_patch = patch.object(coordinator, 'load', side_effect=lambda path:
+            self.policy if Path(path) == SOURCE / 'gate-policy.json' else original_load(path))
+        load_patch.start(); self.addCleanup(load_patch.stop)
         self.path = self.root / 'state.json'
         self.path.write_bytes(coordinator.canonical(dict(policy=self.policy, policySha256=coordinator.digest(coordinator.canonical(self.policy)),
             candidate=self.policy['candidate'], gateController={'commit': 'a'*40}, backingRoot=str(self.root),
             selection='available', comparisonId='b'*32, createdUtc=datetime.now(timezone.utc).isoformat())))
         self.state = coordinator.State(self.path)
         self.controller = coordinator.Coordinator(self.state)
+
+    def test_current_committed_no_recovery_policy_blocks_another_empty_backing(self):
+        self.assertNotIn('recovery', self.real_policy)
+        other = self.root / 'unqualified-empty-backing'; other.mkdir()
+        self.state.value.update(backingRoot=str(other), policy=self.real_policy, candidate=self.real_policy['candidate'])
+        controller = coordinator.Coordinator(self.state)
+        with patch.object(coordinator, 'load', side_effect=lambda path:
+             self.real_policy if Path(path) == SOURCE / 'gate-policy.json' else json.loads(Path(path).read_bytes())):
+            self.assertTrue(controller.quarantined())
+            self.state.value.update(hosted={'runId': 12}, selection='absent-capacity')
+            with patch.object(coordinator, 'dispatch_once', side_effect=AssertionError('unqualified backing dispatch')):
+                controller.start_private()
+            self.assertEqual('security', controller.observe_private()[0])
 
     def artifact_fixture(self):
         receipt = coordinator.canonical({'syntheticOnly': True})
@@ -140,6 +179,25 @@ class CoordinatorTests(unittest.TestCase):
                 observe(missing, job) if target is run else observe(run, missing)
         with self.assertRaises(coordinator.InvalidEvidence): self.controller.association('private', True, 'c'*32)
 
+    def test_hosted_successful_job_waits_for_terminal_run_and_never_reads_artifact_early(self):
+        self.state.value['hosted'] = {'runId': 12}
+        pin = self.policy['hosted']
+        run = dict(id=12, repository={'full_name': 'techrote/ezvm'}, event='workflow_dispatch',
+                   actor={'login': 'techrote'}, run_attempt=1, head_sha=pin['workflowCommit'],
+                   path=pin['workflowPath'], display_title='CI-PoC003 hosted '+self.state.value['comparisonId'],
+                   status='in_progress', conclusion=None)
+        job = dict(id=14, run_id=12, runner_id=48, status='completed', conclusion='success', steps=[])
+        with patch.object(self.controller, 'association', return_value=(run, job)), \
+             patch.object(self.controller, 'artifacts', side_effect=AssertionError('premature artifact acceptance')):
+            self.assertEqual('pending', self.controller.observe_hosted()[0])
+            run.update(status='completed', conclusion='failure')
+            with self.assertRaisesRegex(coordinator.InvalidEvidence, 'run-or-job-not-successful'):
+                self.controller.observe_hosted()
+            run.update(status='in_progress', conclusion=None)
+            job['steps'] = [dict(conclusion='failure')]
+            with self.assertRaises(coordinator.InvalidEvidence):
+                self.controller.observe_hosted()
+
     def test_uncertain_private_start_is_never_replayed(self):
         self.state.value.update(hosted={'runId': 12}, private={'outcome': 'pending', 'startupAttempted': True})
         with patch.object(coordinator, 'run_powershell', side_effect=AssertionError('duplicate startup')):
@@ -168,6 +226,26 @@ class CoordinatorTests(unittest.TestCase):
         run = dict(id=13, status='completed', conclusion='cancelled')
         job = dict(id=14, run_id=13, status='completed', conclusion='cancelled', runner_id=0, runner_name='', labels=['runloc-'+lease_id], steps=[])
         return run, job, console, ended
+
+    def test_private_successful_job_waits_for_terminal_run_without_accepting_receipts(self):
+        run, job, console, _ = self.private_final_fixture()
+        lease = next(self.root.glob('runloc-whpx-*'))
+        path = lease / 'event-000002.json'
+        event = coordinator.load(path); event['data']['passed'] = True
+        path.write_bytes(coordinator.canonical(event))
+        pin = self.policy['private']
+        run.update(repository={'full_name': 'techrote/ezvm'}, event='workflow_dispatch', actor={'login': 'techrote'},
+                   run_attempt=1, head_sha=pin['workflowCommit'], path=pin['workflowPath'],
+                   display_title='CI-PoC002 '+'d'*32)
+        run.update(status='in_progress', conclusion=None)
+        job.update(status='completed', conclusion='success', runner_id=48, runner_name='runloc-'+'d'*32)
+        with patch.object(self.controller.api, 'request', return_value=(404, None)), \
+             patch.object(self.controller, 'association', return_value=(run, job)), \
+             patch.object(self.controller, 'artifacts', side_effect=AssertionError('premature receipt acceptance')):
+            self.assertEqual('pending', self.controller.observe_private()[0])
+            run.update(status='completed', conclusion='failure')
+            with self.assertRaises(coordinator.InvalidEvidence):
+                self.controller.observe_private()
 
     def test_queue_expired_requires_api_nonexecution_and_cannot_hide_failed_assertion(self):
         run, job, _, _ = self.private_final_fixture()
@@ -364,7 +442,7 @@ class CoordinatorTests(unittest.TestCase):
              patch.object(coordinator, 'dispatch_once', side_effect=AssertionError('first POST after quarantine')):
             with self.assertRaisesRegex(coordinator.InvalidEvidence, 'quarantined-before-dispatch'):
                 self.controller.start_private()
-        (self.root / 'ci-poc-003-private-quarantine.json').unlink()
+        (self.root / 'ci-poc-003-private-quarantine.json').write_bytes(self.legacy_raw)
         with patch.object(self.controller, 'source'), \
              patch.object(self.controller, 'definition', side_effect=coordinator.InvalidEvidence('moved-tag')), \
              patch.object(coordinator, 'dispatch_once', side_effect=AssertionError('first POST after moved tag')):

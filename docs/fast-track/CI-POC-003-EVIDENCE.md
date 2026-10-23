@@ -477,3 +477,25 @@ the original clone is currently cache-contaminated. Its tracked execution
 fingerprint remains unchanged, and a fresh controller checkout has independently
 verified the same commit, tree and execution fingerprint. The evidence retains
 that distinction rather than treating the original clone as currently clean.
+
+### Fresh hosted venv-stage comparison (23 October 2026)
+
+The [fresh six-CPU hosted diagnostic39943992446](https://github.com/techrote/ezvm/actions/runs/39943992446/job/120382038901)
+completed eight separately allocated venv trials on diagnostic sourcee95eca7 /
+treec42bf8f. The [original public receipt and association](evidence/ci-poc-003-venv-stages-414cc908/manifest.json)
+bind the actual run/job, attempt, bootstrap, tool/image and source identities.
+Fresh independent API/download verification matched the artifact transport and
+receipt digests, and the original validator accepted all78 ordered records.
+The owned invocation exited0 after965.236036seconds with unforced owned0 cleanup,
+complete output and unchanged candidate/controller source.
+
+The current implementation took49.07/49.56seconds; its bootstrap took33.46/34.26
+and actual installed pip CLI13.75/13.55seconds. Restoring eager compilation took
+58.17/60.42seconds overall. Combining the prefix check took48.92/51.13seconds;
+suppressing pip-version cache writes took49.03/47.88seconds. Every trial retained
+the shared90second bound, actual offline ensurepip and actual installed pip CLI.
+Fixed ordering permits warming and instrumentation consumes part of the budget.
+The fresh direct guest did not reproduce the failed full finalizer context;
+these measurements support no additional performance correction or full-release
+qualification. Actual full-context stage measurement remains necessary. No
+quarantine recovery, accepted gate, merge or issue completion is established.

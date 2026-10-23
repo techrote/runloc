@@ -1,6 +1,10 @@
 {
   "schemaVersion": 1,
   "executionApproved": true,
+  "quarantineBaseline": {
+    "backingRootSha256": "cef0b643dc010ab6bf22042c9a5041dabcd28a20ce9a6d4248e3570e678130b9",
+    "legacySha256": "b2f411620b3702c06223a7ba109d6065c8e7ea64a90ff696137695dc376ba28d"
+  },
   "candidate": {
     "tree": "e79f5d0a8f642a3fa53158852dbea5cb7e64d465",
     "commit": "b205230d3f1ade15550bbbb8d8b405d17858c514"

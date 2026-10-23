@@ -14,6 +14,39 @@ gate = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(gate)
 
 
+class AssociationTests(unittest.TestCase):
+    def setUp(self):
+        self.expected = dict(workflow_commit='a'*40, workflow_path='.github/workflows/qualified.yml',
+                             title='owned comparison', candidate='b'*40, tree='c'*40)
+        self.run = dict(id=13, repository={'full_name': 'techrote/ezvm'}, event='workflow_dispatch',
+                        actor={'login': 'techrote'}, run_attempt=1, head_sha='a'*40,
+                        path=self.expected['workflow_path'], display_title=self.expected['title'],
+                        status='completed', conclusion='success')
+        self.job = dict(id=14, run_id=13, status='completed', conclusion='success', runner_id=48)
+
+    def test_only_successful_terminal_run_and_job_can_supply_success(self):
+        gate.validate_association(self.run, self.job, **self.expected)
+        for changed in ({'conclusion': 'failure'}, {'conclusion': 'cancelled'},
+                        {'conclusion': 'timed_out'}, {'conclusion': None},
+                        {'status': 'in_progress', 'conclusion': None}, {'status': 'queued', 'conclusion': None}):
+            with self.subTest(changed=changed), self.assertRaises(gate.InvalidEvidence):
+                gate.validate_association(self.run | changed, self.job, **self.expected)
+        for changed in ({'status': 'in_progress', 'conclusion': None}, {'conclusion': 'failure'}):
+            with self.subTest(changed=changed), self.assertRaises(gate.InvalidEvidence):
+                gate.validate_association(self.run, self.job | changed, **self.expected)
+
+    def test_association_ids_and_attempt_are_strict_positive_integers(self):
+        for document, key in (('run', 'id'), ('run', 'run_attempt'), ('job', 'id'),
+                              ('job', 'run_id'), ('job', 'runner_id')):
+            for bad in (True, False, 0, -1, '13', 13.0):
+                run, job = self.run.copy(), self.job.copy()
+                (run if document == 'run' else job)[key] = bad
+                with self.subTest(document=document, key=key, bad=bad), self.assertRaises(gate.InvalidEvidence):
+                    gate.validate_association(run, job, **self.expected)
+        with self.assertRaises(gate.InvalidEvidence):
+            gate.validate_association(self.run, self.job | {'run_id': 99}, **self.expected)
+
+
 class CancellationProofTests(unittest.TestCase):
     def setUp(self):
         self.run = {'id': 13, 'status': 'completed', 'conclusion': 'cancelled'}
@@ -109,6 +142,10 @@ class GatePolicyTests(unittest.TestCase):
         cls.actions = json.loads((folder / "actions-job.json").read_text(encoding="utf-8-sig"))
         cls.receipt = next(r for p in folder.rglob("receipt.json")
                            if (r := json.loads(p.read_text(encoding="utf-8-sig")))["outcome"] == "pass")
+        cls.legacy_receipt = copy.deepcopy(cls.receipt)
+        # The original002 receipt lacks these fields. Derive a parser-only
+        # current-shape fixture; do not modify or requalify its published bytes.
+        cls.receipt['preflight'].update(timedOut=False, cancelled=False)
         cls.supervisor = next(r for p in folder.rglob("supervisor-receipt.json")
                               if (r := json.loads(p.read_text(encoding="utf-8-sig")))["outcome"] == "pass")
         cls.expected = dict(candidate=cls.receipt["candidate"]["commit"], tree=cls.receipt["candidate"]["tree"],
@@ -117,15 +154,26 @@ class GatePolicyTests(unittest.TestCase):
                             runner_id=cls.host["runnerId"], created_utc="2026-10-18T15:49:00Z",
                             receipt_sha256=cls.supervisor["inner"]["receiptSha256"])
 
-    def test_known_complete_parser_fixture(self):
+    def test_derived_current_shape_parser_fixture_and_original_legacy_refusal(self):
         self.assertEqual("pass", gate.validate_private(self.host, self.actions, self.receipt, self.supervisor, **self.expected))
+        with self.assertRaisesRegex(gate.InvalidEvidence, 'original-preflight-failed'):
+            gate.validate_private(self.host, self.actions, self.legacy_receipt, self.supervisor, **self.expected)
+
+    def test_private_preflight_flags_cannot_be_missing_or_overridden(self):
+        for field in ('timedOut', 'cancelled'):
+            for value in (True, None, 0, 'false', 'missing'):
+                changed = copy.deepcopy(self.receipt)
+                if value == 'missing': changed['preflight'].pop(field)
+                else: changed['preflight'][field] = value
+                with self.subTest(field=field, value=value), self.assertRaises(gate.InvalidEvidence):
+                    gate.validate_private(self.host, self.actions, changed, self.supervisor, **self.expected)
 
     def hosted_fixture(self):
         # Synthetic adapter fixture derived from retained complete WHPX shape;
         # this is never published or claimed as an actual TCG result.
         receipt = copy.deepcopy(self.receipt)
         receipt.update(schemaVersion=1, lane='hosted-tcg', repository='techrote/ezvm', comparisonId=self.expected['comparison'],
-            runId=self.expected['run_id'], runAttempt=1, workflowCommit='f'*40, runnerEnvironment='github-hosted',
+            runId=self.expected['run_id'], runAttempt=1, workflowCommit='f'*40, runnerEnvironment='github-hosted', runnerName='GitHub Actions 1',
             passed=True, classification='pass', preflightExitCode=0, preflightTimedOut=False, preflightCancelled=False,
             requestedAccelerator='tcg', observedAccelerator='tcg', whpxExecution='SKIP', qualificationCpus=6)
         receipt['events'] = [event for event in receipt['events'] if event['name'] != 'EZVM010_WHPX_EXECUTION']
@@ -136,7 +184,20 @@ class GatePolicyTests(unittest.TestCase):
         for guest in receipt['identities']['guests']: guest['accelerator'] = 'tcg'
         expected = {key: self.expected[key] for key in ('candidate', 'tree', 'controller', 'comparison', 'run_id', 'created_utc')}
         expected['workflow_commit'] = 'f'*40
+        expected['job'] = dict(runner_id=48, run_id=self.expected['run_id'], labels=['windows-2022'],
+                               runner_group_name='GitHub Actions', runner_name='GitHub Actions 1')
         return receipt, expected
+
+    def test_hosted_receipt_must_match_actual_github_hosted_job(self):
+        receipt, expected = self.hosted_fixture()
+        self.assertEqual('pass', gate.validate_hosted(receipt, **expected))
+        with self.assertRaisesRegex(gate.InvalidEvidence, 'hosted-runner-binding'):
+            gate.validate_hosted(receipt | {'runnerName': 'unrelated-runner'}, **expected)
+        for changed in ({'runner_id': True}, {'runner_id': 0}, {'run_id': True}, {'run_id': 42},
+                        {'labels': ['self-hosted']}, {'labels': ['windows-2025']},
+                        {'runner_group_name': 'Default'}, {'runner_name': ''}, {'runner_name': 'other'}):
+            with self.subTest(changed=changed), self.assertRaises(gate.InvalidEvidence):
+                gate.validate_hosted(receipt, **(expected | {'job': expected['job'] | changed}))
 
     def test_hosted_preflight_flags_cannot_be_overridden_by_pass_and_zero_exit(self):
         receipt, expected = self.hosted_fixture()

@@ -106,11 +106,15 @@ def artifact_files(archive: bytes, expected_sha256: str):
 
 def validate_association(run, job, *, workflow_commit, workflow_path, title, candidate, tree):
     require(run["repository"]["full_name"] == "techrote/ezvm" and run["event"] == "workflow_dispatch"
-            and run["actor"]["login"] == "techrote" and run["run_attempt"] == 1, "untrusted-run")
+            and run["actor"]["login"] == "techrote" and type(run["run_attempt"]) is int
+            and run["run_attempt"] == 1, "untrusted-run")
     require(run["head_sha"] == workflow_commit and run["path"].split("@", 1)[0] == workflow_path
             and run["display_title"] == title, "run-definition-binding")
-    require(job["run_id"] == run["id"] and job["status"] == "completed"
-            and job["conclusion"] == "success" and job["runner_id"] > 0, "job-not-successful")
+    require(all(type(value) is int and value > 0
+                for value in (run["id"], job["id"], job["run_id"], job["runner_id"]))
+            and job["run_id"] == run["id"], "job-run-identity")
+    require(run["status"] == job["status"] == "completed"
+            and run["conclusion"] == job["conclusion"] == "success", "run-or-job-not-successful")
     require(re.fullmatch(r"[a-f0-9]{40}", candidate) and re.fullmatch(r"[a-f0-9]{40}", tree), "source-identity-format")
 
 
@@ -263,7 +267,8 @@ def validate_private(host, actions, receipt, supervisor, *, candidate, tree, con
             and zero(supervisor["exitCode"]) and supervisor["physicalQualificationPassed"] is True, "supervisor-binding")
     preflight = receipt["preflight"]
     require(zero(preflight["exitCode"]) and zero(preflight["activeProcesses"]) and preflight["childExited"] is True
-            and preflight["forced"] is False and preflight["fixtureCreated"] is True and preflight["qualificationStarted"] is True, "original-preflight-failed")
+            and preflight["forced"] is False and preflight["fixtureCreated"] is True and preflight["qualificationStarted"] is True
+            and preflight.get("timedOut") is False and preflight.get("cancelled") is False, "original-preflight-failed")
     process = supervisor["controllerProcess"]
     require(zero(process["exitCode"]) and zero(process["activeProcesses"]) and process["childExited"] is True
             and process["method"] == "CreateProcess-suspended-then-Job-assignment" and process["killOnClose"] is True
@@ -280,7 +285,12 @@ def validate_private(host, actions, receipt, supervisor, *, candidate, tree, con
     return "pass"
 
 
-def validate_hosted(receipt, *, candidate, tree, controller, comparison, run_id, workflow_commit, created_utc):
+def validate_hosted(receipt, *, candidate, tree, controller, comparison, run_id, workflow_commit, created_utc, job):
+    require(type(job['runner_id']) is int and job['runner_id'] > 0
+            and type(job['run_id']) is int and job['run_id'] == run_id
+            and job['labels'] == ['windows-2022'] and job['runner_group_name'] == 'GitHub Actions'
+            and isinstance(job['runner_name'], str) and bool(job['runner_name'])
+            and receipt['runnerName'] == job['runner_name'], 'hosted-runner-binding')
     require(receipt["schemaVersion"] == 1 and receipt["lane"] == "hosted-tcg"
             and receipt["repository"] == "techrote/ezvm" and receipt["comparisonId"] == comparison
             and receipt["runId"] == run_id and receipt["runAttempt"] == 1

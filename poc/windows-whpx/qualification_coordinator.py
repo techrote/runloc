@@ -32,6 +32,15 @@ def load(path):
     return json_bytes(Path(path).read_bytes())
 
 
+def awaiting_run_completion(run, job):
+    # GitHub may expose terminal job success before its parent run settles.
+    # This is pending only: never mask an observed failed step or terminal run.
+    return (job["status"] == "completed" and job["conclusion"] == "success"
+            and run["status"] in {"queued", "in_progress"} and run.get("conclusion") is None
+            and not any(step.get("conclusion") in {"failure", "cancelled", "timed_out"}
+                        for step in job.get("steps", [])))
+
+
 def snapshot(path):
     # The accepted 002 writer publishes CreateNew + FileShare.Read before flushing.
     # A torn live read is an unavailable observation, never a qualification verdict.
@@ -78,7 +87,8 @@ class Coordinator:
         approved = load(SCRIPT / "gate-policy.json")
         if canonical(approved) != canonical(self.policy) or self.state.value["candidate"] != approved["candidate"]:
             return True
-        return quarantine_blocked(self.state.value["backingRoot"], approved["candidate"], approved.get("recovery"), source_root=ROOT)
+        return quarantine_blocked(self.state.value["backingRoot"], approved["candidate"], approved.get("recovery"),
+                                  source_root=ROOT, baseline=approved.get("quarantineBaseline"))
 
     def source(self):
         approved = load(SCRIPT / "gate-policy.json")
@@ -325,13 +335,15 @@ class Coordinator:
             return "pending", {"runId": run_id, "jobId": job["id"], "status": job["status"]}
         if job["conclusion"] != "success":
             return "unknown", {"runId": run_id, "jobId": job["id"], "conclusion": job["conclusion"], "classification": "terminal-hosted-failure-not-infrastructure"}
+        if awaiting_run_completion(run, job):
+            return "pending", {"runId": run_id, "jobId": job["id"], "status": "await-successful-run-completion"}
         pin = self.policy["hosted"]
         validate_association(run, job, workflow_commit=pin["workflowCommit"], workflow_path=pin["workflowPath"],
                              title="CI-PoC003 hosted " + value["comparisonId"], candidate=value["candidate"]["commit"], tree=value["candidate"]["tree"])
         documents, artifact = self.artifacts("hosted", run_id, value["comparisonId"])
         receipt = documents["hosted-receipt.json"]
         validate_hosted(receipt, candidate=value["candidate"]["commit"], tree=value["candidate"]["tree"], controller=pin["controller"],
-                        comparison=value["comparisonId"], run_id=run_id, workflow_commit=pin["workflowCommit"], created_utc=value["createdUtc"])
+                        comparison=value["comparisonId"], run_id=run_id, workflow_commit=pin["workflowCommit"], created_utc=value["createdUtc"], job=job)
         return "pass", {"runId": run_id, "jobId": job["id"], "runnerId": job["runner_id"], "artifact": artifact,
                         "receiptDigest": documents["hosted-receipt-digest.json"]["sha256"], "endedUtc": receipt["endedUtc"], "elapsedSeconds": receipt["elapsedSeconds"]}
 
@@ -418,6 +430,8 @@ class Coordinator:
         run, job = self.association("private", final["runId"], owner["leaseId"])
         require(job is not None, "private-job-not-observed")
         require(job["runner_id"] == final["runnerId"] and job["runner_name"] == "runloc-" + owner["leaseId"], "private-runner-binding")
+        if awaiting_run_completion(run, job):
+            return "pending", {"runId": run["id"], "jobId": job["id"], "reason": "await-successful-run-completion"}
         pin = self.policy["private"]
         validate_association(run, job, workflow_commit=pin["workflowCommit"], workflow_path=pin["workflowPath"], title="CI-PoC002 " + owner["leaseId"],
                              candidate=value["candidate"]["commit"], tree=value["candidate"]["tree"])

@@ -1,0 +1,595 @@
+{
+    "sourceUnchanged":  true,
+    "imageSha256":  "6a81c37564db9b1ee84e141922625e1d7c5b389b99bb3c572e0243607d5bb4d2",
+    "buildId":  "6a6c55d8dc1c4806a73eb4e7af680b39",
+    "probeComplete":  true,
+    "accelerator":  "tcg",
+    "workflowCommit":  "e95eca7d7026bab810e469fb8f2cd62cdc2c17ff",
+    "actualExit":  0,
+    "qemuSha256":  "e393972f000c4fe92e137d7b48d7d8bdeae3fe9595dceab611b1f5e21f373eb2",
+    "candidate":  {
+                      "repository":  "https://github.com/techrote/ezvm",
+                      "commit":  "e95eca7d7026bab810e469fb8f2cd62cdc2c17ff",
+                      "tree":  "c42bf8f0dd08cfa994a504890781370bc476a6b8",
+                      "clean":  true,
+                      "executedTreeSha256":  "ea4d7e25e3c17067efc08fddd84a6a8c82e4ddda10532446d37dff51ba8cb67c",
+                      "trackedFileCount":  201,
+                      "files":  [
+
+                                ]
+                  },
+    "runId":  39943992446,
+    "cpus":  6,
+    "errors":  [
+
+               ],
+    "controller":  {
+                       "repository":  "https://github.com/techrote/runloc",
+                       "commit":  "a71e9e1adae1fb749b2325277c4a52dff69d7b6d",
+                       "tree":  "80d9204fbdc496e3d321fed7e6c127fafc9e205c",
+                       "clean":  true,
+                       "executedTreeSha256":  "5bdc9a38e85eb6bc51907868403a65887d027a22b1d04a3027f46b77972fd3a0",
+                       "trackedFileCount":  327,
+                       "files":  [
+
+                                 ]
+                   },
+    "diagnosticOnly":  true,
+    "outputComplete":  true,
+    "ownedProcessesEmpty":  true,
+    "elapsedSeconds":  965.236036,
+    "serialSha256":  "54e5ab8a54cc846c86d43bcfddfb5164aac7c9b461bd1a8b114077209f5d3992",
+    "timedOut":  false,
+    "bootstrapSha256":  "0fa8bbf9243f24f8d094aed0f74a7cc8098a73882bb029c572e40991dff65b60",
+    "records":  [
+                    {
+                        "attemptId":  "414cc908a7d44f2e82e96eb235f25ff8",
+                        "bootstrapSha256":  "0fa8bbf9243f24f8d094aed0f74a7cc8098a73882bb029c572e40991dff65b60",
+                        "buildId":  "6a6c55d8dc1c4806a73eb4e7af680b39",
+                        "cpus":  6,
+                        "ensurepipSha256":  "dbdc767f9d0316511cf0055db7b53ac17f80d227ec1e930e8d568b9c27d98d94",
+                        "kind":  "identity",
+                        "python":  "3.12.3",
+                        "wheelSha256":  [
+                                            "e995a37590643450898cfa5bd5113831a547506cd545c335a409339d0c1e87ab"
+                                        ]
+                    },
+                    {
+                        "kind":  "variant-start",
+                        "sequence":  1,
+                        "sharedLimitSeconds":  90,
+                        "variant":  "current"
+                    },
+                    {
+                        "kind":  "stage-start",
+                        "seconds":  422.680471834,
+                        "stage":  "layout"
+                    },
+                    {
+                        "exit":  0,
+                        "kind":  "stage-end",
+                        "stage":  "layout",
+                        "systemSeconds":  0.141144,
+                        "userSeconds":  0.570991,
+                        "wallSeconds":  0.7241009669999698
+                    },
+                    {
+                        "kind":  "stage-start",
+                        "seconds":  423.410261951,
+                        "stage":  "bootstrap"
+                    },
+                    {
+                        "exit":  0,
+                        "kind":  "stage-end",
+                        "stage":  "bootstrap",
+                        "systemSeconds":  2.946828,
+                        "userSeconds":  30.498287,
+                        "wallSeconds":  33.460664759999986
+                    },
+                    {
+                        "kind":  "stage-start",
+                        "seconds":  456.873544794,
+                        "stage":  "prefix"
+                    },
+                    {
+                        "exit":  0,
+                        "kind":  "stage-end",
+                        "stage":  "prefix",
+                        "systemSeconds":  0.045464999999999645,
+                        "userSeconds":  0.1858159999999991,
+                        "wallSeconds":  0.23602436499999158
+                    },
+                    {
+                        "kind":  "stage-start",
+                        "seconds":  457.111026549,
+                        "stage":  "pip-version"
+                    },
+                    {
+                        "exit":  0,
+                        "kind":  "stage-end",
+                        "stage":  "pip-version",
+                        "systemSeconds":  1.494644,
+                        "userSeconds":  12.24266,
+                        "wallSeconds":  13.749033540000028
+                    },
+                    {
+                        "exit":  0,
+                        "kind":  "variant-end",
+                        "pyFiles":  495,
+                        "pycFiles":  245,
+                        "sequence":  1,
+                        "systemSeconds":  4.87008,
+                        "userSeconds":  44.175941,
+                        "variant":  "current",
+                        "wallSeconds":  49.07127916100001
+                    },
+                    {
+                        "kind":  "variant-start",
+                        "sequence":  2,
+                        "sharedLimitSeconds":  90,
+                        "variant":  "compiled"
+                    },
+                    {
+                        "kind":  "stage-start",
+                        "seconds":  472.439483038,
+                        "stage":  "layout"
+                    },
+                    {
+                        "exit":  0,
+                        "kind":  "stage-end",
+                        "stage":  "layout",
+                        "systemSeconds":  0.144446,
+                        "userSeconds":  0.58832,
+                        "wallSeconds":  0.7373466610000037
+                    },
+                    {
+                        "kind":  "stage-start",
+                        "seconds":  473.181375473,
+                        "stage":  "bootstrap"
+                    },
+                    {
+                        "exit":  0,
+                        "kind":  "stage-end",
+                        "stage":  "bootstrap",
+                        "systemSeconds":  4.290887,
+                        "userSeconds":  48.102571999999995,
+                        "wallSeconds":  52.412698346999946
+                    },
+                    {
+                        "kind":  "stage-start",
+                        "seconds":  525.596718909,
+                        "stage":  "prefix"
+                    },
+                    {
+                        "exit":  0,
+                        "kind":  "stage-end",
+                        "stage":  "prefix",
+                        "systemSeconds":  0.04924499999999998,
+                        "userSeconds":  0.150814000000004,
+                        "wallSeconds":  0.20495142800007216
+                    },
+                    {
+                        "kind":  "stage-start",
+                        "seconds":  525.804162326,
+                        "stage":  "pip-version"
+                    },
+                    {
+                        "exit":  0,
+                        "kind":  "stage-end",
+                        "stage":  "pip-version",
+                        "systemSeconds":  0.6444850000000004,
+                        "userSeconds":  3.3215739999999983,
+                        "wallSeconds":  3.970755150000059
+                    },
+                    {
+                        "exit":  0,
+                        "kind":  "variant-end",
+                        "pyFiles":  495,
+                        "pycFiles":  495,
+                        "sequence":  2,
+                        "systemSeconds":  5.339856,
+                        "userSeconds":  52.812529000000005,
+                        "variant":  "compiled",
+                        "wallSeconds":  58.17027935200002
+                    },
+                    {
+                        "kind":  "variant-start",
+                        "sequence":  3,
+                        "sharedLimitSeconds":  90,
+                        "variant":  "combined-prefix"
+                    },
+                    {
+                        "kind":  "stage-start",
+                        "seconds":  531.434825154,
+                        "stage":  "layout"
+                    },
+                    {
+                        "exit":  0,
+                        "kind":  "stage-end",
+                        "stage":  "layout",
+                        "systemSeconds":  0.121472,
+                        "userSeconds":  0.540234,
+                        "wallSeconds":  0.6676226280000037
+                    },
+                    {
+                        "kind":  "stage-start",
+                        "seconds":  532.106552665,
+                        "stage":  "bootstrap"
+                    },
+                    {
+                        "exit":  0,
+                        "kind":  "stage-end",
+                        "stage":  "bootstrap",
+                        "systemSeconds":  2.9931720000000004,
+                        "userSeconds":  30.628973,
+                        "wallSeconds":  33.57319140499999
+                    },
+                    {
+                        "kind":  "stage-start",
+                        "seconds":  565.682080414,
+                        "stage":  "pip-version"
+                    },
+                    {
+                        "exit":  0,
+                        "kind":  "stage-end",
+                        "stage":  "pip-version",
+                        "systemSeconds":  1.6257919999999997,
+                        "userSeconds":  12.246924999999997,
+                        "wallSeconds":  13.88602056700006
+                    },
+                    {
+                        "exit":  0,
+                        "kind":  "variant-end",
+                        "pyFiles":  495,
+                        "pycFiles":  245,
+                        "sequence":  3,
+                        "systemSeconds":  4.977950999999999,
+                        "userSeconds":  43.981841999999986,
+                        "variant":  "combined-prefix",
+                        "wallSeconds":  48.917438620999974
+                    },
+                    {
+                        "kind":  "variant-start",
+                        "sequence":  4,
+                        "sharedLimitSeconds":  90,
+                        "variant":  "no-version-pyc"
+                    },
+                    {
+                        "kind":  "stage-start",
+                        "seconds":  581.01307191,
+                        "stage":  "layout"
+                    },
+                    {
+                        "exit":  0,
+                        "kind":  "stage-end",
+                        "stage":  "layout",
+                        "systemSeconds":  0.14743799999999999,
+                        "userSeconds":  0.555611,
+                        "wallSeconds":  0.7093707100000302
+                    },
+                    {
+                        "kind":  "stage-start",
+                        "seconds":  581.727117718,
+                        "stage":  "bootstrap"
+                    },
+                    {
+                        "exit":  0,
+                        "kind":  "stage-end",
+                        "stage":  "bootstrap",
+                        "systemSeconds":  2.913033,
+                        "userSeconds":  31.212605,
+                        "wallSeconds":  34.1175787709999
+                    },
+                    {
+                        "kind":  "stage-start",
+                        "seconds":  615.845949066,
+                        "stage":  "prefix"
+                    },
+                    {
+                        "exit":  0,
+                        "kind":  "stage-end",
+                        "stage":  "prefix",
+                        "systemSeconds":  0.058246999999999716,
+                        "userSeconds":  0.1318230000000007,
+                        "wallSeconds":  0.19453300400004991
+                    },
+                    {
+                        "kind":  "stage-start",
+                        "seconds":  616.042429035,
+                        "stage":  "pip-version"
+                    },
+                    {
+                        "exit":  0,
+                        "kind":  "stage-end",
+                        "stage":  "pip-version",
+                        "systemSeconds":  1.139466,
+                        "userSeconds":  11.987433000000003,
+                        "wallSeconds":  13.137631341999963
+                    },
+                    {
+                        "exit":  0,
+                        "kind":  "variant-end",
+                        "pyFiles":  495,
+                        "pycFiles":  0,
+                        "sequence":  4,
+                        "systemSeconds":  4.511094999999999,
+                        "userSeconds":  44.521810000000016,
+                        "variant":  "no-version-pyc",
+                        "wallSeconds":  49.02893950100008
+                    },
+                    {
+                        "kind":  "variant-start",
+                        "sequence":  5,
+                        "sharedLimitSeconds":  90,
+                        "variant":  "current"
+                    },
+                    {
+                        "kind":  "stage-start",
+                        "seconds":  630.474157633,
+                        "stage":  "layout"
+                    },
+                    {
+                        "exit":  0,
+                        "kind":  "stage-end",
+                        "stage":  "layout",
+                        "systemSeconds":  0.139179,
+                        "userSeconds":  0.566543,
+                        "wallSeconds":  0.7116583020000462
+                    },
+                    {
+                        "kind":  "stage-start",
+                        "seconds":  631.190488258,
+                        "stage":  "bootstrap"
+                    },
+                    {
+                        "exit":  0,
+                        "kind":  "stage-end",
+                        "stage":  "bootstrap",
+                        "systemSeconds":  2.8485780000000003,
+                        "userSeconds":  31.426929,
+                        "wallSeconds":  34.255496514000015
+                    },
+                    {
+                        "kind":  "stage-start",
+                        "seconds":  665.448188041,
+                        "stage":  "prefix"
+                    },
+                    {
+                        "exit":  0,
+                        "kind":  "stage-end",
+                        "stage":  "prefix",
+                        "systemSeconds":  0.05414899999999978,
+                        "userSeconds":  0.14439799999999892,
+                        "wallSeconds":  0.2033778730000222
+                    },
+                    {
+                        "kind":  "stage-start",
+                        "seconds":  665.652640599,
+                        "stage":  "pip-version"
+                    },
+                    {
+                        "exit":  0,
+                        "kind":  "stage-end",
+                        "stage":  "pip-version",
+                        "systemSeconds":  1.4757629999999997,
+                        "userSeconds":  12.064475000000002,
+                        "wallSeconds":  13.55135935699991
+                    },
+                    {
+                        "exit":  0,
+                        "kind":  "variant-end",
+                        "pyFiles":  495,
+                        "pycFiles":  245,
+                        "sequence":  5,
+                        "systemSeconds":  4.769344,
+                        "userSeconds":  44.80113699999998,
+                        "variant":  "current",
+                        "wallSeconds":  49.559500308999986
+                    },
+                    {
+                        "kind":  "variant-start",
+                        "sequence":  6,
+                        "sharedLimitSeconds":  90,
+                        "variant":  "compiled"
+                    },
+                    {
+                        "kind":  "stage-start",
+                        "seconds":  680.958000563,
+                        "stage":  "layout"
+                    },
+                    {
+                        "exit":  0,
+                        "kind":  "stage-end",
+                        "stage":  "layout",
+                        "systemSeconds":  0.16006199999999998,
+                        "userSeconds":  0.7536919999999999,
+                        "wallSeconds":  0.9201006139999208
+                    },
+                    {
+                        "kind":  "stage-start",
+                        "seconds":  681.883725805,
+                        "stage":  "bootstrap"
+                    },
+                    {
+                        "exit":  0,
+                        "kind":  "stage-end",
+                        "stage":  "bootstrap",
+                        "systemSeconds":  4.5398320000000005,
+                        "userSeconds":  50.020979,
+                        "wallSeconds":  54.58342319299993
+                    },
+                    {
+                        "kind":  "stage-start",
+                        "seconds":  736.469398475,
+                        "stage":  "prefix"
+                    },
+                    {
+                        "exit":  0,
+                        "kind":  "stage-end",
+                        "stage":  "prefix",
+                        "systemSeconds":  0.05277699999999985,
+                        "userSeconds":  0.10089700000000335,
+                        "wallSeconds":  0.1587362679999842
+                    },
+                    {
+                        "kind":  "stage-start",
+                        "seconds":  736.629193532,
+                        "stage":  "pip-version"
+                    },
+                    {
+                        "exit":  0,
+                        "kind":  "stage-end",
+                        "stage":  "pip-version",
+                        "systemSeconds":  0.6607159999999999,
+                        "userSeconds":  3.1169549999999973,
+                        "wallSeconds":  3.7849423330000036
+                    },
+                    {
+                        "exit":  0,
+                        "kind":  "variant-end",
+                        "pyFiles":  495,
+                        "pycFiles":  495,
+                        "sequence":  6,
+                        "systemSeconds":  5.668314000000002,
+                        "userSeconds":  54.72805599999998,
+                        "variant":  "compiled",
+                        "wallSeconds":  60.41806711200002
+                    },
+                    {
+                        "kind":  "variant-start",
+                        "sequence":  7,
+                        "sharedLimitSeconds":  90,
+                        "variant":  "combined-prefix"
+                    },
+                    {
+                        "kind":  "stage-start",
+                        "seconds":  742.289484104,
+                        "stage":  "layout"
+                    },
+                    {
+                        "exit":  0,
+                        "kind":  "stage-end",
+                        "stage":  "layout",
+                        "systemSeconds":  0.12553,
+                        "userSeconds":  0.640945,
+                        "wallSeconds":  0.7724859269999342
+                    },
+                    {
+                        "kind":  "stage-start",
+                        "seconds":  743.066383387,
+                        "stage":  "bootstrap"
+                    },
+                    {
+                        "exit":  0,
+                        "kind":  "stage-end",
+                        "stage":  "bootstrap",
+                        "systemSeconds":  3.093286,
+                        "userSeconds":  32.381209,
+                        "wallSeconds":  35.45649983999999
+                    },
+                    {
+                        "kind":  "stage-start",
+                        "seconds":  778.524893709,
+                        "stage":  "pip-version"
+                    },
+                    {
+                        "exit":  0,
+                        "kind":  "stage-end",
+                        "stage":  "pip-version",
+                        "systemSeconds":  1.5269420000000005,
+                        "userSeconds":  12.400472999999998,
+                        "wallSeconds":  13.93821514900003
+                    },
+                    {
+                        "exit":  0,
+                        "kind":  "variant-end",
+                        "pyFiles":  495,
+                        "pycFiles":  245,
+                        "sequence":  7,
+                        "systemSeconds":  4.993827,
+                        "userSeconds":  46.16098500000004,
+                        "variant":  "combined-prefix",
+                        "wallSeconds":  51.1348826200001
+                    },
+                    {
+                        "kind":  "variant-start",
+                        "sequence":  8,
+                        "sharedLimitSeconds":  90,
+                        "variant":  "no-version-pyc"
+                    },
+                    {
+                        "kind":  "stage-start",
+                        "seconds":  794.047513118,
+                        "stage":  "layout"
+                    },
+                    {
+                        "exit":  0,
+                        "kind":  "stage-end",
+                        "stage":  "layout",
+                        "systemSeconds":  0.136631,
+                        "userSeconds":  0.6504829999999999,
+                        "wallSeconds":  0.7932343459999629
+                    },
+                    {
+                        "kind":  "stage-start",
+                        "seconds":  794.844786029,
+                        "stage":  "bootstrap"
+                    },
+                    {
+                        "exit":  0,
+                        "kind":  "stage-end",
+                        "stage":  "bootstrap",
+                        "systemSeconds":  3.022446,
+                        "userSeconds":  30.373272,
+                        "wallSeconds":  33.377885412999944
+                    },
+                    {
+                        "kind":  "stage-start",
+                        "seconds":  828.224962924,
+                        "stage":  "prefix"
+                    },
+                    {
+                        "exit":  0,
+                        "kind":  "stage-end",
+                        "stage":  "prefix",
+                        "systemSeconds":  0.0495000000000001,
+                        "userSeconds":  0.11336899999999872,
+                        "wallSeconds":  0.16655520200004048
+                    },
+                    {
+                        "kind":  "stage-start",
+                        "seconds":  828.392719517,
+                        "stage":  "pip-version"
+                    },
+                    {
+                        "exit":  0,
+                        "kind":  "stage-end",
+                        "stage":  "pip-version",
+                        "systemSeconds":  1.1311910000000003,
+                        "userSeconds":  11.644525999999999,
+                        "wallSeconds":  12.789609874999996
+                    },
+                    {
+                        "exit":  0,
+                        "kind":  "variant-end",
+                        "pyFiles":  495,
+                        "pycFiles":  0,
+                        "sequence":  8,
+                        "systemSeconds":  4.589739999999999,
+                        "userSeconds":  43.294291999999984,
+                        "variant":  "no-version-pyc",
+                        "wallSeconds":  47.87670991799996
+                    },
+                    {
+                        "diagnosticOnly":  true,
+                        "kind":  "completed",
+                        "qualificationPassed":  false,
+                        "variants":  8
+                    }
+                ],
+    "qualificationPassed":  false,
+    "attemptId":  "414cc908a7d44f2e82e96eb235f25ff8",
+    "forced":  false,
+    "schemaVersion":  1,
+    "controllerUnchanged":  true
+}

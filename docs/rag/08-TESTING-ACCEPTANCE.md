@@ -187,3 +187,13 @@ steps, timeout/cancellation, missing numeric exits and unresolved cleanup reject
 the intended-control proof. The shared gate decision must demonstrate that the
 actual assertion evidence dominates a separately validated green alternative.
 Software fixtures do not establish that live Actions refusal.
+
+Gate regression controls reject a successful job paired with a failed,
+cancelled or unfinished parent run, Boolean run/job/runner IDs, and a hosted
+receipt whose runner differs from the actual GitHub Actions job/profile.
+Both hosted/private observers retain pending status during the narrow API
+terminal-arrival race without opening an artifact or accepting a receipt.
+Actual temporary-history controls require the committed backing/history
+baseline even with no recovery, and exercise another empty backing directory
+against the current real policy. Synthetic eligible fixtures carry explicit
+synthetic baseline/adjudication proof; they do not enable actual recovery.
