@@ -321,3 +321,40 @@ physical receipts cannot qualify the changed tree. New full six-core hosted TCG
 and physical WHPX evidence is required before acceptance. The original quarantine
 remains in force; historical source-bound gate allowlists have not been reset or
 silently expanded. No gate acceptance, merge or issue completion is claimed.
+
+
+## Exact e29 mitigation full results and next diagnostic checkpoint
+
+Independent review verified the native physical e29/813 full WHPX pass:
+24/24 completion markers, eight authenticated READY/eight six-CPU proofs,
+2556 complete telemetry records, supervisor/harness exits0, unchanged clean
+sources, owned0, fixture removed and unforced cleanup. Supervisor elapsed was
+7189.5074562seconds; its final post-I/O elapsed and actual invocation result are
+retained in the [redacted native evidence manifest](evidence/ci-poc-003-physical-e29c0a9/manifest.json).
+This was native physical requalification, not a new Actions/gate acceptance;
+NoOverallTimeout was owner-authorized, so no60-minute performance claim is made.
+
+The independent [hosted full attempt39840798569](https://github.com/techrote/ezvm/actions/runs/39840798569)
+failed with harness exit1 after3801.187794seconds. Its original public receipt,
+telemetry and exact API/artifact/source association are retained in the
+[failed hosted manifest](evidence/ci-poc-003-hosted-f9597c7b-failed/manifest.json).
+Fresh independent download/authenticated decryption matched the original private
+log digest. The secondary guest finalizer reported Python venv/pip unavailable
+or its90-second validation deadline exceeded; SSH surfaced70. The inner status
+and substage were discarded by that source, so timeout versus Python/ensurepip
+failure remains unresolved. No matching kernel-panic marker was observed in the
+retained log; this does not establish a root fix. Source unchanged, preflight0,
+owned0, fixture removed and unforced cleanup were retained despite failure.
+
+EzVM PR60 diagnostic checkpoint `2a624a1d0d90e076cac5b81aebe115d66fa66e65`,
+tree `835c1b19917e0185e3c55e0c563f009ee4e126cd`, adds only allowlisted venv
+stage/original numeric exit/guest elapsed diagnostics, retaining every command
+and the90-second validation bound. The coder-owned stage file read is separately
+bounded to16bytes/two diagnostic seconds. Actual-shell controls cover each stage,
+124, setup, malformed/large/FIFO data and unavailable/regressing clocks. No unrelated
+PR55 panic/runtime changes were imported. This is observability, not a venv repair;
+new-source qualification remains pending. The hosted adapter can remain pinned
+at813 while an owner-reviewed immutable definition selects this exact new source;
+its old physical approval/runner/gate allowlists are not expanded by that selection.
+No old physical result transfers to this diagnostic tree, and no quarantine reset,
+new gate acceptance, merge or issue completion is claimed.

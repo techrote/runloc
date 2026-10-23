@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "files": [
+    {
+      "path": "association.json",
+      "sha256": "4f1e8431bb24451572663c70aad7340bddd9a3de3f44238d2a4fae22d7b33ade"
+    },
+    {
+      "path": "hosted-receipt-digest.json",
+      "sha256": "9e151fb0d0bc5752fb4f60c5cf24568f50aa44c552ddb3bd47d804e27d571656"
+    },
+    {
+      "path": "hosted-receipt.json",
+      "sha256": "96a348fb89c0fad64ed6c62eeaff585e8b93a391c991fb8bec741de48a040780"
+    },
+    {
+      "path": "telemetry-events.json",
+      "sha256": "085412bd2dfb79323df7a12b0a8491ed59498d6b0e78d9f4c9699d3c0b6936d3"
+    }
+  ]
+}

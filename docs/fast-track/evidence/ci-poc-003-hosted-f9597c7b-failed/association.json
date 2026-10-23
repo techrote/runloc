@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "runId": 39840798569,
+  "jobId": 120040962248,
+  "workflowCommit": "641e08c8a104cbe9dd2efb886836e541e17ea4c9",
+  "workflowTree": "947dc9ac91914d99f9b74c5a43bd346b28ebc077",
+  "workflowRef": "ci-poc-003-full-single-641e08c8a104cbe9dd2efb886836e541e17ea4c9",
+  "workflowSha256Lf": "2a910e6a2c318463dfc56659efd8e64b24c967cb0131957b8c9129192e77830c",
+  "candidateCommit": "e29c0a9c9196d55914a4659cf51d7a49c0a21e84",
+  "candidateTree": "3deca45ef74ae7b8a6470cd69dfa8d38cf90674f",
+  "controllerCommit": "81324943ac2327eff9e1e6b769c67add63041709",
+  "controllerTree": "052c95df4bb7c247233bb78e3d74fcdd12abc18f",
+  "artifacts": [
+    {
+      "digest": "sha256:d0c70c00f591d4462a0fc941366d0d3f97b3e36bf78ffa264f065d5605a9c29e",
+      "id": 12456937238,
+      "name": "ci-poc-003-forensic-public-f9597c7bdb4647d8a5278400a573ae31",
+      "size_in_bytes": 56145
+    },
+    {
+      "digest": "sha256:c87f1a4bc64b2e3b4358a3a98a56f9789131578473560d41aa93104d17855f07",
+      "id": 12455869592,
+      "name": "ci-poc-003-forensic-encrypted-f9597c7bdb4647d8a5278400a573ae31",
+      "size_in_bytes": 109816
+    }
+  ],
+  "authenticatedPlaintextSha256": "7dfe1dfdeb2558111e4e2947665af9fae3db10ab46d1f0716111af731ab67ca3",
+  "authenticatedPlaintextBytes": 108288,
+  "qualificationPassed": false,
+  "gateAcceptance": false,
+  "quarantineReset": false,
+  "failureClassification": "blocking coding-profile venv validation failure; inner command status/stage unavailable in original source",
+  "observedFailure": {
+    "instance": "ezvm012-secondary",
+    "profileStage": "coding-profile",
+    "sshExitCode": 70,
+    "validationLimitSeconds": 90,
+    "validationExitCode": null,
+    "validationSubstage": null,
+    "matchingKernelPanicObserved": false
+  },
+  "evidenceLimitations": [
+    "No panic marker observed in retained authenticated bounded diagnostics is not proof of absence elsewhere.",
+    "Timeout versus Python/ensurepip failure remains unresolved; limit is not increased.",
+    "Raw plaintext/private key remain private; artifact archives retained by original digest."
+  ]
+}

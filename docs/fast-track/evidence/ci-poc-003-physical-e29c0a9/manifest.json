@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "files": [
+    {
+      "path": "qualification-summary.json",
+      "sha256": "34ab02b525d692c47ec89acdbb38444d22eca94b4f9403df8ce04a1f15d9de82"
+    },
+    {
+      "path": "telemetry-events.json",
+      "sha256": "cb3ee1cc64663d914ad03923a13f2211bcde5eac4bbe200b3905002074120328"
+    }
+  ]
+}
