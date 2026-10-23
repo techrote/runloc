@@ -40,6 +40,35 @@ The hosted observer continues after early WHPX acceptance. A late hosted failure
 revokes success and writes a persistent, fsynced quarantine record. New green
 evidence cannot clear that record; recovery requires explicit reviewed action.
 
+Recovery is optional committed policy, not writable observer state. No recovery
+record is currently enabled. Its exact candidate/tree, canonical backing-path
+digest, legacy-byte digest and
+committed adjudication digest must agree; the adjudication binds independently
+reviewed physical/hosted proof identities and explicitly retains the unresolved
+historical cause. It grants eligibility for a fresh comparison only. Missing,
+changed, unreadable or malformed history blocks, including on another backing
+directory. The original global latch is retained byte-for-byte, so older
+controllers remain blocked.
+
+Every new actual functional, unknown, source, security or cleanup failure is
+fsynced into the private backing's `ci-poc-003-failures/<comparison-UUID>.json`
+under the publication lock, even when the legacy latch already exists. The first
+failure is immutable and repeated observations do not overwrite it. New records
+cannot be exempted through legacy recovery. An existing empty store also blocks:
+it can be a crash between observing failure and durably writing its record.
+Partial or unknown files, malformed
+records, hardlinks and reparse points block startup, publication and merge
+verification through the same predicate. Failure derived solely from an existing
+quarantine does not fabricate another observed workload failure.
+If recording fails but retained history already blocks eligibility, publication
+still revokes success with a failure-only persistence-error flag; the history is
+not repaired or overwritten. If no persistent block can be confirmed, publication
+stops with an explicit unresolved-storage failure instead of claiming persistence.
+That comparison retains its original failure in durable state. Any unresolved
+marker blocks startup and verification after restart; publication retries that
+original failure rather than substituting a later green observation. Successful
+retry does not clear the comparison's block or its new persistent failure record.
+
 The status context is `EzVM qualification / source-bound`, on the exact candidate
 commit. It links to an author-bound issue ledger comment and includes that comment
 body's SHA256. Comments are mutable: the coordinator's `--verify-for-merge --state`

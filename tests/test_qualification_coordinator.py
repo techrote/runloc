@@ -146,6 +146,114 @@ class CoordinatorTests(unittest.TestCase):
             self.controller.start_private()
         self.assertEqual('security', self.controller.observe_private()[0])
 
+    def test_writable_policy_cannot_enable_recovery_or_change_eligible_candidate(self):
+        self.assertFalse(self.controller.quarantined())
+        self.controller.policy = self.policy | {'recovery': {'schemaVersion': 1}}
+        self.assertTrue(self.controller.quarantined())
+        self.controller.policy = self.policy
+        self.state.value['candidate'] = {'commit': 'f'*40, 'tree': 'e'*40}
+        self.assertTrue(self.controller.quarantined())
+
+    def test_publication_records_new_failure_with_legacy_present_but_not_quarantine_only_failure(self):
+        legacy = self.root / 'ci-poc-003-private-quarantine.json'
+        legacy.write_bytes(b'{}')  # Unknown retained history must continue blocking.
+        with patch.object(coordinator, 'exclusive', return_value=nullcontext()), \
+             patch.object(self.controller, 'source'), \
+             patch.object(coordinator, 'create_ledger_once', return_value={'url': 'https://example.invalid/proof'}), \
+             patch.object(coordinator, 'publish_status_once'):
+            self.assertEqual('failure', self.controller.publish('pass', {}, 'pass', {}))
+            self.assertFalse((self.root / 'ci-poc-003-failures').exists())
+            self.assertEqual('failure', self.controller.publish('pass', {}, 'assertion', {}))
+            record = self.root / 'ci-poc-003-failures' / ('b'*32+'.json')
+            first = record.read_bytes()
+            self.assertEqual('assertion', coordinator.json_bytes(first)['hosted'])
+            self.assertEqual('failure', self.controller.publish('unknown', {}, 'pending', {}))
+            self.assertEqual(first, record.read_bytes())
+            self.assertEqual(b'{}', legacy.read_bytes())
+
+    def test_late_failure_revokes_success_even_when_existing_failure_store_is_malformed(self):
+        with patch.object(coordinator, 'exclusive', return_value=nullcontext()), \
+             patch.object(self.controller, 'source'), \
+             patch.object(coordinator, 'create_ledger_once', return_value={'url': 'https://example.invalid/proof'}) as ledger, \
+             patch.object(coordinator, 'publish_status_once') as status:
+            self.assertEqual('accepted-whpx', self.controller.publish('pass', {}, 'pending', {}))
+            directory = self.root / 'ci-poc-003-failures'; directory.mkdir()
+            malformed = directory / ('c'*32+'.json'); malformed.write_bytes(b'{')
+            self.assertEqual('failure', self.controller.publish('pass', {}, 'assertion', {}))
+            self.assertEqual('failure', status.call_args.kwargs['outcome'])
+            failure = ledger.call_args.args[2]
+            self.assertTrue(failure['failurePersistence']['blockedHistoryRetained'])
+            self.assertEqual(b'{', malformed.read_bytes())
+            self.assertEqual('failure', self.controller.publish('pass', {}, 'pass', {}))
+            self.assertEqual('failure', status.call_args.kwargs['outcome'])
+            self.assertEqual(b'{', malformed.read_bytes())
+
+    def test_unresolved_failure_write_without_blocking_history_stops_before_publication(self):
+        with patch.object(coordinator, 'exclusive', return_value=nullcontext()), \
+             patch.object(coordinator, 'record_failure', side_effect=OSError('synthetic disk failure')), \
+             patch.object(coordinator, 'publish_status_once') as status:
+            with self.assertRaisesRegex(RuntimeError, 'failure-persistence-unresolved-stop'):
+                self.controller.publish('pass', {}, 'assertion', {})
+            status.assert_not_called()
+        self.assertTrue(self.controller.state.value['failurePersistenceUnresolved'])
+
+    def test_unresolved_observed_failure_survives_restart_and_retries_original_failure_not_later_green(self):
+        with patch.object(coordinator, 'exclusive', return_value=nullcontext()), \
+             patch.object(coordinator, 'record_failure', side_effect=OSError('synthetic disk failure')):
+            with self.assertRaisesRegex(RuntimeError, 'failure-persistence-unresolved-stop'):
+                self.controller.publish('unknown', {}, 'pending', {})
+        resumed = coordinator.Coordinator(coordinator.State(self.path))
+        self.assertTrue(resumed.quarantined())
+        with patch.object(coordinator, 'exclusive', return_value=nullcontext()), \
+             patch.object(resumed, 'source'), \
+             patch.object(coordinator, 'create_ledger_once', return_value={'url': 'https://example.invalid/proof'}), \
+             patch.object(coordinator, 'publish_status_once') as status:
+            self.assertEqual('failure', resumed.publish('pass', {}, 'pass', {}))
+            self.assertEqual('failure', status.call_args.kwargs['outcome'])
+        record = coordinator.load(self.root/'ci-poc-003-failures'/('b'*32+'.json'))
+        self.assertEqual(('unknown', 'pending'), (record['private'], record['hosted']))
+        resumed.state.value['lastOutcome'] = 'accepted-whpx'  # A stale visible success still cannot verify.
+        with patch.object(resumed, 'source'), patch.object(resumed, 'observe_private', return_value=('pass', {})), \
+             patch.object(resumed, 'observe_hosted', return_value=('pass', {})):
+            with self.assertRaisesRegex(coordinator.InvalidEvidence, 'acceptance-no-longer-valid'):
+                resumed.verify_for_merge()
+
+    def test_any_malformed_unresolved_marker_blocks_comparison(self):
+        for marker in (False, None, {}, 'invalid'):
+            self.state.value['failurePersistenceUnresolved'] = marker
+            self.assertTrue(self.controller.quarantined())
+
+    def test_actual_prestart_quarantine_refusal_does_not_poison_recovery_but_hosted_failure_persists(self):
+        self.state.value['hosted'] = {'runId': 12}
+        legacy = self.root / 'ci-poc-003-private-quarantine.json'; legacy.write_bytes(b'{}')
+        with patch.object(coordinator, 'run_powershell', side_effect=AssertionError('quarantined registration')):
+            self.controller.start_private()
+        private, proof = self.controller.observe_private()
+        self.assertEqual('security', private)
+        with patch.object(coordinator, 'exclusive', return_value=nullcontext()), \
+             patch.object(self.controller, 'source'), \
+             patch.object(coordinator, 'create_ledger_once', return_value={'url': 'https://example.invalid/proof'}), \
+             patch.object(coordinator, 'publish_status_once'):
+            self.assertEqual('failure', self.controller.publish(private, proof, 'pending', {}))
+            self.assertFalse((self.root / 'ci-poc-003-failures').exists())
+            self.assertEqual('failure', self.controller.publish(private, proof, 'assertion', {}))
+            record = coordinator.load(self.root / 'ci-poc-003-failures' / ('b'*32+'.json'))
+            self.assertEqual(('pending', 'assertion'), (record['private'], record['hosted']))
+            self.assertEqual(b'{}', legacy.read_bytes())
+
+    def test_genuine_private_security_cannot_impersonate_prestart_quarantine_refusal(self):
+        with patch.object(coordinator, 'exclusive', return_value=nullcontext()), \
+             patch.object(self.controller, 'source'), \
+             patch.object(coordinator, 'create_ledger_once', return_value={'url': 'https://example.invalid/proof'}), \
+             patch.object(coordinator, 'publish_status_once'):
+            for index, changed in enumerate(({'runId':123}, {'quarantineOnly':1}, {'quarantineOnly':False}, {'reason':'new-security-failure'})):
+                comparison = 'c'*31+str(index)
+                self.state.value['comparisonId'] = comparison
+                self.state.value['private'] = dict(outcome='security', reason='persistent-private-quarantine', quarantineOnly=True) | changed
+                self.controller.publish('security', {'reason':'persistent-private-quarantine'}, 'pending', {})
+                record = coordinator.load(self.root / 'ci-poc-003-failures' / (comparison+'.json'))
+                self.assertEqual('security', record['private'])
+
     def test_absence_never_treats_api_error_partial_inventory_or_matching_label_as_absent(self):
         class API:
             def request(inner, method, endpoint):

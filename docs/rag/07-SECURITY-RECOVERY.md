@@ -97,3 +97,23 @@ disposal. Unknown cleanup stays failed/quarantined. The full release marker is
 emitted before upstream finalization, so it cannot override a cleanup or source
 restoration failure. A forced or timed-out run remains failure even if cleanup
 succeeds. See the [implementation checkpoint](../fast-track/CI-POC-001-EVIDENCE.md).
+
+## CI-PoC003 reviewed eligibility recovery
+
+The original global failure latch is retained unchanged. A source-bound recovery
+must be committed with the exact candidate/tree, canonical backing-path digest,
+legacy-byte digest and a digest-bound reviewed adjudication. The adjudication
+retains the unresolved historical cause and real physical/hosted proof identities.
+It permits a fresh comparison to run; it cannot supply its result. No recovery is
+currently enabled. Writable observer state cannot enable or broaden recovery.
+
+Each new actual failure is fsynced into a separate immutable comparison record
+under the existing publication lock, even if the legacy latch already exists.
+Repeated observations preserve the first failure. Any failure-store presence,
+including an empty directory left between failure observation and file creation,
+blocks eligibility. Unknown/partial files, malformed records, unreadable history,
+hardlinks and reparse points fail closed. New records cannot be exempted by the
+legacy recovery mechanism; missing required history or another backing path also
+blocks. Startup, absent-capacity dispatch, publication and merge verification use
+the same predicate. Quarantine-only rejection does not invent another workload
+failure. Offline controls exercise real temporary files and injected write faults.

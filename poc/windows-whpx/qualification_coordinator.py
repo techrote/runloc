@@ -16,6 +16,7 @@ import zipfile
 import uuid
 
 from gate_runtime import GitHub, State, UnknownWrite, cancel_private_once, create_ledger_once, dispatch_once, publish_status_once
+from quarantine_store import quarantine_blocked, record_failure, validate_failure
 from qualification_gate import (InvalidEvidence, artifact_files, canonical, decide, digest, json_bytes, require,
                                 utc, validate_association, validate_cancelled_before_harness, validate_hosted, validate_private)
 
@@ -71,6 +72,14 @@ class Coordinator:
         self.folder = state.path.parent
         self.read_only = read_only
 
+    def quarantined(self):
+        if "failurePersistenceUnresolved" in self.state.value:
+            return True  # Any malformed or unresolved marker must survive resume.
+        approved = load(SCRIPT / "gate-policy.json")
+        if canonical(approved) != canonical(self.policy) or self.state.value["candidate"] != approved["candidate"]:
+            return True
+        return quarantine_blocked(self.state.value["backingRoot"], approved["candidate"], approved.get("recovery"), source_root=ROOT)
+
     def source(self):
         approved = load(SCRIPT / "gate-policy.json")
         require(canonical(approved) == canonical(self.policy) and digest(canonical(approved)) == self.state.value["policySha256"], "state-policy-not-committed")
@@ -112,9 +121,8 @@ class Coordinator:
             value["private"] = {"outcome": "hosted-only", "reason": "explicit-hosted-only-rollback"}
             self.state.save()
             return
-        latch = Path(value["backingRoot"]) / "ci-poc-003-private-quarantine.json"
-        if latch.exists():
-            value["private"] = {"outcome": "security", "reason": "persistent-private-quarantine"}
+        if self.quarantined():
+            value["private"] = {"outcome": "security", "reason": "persistent-private-quarantine", "quarantineOnly": True}
             self.state.save()
             return
         self.definition("private")
@@ -166,7 +174,7 @@ class Coordinator:
             # A crash can leave a local intent before the durable API intent.
             # Revalidate before that FIRST POST; existing API intents only reconcile.
             self.source()
-            require(not (Path(value["backingRoot"]) / "ci-poc-003-private-quarantine.json").exists(),
+            require(not self.quarantined(),
                     "absence-quarantined-before-dispatch")
             self.definition("private")
         if private is None:
@@ -430,18 +438,43 @@ class Coordinator:
 
     def publish_locked(self, private_state, private_proof, hosted_state, hosted_proof):
         value = self.state.value
-        latch = Path(value["backingRoot"]) / "ci-poc-003-private-quarantine.json"
-        outcome = decide(private_state, hosted_state, quarantined=latch.exists())
-        if outcome == "failure" and not latch.exists():
-            with latch.open("xb") as stream:
-                stream.write(canonical({"schemaVersion": 1, "candidate": value["candidate"], "comparisonId": value["comparisonId"],
-                                        "private": private_state, "hosted": hosted_state, "utc": now(), "resetRequires": "explicit-reviewed-reset"}))
-                stream.flush()
-                os.fsync(stream.fileno())
+        persistence_error = None
+        quarantine_only = (private_state == "security"
+            and private_proof == {"reason": "persistent-private-quarantine"}
+            and value.get("private") == {"outcome": "security", "reason": "persistent-private-quarantine", "quarantineOnly": True}
+            and value["private"]["quarantineOnly"] is True)
+        persistence_private = "pending" if quarantine_only else private_state
+        persistence_hosted = hosted_state
+        try:
+            if "failurePersistenceUnresolved" in value:
+                retained = validate_failure(canonical(value["failurePersistenceUnresolved"]), value["comparisonId"])
+                require(retained["candidate"] == value["candidate"], "unresolved-failure-source-changed")
+                persistence_private, persistence_hosted = retained["private"], retained["hosted"]
+            # An exact pre-start refusal is not a new observed security failure.
+            # A simultaneous real hosted failure must still persist normally.
+            record_failure(value["backingRoot"], value["candidate"], value["comparisonId"],
+                           persistence_private, persistence_hosted)
+        except (OSError, ValueError, TypeError, KeyError, RecursionError) as error:
+            if not self.quarantined():
+                value["failurePersistenceUnresolved"] = dict(schemaVersion=1, candidate=value["candidate"],
+                    comparisonId=value["comparisonId"], private=persistence_private, hosted=persistence_hosted,
+                    utc=now(), resetRequires="explicit-reviewed-reset")
+                self.state.save()
+                raise RuntimeError("failure-persistence-unresolved-stop") from None
+            # Retained bad/partial history already blocks every new acceptance.
+            # Do not repair it, but still revoke a previously published success.
+            persistence_error = type(error).__name__
+        outcome = decide(private_state, hosted_state, quarantined=self.quarantined())
+        if persistence_error is not None:
+            require(outcome == "failure", "persistence-error-cannot-publish-success")
         evidence = {"schemaVersion": 1, "issue": "CI-POC-003", "comparisonId": value["comparisonId"], "candidate": value["candidate"],
                     "gateController": value["gateController"], "policySha256": value["policySha256"], "outcome": outcome,
                     "private": {"state": private_state, "proof": private_proof}, "hosted": {"state": hosted_state, "proof": hosted_proof},
                     "createdUtc": value["createdUtc"], "policy": self.policy}
+        if persistence_error is not None:
+            evidence["failurePersistence"] = {"blockedHistoryRetained": True, "errorType": persistence_error}
+        if "failurePersistenceUnresolved" in value:
+            evidence["failurePersistenceUnresolved"] = True
         proof_key = digest(canonical(evidence))
         if value.get("lastProofKey") == proof_key:
             return outcome
@@ -462,8 +495,7 @@ class Coordinator:
         require(value.get("lastOutcome", "").startswith("accepted-"), "comparison-not-accepted")
         hosted, hp = self.observe_hosted()
         private, pp = self.observe_private()
-        latch = Path(value["backingRoot"]) / "ci-poc-003-private-quarantine.json"
-        require(decide(private, hosted, quarantined=latch.exists()) == value["lastOutcome"], "acceptance-no-longer-valid")
+        require(decide(private, hosted, quarantined=self.quarantined()) == value["lastOutcome"], "acceptance-no-longer-valid")
         ledger = value["lastLedger"]
         status, comment = self.api.request("GET", f"repos/techrote/runloc/issues/comments/{ledger['commentId']}")
         require(status == 200 and comment["user"]["login"] == "techrote" and comment["html_url"] == ledger["url"]
