@@ -117,3 +117,10 @@ legacy recovery mechanism; missing required history or another backing path also
 blocks. Startup, absent-capacity dispatch, publication and merge verification use
 the same predicate. Quarantine-only rejection does not invent another workload
 failure. Offline controls exercise real temporary files and injected write faults.
+
+The coordinator checks complete artifact inventories and positive integer run,
+artifact and size identities before constructing a cache path or reading cached
+bytes. Artifact workflow-run ID and workflow source must match the requested
+lane; expired or contradictory metadata fails closed. A cache hit still requires
+fresh bound API metadata and the original transport digest. API size metadata is
+bounded without assuming it equals the downloaded ZIP length.

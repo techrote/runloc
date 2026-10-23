@@ -287,12 +287,20 @@ class Coordinator:
         return run, job
 
     def artifacts(self, lane, run_id, comparison):
+        require(type(run_id) is int and run_id > 0, "artifact-requested-run-id")
         status, response = self.api.request("GET", f"repos/techrote/ezvm/actions/runs/{run_id}/artifacts?per_page=100")
-        require(status == 200 and response["total_count"] <= 100, "artifact-inventory")
+        require(status == 200 and type(response["total_count"]) is int and isinstance(response["artifacts"], list)
+                and response["total_count"] == len(response["artifacts"]) <= 100, "artifact-inventory")
         name = ("ci-poc-002-" if lane == "private" else "ci-poc-003-hosted-") + comparison
         matches = [a for a in response["artifacts"] if a["name"] == name and not a["expired"]]
         require(len(matches) == 1, "artifact-association-count")
         artifact = matches[0]
+        require(type(artifact["id"]) is int and artifact["id"] > 0
+                and type(artifact["size_in_bytes"]) is int and 0 < artifact["size_in_bytes"] <= 32*1024*1024
+                and artifact["expired"] is False and isinstance(artifact["digest"], str)
+                and re.fullmatch("sha256:[a-f0-9]{64}", artifact["digest"])
+                and type(artifact["workflow_run"]["id"]) is int and artifact["workflow_run"]["id"] == run_id
+                and artifact["workflow_run"]["head_sha"] == self.policy[lane]["workflowCommit"], "artifact-run-metadata-binding")
         path = self.folder / f"{lane}-{artifact['id']}.zip"
         if not path.exists():
             status, content = self.api.request("GET", f"repos/techrote/ezvm/actions/artifacts/{artifact['id']}/zip", binary=True)

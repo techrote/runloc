@@ -2,10 +2,12 @@
 from contextlib import nullcontext
 from datetime import datetime, timedelta, timezone
 import json
+import io
 from pathlib import Path
 import sys
 import tempfile
 import unittest
+import zipfile
 from unittest.mock import patch
 from types import SimpleNamespace
 
@@ -29,6 +31,62 @@ class CoordinatorTests(unittest.TestCase):
             selection='available', comparisonId='b'*32, createdUtc=datetime.now(timezone.utc).isoformat())))
         self.state = coordinator.State(self.path)
         self.controller = coordinator.Coordinator(self.state)
+
+    def artifact_fixture(self):
+        receipt = coordinator.canonical({'syntheticOnly': True})
+        buffer = io.BytesIO()
+        with zipfile.ZipFile(buffer, 'w') as archive:
+            archive.writestr('hosted-receipt.json', receipt)
+            archive.writestr('hosted-receipt-digest.json', coordinator.canonical(dict(file='hosted-receipt.json', sha256=coordinator.digest(receipt))))
+        raw = buffer.getvalue()
+        artifact = dict(id=91, name='ci-poc-003-hosted-'+'b'*32, expired=False, size_in_bytes=len(raw),
+            digest='sha256:'+coordinator.digest(raw), workflow_run=dict(id=12, head_sha=self.policy['hosted']['workflowCommit']))
+        calls = []
+        class API:
+            response = dict(total_count=1, artifacts=[artifact])
+            def request(inner, method, path, **kwargs):
+                calls.append((method, path, kwargs))
+                return (200, raw) if kwargs.get('binary') else (200, inner.response)
+        api = API(); self.controller.api = api
+        return api, artifact, raw, calls
+
+    def test_artifacts_validate_association_before_download_and_revalidate_cached_bytes(self):
+        api, artifact, raw, calls = self.artifact_fixture()
+        documents, association = self.controller.artifacts('hosted', 12, 'b'*32)
+        self.assertTrue(documents['hosted-receipt.json']['syntheticOnly'])
+        self.assertEqual(91, association['id'])
+        self.assertEqual(2, len(calls))
+        calls.clear()
+        self.assertEqual(documents, self.controller.artifacts('hosted', 12, 'b'*32)[0])
+        self.assertEqual(1, len(calls))  # Valid cache still needs current bound metadata.
+        (self.root/'hosted-91.zip').write_bytes(b'changed cache')
+        with self.assertRaisesRegex(coordinator.InvalidEvidence, 'artifact-archive-digest'):
+            self.controller.artifacts('hosted', 12, 'b'*32)
+
+    def test_invalid_artifact_metadata_never_downloads_or_reads_even_an_existing_cache(self):
+        api, artifact, raw, calls = self.artifact_fixture()
+        (self.root/'hosted-91.zip').write_bytes(raw)
+        variants = [artifact | {'id':True}, artifact | {'id':'../escape'}, artifact | {'id':0},
+                    artifact | {'size_in_bytes':True}, artifact | {'size_in_bytes':0}, artifact | {'size_in_bytes':32*1024*1024+1},
+                    artifact | {'digest':'bad'}, artifact | {'expired':0},
+                    artifact | {'workflow_run':{'id':13, 'head_sha':self.policy['hosted']['workflowCommit']}},
+                    artifact | {'workflow_run':{'id':True, 'head_sha':self.policy['hosted']['workflowCommit']}},
+                    artifact | {'workflow_run':{'id':12, 'head_sha':'f'*40}}]
+        inventories = [dict(total_count=1, artifacts=[a]) for a in variants]
+        inventories += [dict(total_count=2, artifacts=[artifact]), dict(total_count=True, artifacts=[artifact])]
+        for response in inventories:
+            api.response = response; calls.clear()
+            with self.subTest(response=response), \
+                 patch.object(Path, 'read_bytes', side_effect=AssertionError('invalid metadata reached cache')), \
+                 patch.object(coordinator, 'artifact_files', side_effect=AssertionError('invalid metadata reached parser')), \
+                 self.assertRaises(coordinator.InvalidEvidence):
+                self.controller.artifacts('hosted', 12, 'b'*32)
+            self.assertEqual(1, len(calls))
+            self.assertFalse(calls[0][2].get('binary'))
+        calls.clear()
+        with self.assertRaisesRegex(coordinator.InvalidEvidence, 'artifact-requested-run-id'):
+            self.controller.artifacts('hosted', True, 'b'*32)
+        self.assertEqual([], calls)
 
     def test_state_policy_cannot_enable_or_change_committed_policy(self):
         self.state.value['policy'] = self.policy | {'executionApproved': not self.policy['executionApproved']}
