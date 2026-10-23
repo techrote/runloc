@@ -358,3 +358,27 @@ at813 while an owner-reviewed immutable definition selects this exact new source
 its old physical approval/runner/gate allowlists are not expanded by that selection.
 No old physical result transfers to this diagnostic tree, and no quarantine reset,
 new gate acceptance, merge or issue completion is claimed.
+# Exact diagnostic candidate2a: hosted venv creation timeout
+
+The fresh complete six-vCPU hosted run
+[39890465778](https://github.com/techrote/ezvm/actions/runs/39890465778),
+job120208714805, used immutable definitionb789d144be8791eb08f4b960fd78b97ecce69450,
+candidate2a624a1d0d90e076cac5b81aebe115d66fa66e65 and controller81324943ac2327eff9e1e6b769c67add63041709.
+It failed with actual harness exit1 after4760.8735212seconds. Exact preflight
+passed, sources remained unchanged, and unforced cleanup established child exit,
+zero active owned processes and fixture removal. The observer's exit0 establishes
+authenticated evidence collection only, not qualification.
+
+Authenticated guest evidence records `stage=create exit=124 elapsedSeconds=90`
+in the first `ezvm010-source` finalizer, with SSH readiness exit70. The complete
+`python3 -m venv` command hit its original90second limit; prefix and pip version
+assertions were not reached. This does not distinguish directory/interpreter
+setup from the embedded ensurepip bootstrap, and does not establish a repair.
+No earlier physical pass transfers to this changed candidate.
+
+[Retained evidence](evidence/ci-poc-003-hosted-e658746f-failed/manifest.json)
+contains the three original public artifact JSON files and an independently
+reviewed association to the actual run/job/artifacts and authenticated private
+plaintext digest. Raw decrypted guest material and the attempt private key stay
+private. Quarantine, gate approval and issue completion remain unchanged.
+

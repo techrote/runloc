@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 1,
+  "runUrl": "https://github.com/techrote/ezvm/actions/runs/39890465778",
+  "jobId": 120208714805,
+  "plan": {
+    "comparisonId": "e658746f264049f793af2432cb539890",
+    "certificateSha256": "ac3b12a6db941f7f7575e705a084d179d597cdc3d2705106d982bc776330ab15",
+    "diagnosticOnly": true,
+    "qualificationPassed": false,
+    "stableGatePublication": false,
+    "quarantineReset": false,
+    "controllerCommit": "81324943ac2327eff9e1e6b769c67add63041709",
+    "controllerTree": "052c95df4bb7c247233bb78e3d74fcdd12abc18f",
+    "candidateCommit": "2a624a1d0d90e076cac5b81aebe115d66fa66e65",
+    "candidateTree": "835c1b19917e0185e3c55e0c563f009ee4e126cd",
+    "workflowSha256Lf": "a7e2a5b8d2031e4bbef0cdbc7ab864f78b8b8d1962268a30f83b8089af8cccaa",
+    "workflowCommit": "b789d144be8791eb08f4b960fd78b97ecce69450",
+    "workflowTree": "ae3b713e9034ea60b68d67c4e00aa96f6c6e96ca",
+    "workflowRef": "ci-poc-003-venv-b789d144be8791eb08f4b960fd78b97ecce69450"
+  },
+  "artifacts": [
+    {
+      "digest": "sha256:e9ddd153b329fc82291e91774f61ee4642b20751f2655617f210e3245cd03c63",
+      "id": 12477142266,
+      "name": "ci-poc-003-forensic-public-e658746f264049f793af2432cb539890",
+      "size_in_bytes": 48335
+    },
+    {
+      "digest": "sha256:dfe8286ed327df476940ece0980425be846e4589e977de46b93b856bf918310a",
+      "id": 12476439906,
+      "name": "ci-poc-003-forensic-encrypted-e658746f264049f793af2432cb539890",
+      "size_in_bytes": 57547
+    }
+  ],
+  "authenticatedPrivatePlaintext": {
+    "plaintextAuthenticated": true,
+    "plaintextSha256": "5d4fc43d1f85d15373bf89dd50ecd42328c934b877895658664097efa1a57dda",
+    "plaintextBytes": 56035
+  },
+  "actualQualification": {
+    "passed": false,
+    "exitCode": 1,
+    "elapsedSeconds": 4760.8735212,
+    "sourceUnchanged": true,
+    "cleanup": {
+      "forced": false,
+      "childExited": true,
+      "fixtureRemoved": true,
+      "activeProcesses": 0
+    }
+  },
+  "failure": {
+    "instance": "ezvm010-source",
+    "stage": "create",
+    "originalValidationExitCode": 124,
+    "guestMonotonicElapsedSeconds": 90,
+    "sshReadinessExitCode": 70,
+    "interpretation": "The complete python3 -m venv command exceeded its existing90second bound. This does not identify a particular venv/ensurepip subphase or establish its root cause."
+  },
+  "privateKeyPublished": false,
+  "rawPrivateLogPublished": false,
+  "qualificationPassed": false,
+  "quarantineReset": false
+}
