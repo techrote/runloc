@@ -1,0 +1,65 @@
+{
+  "schemaVersion": 1,
+  "runUrl": "https://github.com/techrote/ezvm/actions/runs/39927990349",
+  "jobId": 120328998525,
+  "plan": {
+    "comparisonId": "e90cb5d6a01d4fdd962c6ce8a6dda1af",
+    "certificateSha256": "cca0046e0c445b2986121ee32c62d7330f7ee1a2ee3348a014bcb1739f3701a5",
+    "diagnosticOnly": true,
+    "qualificationPassed": false,
+    "stableGatePublication": false,
+    "quarantineReset": false,
+    "controllerCommit": "a71e9e1adae1fb749b2325277c4a52dff69d7b6d",
+    "controllerTree": "80d9204fbdc496e3d321fed7e6c127fafc9e205c",
+    "candidateCommit": "b205230d3f1ade15550bbbb8d8b405d17858c514",
+    "candidateTree": "e79f5d0a8f642a3fa53158852dbea5cb7e64d465",
+    "workflowSha256Lf": "49decf0bf23ca92ef3e9356a20736d683754426c7e7c256d806e76e11c4ef3a7",
+    "workflowCommit": "65da7e655d9d17d3a9a649c3f7439c0f2dbb71ae",
+    "workflowTree": "a52b09c94b62030a82cc72f4ffac631103a6d4d9",
+    "workflowRef": "ci-poc-003-venv-budget-65da7e655d9d17d3a9a649c3f7439c0f2dbb71ae"
+  },
+  "artifacts": [
+    {
+      "digest": "sha256:55a470a54eaf78078eb9ed0aee5529d79eb91517c852fe959472758a777345ef",
+      "id": 12494120745,
+      "name": "ci-poc-003-forensic-public-e90cb5d6a01d4fdd962c6ce8a6dda1af",
+      "size_in_bytes": 48537
+    },
+    {
+      "digest": "sha256:84010d65a8215f2b272fbaf47ca81b915d59eaa29ca0fbe1e09c4f2b6433ee5d",
+      "id": 12493392299,
+      "name": "ci-poc-003-forensic-encrypted-e90cb5d6a01d4fdd962c6ce8a6dda1af",
+      "size_in_bytes": 57397
+    }
+  ],
+  "authenticatedPrivatePlaintext": {
+    "plaintextAuthenticated": true,
+    "plaintextSha256": "678ae79c97aeeeb11def4f7edc16c68bbe96622f1cc8c8b83730f7f156d0683e",
+    "plaintextBytes": 55878
+  },
+  "actualQualification": {
+    "passed": false,
+    "exitCode": 1,
+    "elapsedSeconds": 3944.6764243999996,
+    "sourceUnchanged": true,
+    "cleanup": {
+      "forced": false,
+      "childExited": true,
+      "fixtureRemoved": true,
+      "activeProcesses": 0
+    }
+  },
+  "failure": {
+    "instance": "ezvm010-source",
+    "stage": "pip",
+    "originalValidationExitCode": 124,
+    "guestMonotonicElapsedSeconds": 90,
+    "sshReadinessExitCode": 70,
+    "authenticatedReadyResponses": 0,
+    "interpretation": "Disposable venv reached pip-version validation but exceeded the shared90second deadline. The evidence does not measure individual substage durations or establish why hosted execution is slower. Prior no-compile optimization did not establish hosted recovery."
+  },
+  "privateKeyPublished": false,
+  "rawPrivateLogPublished": false,
+  "qualificationPassed": false,
+  "quarantineReset": false
+}

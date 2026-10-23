@@ -420,3 +420,30 @@ its guest implementation hash; all previous17source pins are unchanged. Source
 tree identity continues to bind every tracked file. Fresh complete six-vCPU
 hosted TCG and physical WHPX qualification are required. No e29/2a pass transfers,
 and no gate allowlist, quarantine reset or issue completion is implied.
+### Fresh hosted result after optional-cache optimization (23 October 2026)
+
+[Authenticated failed full run39927990349](https://github.com/techrote/ezvm/actions/runs/39927990349/job/120328998525)
+executed candidateb205230/treee79f5d0 with controllera71e9e1 and immutable
+forensic definition65da7e6. The [original public evidence and association](evidence/ci-poc-003-hosted-e90cb5d6-failed/manifest.json)
+record actual exit1 after3944.6764244seconds, preflight0, unchanged source,
+unforced child exit, zero owned processes and fixture removal. The encrypted
+artifact authenticated55878private-log bytes with SHA256
+678ae79c97aeeeb11def4f7edc16c68bbe96622f1cc8c8b83730f7f156d0683e.
+Private plaintext and key remain private.
+
+The base build completed; the first source guest then failed readiness. Its
+finalizer reported `stage=pip exit=124 elapsedSeconds=90`, and SSH readiness
+returned70. It reached pip-version validation after creating/bootstraping the
+venv and checking its isolated prefix, but no authenticated READY was accepted.
+The record does not measure individual substage durations or establish the
+cause of the hosted slowdown. The local optional-cache improvement did not
+establish hosted recovery; no deadline or assertion was relaxed.
+
+The fresh fixed-false-assertion run39932423994 also failed before observing its
+intended assertion: its retained receipt says `controlObserved=false` and
+`guestAssertionExitCode=null`. That is unqualified failure evidence, not a
+successful negative control. Its receipt records unchanged sources, exit1,
+unforced owned0/child exit/fixture removal. It does not independently identify
+the inner guest failure. Physical full qualification and the separate main-source
+legacy qualification were still running at this checkpoint. No comparison
+acceptance, quarantine recovery, merge or issue closure is established.

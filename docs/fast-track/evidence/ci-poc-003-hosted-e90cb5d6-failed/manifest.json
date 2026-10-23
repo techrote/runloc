@@ -1,0 +1,10 @@
+{
+  "schemaVersion": 1,
+  "qualificationPassed": false,
+  "files": {
+    "association.json": "2067bac84051be644808dd33c3f9c61d7414a9e1a877fa19aa4c067a00659d68",
+    "hosted-receipt-digest.json": "37ea73eff216e9ccc23783a7c50d86ff9d9648a72f7056f9eb7c9d651a83de32",
+    "hosted-receipt.json": "c42dee89ede7bcf73e91ba5d9dec12c38d887b11de08c083c43f69e354a7204c",
+    "telemetry-events.json": "679851954872459f1e9f70e701227d2dc294141d1f4505e3ef0d745cfdf063db"
+  }
+}
