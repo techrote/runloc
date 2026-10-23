@@ -447,3 +447,14 @@ unforced owned0/child exit/fixture removal. It does not independently identify
 the inner guest failure. Physical full qualification and the separate main-source
 legacy qualification were still running at this checkpoint. No comparison
 acceptance, quarantine recovery, merge or issue closure is established.
+
+The separate [clean-main repair run39932418892](evidence/ci-poc-003-main-bf330501-failed/manifest.json)
+also failed on its own exact bf330501/tree6ef637e source. Fresh original Actions
+API/log review binds the checkout identity and actual failed qualification step
+exit1; seven of23 functional markers were present. The first source guest again
+reported `stage=pip exit=124 elapsedSeconds=90`. This original-default legacy
+workflow is distinct from the six-vCPU PoC. Its derived observer record is not
+a supervised PoC receipt and establishes no structured host disposal result.
+The main repair and final policy remain blocked; no frozen-candidate result can
+qualify this different source. Raw log archive and step digests are retained,
+and original logs remain private rather than being copied into public evidence.
