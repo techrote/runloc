@@ -458,3 +458,22 @@ a supervised PoC receipt and establishes no structured host disposal result.
 The main repair and final policy remain blocked; no frozen-candidate result can
 qualify this different source. Raw log archive and step digests are retained,
 and original logs remain private rather than being copied into public evidence.
+
+The [fresh native physical b205/a71 run](evidence/ci-poc-003-physical-b205230/manifest.json)
+passed the complete original release scenario:24 unique completion markers,
+eight authenticated READY responses and eight six-vCPU proofs, actual exits0,
+unchanged recorded sources, ordered source restoration, unforced owned0 cleanup
+and fixture removal. Independent review reran the original receipt oracles and
+matched raw events, all2,572 complete telemetry records, identities and actual
+fixture/process absence. The supervisor recorded6808.2545531seconds; its actual
+outer invocation took6808.6461031seconds. Owner-authorized NoOverallTimeout
+applies; no60minute/default90minute performance result is claimed.
+
+This qualifies only the native physical b205/a71 source, not Actions acceptance,
+the failed hosted source, EzVM main or the stable gate. The original controller
+clone subsequently acquired three ignored Python caches from a post-run audit at
+10:50:51UTC, after qualification ended10:47:50UTC. Those files are preserved;
+the original clone is currently cache-contaminated. Its tracked execution
+fingerprint remains unchanged, and a fresh controller checkout has independently
+verified the same commit, tree and execution fingerprint. The evidence retains
+that distinction rather than treating the original clone as currently clean.
