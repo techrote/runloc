@@ -4,7 +4,7 @@
   "qualificationCpus": 6,
   "repository": "techrote/ezvm",
   "path": ".github/workflows/ezvm-ci-poc-002.yml",
-  "workflowCommit": "a3c6d3ec4c7506d8f8d1c553eb7a4560ddc61d4d",
-  "sha256Lf": "72f38d9e740b21743bb73805b043d32c0e292945b26fdea11291c45bd85f8b23",
-  "jobControllerCommit": "d3be2aa7677c338fab86508da6f390fcae1bc541"
+  "workflowCommit": "8ed0bdd6af7f04fc637fbd9986b823e43933d666",
+  "sha256Lf": "ff2041e1d2f0efc92e2fc2c9a42beb2aeebf3779a8f6026a67c394d572e03728",
+  "jobControllerCommit": "a71e9e1adae1fb749b2325277c4a52dff69d7b6d"
 }
