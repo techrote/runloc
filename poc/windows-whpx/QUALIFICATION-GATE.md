@@ -2,14 +2,18 @@
 
 This is a manually opted-in native Windows coordinator for the exact candidate
 and definitions in `gate-policy.json`. A different EzVM head cannot inherit its
-result. The approved 002 host controller, private workflow, job controller and
-original full release scenario remain unchanged. WHPX uses six vCPUs per guest;
+result. The reviewed native host and private workflow retain the original full release
+scenario and one-job lifecycle. WHPX uses six vCPUs per guest;
 original memory and operation limits remain in force. Hosted TCG starts first,
 independently, with no dependency on private capacity.
 
-The current hosted pin is immutable workflow1c1dbb68/controllerf167950, with
-bounded original-base log reduction and preflight timeout/cancellation rejection.
-The unchanged private002 definition remains separately pinned. Updating these
+The reviewed definitions are frozen at EzVM `8ed0bdd`, with job controller
+`a71e9e1`, native runner host controller `cfea92c`, and exact candidate `b205230`.
+The disposable venv optimization retains real offline pip and its90-second bound.
+New full physical and hosted qualification is still running; these source pins
+alone grant no acceptance. The attempt-specific encrypted forensic definition
+is separate from this normal hosted adapter.
+The private002 definition remains separately pinned. Updating these
 definitions does not recover or supersede the original failed comparison; its
 quarantine still blocks acceptance until an explicit reviewed recovery action.
 

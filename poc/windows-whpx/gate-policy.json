@@ -2,23 +2,23 @@
   "schemaVersion": 1,
   "executionApproved": true,
   "candidate": {
-    "tree": "d5677a166e54583f26e3f08e90e5836c19f99359",
-    "commit": "2268468cb3040b9e1dd6deed60d0f13594f768d6"
+    "tree": "e79f5d0a8f642a3fa53158852dbea5cb7e64d465",
+    "commit": "b205230d3f1ade15550bbbb8d8b405d17858c514"
   },
   "private": {
-    "hostController": "f29e4facb310f1a0d2da208f50a2416708f8db7f",
-    "sha256Lf": "72f38d9e740b21743bb73805b043d32c0e292945b26fdea11291c45bd85f8b23",
+    "hostController": "cfea92c28890aa51a6a1d15c236364ed9d49220c",
+    "sha256Lf": "ff2041e1d2f0efc92e2fc2c9a42beb2aeebf3779a8f6026a67c394d572e03728",
     "workflowPath": ".github/workflows/ezvm-ci-poc-002.yml",
-    "workflowRef": "ci-poc-002-a3c6d3ec4c7506d8f8d1c553eb7a4560ddc61d4d",
-    "jobController": "d3be2aa7677c338fab86508da6f390fcae1bc541",
-    "workflowCommit": "a3c6d3ec4c7506d8f8d1c553eb7a4560ddc61d4d"
+    "workflowRef": "ci-poc-002-8ed0bdd6af7f04fc637fbd9986b823e43933d666",
+    "jobController": "a71e9e1adae1fb749b2325277c4a52dff69d7b6d",
+    "workflowCommit": "8ed0bdd6af7f04fc637fbd9986b823e43933d666"
   },
   "hosted": {
-    "controller": "f167950a865df3baad247ba37ff53f0fcb683a72",
+    "controller": "a71e9e1adae1fb749b2325277c4a52dff69d7b6d",
     "workflowId": 388691839,
-    "workflowRef": "ci-poc-003-diagnostic-1c1dbb68ab48d1f5f17501032318d057957557d8",
-    "sha256Lf": "1ed68ffe08632075c5a3315c571e557c165fc665f919f617286bdb6bc5e4b454",
-    "workflowCommit": "1c1dbb68ab48d1f5f17501032318d057957557d8",
+    "workflowRef": "ci-poc-003-qualified-8ed0bdd6af7f04fc637fbd9986b823e43933d666",
+    "sha256Lf": "7b78e457183480051ff4cb30e9af80e11ad6606a65beab029c43b628005e8c5d",
+    "workflowCommit": "8ed0bdd6af7f04fc637fbd9986b823e43933d666",
     "workflowPath": ".github/workflows/ezvm-ci-poc-003-hosted.yml"
   },
   "profile": {
